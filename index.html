@@ -410,8 +410,10 @@
       if (!['A','B','C','D'].includes(q.correct)) return false;
       if (typeof q.rationale_correct !== 'string') return false;
       if (!q.rationale_wrong || typeof q.rationale_wrong !== 'object') return false;
+      // allow missing keys; if present, they must be strings
       for (const L of ['A','B','C','D']) {
-        if (typeof q.rationale_wrong[L] !== 'string') return false;
+        const v = q.rationale_wrong[L];
+        if (v !== undefined && typeof v !== 'string') return false;
       }
     }
     return true;
@@ -557,10 +559,10 @@
           <div style=\"margin-top:8px;\"><b>Why the best answer is best:</b> ${escapeHtml(q.rationale_correct)}</div>
           <div style=\"margin-top:10px;\"><b>Why each option is wrong (or not best):</b></div>
           <ul style=\"margin:6px 0 0; padding-left:18px;\">
-            <li><b>A:</b> ${escapeHtml(q.rationale_wrong.A)}</li>
-            <li><b>B:</b> ${escapeHtml(q.rationale_wrong.B)}</li>
-            <li><b>C:</b> ${escapeHtml(q.rationale_wrong.C)}</li>
-            <li><b>D:</b> ${escapeHtml(q.rationale_wrong.D)}</li>
+            <li><b>A:</b> ${escapeHtml(q.rationale_wrong.A ?? "—")}</li>
+            <li><b>B:</b> ${escapeHtml(q.rationale_wrong.B ?? "—")}</li>
+            <li><b>C:</b> ${escapeHtml(q.rationale_wrong.C ?? "—")}</li>
+            <li><b>D:</b> ${escapeHtml(q.rationale_wrong.D ?? "—")}</li>
           </ul>
         </details>
       `;
@@ -600,6 +602,7 @@ MANDATORY:
 - No 'All of the above' or 'None of the above'
 - Distractors must be plausible and mutually exclusive; no length/grammar clues
 - Infer level from the text and match wording/difficulty appropriately
+- Include rationale_wrong entries for A, B, C, and D. If an option is correct, set its rationale_wrong entry to "Correct (best answer)."
 
 OUTPUT (MANDATORY):
 Return ONLY valid JSON in this exact structure (no extra text):
