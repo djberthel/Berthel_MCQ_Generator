@@ -262,9 +262,16 @@ function gradeQuiz() {
     if (isCorrect) score++;
     const div = document.createElement('div');
     div.className = 'explanation';
-    div.innerHTML = `<div class="${isCorrect ? 'correct' : 'incorrect'}">Question ${q.id}: ${isCorrect ? 'Correct' : 'Incorrect'}</div>
-      <div><b>Best answer:</b> ${correct}. ${q.options[correct]}</div>
-      <div style="margin-top:6px;"><b>Explanation:</b> ${q.rationale_correct}</div>`;
+    div.innerHTML = `<div class=\"${isCorrect ? 'correct' : 'incorrect'}\">Question ${q.id}: ${isCorrect ? 'Correct' : 'Incorrect'}<\/div>
+      <div><b>Best answer:<\/b> ${correct}. ${q.options[correct]}<\/div>
+      <div style=\"margin-top:6px;\"><b>Why this is correct:<\/b> ${q.rationale_correct}<\/div>
+      <div style=\"margin-top:10px;\"><b>Why the other options are not correct:<\/b><\/div>
+      <ul style=\"margin-top:6px; padding-left:18px;\">
+        <li><b>A.<\/b> ${q.rationale_wrong.A}<\/li>
+        <li><b>B.<\/b> ${q.rationale_wrong.B}<\/li>
+        <li><b>C.<\/b> ${q.rationale_wrong.C}<\/li>
+        <li><b>D.<\/b> ${q.rationale_wrong.D}<\/li>
+      <\/ul>`;
     resultsEl.appendChild(div);
     renderMath(div);
   });
