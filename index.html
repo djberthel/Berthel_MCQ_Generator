@@ -10,18 +10,18 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/700.css">
 
   <!-- KaTeX for math rendering -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1Z2VngE8Fq9GQ4bGqVYdW0nq2FJ9r8rU8+K6zDk7E1H8l3z" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkUq9kGJbG0d4e2wq3JtQyC8xqQ5dQq3n5mQwVh3G8b8Qm5kHq3c1nqX5m9V" crossorigin="anonymous"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-+1Y1n1oZ7g1B0rA6v0x0p0r+R8xH1gkqVg8Hkq9mJvN1qv2nYbH2o3gYQq8p3o1D" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
   <style>
     :root {
       --hunter: #355E3B;
       --hunter-2: #2E5233;
-      --bg: #f7f7f5;
+      --bg: #f6f7f6;
       --card: #ffffff;
       --ink: #101316;
-      --muted: #5a646f;
+      --muted: #59636e;
       --border: #d7dadd;
       --focus: #1f7a3a;
       --danger: #b00020;
@@ -35,63 +35,99 @@
       font-family: "Latin Modern Roman", "Times New Roman", Times, serif;
       color: var(--ink);
       background: var(--bg);
-      line-height: 1.35;
+      line-height: 1.5;
+      font-size: 17px;
     }
 
     header {
       background: linear-gradient(0deg, var(--hunter-2), var(--hunter));
       color: #fff;
-      padding: 22px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
+      border-bottom: 1px solid rgba(255,255,255,0.18);
     }
 
     .wrap {
-      max-width: 980px;
+      max-width: 1040px;
       margin: 0 auto;
       padding: 18px;
     }
 
-    .title {
+    .head {
       display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: baseline;
+      gap: 14px;
+      align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
+      padding: 18px 0;
     }
 
     h1 {
       margin: 0;
       font-size: 22px;
-      letter-spacing: 0.2px;
       font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
-    .subtitle {
-      margin: 6px 0 0;
+    .sub {
+      margin-top: 6px;
       color: rgba(255,255,255,0.86);
       font-size: 14px;
+    }
+
+    .pill {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    main .wrap { padding-top: 14px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    @media (min-width: 980px) {
+      .grid { grid-template-columns: 1.2fr 0.8fr; }
     }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
       padding: 16px;
-      margin: 14px 0;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
+    .card h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
     }
 
-    @media (min-width: 900px) {
-      .grid {
-        grid-template-columns: 1.5fr 0.9fr;
-        align-items: start;
-      }
+    .muted { color: var(--muted); }
+
+    .step {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      margin: 12px 0 8px;
+    }
+
+    .step b {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(53,94,59,0.12);
+      color: var(--hunter);
+      border: 1px solid rgba(53,94,59,0.25);
+      font-size: 14px;
     }
 
     label {
@@ -101,36 +137,20 @@
       margin-bottom: 6px;
     }
 
-    textarea {
+    textarea, input[type="number"], input[type="url"] {
       width: 100%;
-      min-height: 220px;
-      resize: vertical;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       padding: 12px;
       font-family: inherit;
-      font-size: 15px;
+      font-size: 16px;
       background: #fff;
       outline: none;
     }
 
-    textarea:focus {
-      border-color: var(--focus);
-      box-shadow: 0 0 0 3px rgba(31,122,58,0.15);
-    }
+    textarea { min-height: 200px; resize: vertical; }
 
-    input[type="number"], input[type="password"], select {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      font-family: inherit;
-      font-size: 15px;
-      outline: none;
-      background: #fff;
-    }
-
-    input:focus, select:focus {
+    textarea:focus, input:focus {
       border-color: var(--focus);
       box-shadow: 0 0 0 3px rgba(31,122,58,0.15);
     }
@@ -141,13 +161,24 @@
       gap: 10px;
     }
 
+    @media (min-width: 700px) {
+      .row.two { grid-template-columns: 1fr 1fr; }
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
     .btn {
       appearance: none;
       border: 0;
       background: var(--hunter);
       color: #fff;
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 12px;
+      padding: 10px 14px;
       font-family: inherit;
       font-size: 15px;
       font-weight: 700;
@@ -156,27 +187,15 @@
 
     .btn:hover { background: var(--hunter-2); }
 
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
     .btn.secondary {
       background: transparent;
       color: var(--hunter);
       border: 1px solid var(--hunter);
-      font-weight: 700;
     }
 
-    .btn.secondary:hover {
-      background: rgba(53,94,59,0.07);
-    }
+    .btn.secondary:hover { background: rgba(53,94,59,0.07); }
 
-    .hint {
-      margin-top: 8px;
-      font-size: 12.5px;
-      color: var(--muted);
-    }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     .status {
       margin-top: 10px;
@@ -185,46 +204,33 @@
     }
 
     .status.error { color: var(--danger); }
+    .status.ok { color: var(--ok); }
 
-    .questions {
-      display: grid;
-      gap: 14px;
+    .quiz {
+      margin-top: 14px;
+      display: none;
     }
+
+    .questions { display: grid; gap: 14px; }
 
     .q {
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 14px;
       background: #fff;
     }
 
     .qhead {
       display: flex;
-      gap: 10px;
-      align-items: baseline;
       justify-content: space-between;
+      gap: 10px;
       margin-bottom: 10px;
+      align-items: baseline;
     }
 
-    .qnum {
-      font-weight: 700;
-      color: var(--hunter);
-    }
+    .qnum { font-weight: 700; color: var(--hunter); }
 
-    .levelpill {
-      font-size: 12px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.10);
-      color: #fff;
-      align-self: flex-start;
-    }
-
-    .stem {
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
+    .stem { font-size: 16px; margin-bottom: 10px; }
 
     .opt {
       display: grid;
@@ -238,30 +244,16 @@
 
     .opt:hover { background: rgba(53,94,59,0.04); }
 
-    .letter {
-      font-weight: 700;
-      color: var(--hunter);
-    }
-
-    .opt input { transform: translateY(1px); }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 14px;
-    }
+    .letter { font-weight: 700; color: var(--hunter); }
 
     .results {
       margin-top: 14px;
       border-top: 1px solid var(--border);
       padding-top: 14px;
+      display: none;
     }
 
-    .score {
-      font-weight: 700;
-      font-size: 16px;
-    }
+    .score { font-weight: 700; font-size: 16px; }
 
     .explain {
       margin-top: 10px;
@@ -290,180 +282,174 @@
       margin-top: 8px;
     }
 
+    .mini {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      background: rgba(16,19,22,0.06);
+      border: 1px solid rgba(16,19,22,0.12);
+      padding: 1px 6px;
+      border-radius: 8px;
+    }
+
     footer {
       color: var(--muted);
       font-size: 12.5px;
       padding: 18px;
       text-align: center;
     }
-
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12.5px;
-    }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap">
-      <div class="title">
+      <div class="head">
         <div>
           <h1>Berthel's MCQ Generator</h1>
-          <div class="subtitle">Paste reference text → generate questions → answer → get an annotated key.</div>
+          <div class="sub">A simple worksheet-to-quiz workflow: generate with the GPT, then answer and review here.</div>
         </div>
-        <div class="levelpill" id="levelPill" title="Inferred after generation">Level: —</div>
+        <div class="pill" id="levelPill" title="Loaded from the pasted MCQ JSON">Level: —</div>
       </div>
     </div>
   </header>
 
-  <main class="wrap">
-    <div class="grid">
-      <section class="card">
-        <h2 style="margin:0 0 10px; font-size:18px;">Input</h2>
+  <main>
+    <div class="wrap">
+      <div class="grid">
+        <section class="card">
+          <h2>Workflow</h2>
 
-        <label for="refText">Reference text (pure text)</label>
-        <textarea id="refText" placeholder="Paste a passage, notes, worksheet text, or syllabus excerpt here."></textarea>
+          <div class="step"><b>1</b><div><strong>Paste reference text</strong> and choose how many MCQs you want.</div></div>
+          <label for="refText">Reference text (pure text)</label>
+          <textarea id="refText" placeholder="Paste a passage, notes, worksheet text, or syllabus excerpt here."></textarea>
 
-        <div class="row" style="margin-top:12px;">
-          <div>
-            <label for="count">Number of MCQs (1–100)</label>
-            <input id="count" type="number" min="1" max="100" value="10" />
-            <div class="hint">For short texts, fewer questions usually improves quality.</div>
+          <div class="row two" style="margin-top:12px;">
+            <div>
+              <label for="count">Number of MCQs (1–100)</label>
+              <input id="count" type="number" min="1" max="100" value="10" />
+              <div class="mini">Short texts usually support fewer high-quality questions.</div>
+            </div>
+            <div>
+              <label for="gptUrl">Optional: link to your Berthel MCQ GPT</label>
+              <input id="gptUrl" type="url" placeholder="https://chatgpt.com/g/..." />
+              <div class="mini">If you paste your GPT link here, the button below will open it.</div>
+            </div>
           </div>
-          <div>
-            <label for="model">Model</label>
-            <select id="model">
-              <option value="gpt-4o-mini" selected>gpt-4o-mini (recommended)</option>
-              <option value="gpt-4o">gpt-4o</option>
-            </select>
-            <div class="hint">Structured outputs require modern models. See OpenAI docs.</div>
-          </div>
-          <div>
-            <label for="apiKey">OpenAI API Key</label>
-            <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
-            <div class="hint">For production: do not call OpenAI directly from the browser; use a server proxy.</div>
-          </div>
-        </div>
 
+          <div class="actions">
+            <button class="btn" id="copyPromptBtn">Copy prompt for GPT</button>
+            <button class="btn secondary" id="openGptBtn" disabled>Open the GPT</button>
+            <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+          </div>
+
+          <div class="status" id="status">Ready.</div>
+
+          <div class="step" style="margin-top:18px;"><b>2</b><div><strong>Paste the generated MCQ JSON</strong> from the GPT and load the quiz.</div></div>
+          <label for="mcqJson">MCQ JSON</label>
+          <textarea id="mcqJson" placeholder="Paste JSON here (the GPT should output structured JSON matching the required schema)."></textarea>
+
+          <div class="actions">
+            <button class="btn" id="loadBtn">Load quiz</button>
+            <button class="btn secondary" id="sampleBtn" type="button">Insert sample JSON</button>
+          </div>
+
+          <div class="mini" style="margin-top:10px;">
+            Math is supported with <span class="kbd">$...$</span> or <span class="kbd">$$...$$</span> inside stems/options/rationales.
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>What to paste into the GPT</h2>
+          <div class="muted" style="font-size:14px;">
+            <p style="margin:0 0 10px;">The button <strong>Copy prompt for GPT</strong> creates a single prompt that tells the GPT:</p>
+            <ul style="margin:0; padding-left:18px;">
+              <li>Use <strong>only</strong> the provided reference text.</li>
+              <li>Generate the exact MCQ count requested.</li>
+              <li>Use A–D only, one best answer, no all/none-of-the-above.</li>
+              <li>Infer level automatically and match wording/difficulty.</li>
+              <li>Provide rationales for correct and incorrect options.</li>
+              <li>Output as <strong>JSON</strong> so this page can render the quiz.</li>
+            </ul>
+            <p style="margin:10px 0 0;">If your GPT already has these rules embedded, students just paste the reference text + MCQ count and then paste the JSON back here.</p>
+          </div>
+        </section>
+      </div>
+
+      <section class="card quiz" id="quizCard">
+        <h2>Quiz</h2>
+        <div class="questions" id="questions"></div>
         <div class="actions">
-          <button class="btn" id="genBtn">Generate MCQs</button>
-          <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+          <button class="btn" id="submitBtn">Submit answers</button>
+          <button class="btn secondary" id="resetBtn" type="button">Reset</button>
         </div>
-
-        <div class="status" id="status">Ready.</div>
-      </section>
-
-      <section class="card">
-        <h2 style="margin:0 0 10px; font-size:18px;">How it works</h2>
-        <div class="hint" style="font-size:13px;">
-          <ul style="margin:0; padding-left:18px;">
-            <li>Uses the reference text only.</li>
-            <li>Infers level from the text (no grade label required).</li>
-                        <li>Randomizes correct answer positions (≈25% each).</li>
-            <li>After submission, shows an annotated answer key + rationales.</li>
-          </ul>
-          <p style="margin:10px 0 0;">
-            API details are based on OpenAI’s Responses API and Structured Outputs guidance.
-          </p>
-        </div>
+        <div class="results" id="results"></div>
       </section>
     </div>
-
-    <section class="card" id="quizCard" style="display:none;">
-      <h2 style="margin:0 0 10px; font-size:18px;">Quiz</h2>
-      <div class="questions" id="questions"></div>
-      <div class="actions">
-        <button class="btn" id="submitBtn">Submit answers</button>
-        <button class="btn secondary" id="resetBtn" type="button">Reset quiz</button>
-      </div>
-      <div class="results" id="results" style="display:none;"></div>
-    </section>
   </main>
 
   <footer>
-    Built as a single-file HTML demo. For real deployments, route API calls through a server and never expose API keys client-side.
+    Static classroom tool. No API keys. Generation happens in your custom GPT; this page renders the quiz and feedback.
   </footer>
 
 <script>
-  // --- System prompt distilled from your GPT instructions (level-adaptive item writer). ---
-  const SYSTEM_PROMPT = `You are a professional assessment item writer. Generate exam-quality MCQs strictly and only from the user's reference text.\n\nRules:\n- Generate exactly the requested number of MCQs.\n- Format: stem + four options labeled A–D.\n- Exactly one best answer per question.\n- Forbid 'All of the above' and 'None of the above'.\n- Infer level from the text and match language register and difficulty appropriately.\n- Randomize correct answer letters equiprobably (≈25% A/B/C/D) with no obvious clustering.\n- Use plausible distractors (common misconceptions), mutually exclusive, grammatically parallel, no clues.\n- Provide a rationale for why the correct answer is best and why each wrong option is wrong, at the inferred level.\n- Use only the reference text; do not introduce external facts.\n`;
+  // If you want a fixed GPT link for all students, hard-code it here.
+  // Example: const DEFAULT_GPT_URL = "https://chatgpt.com/g/xxxxxxxx";
+  const DEFAULT_GPT_URL = "";
 
-  // --- JSON schema for structured output (enforced). ---
-  const MCQ_SCHEMA = {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "type": "object",
-    "additionalProperties": false,
-    "required": ["title", "inferred_level", "questions"],
-    "properties": {
-      "title": { "type": "string", "minLength": 1 },
-      "inferred_level": {
-        "type": "string",
-        "enum": ["early elementary", "upper elementary", "secondary", "pre-university"]
-      },
-      "questions": {
-        "type": "array",
-        "minItems": 1,
-        "maxItems": 100,
-        "items": {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["id", "stem", "options", "correct", "rationale_correct", "rationale_wrong"],
-          "properties": {
-            "id": { "type": "integer", "minimum": 1, "maximum": 100 },
-            "stem": { "type": "string", "minLength": 1 },
-            "options": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["A", "B", "C", "D"],
-              "properties": {
-                "A": { "type": "string", "minLength": 1 },
-                "B": { "type": "string", "minLength": 1 },
-                "C": { "type": "string", "minLength": 1 },
-                "D": { "type": "string", "minLength": 1 }
-              }
-            },
-            "correct": { "type": "string", "enum": ["A", "B", "C", "D"] },
-            "rationale_correct": { "type": "string", "minLength": 1 },
-            "rationale_wrong": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["A", "B", "C", "D"],
-              "properties": {
-                "A": { "type": "string", "minLength": 1 },
-                "B": { "type": "string", "minLength": 1 },
-                "C": { "type": "string", "minLength": 1 },
-                "D": { "type": "string", "minLength": 1 }
-              }
-            }
-          }
-        }
+  // Required JSON shape (loose validation; strict validation belongs in the GPT).
+  function isValidMcqPayload(obj) {
+    if (!obj || typeof obj !== 'object') return false;
+    if (!Array.isArray(obj.questions) || obj.questions.length < 1) return false;
+    if (!obj.inferred_level || typeof obj.inferred_level !== 'string') return false;
+    for (const q of obj.questions) {
+      if (!q || typeof q !== 'object') return false;
+      if (typeof q.id !== 'number') return false;
+      if (typeof q.stem !== 'string') return false;
+      if (!q.options || typeof q.options !== 'object') return false;
+      for (const L of ['A','B','C','D']) {
+        if (typeof q.options[L] !== 'string') return false;
+      }
+      if (!['A','B','C','D'].includes(q.correct)) return false;
+      if (typeof q.rationale_correct !== 'string') return false;
+      if (!q.rationale_wrong || typeof q.rationale_wrong !== 'object') return false;
+      for (const L of ['A','B','C','D']) {
+        if (typeof q.rationale_wrong[L] !== 'string') return false;
       }
     }
-  };
+    return true;
+  }
 
   const el = (id) => document.getElementById(id);
   const statusEl = el('status');
-  const genBtn = el('genBtn');
-  const clearBtn = el('clearBtn');
-  const submitBtn = el('submitBtn');
-  const resetBtn = el('resetBtn');
+  const levelPill = el('levelPill');
   const quizCard = el('quizCard');
   const questionsWrap = el('questions');
   const resultsWrap = el('results');
-  const levelPill = el('levelPill');
+
+  const copyPromptBtn = el('copyPromptBtn');
+  const openGptBtn = el('openGptBtn');
+  const clearBtn = el('clearBtn');
+  const loadBtn = el('loadBtn');
+  const sampleBtn = el('sampleBtn');
+  const submitBtn = el('submitBtn');
+  const resetBtn = el('resetBtn');
 
   let mcqData = null;
 
   function setStatus(msg, kind) {
     statusEl.textContent = msg;
-    statusEl.className = 'status' + (kind === 'error' ? ' error' : '');
+    statusEl.className = 'status' + (kind === 'error' ? ' error' : kind === 'ok' ? ' ok' : '');
   }
 
   function escapeHtml(s) {
     return s.replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
+            .replace(/\"/g, '&quot;')
             .replace(/'/g, '&#039;');
   }
 
@@ -473,8 +459,8 @@
       delimiters: [
         { left: '$$', right: '$$', display: true },
         { left: '$', right: '$', display: false },
-        { left: '\\(', right: '\\)', display: false },
-        { left: '\\[', right: '\\]', display: true }
+        { left: '\(', right: '\)', display: false },
+        { left: '\[', right: '\]', display: true }
       ],
       throwOnError: false
     });
@@ -485,53 +471,50 @@
     resultsWrap.style.display = 'none';
     resultsWrap.innerHTML = '';
 
-    mcq.questions
-      .slice()
-      .sort((a,b) => a.id - b.id)
-      .forEach((q) => {
-        const qDiv = document.createElement('div');
-        qDiv.className = 'q';
-        qDiv.dataset.qid = String(q.id);
+    const qs = mcq.questions.slice().sort((a,b) => a.id - b.id);
 
-        const head = document.createElement('div');
-        head.className = 'qhead';
-        head.innerHTML = `<div class="qnum">Question ${q.id}</div>`;
+    qs.forEach((q) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'q';
+      qDiv.dataset.qid = String(q.id);
 
-        const stem = document.createElement('div');
-        stem.className = 'stem';
-        stem.innerHTML = escapeHtml(q.stem);
+      const head = document.createElement('div');
+      head.className = 'qhead';
+      head.innerHTML = `<div class=\"qnum\">Question ${q.id}</div>`;
 
-        qDiv.appendChild(head);
-        qDiv.appendChild(stem);
+      const stem = document.createElement('div');
+      stem.className = 'stem';
+      stem.innerHTML = escapeHtml(q.stem);
 
-        ['A','B','C','D'].forEach((L) => {
-          const opt = document.createElement('label');
-          opt.className = 'opt';
-          opt.innerHTML = `
-            <div>
-              <input type="radio" name="q${q.id}" value="${L}" />
-            </div>
-            <div>
-              <div class="letter">${L}.</div>
-              <div class="otext">${escapeHtml(q.options[L])}</div>
-            </div>
-          `;
-          qDiv.appendChild(opt);
-        });
+      qDiv.appendChild(head);
+      qDiv.appendChild(stem);
 
-        questionsWrap.appendChild(qDiv);
-        renderMath(qDiv);
+      ['A','B','C','D'].forEach((L) => {
+        const opt = document.createElement('label');
+        opt.className = 'opt';
+        opt.innerHTML = `
+          <div><input type=\"radio\" name=\"q${q.id}\" value=\"${L}\" /></div>
+          <div>
+            <div class=\"letter\">${L}.</div>
+            <div>${escapeHtml(q.options[L])}</div>
+          </div>
+        `;
+        qDiv.appendChild(opt);
       });
+
+      questionsWrap.appendChild(qDiv);
+      renderMath(qDiv);
+    });
 
     quizCard.style.display = 'block';
     levelPill.textContent = `Level: ${mcq.inferred_level}`;
-    setStatus('MCQs generated. Answer and submit.', null);
+    setStatus('Quiz loaded. Answer and submit.', 'ok');
   }
 
   function collectAnswers() {
     const answers = new Map();
     for (const q of mcqData.questions) {
-      const chosen = document.querySelector(`input[name="q${q.id}"]:checked`);
+      const chosen = document.querySelector(`input[name=\"q${q.id}\"]:checked`);
       answers.set(q.id, chosen ? chosen.value : null);
     }
     return answers;
@@ -566,22 +549,22 @@
       box.className = 'explain';
 
       const badge = isCorrect
-        ? '<span class="badge ok">Correct</span>'
-        : '<span class="badge bad">Incorrect</span>';
+        ? '<span class=\"badge ok\">Correct</span>'
+        : '<span class=\"badge bad\">Incorrect</span>';
 
       const chosenText = chosen ? `${chosen}. ${escapeHtml(q.options[chosen])}` : 'No answer selected';
       const correctText = `${q.correct}. ${escapeHtml(q.options[q.correct])}`;
 
       box.innerHTML = `
-        <div style="font-weight:700;">Question ${q.id} ${badge}</div>
-        <div style="margin-top:6px;">${escapeHtml(q.stem)}</div>
-        <div style="margin-top:10px;"><b>Your answer:</b> ${chosenText}</div>
-        <div style="margin-top:6px;"><b>Best answer:</b> ${correctText}</div>
+        <div style=\"font-weight:700;\">Question ${q.id} ${badge}</div>
+        <div style=\"margin-top:6px;\">${escapeHtml(q.stem)}</div>
+        <div style=\"margin-top:10px;\"><b>Your answer:</b> ${chosenText}</div>
+        <div style=\"margin-top:6px;\"><b>Best answer:</b> ${correctText}</div>
         <details>
           <summary>Rationales</summary>
-          <div style="margin-top:8px;"><b>Why the best answer is best:</b> ${escapeHtml(q.rationale_correct)}</div>
-          <div style="margin-top:10px;"><b>Why each option is wrong (or not best):</b></div>
-          <ul style="margin:6px 0 0; padding-left:18px;">
+          <div style=\"margin-top:8px;\"><b>Why the best answer is best:</b> ${escapeHtml(q.rationale_correct)}</div>
+          <div style=\"margin-top:10px;\"><b>Why each option is wrong (or not best):</b></div>
+          <ul style=\"margin:6px 0 0; padding-left:18px;\">
             <li><b>A:</b> ${escapeHtml(q.rationale_wrong.A)}</li>
             <li><b>B:</b> ${escapeHtml(q.rationale_wrong.B)}</li>
             <li><b>C:</b> ${escapeHtml(q.rationale_wrong.C)}</li>
@@ -599,139 +582,151 @@
 
   function resetQuiz() {
     if (!mcqData) return;
-    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+    document.querySelectorAll('input[type=\"radio\"]').forEach(r => r.checked = false);
     resultsWrap.style.display = 'none';
     resultsWrap.innerHTML = '';
-    setStatus('Quiz reset.', null);
+    setStatus('Reset.', 'ok');
   }
 
-  clearBtn.addEventListener('click', () => {
-    el('refText').value = '';
-    el('count').value = 10;
-    el('apiKey').value = '';
-    questionsWrap.innerHTML = '';
-    quizCard.style.display = 'none';
-    resultsWrap.style.display = 'none';
-    resultsWrap.innerHTML = '';
-    levelPill.textContent = 'Level: —';
-    mcqData = null;
-    setStatus('Cleared.', null);
+  function setOpenButton() {
+    const url = (el('gptUrl').value || '').trim() || DEFAULT_GPT_URL;
+    if (url) {
+      openGptBtn.disabled = false;
+      openGptBtn.onclick = () => window.open(url, '_blank', 'noopener');
+    } else {
+      openGptBtn.disabled = true;
+      openGptBtn.onclick = null;
+    }
+  }
+
+  el('gptUrl').addEventListener('input', setOpenButton);
+
+  copyPromptBtn.addEventListener('click', async () => {
+    const text = (el('refText').value || '').trim();
+    const n = Number(el('count').value);
+
+    if (!text) { setStatus('Paste reference text first.', 'error'); return; }
+    if (!Number.isFinite(n) || n < 1 || n > 100) { setStatus('Choose 1–100 MCQs.', 'error'); return; }
+
+    const prompt = `You are a professional assessment item writer.
+
+Generate exactly ${n} exam-quality multiple-choice questions (MCQs) strictly and only from the reference text below.
+
+FORMAT (mandatory):
+- Each question: stem + four options labeled A–D
+- Exactly one best answer
+- No \'All of the above\' or \'None of the above\'
+- No clues from grammar/length
+- Plausible distractors based on common misconceptions
+
+LEVEL (mandatory):
+- Infer the learner level from the text itself and match language/difficulty appropriately.
+
+OUTPUT (mandatory):
+Return ONLY valid JSON using this structure:
+{
+  \"title\": \"...\",
+  \"inferred_level\": \"early elementary|upper elementary|secondary|pre-university\",
+  \"questions\": [
+    {
+      \"id\": 1,
+      \"stem\": \"...\",
+      \"options\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"},
+      \"correct\": \"A|B|C|D\",
+      \"rationale_correct\": \"...\",
+      \"rationale_wrong\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"}
+    }
+  ]
+}
+
+REFERENCE TEXT:
+${text}`;
+
+    try {
+      await navigator.clipboard.writeText(prompt);
+      setStatus('Prompt copied. Paste into the GPT.', 'ok');
+      setOpenButton();
+    } catch {
+      setStatus('Could not access clipboard. Select and copy manually from the text area.', 'error');
+    }
+  });
+
+  loadBtn.addEventListener('click', () => {
+    const raw = (el('mcqJson').value || '').trim();
+    if (!raw) { setStatus('Paste MCQ JSON first.', 'error'); return; }
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (!isValidMcqPayload(parsed)) {
+        setStatus('JSON parsed, but it does not match the required MCQ structure.', 'error');
+        return;
+      }
+      mcqData = parsed;
+      buildQuiz(mcqData);
+      setStatus('Quiz loaded successfully.', 'ok');
+    } catch (e) {
+      setStatus('Invalid JSON. Make sure you pasted the full JSON output.', 'error');
+    }
   });
 
   submitBtn.addEventListener('click', () => {
-    if (!mcqData) return;
+    if (!mcqData) { setStatus('Load a quiz first.', 'error'); return; }
     gradeQuiz();
+    setStatus('Submitted. Review the annotated key below.', 'ok');
   });
 
   resetBtn.addEventListener('click', resetQuiz);
 
-  genBtn.addEventListener('click', async () => {
-    const text = el('refText').value.trim();
-    const nRaw = Number(el('count').value);
-    const apiKey = el('apiKey').value.trim();
-    const model = el('model').value;
-
-    if (!text) {
-      setStatus('Please paste reference text.', 'error');
-      return;
-    }
-
-    if (!Number.isFinite(nRaw) || nRaw < 1 || nRaw > 100) {
-      setStatus('Please choose a number of MCQs between 1 and 100.', 'error');
-      return;
-    }
-
-    if (!apiKey) {
-      setStatus('Please provide an OpenAI API key (demo requirement).', 'error');
-      return;
-    }
-
-    genBtn.disabled = true;
-    setStatus('Generating…', null);
-
-    try {
-      // Build user prompt.
-      const userPrompt = `Generate exactly ${nRaw} MCQs based strictly on the reference text below.\n\nREFERENCE TEXT:\n${text}`;
-
-      const body = {
-        model,
-        input: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userPrompt }
-        ],
-        text: {
-          format: {
-            type: 'json_schema',
-            strict: true,
-            schema: MCQ_SCHEMA
-          }
-        }
-      };
-
-      const resp = await fetch('https://api.openai.com/v1/responses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(body)
-      });
-
-      if (!resp.ok) {
-        const errText = await resp.text();
-        throw new Error(`OpenAI error (${resp.status}): ${errText}`);
-      }
-
-      const data = await resp.json();
-
-      // Responses API: prefer output_text when available in SDKs; in raw REST, parse output content.
-      // We expect structured JSON in the text output item.
-      let parsed = null;
-
-      // Attempt to locate the first output_text content.
-      if (Array.isArray(data.output)) {
-        for (const item of data.output) {
-          if (item.type === 'message' && item.role === 'assistant') {
-            const contents = item.content || [];
-            for (const c of contents) {
-              if (c.type === 'output_text' && typeof c.text === 'string') {
-                parsed = JSON.parse(c.text);
-                break;
-              }
-            }
-          }
-          if (parsed) break;
-        }
-      }
-
-      if (!parsed) {
-        // Fallback: some responses include output_text at top-level in SDKs; try best effort.
-        if (typeof data.output_text === 'string') {
-          parsed = JSON.parse(data.output_text);
-        }
-      }
-
-      if (!parsed) {
-        throw new Error('Could not parse structured MCQ JSON from the response.');
-      }
-
-      // Basic sanity checks.
-      if (!parsed.questions || parsed.questions.length !== nRaw) {
-        // Still render what we got, but warn.
-        setStatus(`Generated ${parsed.questions?.length ?? 0} questions (requested ${nRaw}). Rendering anyway.`, 'error');
-      }
-
-      mcqData = parsed;
-      buildQuiz(mcqData);
-
-    } catch (e) {
-      console.error(e);
-      setStatus(e?.message ? String(e.message) : 'Generation failed.', 'error');
-    } finally {
-      genBtn.disabled = false;
-    }
+  clearBtn.addEventListener('click', () => {
+    el('refText').value = '';
+    el('count').value = 10;
+    el('gptUrl').value = '';
+    el('mcqJson').value = '';
+    mcqData = null;
+    questionsWrap.innerHTML = '';
+    resultsWrap.innerHTML = '';
+    resultsWrap.style.display = 'none';
+    quizCard.style.display = 'none';
+    levelPill.textContent = 'Level: —';
+    setOpenButton();
+    setStatus('Cleared.', 'ok');
   });
+
+  sampleBtn.addEventListener('click', () => {
+    const sample = {
+      title: "Sample MCQ Set",
+      inferred_level: "secondary",
+      questions: [
+        {
+          id: 1,
+          stem: "Which expression simplifies to $2x + 3$?",
+          options: {
+            A: "$(x + 3) + x$",
+            B: "$(2x)(3)$",
+            C: "$x + (3x)$",
+            D: "$2(x + 3)$"
+          },
+          correct: "A",
+          rationale_correct: "$(x+3)+x = x + x + 3 = 2x + 3$.",
+          rationale_wrong: {
+            A: "Correct: combines like terms to $2x+3$.",
+            B: "$ (2x)(3) = 6x$, missing the constant term.",
+            C: "$x + 3x = 4x$, not $2x+3$.",
+            D: "$2(x+3)=2x+6$, constant is too large."
+          }
+        }
+      ]
+    };
+    el('mcqJson').value = JSON.stringify(sample, null, 2);
+    setStatus('Sample JSON inserted. Click “Load quiz”.', 'ok');
+  });
+
+  // Initialize
+  if (DEFAULT_GPT_URL) {
+    el('gptUrl').value = DEFAULT_GPT_URL;
+  }
+  setOpenButton();
+  setStatus('Ready.', null);
 </script>
 </body>
 </html>
-
