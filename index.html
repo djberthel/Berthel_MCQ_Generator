@@ -32,7 +32,7 @@
     .card h2{margin:0 0 10px;font-size:19px}
     label{display:block;font-size:13px;color:var(--muted);margin:8px 0}
     textarea,input[type=number]{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);font-family:inherit;font-size:16px}
-    textarea{min-height:220px}
+    textarea{min-height:240px}
     textarea:focus,input:focus{outline:none;border-color:var(--focus);box-shadow:0 0 0 3px rgba(31,122,58,.15)}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;font-size:15px;cursor:pointer}
@@ -59,7 +59,7 @@
 <header>
   <div class="wrap">
     <h1>Berthel's MCQ Generator</h1>
-    <div class="sub">Paste text → click Start in the GPT → paste JSON → answer & review.</div>
+    <div class="sub">Paste text once. Open the MCQ Machine. Click Start. Paste JSON back.</div>
   </div>
 </header>
 
@@ -68,21 +68,21 @@
   <div class="grid">
 
     <section class="card">
-      <h2>Step 1 — Prepare</h2>
-      <label>Reference text (paste your passage, worksheet, or notes)</label>
+      <h2>Step 1 — Paste Source Text</h2>
+      <label>Reference text (worksheet, passage, notes, or syllabus excerpt)</label>
       <textarea id="refText"></textarea>
       <label>Number of MCQs (1–100)</label>
       <input id="count" type="number" min="1" max="100" value="10" />
       <div class="actions">
-        <button class="btn primary" id="copyBtn">Copy prompt & open GPT</button>
+        <button class="btn primary" id="openGptBtn">Open MCQ Machine</button>
         <button class="btn secondary" id="clearBtn">Clear</button>
       </div>
-      <div class="status" id="status">Ready.</div>
+      <div class="status" id="status">Paste text, then open the MCQ Machine.</div>
     </section>
 
     <section class="card">
-      <h2>Step 2 — Paste JSON</h2>
-      <label>Generated MCQ JSON</label>
+      <h2>Step 2 — Paste Generated JSON</h2>
+      <label>MCQ JSON (from the MCQ Machine)</label>
       <textarea id="jsonBox"></textarea>
       <div class="actions">
         <button class="btn primary" id="loadBtn">Load Quiz</button>
@@ -96,7 +96,7 @@
 </main>
 
 <footer>
-Static classroom tool · No API keys · Generation handled by Berthel’s MCQ Machine
+Static classroom tool · No API keys · Generation handled entirely by Berthel’s MCQ Machine
 </footer>
 
 <script>
@@ -106,10 +106,24 @@ const quizEl = document.getElementById('quiz');
 let data = null;
 
 function setStatus(msg, cls){statusEl.textContent=msg;statusEl.className='status '+(cls||'');}
-
 function renderMath(el){if(window.renderMathInElement)renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}
 
-function buildQuiz(d){quizEl.innerHTML='';quizEl.style.display='block';
+openGptBtn.onclick=()=>{
+  const t=document.getElementById('refText').value.trim();
+  if(!t){setStatus('No reference text detected. Paste the source text first.','error');return;}
+  window.open(GPT_URL,'_blank','noopener');
+  setStatus('In the MCQ Machine, click Start. Then paste the JSON here.','ok');
+};
+
+clearBtn.onclick=()=>{
+  document.getElementById('refText').value='';
+  document.getElementById('jsonBox').value='';
+  quizEl.style.display='none';
+  setStatus('Cleared.','ok');
+};
+
+function buildQuiz(d){
+  quizEl.innerHTML='';quizEl.style.display='block';
   d.questions.forEach(q=>{
     const box=document.createElement('div');box.className='q';
     box.innerHTML=`<div class='qnum'>Question ${q.id}</div><div class='stem'>${q.stem}</div>`;
@@ -132,21 +146,14 @@ function grade(){
   res.innerHTML="<div><b>Score:</b> "+score+" / "+data.questions.length+"</div>"+res.innerHTML;
 }
 
-copyBtn.onclick=()=>{
-  const t=document.getElementById('refText').value.trim();
-  const n=document.getElementById('count').value;
-  if(!t){setStatus('Paste reference text first.','error');return;}
-  navigator.clipboard.writeText(`Reference text:\n${t}\n\nNumber of MCQs: ${n}\n\nType: start`).then(()=>{
-    window.open(GPT_URL,'_blank','noopener');
-    setStatus('Prompt copied. Click Start in the GPT.','ok');
-  });
-};
-
-clearBtn.onclick=()=>{document.getElementById('refText').value='';document.getElementById('jsonBox').value='';quizEl.style.display='none';setStatus('Cleared.','ok');};
-
 loadBtn.onclick=()=>{
-  try{data=JSON.parse(document.getElementById('jsonBox').value);buildQuiz(data);setStatus('Quiz loaded.','ok');}
-  catch{setStatus('Invalid JSON.','error');}
+  try{
+    data=JSON.parse(document.getElementById('jsonBox').value);
+    buildQuiz(data);
+    setStatus('Quiz loaded.','ok');
+  }catch{
+    setStatus('Invalid JSON.','error');
+  }
 };
 </script>
 </body>
