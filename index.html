@@ -35,8 +35,8 @@
       font-family: "Latin Modern Roman", "Times New Roman", Times, serif;
       color: var(--ink);
       background: var(--bg);
-      line-height: 1.5;
-      font-size: 17px;
+      line-height: 1.55;
+      font-size: 18px;
     }
 
     header {
@@ -62,7 +62,7 @@
 
     h1 {
       margin: 0;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
       letter-spacing: 0.2px;
     }
@@ -70,27 +70,8 @@
     .sub {
       margin-top: 6px;
       color: rgba(255,255,255,0.86);
-      font-size: 14px;
-      max-width: 78ch;
-    }
-
-    .header-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .header-link:hover {
-      background: rgba(255,255,255,0.18);
-      border-color: rgba(255,255,255,0.45);
+      font-size: 15px;
+      max-width: 70ch;
     }
 
     main .wrap { padding-top: 14px; }
@@ -115,7 +96,7 @@
 
     .card h2 {
       margin: 0 0 10px;
-      font-size: 18px;
+      font-size: 19px;
     }
 
     .muted { color: var(--muted); }
@@ -131,8 +112,8 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 26px;
-      height: 26px;
+      width: 28px;
+      height: 28px;
       border-radius: 999px;
       background: rgba(53,94,59,0.12);
       color: var(--hunter);
@@ -141,7 +122,7 @@
     }
 
     label {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--muted);
       display: block;
       margin-bottom: 6px;
@@ -153,12 +134,12 @@
       border: 1px solid var(--border);
       padding: 12px;
       font-family: inherit;
-      font-size: 16px;
+      font-size: 17px;
       background: #fff;
       outline: none;
     }
 
-    textarea { min-height: 200px; resize: vertical; }
+    textarea { min-height: 210px; resize: vertical; }
 
     textarea:focus, input:focus {
       border-color: var(--focus);
@@ -190,13 +171,9 @@
       border-radius: 12px;
       padding: 10px 14px;
       font-family: inherit;
-      font-size: 15px;
+      font-size: 15.5px;
       font-weight: 700;
       cursor: pointer;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .btn:hover { background: var(--hunter-2); }
@@ -213,7 +190,7 @@
 
     .status {
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--muted);
     }
 
@@ -244,13 +221,13 @@
 
     .qnum { font-weight: 700; color: var(--hunter); }
 
-    .stem { font-size: 16px; margin-bottom: 10px; }
+    .stem { font-size: 17px; margin-bottom: 10px; }
 
     .opt {
       display: grid;
       grid-template-columns: 26px 1fr;
       gap: 10px;
-      padding: 8px 10px;
+      padding: 9px 10px;
       border-radius: 12px;
       border: 1px solid var(--border);
       margin: 8px 0;
@@ -267,7 +244,7 @@
       display: none;
     }
 
-    .score { font-weight: 700; font-size: 16px; }
+    .score { font-weight: 700; font-size: 16.5px; }
 
     .explain {
       margin-top: 10px;
@@ -297,7 +274,7 @@
     }
 
     .mini {
-      font-size: 13px;
+      font-size: 13.5px;
       color: var(--muted);
     }
 
@@ -316,6 +293,13 @@
       padding: 18px;
       text-align: center;
     }
+
+    a.link {
+      color: rgba(255,255,255,0.95);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
   </style>
 </head>
 <body>
@@ -324,9 +308,8 @@
       <div class="head">
         <div>
           <h1>Berthel's MCQ Generator</h1>
-          <div class="sub">Create exam-quality multiple-choice questions from your own text, then answer and review them here.</div>
+          <div class="sub">Generate MCQs in <a class="link" href="#" id="gptInline">MCQ Machine</a>, then paste the JSON here to take the quiz and review feedback.</div>
         </div>
-        <a class="header-link" href="https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine" target="_blank" rel="noopener">Open MCQ Machine (GPT)</a>
       </div>
     </div>
   </header>
@@ -348,15 +331,16 @@
               <div class="mini">Short texts usually support fewer high-quality questions.</div>
             </div>
             <div>
-              <div class="mini" style="margin-top:22px;">
-                Use <a href="https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine" target="_blank" rel="noopener" style="color: var(--hunter); font-weight:700; text-decoration:none;">MCQ Machine</a> to generate the MCQs as JSON, then paste the JSON below.
+              <label>MCQ Machine (your GPT)</label>
+              <div class="mini">Opens in a new tab. No API keys. Generation happens in your GPT.</div>
+              <div class="actions" style="margin-top:8px;">
+                <button class="btn secondary" id="openGptBtn" type="button">Open MCQ Machine</button>
               </div>
             </div>
           </div>
 
           <div class="actions">
             <button class="btn" id="copyPromptBtn">Copy prompt for GPT</button>
-            <a class="btn secondary" id="openGptLink" href="https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine" target="_blank" rel="noopener">Open MCQ Machine (GPT)</a>
             <button class="btn secondary" id="clearBtn" type="button">Clear</button>
           </div>
 
@@ -364,10 +348,10 @@
 
           <div class="step" style="margin-top:18px;"><b>2</b><div><strong>Paste the generated MCQ JSON</strong> from the GPT and load the quiz.</div></div>
           <label for="mcqJson">MCQ JSON</label>
-          <textarea id="mcqJson" placeholder="Paste JSON here (the GPT should output structured JSON matching the required schema)."></textarea>
+          <textarea id="mcqJson" placeholder="Paste JSON here (the GPT must output ONLY valid JSON matching the required schema)."></textarea>
 
           <div class="actions">
-            <button class="btn" id="loadBtn">Load quiz</button>
+            <button class="btn" id="loadBtn" type="button">Load quiz</button>
             <button class="btn secondary" id="sampleBtn" type="button">Insert sample JSON</button>
           </div>
 
@@ -377,18 +361,15 @@
         </section>
 
         <section class="card">
-          <h2>What to paste into the GPT</h2>
-          <div class="muted" style="font-size:14px;">
-            <p style="margin:0 0 10px;">The button <strong>Copy prompt for GPT</strong> creates a single prompt that tells the GPT:</p>
+          <h2>Output requirements (for the GPT)</h2>
+          <div class="muted" style="font-size:14.5px;">
+            <p style="margin:0 0 10px;">Your GPT must return <strong>ONLY JSON</strong> with:</p>
             <ul style="margin:0; padding-left:18px;">
-              <li>Use <strong>only</strong> the provided reference text.</li>
-              <li>Generate the exact MCQ count requested.</li>
-              <li>Use A–D only, one best answer, no all/none-of-the-above.</li>
-              <li>Infer level automatically and match wording/difficulty.</li>
-              <li>Provide rationales for correct and incorrect options.</li>
-              <li>Output as <strong>JSON</strong> so this page can render the quiz.</li>
+              <li><strong>Exactly</strong> the MCQ count requested.</li>
+              <li>Four options (<strong>A–D</strong>), one best answer, no all/none-of-the-above.</li>
+              <li>Rationales for the best answer and for each distractor.</li>
             </ul>
-            <p style="margin:10px 0 0;">If your GPT already has these rules embedded, students paste the reference text + MCQ count, then paste the JSON back here.</p>
+            <p style="margin:10px 0 0;">If the JSON fails to load here, it’s almost always because extra text was included around the JSON.</p>
           </div>
         </section>
       </div>
@@ -397,7 +378,7 @@
         <h2>Quiz</h2>
         <div class="questions" id="questions"></div>
         <div class="actions">
-          <button class="btn" id="submitBtn">Submit answers</button>
+          <button class="btn" id="submitBtn" type="button">Submit answers</button>
           <button class="btn secondary" id="resetBtn" type="button">Reset</button>
         </div>
         <div class="results" id="results"></div>
@@ -406,17 +387,17 @@
   </main>
 
   <footer>
-    Static classroom tool. No API keys. Generation happens in Berthel’s MCQ Machine; this page renders the quiz and feedback.
+    Static classroom tool. No API keys. MCQ generation happens in your GPT; this page renders the quiz and feedback.
   </footer>
 
 <script>
-  // Hard-coded GPT link for classroom use
   const GPT_URL = "https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine";
 
   // Required JSON shape (loose validation; strict validation belongs in the GPT).
   function isValidMcqPayload(obj) {
     if (!obj || typeof obj !== 'object') return false;
     if (!Array.isArray(obj.questions) || obj.questions.length < 1) return false;
+    if (!obj.title || typeof obj.title !== 'string') return false;
     if (!obj.inferred_level || typeof obj.inferred_level !== 'string') return false;
     for (const q of obj.questions) {
       if (!q || typeof q !== 'object') return false;
@@ -443,6 +424,7 @@
   const resultsWrap = el('results');
 
   const copyPromptBtn = el('copyPromptBtn');
+  const openGptBtn = el('openGptBtn');
   const clearBtn = el('clearBtn');
   const loadBtn = el('loadBtn');
   const sampleBtn = el('sampleBtn');
@@ -470,8 +452,8 @@
       delimiters: [
         { left: '$$', right: '$$', display: true },
         { left: '$', right: '$', display: false },
-        { left: '\\(', right: '\\)', display: false },
-        { left: '\\[', right: '\\]', display: true }
+        { left: '\(', right: '\)', display: false },
+        { left: '\[', right: '\]', display: true }
       ],
       throwOnError: false
     });
@@ -598,6 +580,9 @@
     setStatus('Reset.', 'ok');
   }
 
+  openGptBtn.addEventListener('click', () => window.open(GPT_URL, '_blank', 'noopener'));
+  el('gptInline').addEventListener('click', (e) => { e.preventDefault(); window.open(GPT_URL, '_blank', 'noopener'); });
+
   copyPromptBtn.addEventListener('click', async () => {
     const text = (el('refText').value || '').trim();
     const n = Number(el('count').value);
@@ -605,13 +590,42 @@
     if (!text) { setStatus('Paste reference text first.', 'error'); return; }
     if (!Number.isFinite(n) || n < 1 || n > 100) { setStatus('Choose 1–100 MCQs.', 'error'); return; }
 
-    const prompt = `You are a professional assessment item writer.\n\nGenerate exactly ${n} exam-quality multiple-choice questions (MCQs) strictly and only from the reference text below.\n\nFORMAT (mandatory):\n- Each question: stem + four options labeled A–D\n- Exactly one best answer\n- No \'All of the above\' or \'None of the above\'\n- No clues from grammar/length\n- Plausible distractors based on common misconceptions\n\nLEVEL (mandatory):\n- Infer the learner level from the text itself and match language/difficulty appropriately.\n\nOUTPUT (mandatory):\nReturn ONLY valid JSON using this structure:\n{\n  \"title\": \"...\",\n  \"inferred_level\": \"early elementary|upper elementary|secondary|pre-university\",\n  \"questions\": [\n    {\n      \"id\": 1,\n      \"stem\": \"...\",\n      \"options\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"},\n      \"correct\": \"A|B|C|D\",\n      \"rationale_correct\": \"...\",\n      \"rationale_wrong\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"}\n    }\n  ]\n}\n\nREFERENCE TEXT:\n${text}`;
+    const prompt = `You are a professional assessment item writer for formal education assessments spanning early elementary through pre-university.
+
+Generate exactly ${n} high-quality multiple-choice questions (MCQs) strictly and only from the reference text below.
+
+MANDATORY:
+- Four options labeled A–D
+- Exactly one best answer
+- No 'All of the above' or 'None of the above'
+- Distractors must be plausible and mutually exclusive; no length/grammar clues
+- Infer level from the text and match wording/difficulty appropriately
+
+OUTPUT (MANDATORY):
+Return ONLY valid JSON in this exact structure (no extra text):
+{
+  "title": "...",
+  "inferred_level": "early elementary|upper elementary|secondary|pre-university",
+  "questions": [
+    {
+      "id": 1,
+      "stem": "...",
+      "options": {"A": "...", "B": "...", "C": "...", "D": "..."},
+      "correct": "A|B|C|D",
+      "rationale_correct": "...",
+      "rationale_wrong": {"A": "...", "B": "...", "C": "...", "D": "..."}
+    }
+  ]
+}
+
+REFERENCE TEXT:
+${text}`;
 
     try {
       await navigator.clipboard.writeText(prompt);
-      setStatus('Prompt copied. Paste into MCQ Machine (GPT).', 'ok');
+      setStatus('Prompt copied. Paste into MCQ Machine.', 'ok');
     } catch {
-      setStatus('Could not access clipboard. Select and copy manually from the text area.', 'error');
+      setStatus('Clipboard blocked. Select and copy the prompt manually.', 'error');
     }
   });
 
@@ -629,7 +643,7 @@
       buildQuiz(mcqData);
       setStatus('Quiz loaded successfully.', 'ok');
     } catch (e) {
-      setStatus('Invalid JSON. Make sure you pasted the full JSON output.', 'error');
+      setStatus('Invalid JSON. Ensure you pasted ONLY the JSON (no extra text).', 'error');
     }
   });
 
@@ -671,8 +685,8 @@
           rationale_correct: "$(x+3)+x = x + x + 3 = 2x + 3$.",
           rationale_wrong: {
             A: "Correct: combines like terms to $2x+3$.",
-            B: "$ (2x)(3) = 6x$, missing the constant term.",
-            C: "$x + 3x = 4x$, not $2x+3$.",
+            B: "$(2x)(3)=6x$, missing the constant term.",
+            C: "$x+3x=4x$, not $2x+3$.",
             D: "$2(x+3)=2x+6$, constant is too large."
           }
         }
