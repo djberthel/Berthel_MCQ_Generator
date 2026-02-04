@@ -71,16 +71,26 @@
       margin-top: 6px;
       color: rgba(255,255,255,0.86);
       font-size: 14px;
+      max-width: 78ch;
     }
 
-    .pill {
-      font-size: 12px;
-      padding: 6px 10px;
+    .header-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.12);
       color: #fff;
+      text-decoration: none;
       white-space: nowrap;
+    }
+
+    .header-link:hover {
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.45);
     }
 
     main .wrap { padding-top: 14px; }
@@ -137,7 +147,7 @@
       margin-bottom: 6px;
     }
 
-    textarea, input[type="number"], input[type="url"] {
+    textarea, input[type="number"] {
       width: 100%;
       border-radius: 12px;
       border: 1px solid var(--border);
@@ -183,6 +193,10 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn:hover { background: var(--hunter-2); }
@@ -310,9 +324,9 @@
       <div class="head">
         <div>
           <h1>Berthel's MCQ Generator</h1>
-          <div class="sub">A simple worksheet-to-quiz workflow: generate with the GPT, then answer and review here.</div>
+          <div class="sub">Create exam-quality multiple-choice questions from your own text, then answer and review them here.</div>
         </div>
-        <div class="pill" id="levelPill" title="Loaded from the pasted MCQ JSON">Level: —</div>
+        <a class="header-link" href="https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine" target="_blank" rel="noopener">Open MCQ Machine (GPT)</a>
       </div>
     </div>
   </header>
@@ -334,15 +348,15 @@
               <div class="mini">Short texts usually support fewer high-quality questions.</div>
             </div>
             <div>
-              <label for="gptUrl">Optional: link to your Berthel MCQ GPT</label>
-              <input id="gptUrl" type="url" placeholder="https://chatgpt.com/g/..." />
-              <div class="mini">If you paste your GPT link here, the button below will open it.</div>
+              <div class="mini" style="margin-top:22px;">
+                Use <a href="https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine" target="_blank" rel="noopener" style="color: var(--hunter); font-weight:700; text-decoration:none;">MCQ Machine</a> to generate the MCQs as JSON, then paste the JSON below.
+              </div>
             </div>
           </div>
 
           <div class="actions">
             <button class="btn" id="copyPromptBtn">Copy prompt for GPT</button>
-            <button class="btn secondary" id="openGptBtn" disabled>Open the GPT</button>
+            <a class="btn secondary" id="openGptLink" href="https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine" target="_blank" rel="noopener">Open MCQ Machine (GPT)</a>
             <button class="btn secondary" id="clearBtn" type="button">Clear</button>
           </div>
 
@@ -374,7 +388,7 @@
               <li>Provide rationales for correct and incorrect options.</li>
               <li>Output as <strong>JSON</strong> so this page can render the quiz.</li>
             </ul>
-            <p style="margin:10px 0 0;">If your GPT already has these rules embedded, students just paste the reference text + MCQ count and then paste the JSON back here.</p>
+            <p style="margin:10px 0 0;">If your GPT already has these rules embedded, students paste the reference text + MCQ count, then paste the JSON back here.</p>
           </div>
         </section>
       </div>
@@ -392,13 +406,12 @@
   </main>
 
   <footer>
-    Static classroom tool. No API keys. Generation happens in your custom GPT; this page renders the quiz and feedback.
+    Static classroom tool. No API keys. Generation happens in Berthel’s MCQ Machine; this page renders the quiz and feedback.
   </footer>
 
 <script>
-  // If you want a fixed GPT link for all students, hard-code it here.
-  // Example: const DEFAULT_GPT_URL = "https://chatgpt.com/g/xxxxxxxx";
-  const DEFAULT_GPT_URL = "";
+  // Hard-coded GPT link for classroom use
+  const GPT_URL = "https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine";
 
   // Required JSON shape (loose validation; strict validation belongs in the GPT).
   function isValidMcqPayload(obj) {
@@ -425,13 +438,11 @@
 
   const el = (id) => document.getElementById(id);
   const statusEl = el('status');
-  const levelPill = el('levelPill');
   const quizCard = el('quizCard');
   const questionsWrap = el('questions');
   const resultsWrap = el('results');
 
   const copyPromptBtn = el('copyPromptBtn');
-  const openGptBtn = el('openGptBtn');
   const clearBtn = el('clearBtn');
   const loadBtn = el('loadBtn');
   const sampleBtn = el('sampleBtn');
@@ -459,8 +470,8 @@
       delimiters: [
         { left: '$$', right: '$$', display: true },
         { left: '$', right: '$', display: false },
-        { left: '\(', right: '\)', display: false },
-        { left: '\[', right: '\]', display: true }
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
       ],
       throwOnError: false
     });
@@ -507,7 +518,6 @@
     });
 
     quizCard.style.display = 'block';
-    levelPill.textContent = `Level: ${mcq.inferred_level}`;
     setStatus('Quiz loaded. Answer and submit.', 'ok');
   }
 
@@ -588,19 +598,6 @@
     setStatus('Reset.', 'ok');
   }
 
-  function setOpenButton() {
-    const url = (el('gptUrl').value || '').trim() || DEFAULT_GPT_URL;
-    if (url) {
-      openGptBtn.disabled = false;
-      openGptBtn.onclick = () => window.open(url, '_blank', 'noopener');
-    } else {
-      openGptBtn.disabled = true;
-      openGptBtn.onclick = null;
-    }
-  }
-
-  el('gptUrl').addEventListener('input', setOpenButton);
-
   copyPromptBtn.addEventListener('click', async () => {
     const text = (el('refText').value || '').trim();
     const n = Number(el('count').value);
@@ -608,44 +605,11 @@
     if (!text) { setStatus('Paste reference text first.', 'error'); return; }
     if (!Number.isFinite(n) || n < 1 || n > 100) { setStatus('Choose 1–100 MCQs.', 'error'); return; }
 
-    const prompt = `You are a professional assessment item writer.
-
-Generate exactly ${n} exam-quality multiple-choice questions (MCQs) strictly and only from the reference text below.
-
-FORMAT (mandatory):
-- Each question: stem + four options labeled A–D
-- Exactly one best answer
-- No \'All of the above\' or \'None of the above\'
-- No clues from grammar/length
-- Plausible distractors based on common misconceptions
-
-LEVEL (mandatory):
-- Infer the learner level from the text itself and match language/difficulty appropriately.
-
-OUTPUT (mandatory):
-Return ONLY valid JSON using this structure:
-{
-  \"title\": \"...\",
-  \"inferred_level\": \"early elementary|upper elementary|secondary|pre-university\",
-  \"questions\": [
-    {
-      \"id\": 1,
-      \"stem\": \"...\",
-      \"options\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"},
-      \"correct\": \"A|B|C|D\",
-      \"rationale_correct\": \"...\",
-      \"rationale_wrong\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"}
-    }
-  ]
-}
-
-REFERENCE TEXT:
-${text}`;
+    const prompt = `You are a professional assessment item writer.\n\nGenerate exactly ${n} exam-quality multiple-choice questions (MCQs) strictly and only from the reference text below.\n\nFORMAT (mandatory):\n- Each question: stem + four options labeled A–D\n- Exactly one best answer\n- No \'All of the above\' or \'None of the above\'\n- No clues from grammar/length\n- Plausible distractors based on common misconceptions\n\nLEVEL (mandatory):\n- Infer the learner level from the text itself and match language/difficulty appropriately.\n\nOUTPUT (mandatory):\nReturn ONLY valid JSON using this structure:\n{\n  \"title\": \"...\",\n  \"inferred_level\": \"early elementary|upper elementary|secondary|pre-university\",\n  \"questions\": [\n    {\n      \"id\": 1,\n      \"stem\": \"...\",\n      \"options\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"},\n      \"correct\": \"A|B|C|D\",\n      \"rationale_correct\": \"...\",\n      \"rationale_wrong\": {\"A\": \"...\", \"B\": \"...\", \"C\": \"...\", \"D\": \"...\"}\n    }\n  ]\n}\n\nREFERENCE TEXT:\n${text}`;
 
     try {
       await navigator.clipboard.writeText(prompt);
-      setStatus('Prompt copied. Paste into the GPT.', 'ok');
-      setOpenButton();
+      setStatus('Prompt copied. Paste into MCQ Machine (GPT).', 'ok');
     } catch {
       setStatus('Could not access clipboard. Select and copy manually from the text area.', 'error');
     }
@@ -680,15 +644,12 @@ ${text}`;
   clearBtn.addEventListener('click', () => {
     el('refText').value = '';
     el('count').value = 10;
-    el('gptUrl').value = '';
     el('mcqJson').value = '';
     mcqData = null;
     questionsWrap.innerHTML = '';
     resultsWrap.innerHTML = '';
     resultsWrap.style.display = 'none';
     quizCard.style.display = 'none';
-    levelPill.textContent = 'Level: —';
-    setOpenButton();
     setStatus('Cleared.', 'ok');
   });
 
@@ -721,11 +682,6 @@ ${text}`;
     setStatus('Sample JSON inserted. Click “Load quiz”.', 'ok');
   });
 
-  // Initialize
-  if (DEFAULT_GPT_URL) {
-    el('gptUrl').value = DEFAULT_GPT_URL;
-  }
-  setOpenButton();
   setStatus('Ready.', null);
 </script>
 </body>
