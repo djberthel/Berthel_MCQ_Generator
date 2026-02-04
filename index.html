@@ -1,1 +1,737 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berthel's MCQ Generator</title>
+
+  <!-- Latin Modern (via fontsource) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/400.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/700.css">
+
+  <!-- KaTeX for math rendering -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1Z2VngE8Fq9GQ4bGqVYdW0nq2FJ9r8rU8+K6zDk7E1H8l3z" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkUq9kGJbG0d4e2wq3JtQyC8xqQ5dQq3n5mQwVh3G8b8Qm5kHq3c1nqX5m9V" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-+1Y1n1oZ7g1B0rA6v0x0p0r+R8xH1gkqVg8Hkq9mJvN1qv2nYbH2o3gYQq8p3o1D" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --hunter: #355E3B;
+      --hunter-2: #2E5233;
+      --bg: #f7f7f5;
+      --card: #ffffff;
+      --ink: #101316;
+      --muted: #5a646f;
+      --border: #d7dadd;
+      --focus: #1f7a3a;
+      --danger: #b00020;
+      --ok: #0b6b2a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Latin Modern Roman", "Times New Roman", Times, serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.35;
+    }
+
+    header {
+      background: linear-gradient(0deg, var(--hunter-2), var(--hunter));
+      color: #fff;
+      padding: 22px 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .title {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.2px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: rgba(255,255,255,0.86);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+      padding: 16px;
+      margin: 14px 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    @media (min-width: 900px) {
+      .grid {
+        grid-template-columns: 1.5fr 0.9fr;
+        align-items: start;
+      }
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 220px;
+      resize: vertical;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      background: #fff;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px rgba(31,122,58,0.15);
+    }
+
+    input[type="number"], input[type="password"], select {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 15px;
+      outline: none;
+      background: #fff;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--focus);
+      box-shadow: 0 0 0 3px rgba(31,122,58,0.15);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: 0;
+      background: var(--hunter);
+      color: #fff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: var(--hunter-2); }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--hunter);
+      border: 1px solid var(--hunter);
+      font-weight: 700;
+    }
+
+    .btn.secondary:hover {
+      background: rgba(53,94,59,0.07);
+    }
+
+    .hint {
+      margin-top: 8px;
+      font-size: 12.5px;
+      color: var(--muted);
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .status.error { color: var(--danger); }
+
+    .questions {
+      display: grid;
+      gap: 14px;
+    }
+
+    .q {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .qhead {
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .qnum {
+      font-weight: 700;
+      color: var(--hunter);
+    }
+
+    .levelpill {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      align-self: flex-start;
+    }
+
+    .stem {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .opt {
+      display: grid;
+      grid-template-columns: 26px 1fr;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin: 8px 0;
+    }
+
+    .opt:hover { background: rgba(53,94,59,0.04); }
+
+    .letter {
+      font-weight: 700;
+      color: var(--hunter);
+    }
+
+    .opt input { transform: translateY(1px); }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .results {
+      margin-top: 14px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .score {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .explain {
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(16,19,22,0.02);
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-left: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .badge.ok { color: var(--ok); border-color: rgba(11,107,42,0.35); background: rgba(11,107,42,0.08); }
+    .badge.bad { color: var(--danger); border-color: rgba(176,0,32,0.35); background: rgba(176,0,32,0.08); }
+
+    details summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--hunter);
+      margin-top: 8px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 12.5px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12.5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="title">
+        <div>
+          <h1>Berthel's MCQ Generator</h1>
+          <div class="subtitle">Paste reference text → generate questions → answer → get an annotated key.</div>
+        </div>
+        <div class="levelpill" id="levelPill" title="Inferred after generation">Level: —</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <section class="card">
+        <h2 style="margin:0 0 10px; font-size:18px;">Input</h2>
+
+        <label for="refText">Reference text (pure text)</label>
+        <textarea id="refText" placeholder="Paste a passage, notes, worksheet text, or syllabus excerpt here."></textarea>
+
+        <div class="row" style="margin-top:12px;">
+          <div>
+            <label for="count">Number of MCQs (1–100)</label>
+            <input id="count" type="number" min="1" max="100" value="10" />
+            <div class="hint">For short texts, fewer questions usually improves quality.</div>
+          </div>
+          <div>
+            <label for="model">Model</label>
+            <select id="model">
+              <option value="gpt-4o-mini" selected>gpt-4o-mini (recommended)</option>
+              <option value="gpt-4o">gpt-4o</option>
+            </select>
+            <div class="hint">Structured outputs require modern models. See OpenAI docs.</div>
+          </div>
+          <div>
+            <label for="apiKey">OpenAI API Key</label>
+            <input id="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+            <div class="hint">For production: do not call OpenAI directly from the browser; use a server proxy.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn" id="genBtn">Generate MCQs</button>
+          <button class="btn secondary" id="clearBtn" type="button">Clear</button>
+        </div>
+
+        <div class="status" id="status">Ready.</div>
+      </section>
+
+      <section class="card">
+        <h2 style="margin:0 0 10px; font-size:18px;">How it works</h2>
+        <div class="hint" style="font-size:13px;">
+          <ul style="margin:0; padding-left:18px;">
+            <li>Uses the reference text only.</li>
+            <li>Infers level from the text (no grade label required).</li>
+                        <li>Randomizes correct answer positions (≈25% each).</li>
+            <li>After submission, shows an annotated answer key + rationales.</li>
+          </ul>
+          <p style="margin:10px 0 0;">
+            API details are based on OpenAI’s Responses API and Structured Outputs guidance.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" id="quizCard" style="display:none;">
+      <h2 style="margin:0 0 10px; font-size:18px;">Quiz</h2>
+      <div class="questions" id="questions"></div>
+      <div class="actions">
+        <button class="btn" id="submitBtn">Submit answers</button>
+        <button class="btn secondary" id="resetBtn" type="button">Reset quiz</button>
+      </div>
+      <div class="results" id="results" style="display:none;"></div>
+    </section>
+  </main>
+
+  <footer>
+    Built as a single-file HTML demo. For real deployments, route API calls through a server and never expose API keys client-side.
+  </footer>
+
+<script>
+  // --- System prompt distilled from your GPT instructions (level-adaptive item writer). ---
+  const SYSTEM_PROMPT = `You are a professional assessment item writer. Generate exam-quality MCQs strictly and only from the user's reference text.\n\nRules:\n- Generate exactly the requested number of MCQs.\n- Format: stem + four options labeled A–D.\n- Exactly one best answer per question.\n- Forbid 'All of the above' and 'None of the above'.\n- Infer level from the text and match language register and difficulty appropriately.\n- Randomize correct answer letters equiprobably (≈25% A/B/C/D) with no obvious clustering.\n- Use plausible distractors (common misconceptions), mutually exclusive, grammatically parallel, no clues.\n- Provide a rationale for why the correct answer is best and why each wrong option is wrong, at the inferred level.\n- Use only the reference text; do not introduce external facts.\n`;
+
+  // --- JSON schema for structured output (enforced). ---
+  const MCQ_SCHEMA = {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["title", "inferred_level", "questions"],
+    "properties": {
+      "title": { "type": "string", "minLength": 1 },
+      "inferred_level": {
+        "type": "string",
+        "enum": ["early elementary", "upper elementary", "secondary", "pre-university"]
+      },
+      "questions": {
+        "type": "array",
+        "minItems": 1,
+        "maxItems": 100,
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "stem", "options", "correct", "rationale_correct", "rationale_wrong"],
+          "properties": {
+            "id": { "type": "integer", "minimum": 1, "maximum": 100 },
+            "stem": { "type": "string", "minLength": 1 },
+            "options": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["A", "B", "C", "D"],
+              "properties": {
+                "A": { "type": "string", "minLength": 1 },
+                "B": { "type": "string", "minLength": 1 },
+                "C": { "type": "string", "minLength": 1 },
+                "D": { "type": "string", "minLength": 1 }
+              }
+            },
+            "correct": { "type": "string", "enum": ["A", "B", "C", "D"] },
+            "rationale_correct": { "type": "string", "minLength": 1 },
+            "rationale_wrong": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["A", "B", "C", "D"],
+              "properties": {
+                "A": { "type": "string", "minLength": 1 },
+                "B": { "type": "string", "minLength": 1 },
+                "C": { "type": "string", "minLength": 1 },
+                "D": { "type": "string", "minLength": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+
+  const el = (id) => document.getElementById(id);
+  const statusEl = el('status');
+  const genBtn = el('genBtn');
+  const clearBtn = el('clearBtn');
+  const submitBtn = el('submitBtn');
+  const resetBtn = el('resetBtn');
+  const quizCard = el('quizCard');
+  const questionsWrap = el('questions');
+  const resultsWrap = el('results');
+  const levelPill = el('levelPill');
+
+  let mcqData = null;
+
+  function setStatus(msg, kind) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status' + (kind === 'error' ? ' error' : '');
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+  }
+
+  function renderMath(container) {
+    if (typeof renderMathInElement !== 'function') return;
+    renderMathInElement(container, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      throwOnError: false
+    });
+  }
+
+  function buildQuiz(mcq) {
+    questionsWrap.innerHTML = '';
+    resultsWrap.style.display = 'none';
+    resultsWrap.innerHTML = '';
+
+    mcq.questions
+      .slice()
+      .sort((a,b) => a.id - b.id)
+      .forEach((q) => {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'q';
+        qDiv.dataset.qid = String(q.id);
+
+        const head = document.createElement('div');
+        head.className = 'qhead';
+        head.innerHTML = `<div class="qnum">Question ${q.id}</div>`;
+
+        const stem = document.createElement('div');
+        stem.className = 'stem';
+        stem.innerHTML = escapeHtml(q.stem);
+
+        qDiv.appendChild(head);
+        qDiv.appendChild(stem);
+
+        ['A','B','C','D'].forEach((L) => {
+          const opt = document.createElement('label');
+          opt.className = 'opt';
+          opt.innerHTML = `
+            <div>
+              <input type="radio" name="q${q.id}" value="${L}" />
+            </div>
+            <div>
+              <div class="letter">${L}.</div>
+              <div class="otext">${escapeHtml(q.options[L])}</div>
+            </div>
+          `;
+          qDiv.appendChild(opt);
+        });
+
+        questionsWrap.appendChild(qDiv);
+        renderMath(qDiv);
+      });
+
+    quizCard.style.display = 'block';
+    levelPill.textContent = `Level: ${mcq.inferred_level}`;
+    setStatus('MCQs generated. Answer and submit.', null);
+  }
+
+  function collectAnswers() {
+    const answers = new Map();
+    for (const q of mcqData.questions) {
+      const chosen = document.querySelector(`input[name="q${q.id}"]:checked`);
+      answers.set(q.id, chosen ? chosen.value : null);
+    }
+    return answers;
+  }
+
+  function gradeQuiz() {
+    const answers = collectAnswers();
+    let correctCount = 0;
+
+    const graded = mcqData.questions
+      .slice()
+      .sort((a,b) => a.id - b.id)
+      .map((q) => {
+        const chosen = answers.get(q.id);
+        const isCorrect = chosen === q.correct;
+        if (isCorrect) correctCount += 1;
+        return { q, chosen, isCorrect };
+      });
+
+    const total = graded.length;
+
+    resultsWrap.style.display = 'block';
+    resultsWrap.innerHTML = '';
+
+    const summary = document.createElement('div');
+    summary.className = 'score';
+    summary.textContent = `Score: ${correctCount} / ${total}`;
+    resultsWrap.appendChild(summary);
+
+    graded.forEach(({q, chosen, isCorrect}) => {
+      const box = document.createElement('div');
+      box.className = 'explain';
+
+      const badge = isCorrect
+        ? '<span class="badge ok">Correct</span>'
+        : '<span class="badge bad">Incorrect</span>';
+
+      const chosenText = chosen ? `${chosen}. ${escapeHtml(q.options[chosen])}` : 'No answer selected';
+      const correctText = `${q.correct}. ${escapeHtml(q.options[q.correct])}`;
+
+      box.innerHTML = `
+        <div style="font-weight:700;">Question ${q.id} ${badge}</div>
+        <div style="margin-top:6px;">${escapeHtml(q.stem)}</div>
+        <div style="margin-top:10px;"><b>Your answer:</b> ${chosenText}</div>
+        <div style="margin-top:6px;"><b>Best answer:</b> ${correctText}</div>
+        <details>
+          <summary>Rationales</summary>
+          <div style="margin-top:8px;"><b>Why the best answer is best:</b> ${escapeHtml(q.rationale_correct)}</div>
+          <div style="margin-top:10px;"><b>Why each option is wrong (or not best):</b></div>
+          <ul style="margin:6px 0 0; padding-left:18px;">
+            <li><b>A:</b> ${escapeHtml(q.rationale_wrong.A)}</li>
+            <li><b>B:</b> ${escapeHtml(q.rationale_wrong.B)}</li>
+            <li><b>C:</b> ${escapeHtml(q.rationale_wrong.C)}</li>
+            <li><b>D:</b> ${escapeHtml(q.rationale_wrong.D)}</li>
+          </ul>
+        </details>
+      `;
+
+      resultsWrap.appendChild(box);
+      renderMath(box);
+    });
+
+    renderMath(resultsWrap);
+  }
+
+  function resetQuiz() {
+    if (!mcqData) return;
+    document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+    resultsWrap.style.display = 'none';
+    resultsWrap.innerHTML = '';
+    setStatus('Quiz reset.', null);
+  }
+
+  clearBtn.addEventListener('click', () => {
+    el('refText').value = '';
+    el('count').value = 10;
+    el('apiKey').value = '';
+    questionsWrap.innerHTML = '';
+    quizCard.style.display = 'none';
+    resultsWrap.style.display = 'none';
+    resultsWrap.innerHTML = '';
+    levelPill.textContent = 'Level: —';
+    mcqData = null;
+    setStatus('Cleared.', null);
+  });
+
+  submitBtn.addEventListener('click', () => {
+    if (!mcqData) return;
+    gradeQuiz();
+  });
+
+  resetBtn.addEventListener('click', resetQuiz);
+
+  genBtn.addEventListener('click', async () => {
+    const text = el('refText').value.trim();
+    const nRaw = Number(el('count').value);
+    const apiKey = el('apiKey').value.trim();
+    const model = el('model').value;
+
+    if (!text) {
+      setStatus('Please paste reference text.', 'error');
+      return;
+    }
+
+    if (!Number.isFinite(nRaw) || nRaw < 1 || nRaw > 100) {
+      setStatus('Please choose a number of MCQs between 1 and 100.', 'error');
+      return;
+    }
+
+    if (!apiKey) {
+      setStatus('Please provide an OpenAI API key (demo requirement).', 'error');
+      return;
+    }
+
+    genBtn.disabled = true;
+    setStatus('Generating…', null);
+
+    try {
+      // Build user prompt.
+      const userPrompt = `Generate exactly ${nRaw} MCQs based strictly on the reference text below.\n\nREFERENCE TEXT:\n${text}`;
+
+      const body = {
+        model,
+        input: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: userPrompt }
+        ],
+        text: {
+          format: {
+            type: 'json_schema',
+            strict: true,
+            schema: MCQ_SCHEMA
+          }
+        }
+      };
+
+      const resp = await fetch('https://api.openai.com/v1/responses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (!resp.ok) {
+        const errText = await resp.text();
+        throw new Error(`OpenAI error (${resp.status}): ${errText}`);
+      }
+
+      const data = await resp.json();
+
+      // Responses API: prefer output_text when available in SDKs; in raw REST, parse output content.
+      // We expect structured JSON in the text output item.
+      let parsed = null;
+
+      // Attempt to locate the first output_text content.
+      if (Array.isArray(data.output)) {
+        for (const item of data.output) {
+          if (item.type === 'message' && item.role === 'assistant') {
+            const contents = item.content || [];
+            for (const c of contents) {
+              if (c.type === 'output_text' && typeof c.text === 'string') {
+                parsed = JSON.parse(c.text);
+                break;
+              }
+            }
+          }
+          if (parsed) break;
+        }
+      }
+
+      if (!parsed) {
+        // Fallback: some responses include output_text at top-level in SDKs; try best effort.
+        if (typeof data.output_text === 'string') {
+          parsed = JSON.parse(data.output_text);
+        }
+      }
+
+      if (!parsed) {
+        throw new Error('Could not parse structured MCQ JSON from the response.');
+      }
+
+      // Basic sanity checks.
+      if (!parsed.questions || parsed.questions.length !== nRaw) {
+        // Still render what we got, but warn.
+        setStatus(`Generated ${parsed.questions?.length ?? 0} questions (requested ${nRaw}). Rendering anyway.`, 'error');
+      }
+
+      mcqData = parsed;
+      buildQuiz(mcqData);
+
+    } catch (e) {
+      console.error(e);
+      setStatus(e?.message ? String(e.message) : 'Generation failed.', 'error');
+    } finally {
+      genBtn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
 
