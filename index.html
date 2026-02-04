@@ -1,160 +1,298 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Berthel's MCQ Generator</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Berthel’s MCQ Generator</title>
 
-  <!-- Latin Modern -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/400.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/700.css">
+<!-- Latin Modern -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/700.css">
 
-  <!-- KaTeX -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<!-- KaTeX -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
 
-  <style>
-    :root{
-      --hunter:#355E3B;--hunter2:#2E5233;--bg:#f6f7f6;--card:#fff;--ink:#101316;
-      --muted:#5f6a75;--border:#d6dade;--focus:#1f7a3a;--ok:#0b6b2a;--bad:#b00020;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:"Latin Modern Roman","Times New Roman",serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.55}
-    header{background:linear-gradient(0deg,var(--hunter2),var(--hunter));color:#fff}
-    .wrap{max-width:1040px;margin:0 auto;padding:20px}
-    h1{margin:0;font-size:24px}
-    .sub{opacity:.9;font-size:14px;margin-top:6px}
-    main .wrap{padding-top:16px}
-    .grid{display:grid;gap:16px}
-    @media(min-width:980px){.grid{grid-template-columns:1.2fr .8fr}}
-    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 10px 28px rgba(0,0,0,.06)}
-    .card h2{margin:0 0 10px;font-size:19px}
-    label{display:block;font-size:13px;color:var(--muted);margin:8px 0}
-    textarea,input[type=number]{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);font-family:inherit;font-size:16px}
-    textarea{min-height:240px}
-    textarea:focus,input:focus{outline:none;border-color:var(--focus);box-shadow:0 0 0 3px rgba(31,122,58,.15)}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-    .btn{border:0;border-radius:12px;padding:10px 16px;font-weight:700;font-size:15px;cursor:pointer}
-    .btn.primary{background:var(--hunter);color:#fff}
-    .btn.primary:hover{background:var(--hunter2)}
-    .btn.secondary{background:transparent;border:1px solid var(--hunter);color:var(--hunter)}
-    .btn.secondary:hover{background:rgba(53,94,59,.07)}
-    .status{font-size:13px;margin-top:10px;color:var(--muted)}
-    .status.ok{color:var(--ok)}.status.error{color:var(--bad)}
-    .quiz{display:none;margin-top:18px}
-    .q{border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:14px}
-    .qnum{font-weight:700;color:var(--hunter)}
-    .stem{margin:8px 0}
-    .opt{display:grid;grid-template-columns:26px 1fr;gap:10px;border:1px solid var(--border);border-radius:12px;padding:8px;margin:6px 0}
-    .opt:hover{background:rgba(53,94,59,.04)}
-    .results{display:none;border-top:1px solid var(--border);margin-top:16px;padding-top:14px}
-    .badge{display:inline-block;font-size:12px;border-radius:999px;padding:2px 8px;margin-left:8px}
-    .ok{background:rgba(11,107,42,.08);color:var(--ok)}
-    .bad{background:rgba(176,0,32,.08);color:var(--bad)}
-    footer{text-align:center;font-size:12.5px;color:var(--muted);padding:20px}
-  </style>
+<style>
+:root {
+  --hunter: #355e3b;
+  --hunter-dark: #2b4a30;
+  --bg: #f5f6f5;
+  --card: #ffffff;
+  --border: #d6dad6;
+  --ink: #111;
+  --muted: #555;
+  --ok: #0b6b2a;
+  --bad: #b00020;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Latin Modern Roman", Times, serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+header {
+  background: linear-gradient(0deg, var(--hunter-dark), var(--hunter));
+  color: #fff;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+header p {
+  margin: 6px 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.container {
+  max-width: 980px;
+  margin: 20px auto;
+  padding: 0 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 220px;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--hunter);
+  box-shadow: 0 0 0 3px rgba(53,94,59,0.15);
+}
+
+button {
+  appearance: none;
+  border: none;
+  background: var(--hunter);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--hunter-dark);
+}
+
+.status {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.status.error { color: var(--bad); }
+.status.ok { color: var(--ok); }
+
+.quiz { display: none; }
+
+.question {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.qhead {
+  font-weight: 700;
+  color: var(--hunter);
+  margin-bottom: 8px;
+}
+
+.option {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+.option:hover {
+  background: rgba(53,94,59,0.04);
+}
+
+.results {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+
+.explanation {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #f8f8f8;
+  border: 1px solid var(--border);
+}
+
+.badge {
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+}
+
+.badge.ok {
+  background: rgba(11,107,42,0.1);
+  color: var(--ok);
+}
+
+.badge.bad {
+  background: rgba(176,0,32,0.1);
+  color: var(--bad);
+}
+
+footer {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  padding: 20px;
+}
+</style>
 </head>
+
 <body>
+
 <header>
-  <div class="wrap">
-    <h1>Berthel's MCQ Generator</h1>
-    <div class="sub">Paste text once. Open the MCQ Machine. Click Start. Paste JSON back.</div>
-  </div>
+  <h1>Berthel’s MCQ Generator</h1>
+  <p>Paste MCQ JSON generated by Berthel’s MCQ Machine. Answer, submit, and review.</p>
 </header>
 
-<main>
-<div class="wrap">
-  <div class="grid">
+<div class="container">
 
-    <section class="card">
-      <h2>Step 1 — Paste Source Text</h2>
-      <label>Reference text (worksheet, passage, notes, or syllabus excerpt)</label>
-      <textarea id="refText"></textarea>
-      <label>Number of MCQs (1–100)</label>
-      <input id="count" type="number" min="1" max="100" value="10" />
-      <div class="actions">
-        <button class="btn primary" id="openGptBtn">Open MCQ Machine</button>
-        <button class="btn secondary" id="clearBtn">Clear</button>
-      </div>
-      <div class="status" id="status">Paste text, then open the MCQ Machine.</div>
-    </section>
-
-    <section class="card">
-      <h2>Step 2 — Paste Generated JSON</h2>
-      <label>MCQ JSON (from the MCQ Machine)</label>
-      <textarea id="jsonBox"></textarea>
-      <div class="actions">
-        <button class="btn primary" id="loadBtn">Load Quiz</button>
-      </div>
-    </section>
-
-  </div>
-
-  <section class="card quiz" id="quiz"></section>
+<div class="card">
+  <h2>Paste MCQ JSON</h2>
+  <textarea id="jsonInput" placeholder="Paste JSON here..."></textarea>
+  <button id="loadBtn">Load Quiz</button>
+  <div class="status" id="status">Waiting for JSON.</div>
 </div>
-</main>
+
+<div class="card quiz" id="quiz">
+  <h2>Quiz <span id="level"></span></h2>
+  <div id="questions"></div>
+  <button id="submitBtn">Submit Answers</button>
+  <div class="results" id="results"></div>
+</div>
+
+</div>
 
 <footer>
-Static classroom tool · No API keys · Generation handled entirely by Berthel’s MCQ Machine
+Static classroom assessment viewer · No accounts · No APIs · JSON only
 </footer>
 
 <script>
-const GPT_URL = "https://chatgpt.com/g/g-6982be1a28bc8191a58c17da12247ba2-mcq-machine";
-const statusEl = document.getElementById('status');
-const quizEl = document.getElementById('quiz');
-let data = null;
+const statusEl = document.getElementById("status");
+const quizEl = document.getElementById("quiz");
+const questionsEl = document.getElementById("questions");
+const resultsEl = document.getElementById("results");
+const levelEl = document.getElementById("level");
 
-function setStatus(msg, cls){statusEl.textContent=msg;statusEl.className='status '+(cls||'');}
-function renderMath(el){if(window.renderMathInElement)renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}
+let mcqData = null;
 
-openGptBtn.onclick=()=>{
-  const t=document.getElementById('refText').value.trim();
-  if(!t){setStatus('No reference text detected. Paste the source text first.','error');return;}
-  window.open(GPT_URL,'_blank','noopener');
-  setStatus('In the MCQ Machine, click Start. Then paste the JSON here.','ok');
-};
+function renderMath(el) {
+  renderMathInElement(el, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ],
+    throwOnError: false
+  });
+}
 
-clearBtn.onclick=()=>{
-  document.getElementById('refText').value='';
-  document.getElementById('jsonBox').value='';
-  quizEl.style.display='none';
-  setStatus('Cleared.','ok');
-};
+document.getElementById("loadBtn").onclick = () => {
+  try {
+    mcqData = JSON.parse(document.getElementById("jsonInput").value);
+    if (!mcqData.questions) throw "Invalid";
+    questionsEl.innerHTML = "";
+    levelEl.textContent = `(${mcqData.inferred_level})`;
 
-function buildQuiz(d){
-  quizEl.innerHTML='';quizEl.style.display='block';
-  d.questions.forEach(q=>{
-    const box=document.createElement('div');box.className='q';
-    box.innerHTML=`<div class='qnum'>Question ${q.id}</div><div class='stem'>${q.stem}</div>`;
-    ['A','B','C','D'].forEach(L=>{
-      box.innerHTML+=`<label class='opt'><input type='radio' name='q${q.id}' value='${L}'> ${L}. ${q.options[L]}</label>`;
+    mcqData.questions.forEach(q => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<div class="qhead">Question ${q.id}</div><div>${q.stem}</div>`;
+      ["A","B","C","D"].forEach(L => {
+        div.innerHTML += `
+          <label class="option">
+            <input type="radio" name="q${q.id}" value="${L}">
+            <div><strong>${L}.</strong> ${q.options[L]}</div>
+          </label>`;
+      });
+      questionsEl.appendChild(div);
+      renderMath(div);
     });
-    quizEl.appendChild(box);renderMath(box);
-  });
-  quizEl.innerHTML+="<div class='actions'><button class='btn primary' id='submitBtn'>Submit</button></div><div class='results' id='results'></div>";
-  document.getElementById('submitBtn').onclick=grade;
-}
 
-function grade(){
-  let score=0;const res=document.getElementById('results');res.innerHTML='';res.style.display='block';
-  data.questions.forEach(q=>{
-    const sel=document.querySelector(`input[name='q${q.id}']:checked`);
-    const ok=sel&&sel.value===q.correct;if(ok)score++;
-    res.innerHTML+=`<div class='q'><b>Question ${q.id}</b> <span class='badge ${ok?'ok':'bad'}'>${ok?'Correct':'Incorrect'}</span><div>${q.stem}</div><div><b>Best answer:</b> ${q.correct}. ${q.options[q.correct]}</div></div>`;
-  });
-  res.innerHTML="<div><b>Score:</b> "+score+" / "+data.questions.length+"</div>"+res.innerHTML;
-}
-
-loadBtn.onclick=()=>{
-  try{
-    data=JSON.parse(document.getElementById('jsonBox').value);
-    buildQuiz(data);
-    setStatus('Quiz loaded.','ok');
-  }catch{
-    setStatus('Invalid JSON.','error');
+    quizEl.style.display = "block";
+    statusEl.textContent = "Quiz loaded.";
+    statusEl.className = "status ok";
+  } catch {
+    statusEl.textContent = "Invalid JSON format.";
+    statusEl.className = "status error";
   }
 };
+
+document.getElementById("submitBtn").onclick = () => {
+  resultsEl.innerHTML = "";
+  let score = 0;
+
+  mcqData.questions.forEach(q => {
+    const chosen = document.querySelector(`input[name="q${q.id}"]:checked`);
+    const correct = q.correct;
+    const isCorrect = chosen && chosen.value === correct;
+    if (isCorrect) score++;
+
+    const box = document.createElement("div");
+    box.className = "explanation";
+    box.innerHTML = `
+      <strong>Question ${q.id}</strong>
+      <span class="badge ${isCorrect ? "ok":"bad"}">${isCorrect?"Correct":"Incorrect"}</span>
+      <p><strong>Best answer:</strong> ${correct}. ${q.options[correct]}</p>
+      <p>${q.rationale_correct}</p>`;
+    resultsEl.appendChild(box);
+    renderMath(box);
+  });
+
+  resultsEl.style.display = "block";
+  resultsEl.prepend(Object.assign(document.createElement("div"), {
+    innerHTML: `<strong>Score:</strong> ${score} / ${mcqData.questions.length}`
+  }));
+};
 </script>
+
 </body>
 </html>
