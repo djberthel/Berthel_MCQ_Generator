@@ -1,0 +1,993 @@
+IB BIOLOGY — CLEAN INDEX (GLOSSARY + WORD PARTS)
+Generated: 2026-02-09
+
+========================================
+GLOSSARY
+========================================
+
+[#]
+3-carbon pyruvate ion. — 
+
+[A]
+Abiotic — The non-living components of an ecosystem.
+
+Absorption spectrum — The amount of each wavelength of light absorbed by chlorophyll.
+
+Action potential — The potential difference produced across the plasma membrane of the nerve cell when stimulated, reversing the resting potential from about −70 mV to about +40 mV.
+
+Action spectrum — The wavelengths of light that bring about photosynthesis.
+
+Activation energy — Energy required by a substrate molecule before it can undergo a chemical change.
+
+Active site A region of an enzyme molecule where the — substrate molecule binds.
+
+Active transport — Movement of particles from lower to higher concentration using energy from ATP that has been created during respiration. Movement is through carrier proteins.
+
+Addict — Someone who cannot control or abandon their drug use.
+
+Addiction — Physiological and psychological ongoing compulsion to take a mood-altering drug, being unable to give it up without experiencing very unpleasant side-effects.
+
+Adhesion — The force by which individual molecules stick to surrounding materials and surfaces.
+
+Adipose tissue A tissue found beneath the skin layer, — containing fat cells.
+
+Alien species — Species that are introduced into an area by human activity.
+
+Alleles — Different versions of the same gene (one from the father, one from the mother).
+
+Allergen — Something that causes an allergic response.
+
+Allergy — An exaggerated response by the body to antigens.
+
+Altricial — Born in an undeveloped state after a short gestation period.
+
+Altruism — Selfless concern for the well-being of others.
+
+Amphipathic A molecule that is partly hydrophilic and — partly hydrophobic.
+
+Anabolism — The synthesis of complex molecules from simpler molecules including the formation of macromolecules from monomers by condensation reactions.
+
+Analogous structures — Anatomical features that appear similar in structure but have a different evolutionary origin.
+
+Anesthetic A drug that can bring about reversible loss of — consciousness.
+
+Antibiotics — Organic compounds which selectively inhibit or kill other microorganisms.
+
+Antibody A protein produced by B lymphocytes when — in the presence of a specific antigen, which then binds with the antigen, aiding its destruction.
+
+Antidiuretic hormone (ADH) — Hormone secreted by the pituitary gland that controls the permeability of the walls of the collecting ducts of the kidney.
+
+Antigen A substance capable of binding specifically to an — antibody and triggering an immune response.
+
+Antithrombin A small glycoprotein molecule that occurs — in the blood plasma.
+
+Aseptic — Without contamination by any other organism.
+
+Autotrophic — An organism that synthesizes its organic molecules from simple inorganic substances.
+
+Axon — Carries impulses to other cells – either to other neurons or to body cells (muscle cells or gland cells).
+
+[B]
+Balanced diet — Essential and non-essential nutrients, taken in correct proportions.
+
+Basophil — White blood cell that circulates in the blood.
+
+Behaviour — The way in which organisms respond to the environment and to other members of the same species.
+
+Benzene A cyclic hydrocarbon of molecular formula C6H6. — 
+
+Bilayer — Two rows of phospholipids, with the fatty acids pointing towards each other and the phosphates on the outside.
+
+Bile salts — Organic salts composed of cholic acid, which is manufactured by the liver from cholesterol, that are combined with an amino acid–sodium complex.
+
+Bioaccumulation — The build-up of non-biodegradable or slowly biodegradable chemicals in the body.
+
+Biochemical oxygen demand (BOD) A measure of the — amount of dissolved oxygen required to break down the organic material in a given volume of water through aerobic biological activity.
+
+Biofilm — Microorganisms that are stuck to each other and, usually, to a surface; frequently embedded in and held by a polysaccharide matrix, secreted by the cells of the biofilm.
+
+Bioinformatics — The storage, manipulation, and analysis of biological information via computer science.
+
+Biomagnification — The process by which chemical substances become concentrated in the tissues of organisms at higher trophic levels.
+
+Biopharming — Technique that uses genetically modified animals and plants to produce proteins for therapeutic use.
+
+Bioremediation — The process of exploiting microorganisms in the removal of pollutants from the environment.
+
+Biotechnology — The industrial and commercial application of biological science, exploiting organisms – mostly microorganisms – to produce foods, drugs, enzymes, or chemicals.
+
+Biotic — The living part of an ecosystem (the community).
+
+BLAST — An acronym for Basic Local Alignment Search.
+
+Blood pressure — The pressure of the blood flowing through the arteries.
+
+Brain stem A region of the brain that connects the — cerebellum with the spinal cord, including the medulla.
+
+[C]
+Calvin cycle A cycle of reactions in the stroma of the — chloroplast by which some of the product of the light-independent reactions is reformed as the acceptor molecule for carbon dioxide (ribulose bisphosphate).
+
+Cardiac cycle — The sequence of events of a heartbeat, by which blood is pumped all over the body.
+
+Carpel — Female part of flower, consisting of stigma, style, and ovary.
+
+Carrying capacity — The maximum number of a species or the ‘load’ that can be sustainably supported by a given environment. The population size at which environmental resistance limits further population growth.
+
+Catabolism — The breakdown of complex molecules into simpler molecules including the hydrolysis of macromolecules into monomers.
+
+Catalyst A substance that speeds up the rate of a chemical — reaction. Catalysts are effective in small amounts and remain unchanged at the end of the reaction.
+
+Cell cycle — Cells arise by the division of existing cells, grow, and then divide.
+
+Cell respiration — The controlled release of energy from organic compounds to produce ATP.
+
+Chemiosmosis — Process by which the synthesis of ATP is coupled to electron transport via the movement of protons.
+
+Chemoheterotrophy — Form of nutrition in which organisms obtain their nutrients from molecules taken in from the environment. In this form of heterotrophy, complex organic molecules are the source of food.
+
+Chimera — An organism with some cells that are genetically different from other cells in the body.
+
+Clade A group of organisms that have evolved from a — common ancestor.
+
+Cladistics A classification system used to construct — evolutionary trees. Organisms are categorized based on shared derived characteristics that can be traced to a group’s most recent common ancestor and are not present in more distant ancestors. Characteristics can be anatomical, physiological, behavioural, or genetic sequences.
+
+Cladogram A diagram used in cladistics which shows — relations among organisms.
+
+Climograph A graphical model that shows the — relationship between temperature, precipitation, and ecosystem type.
+
+Co-dominant — Both alleles show through in the phenotype.
+
+coenzyme A from pyruvate. — 
+
+Cohesion — Force by which individual molecules stick together.
+
+Coleoptile A protective sheath that surrounds the — emerging root or stem.
+
+Common ancestor A population of one species that has — evolved into more than one species or groups.
+
+Community A group of populations of different species — living and interacting with each other in a habitat.
+
+Competitive exclusion — When one species outcompetes and excludes another, when their niches overlap.
+
+Competitive inhibitor A substance that binds to the active — site, slowing or blocking enzyme action.
+
+complementary DNA (cDNA) that corresponds to a — gene transcript.
+
+Condensation — Reaction in which two molecules combine to form a larger molecule, producing H2O as a by-product.
+
+Conditioning A form of learning associated with a reward — (or punishment).
+
+Consumers — Heterotrophs that feed on living organisms by ingestion.
+
+Corpus luteum A hormone-secreting structure that — develops from an ovarian follicle after an oocyte has been discharged. It degenerates after a few days unless pregnancy has begun.
+
+Cortical granules — Prevent polyspermy during fertilization.
+
+Cytokinesis — Division of the cytoplasm.
+
+[D]
+Deamination — The removal of NH2 from an amino acid.
+
+Decarboxylation — Chemical reaction that releases carbon dioxide.
+
+Denatured — When a protein loses its three-dimensional shape.
+
+Detritivores — Heterotrophs that obtain organic nutrients from detritus by internal digestion.
+
+Diabetes — Failure to regulate blood glucose levels.
+
+Diabetic A person whose body is failing to regulate blood — glucose levels correctly.
+
+Diastole — Relaxation of heart muscle.
+
+Dichotomous key A stepwise tool for identification where — there are two options based on different characteristics at each step.
+
+Dietary minerals — Essential chemical elements that cannot be made by the body.
+
+Diffusion — Movement of particles from higher to lower concentration through the phospholipid bilayer.
+
+Digestive juice — The fluid secreted onto food in the gut to aid digestion.
+
+Disease A disorder of structure or function of the body. — 
+
+DNA base sequences by RNA polymerases. — 
+
+DNA base sequences. — Mechanisms that produce such changes are DNA methylation and histone modifications.
+
+DNA sequencing — Investigation of the sequence of bases in particular lengths of DNA.
+
+Dominant — An allele that always shows through. An allele that causes the homozygous form and the heterozygous form to look the same as each other.
+
+[E]
+Ecology — The study of living things in their environment.
+
+Ecosystem A community of organisms and the — environment in which they live and interact.
+
+Electron carrier — Substance that can accept and release electrons.
+
+Embolus A thrombus that breaks free and is circulated in — the bloodstream.
+
+End-product inhibition — When the product of the last reaction in a metabolic pathway inhibits the enzyme that catalyses the first reaction of the pathway.
+
+Endemic species — Species restricted to a particular region.
+
+Endocrine glands — Secrete hormones directly into the bloodstream.
+
+Endocytosis — Formation of vesicles as the plasma membrane pinches inwardly, taking material into the cell.
+
+Endometrium — The lining of the uterus.
+
+Endopeptidase A protease enzyme that breaks peptide — linkages in the interior of the protein, producing shorter-chain polypeptides.
+
+Endorphin A peptide that is a natural painkiller, produced — in the pituitary gland.
+
+Endothelium — The innermost lining layer of arteries and veins. It is one cell thick, and is very smooth, reducing friction between blood cells and blood vessels.
+
+Environmental resistance — When limiting factors affect population growth.
+
+Enzyme A biological catalyst made of protein. — 
+
+Enzyme inhibitor A substance which slows or blocks — enzyme action.
+
+Epidemiology — The study of the occurrence, distribution, and control of diseases.
+
+Epigenetics — The study of heritable changes in gene activity that are not caused by changes in the.
+
+Essential nutrient A nutrient that cannot be synthesized — by the body and, therefore, has to be included in the diet.
+
+Ethology — The study of animal behaviour in natural conditions.
+
+Eutrophication — The natural or artificial nutrient enrichment of a body of water.
+
+Evolution — The gradual development of new types of living organism over geological time, from its earliest beginnings to the diversity of organisms known about today, both living and extinct. It occurs when heritable characteristics of a species change.
+
+Exocytosis — Vesicles fuse with the membrane and material is exported from the cell.
+
+Exon — The section of the gene that carries meaningful information (i.e. codes for amino acids).
+
+Exponential growth — An increasing or accelerating rate of growth.
+
+Expressed sequence tag (EST) A small section of — 
+
+Exsitu conservation — The preservation of species outside their natural habitats.
+
+[F]
+Facilitated diffusion — Movement of particles from higher to lower concentration through integral proteins (carrier or channel proteins). Movement is passive.
+
+Fertilization — The fusion of male and female gametes to form a zygote.
+
+Food chain A sequence of organisms within a habitat — in which each is the food of the next, starting with a producer, which is photosynthetic.
+
+Food web — Interconnected food chains.
+
+Freeze-etching — Cells are rapidly frozen and then fractured.
+
+Fundamental niche — Describes the full range of conditions and resources in which a species could survive and reproduce.
+
+[G]
+Gametogenesis — The production of sex cells (gametes).
+
+Gas exchange — The exchange of gases between an organism and its surroundings, including the uptake of oxygen and the release of carbon dioxide in animals and plants.
+
+gbss A gene responsible for the enzymic machinery in — potato cells that catalyses the synthesis of amylose.
+
+Gel electrophoresis A process used to separate proteins or — fragments of DNA according to size.
+
+Gene A heritable factor that consists of a length of DNA — and influences a specific characteristic.
+
+Gene knockout (KO) — Procedure that produces an organism with one non-functional gene, allowing researchers to investigate the function of that gene.
+
+Gene pool — All the genes (and their alleles) present in an interbreeding population.
+
+Gene therapy — An application of genetic engineering to overcome the effects of genetic disorders by introducing a correct, working copy of a gene directly into the genome of a patient’s affected cells.
+
+Genetic engineering — Involves the transfer of a gene or genes from one organism (the donor) to another (the recipient). The result is a genetically modified (GM) organism.
+  Synonyms: Genetic modification or engineering
+  Alt: The transfer of a gene from one organism (the donor) to another (the recipient).
+
+Genetic marker A gene or DNA sequence (such as a single — nucleotide polymorphism, SNP, or tandem repeats) with a known location on a chromosome.
+
+Genetic profiling — The identification of individual organisms or species using DNA.
+
+Genome — The whole of the genetic information of an organism.
+
+Genotype — The ‘genetic makeup’ of a person; the genetic information in the cell.
+
+Germination — The resumption of growth by an embryonic plant in a seed or fruit, at the expense of stored food.
+
+Gestation — The period of development in the mother’s body, lasting from conception to birth.
+
+Global warming — An increase in the average temperature of the Earth’s atmosphere.
+
+Glycolysis A linear series of reactions in which a 6-carbon — sugar molecule is broken down to two molecules of the.
+
+Glyphosate A systemic herbicide used to kill weeds in crops. — 
+
+Gradualism — Evolution that takes place through a long sequence of continuous intermediate forms.
+
+Greenhouse gases — Atmospheric gases that absorb infra-red radiation, causing world temperatures to be warmer than they would otherwise be.
+
+Gross primary production (GPP) — The amount of glucose produced by the plant in a specific area in a specific period of time.
+
+[H]
+Hepatitis B A disease of the liver caused by a virus. — 
+
+Heritable — Can be passed from one generation to another, from parents to offspring.
+
+Heterotrophic — An organism that obtains organic molecules from other organisms.
+
+Heterozygous — Two different alleles for a particular characteristic in each cell.
+
+Hierarchy A structure made from many different levels. — In biology it relates to the different levels of classification from kingdom to species.
+
+Histamine A small organic molecule produced by two — types of white blood cell (mast cells and basophils) and which increases permeability of capillaries to white blood cells and antibodies.
+
+Homeostasis — The maintenance of a constant internal environment.
+
+Homologous structures — Anatomical features that occupy similar positions in an organism, have an underlying basic structure in common, but may have evolved different functions.
+
+Homozygous — Two identical alleles for a particular characteristic in each cell.
+
+Hormones — Chemical messengers that are produced and secreted from the cells of the ductless or endocrine glands.
+
+Hybridoma cell — Hybrid cell used in the production of monoclonal antibodies, created by fusing a B lymphocyte with a cancer cell.
+
+Hydrolysis A chemical process in which a molecule of — water is added to a substance, splitting it into smaller subunits.
+
+Hydrophilic — Attracted to water (i.e. ‘water-loving’); hydrogen bonds readily form between the phosphate head and water molecules.
+
+Hydrophobic — Repelled by water (i.e. ‘water-hating’).
+
+Hypertension A condition of persistently raised blood pressure — 
+
+Hypertonic — When the external solution is more concentrated (i.e. has a higher solute potential) than the cell solution (cytosol), and there is a net flow of water out of the cell by osmosis.
+
+Hypotonic — When the external solution is less concentrated (i.e. has a lower solute potential) than the cell solution (cytosol), and there is a net inflow of water into the cell by osmosis.
+
+[I]
+Immunity — The ability of the body to resist an infection by a pathogen.
+
+In situ conservation — The conservation of species in their natural habitat.
+
+Indicator species — An organism used to assess a specific environmental condition.
+
+Innate behaviour — Behaviour that is inherited from parents and so develops independently of the environmental context. Innate behaviour includes behaviour that is due to a reflex action.
+
+Intercalated disc A double membrane with gap junctions, — through which are cytoplasmic connections between adjacent cardiac cells.
+
+Intergovernmental organizations (IGOs) — Organizations established through international agreements.
+
+Interspecific competition — Competition between two species.
+
+Intraspecific competition — Competition between individuals of the same species.
+
+Intron — Non-coding nucleotide sequence of the DNA of chromosomes, present in eukaryotic chromosomes.
+
+Invasive species — An alien species that has increased rapidly in number, having a negative effect on the environment and on native species.
+
+Isomer — Two or more compounds with the same formula but a different arrangement of atoms in the molecule, and different corresponding properties.
+
+Isotonic — When the external solution is the same concentration (i.e. has the same solute potential) as the cell solution (cytosol), and there is no net entry or exit of water from the cell by osmosis.
+
+It leads to continuous variation. — 
+
+[J]
+Jaundice — Condition in which the skin develops a yellowish tinge along with the whites of the eye (sclera).
+
+Joint — The junction between two or more bones, usually formed of connective tissue and cartilage.
+
+[K]
+Karyogram — Photograph showing individual chromosomes arranged in homologous pairs in descending order of size.
+
+Karyotype — The number and type of chromosomes in the nucleus.
+
+Keystone species — Species that have a key role in an ecosystem.
+
+[L]
+Lactation — The production and secretion of milk by the mammary glands after birth.
+
+Learnt behaviour — Behaviour that develops as a result of experience.
+
+Limiting factor — Something present in the environment in such short supply that it restricts life processes; it is a variable that restricts the rate of photosynthesis.
+
+Link reaction — The reactions that connect glycolysis to the reactions of the Krebs cycle by producing acetyl.
+
+Linked genes — Characteristics controlled by genes on the same chromosomes.
+
+Lumen — The hollow interior of a blood vessel, through which the blood passes.
+
+[M]
+Macroplastic — Large debris that is easily visible, such as bottles, plastic bags, rubbish, and other material that have not degraded.
+
+Malnutrition A serious condition that occurs when a — person’s diet doesn’t contain the right amount of nutrients.
+
+Malpighian tubule A tubular excretory organ which opens — into the gut in insects.
+
+Mast cell — White blood cell found in connective tissue.
+
+Maximum sustainable yield (MSY) — The maximum average catch that a stock can sustain over a long period of time.
+
+Medicine — The science and practice of the diagnosis, treatment, and prevention of disease.
+
+Melanism — Development of a dark-coloured pigment, melanin, in the outer surface of an organism.
+
+Memory — The ability to record sensory stimuli, events, and information.
+
+Menstrual cycle — Monthly cycle of ovulation and menstruation in human females.
+
+Menstruation — Shedding of the endometrium from the uterus.
+
+Meristem A group of cells in plants that retains the ability — to divide by mitosis.
+
+Mesocosm — Enclosed experimental area that is set up to explore ecological relationships. Because it is a contained experimental area it can be closely controlled and variables monitored.
+
+Metabolic pathway — Sequence of enzyme-catalysed biochemical reactions in cells.
+
+Metabolism — The web of all the enzyme-catalysed reactions in a cell or organism.
+
+Methylation — The reversible addition of a methyl group (–CH3) within the chromatin, to histone tails or usually to the DNA molecule itself.
+
+Microarray A collection of microscopic DNA spots — attached to a solid surface.
+
+Microorganisms — Organisms that are too small to be studied by the naked eye.
+
+Microplastics — Tiny plastic particles up to 5 mm in diameter.
+
+Micropropagation — Technique that rapidly multiplies stock plant material, in vitro, to produce large numbers of offspring, all genetically identical to the parent plant.
+
+Mitotic index — The number of cells undergoing mitosis divided by the total number of cells visible.
+
+Model organism A non-human organism that can be — used to understand simple and complex biological functions by analysing different types of data, according to different variables that are manipulated or controlled under laboratory conditions.
+
+Monoclonal antibody — Antibody produced by a single clone.
+
+Monohybrid — Genetic cross involving one characteristic/ gene, such as eye colour.
+
+Monomer A molecule that can be bonded to other — identical molecules to form a polymer.
+
+Movement is passive (i.e. no direct energy needed). — 
+
+Mucosa — The internal linings of lungs, trachea, and gut.
+
+Mutation A change in the amount or the chemical — structure (i.e. base sequence) of DNA of a chromosome.
+
+Mutualism — Both organisms gain from a relationship.
+
+Myogenic — The control of the heartbeat originates within the heart muscle itself, rather than from the nervous system.
+
+[N]
+Native species A species found in an area where it — originated, i.e. occurs naturally within a particular ecosystem.
+
+Negative feedback — Feedback that counteracts any deviation from equilibrium, and promotes stability.
+
+Net primary productivity (NPP) — The gain by producers in energy or biomass per unit area per unit time remaining after allowing for respiratory losses.
+
+Neurosecretory cell A special type of neuron that secretes — chemical messengers which travel round the body via the blood circulation.
+
+Neurotransmitter — Chemical released at the pre-synaptic membrane of an axon, on arrival of an action potential, which transmits the action potential across the synapse.
+
+Non-competitive inhibitor A substance that does not — bind to the active site but to another part of the enzyme, slowing or blocking enzyme action.
+
+Non-essential nutrients — Those nutrients which are made in the body or which have a replacement nutrient that can fulfil the same dietary purpose.
+
+Non-governmental organizations (NGOs) — Organizations not run by, funded by, or influenced by governments of any country.
+
+noncoding DNA are used in genetic profiling. — 
+
+Nutrient A chemical substance found in foods that is used — in the human body.
+
+[O]
+of B lymphocytes; it consists of a population of identical — antibody molecules.
+
+Oogenesis — The production of egg cells in ovaries.
+
+Osmoconformer — Animal that maintains the osmotic concentration (osmolarity) of its cells and body fluids at the same concentration as that of the environment.
+
+Osmolarity — The concentration of a solution expressed as the total number of solute particles per litre.
+
+Osmoreceptor — Receptor in the central nervous system that responds to changes in the solute potential of the blood.
+
+Osmoregulation — Control of the water balance of the blood, tissue, or cytoplasm of a living organism.
+
+Osmoregulator — Animal that controls its internal osmolarity independently of environmental conditions.
+
+Osmosis — The diffusion of water molecules across a partially permeable membrane, from lower to higher solute concentration. Movement is passive.
+
+Ovarian follicle A fluid-filled spherical sac that contains — and nourishes an immature egg, or oocyte.
+
+Ovulation — Release of oocyte (egg) from ovary.
+
+Oxidation — Loss of electrons from a substance.
+
+[P]
+Parturition — The act of giving birth.
+
+Passive transport — No direct energy needed.
+
+Pathogen — Organism or virus that causes a disease.
+
+Pathway engineering — The practice of manipulating genetic and regulatory processes within the cells of microorganisms to produce metabolites of interest.
+
+Penicillin — An antibiotic produced by the fungus Penicillium chrysogenum.
+
+Pesticide — Chemical that is used to control harmful organisms which are a danger to crops or herds.
+
+Phenotype — The outward effect of the genotype on the body.
+
+Phenotypic expression — Physical characteristics.
+
+Photolysis — The splitting of water using light energy.
+
+Photoperiodism — Day-length control of flowering in plants.
+
+Photophosphorylation — The formation of ATP, using light energy (in the light-dependent step of photosynthesis in the grana).
+
+Photosynthesis — The production of carbon compounds in cells using light energy.
+
+Phytochrome A photoreceptor protein that is able to — absorb light of particular wavelength and change its structure as a consequence.
+
+Placenta A temporary organ that joins the mother and — fetus, transferring oxygen and nutrients from the mother to the fetus, with carbon dioxide and other waste material transported from fetus to mother.
+
+Pollination — The transfer of pollen from anther to stigma.
+
+Polygenic inheritance — The inheritance of phenotypes that are determined by the collective effect of several genes.
+
+Polymerase chain reaction (PCR) A technology used — to amplify a single piece or very few pieces of DNA, generating many thousands of copies.
+
+Polymorphic — There are a number of possible genotypes at the locus for any specific marker 1.
+
+Polyploidy — An abrupt alteration in the number of whole sets of chromosomes.
+
+Polyspermy — Fertilization of an egg by many sperm.
+
+Population A group of organisms of the same species that — live in the same area at the same time.
+
+Population ecology — Concerned with the study of factors that influence the numbers and structure of a population.
+
+Positive feedback — Feedback that increases change; it promotes deviation away from an equilibrium.
+
+Precocial — Species in which the young are relatively mature and mobile from the moment of birth.
+
+Primary defence — The first line of defence against a disease, preventing the pathogen from entering the body in the first place.
+
+Product — The substance formed when a substrate is converted in a reaction catalysed by an enzyme.
+
+Promotor A region of DNA that initiates transcription of — a particular gene.
+
+Proteome — The entire set of proteins expressed by the genome of the individual organism.
+
+Psychoactive drug A drug that affects the mind. — 
+
+Punctuated equilibria — Where long periods of relative stability are punctuated by periods of rapid evolution.
+
+[Q]
+Quadrat A square frame which outlines a known area for — the purpose of sampling.
+
+[R]
+Rate of reaction — The amount of substrate that has disappeared from a reaction mixture, or the amount of product that has accumulated, in a period of time.
+
+Realized niche — Describes the actual conditions and resources in which a species exists due to biotic interactions.
+
+Recessive — Hidden by a dominant allele. An allele that affects an animal’s appearance only if it is present in the homozygous state.
+
+Recombinant DNA DNA that has been artificially — changed involving joining together genes from different sources, typically from different species.
+
+Reduction — Addition of electrons to a substance.
+
+Reflex — Immediate, automatic, involuntary (unconscious) and quick responses that are short lived.
+
+Reproduction — The production of new individuals by an existing member or members of the same species.
+
+Reproductive isolation — Occurs when two potentially compatible populations are prevented from interbreeding.
+
+Resolution — The ability to tell that two objects that are very close together are distinct objects rather than just one. The amount of detail that can be seen.
+
+Response — The activity of a cell or organism in terms of movement, hormone secretion, or enzyme production, as a result of a stimulus.
+
+Resting potential — The potential difference across a nerve cell membrane when it is not being stimulated. It is normally about −70 millivolts (mV).
+
+[S]
+Saprotrophs — Heterotrophs that obtain organic nutrients from dead organisms by external digestion.
+
+Secondary sexual characteristics — Physical characteristics developing at puberty which distinguish the sexes but are not directly involved in reproduction, e.g. facial hair in males, development of breasts and wider hips in females.
+
+Seed dispersal — The carrying of the seed away from the parent plant.
+
+Sewage — The fluid waste of human communities, consisting largely of used water, faeces, and urine.
+
+Sex linkage A special case of linkage occurring when — a gene is located on a sex chromosome (usually the X chromosome).
+
+Sexual (or mate) selection — The struggle between individuals of one sex (normally the males) for access to individuals of the opposite sex.
+
+Skeletal muscles — Muscles that are attached to the moveable parts of skeletons; their contraction brings about locomotion.
+
+Speciation — The evolution of new species.
+
+Species — Groups of organisms that can potentially interbreed to produce fertile offspring.
+
+Spermatogenesis — The production of sperm in testes.
+
+Stamen — Male part of flower, consisting of anther and filament.
+
+Stimulus A change in the environment (internal or external) — that is detected by a receptor and elicits a response.
+
+Substrate — The starting substance in a reaction catalysed by an enzyme. It is the molecule that the enzyme part with.
+
+Succession — The process of change over time in a community.
+
+Supercoil A DNA double helix that has undergone — additional twisting in the same direction as, or in the opposite direction from, the turns in the original helix.
+
+Sustainability — The use of global resources at a rate that allows natural regeneration and minimizes damage to the environment.
+
+Symbiosis A long-term biological interaction between — different species.
+
+Synapse — The connection between two nerve cells; functionally a tiny gap, the synaptic cleft, traversed by transmitter substances.
+
+Synovial fluid A thick viscous fluid found in a joint for — lubrication.
+
+Synthesis — Produce a new substance as a result of a chemical or biological reaction involving simpler substances.
+
+Systole — Contraction of heart muscle.
+
+[T]
+Target gene A desired gene, transferred by the genetic — engineer.
+
+Target organ — Specific site where a hormone has an effect.
+
+Taxonomy — The science of classification.
+
+Tension — The force that is transmitted through a substance when it is pulled tight by forces acting from opposite ends.
+
+Thrombosis — The formation or presence of a blood clot in a blood vessel.
+
+Thrombus — Blood clot formed within a blood vessel.
+
+Tidal volume — The volume of air that a human breathes into and out of their lungs while at rest.
+
+Tool. — 
+
+Transcription factor A protein that binds to specific DNA — sequences to control the transcription of mRNA.
+
+Transcription: — The synthesis of mRNA copies from the.
+
+Transcriptome — The set of all the organism’s RNA molecules.
+
+Transect — Arbitrary line through a habitat, selected to sample the community.
+
+Transferrins — Glycoproteins that are present in the blood plasma.
+
+Transgenic organisms — Produce in their cells, proteins that were not previously part of their species proteome.
+
+Transitional state — The short-lived enzyme–substrate complex formed at the active site.
+
+Translation — The synthesis of polypeptides on ribosomes.
+
+Translocation — The movement of manufactured food (e.g sugars and amino acids) which occurs in the phloem tissue of the vascular bundles.
+
+Transpiration — The evaporation of water from the spongy mesophyll tissue and its subsequent diffusion through the stomata.
+
+Trophic level — The position that an organism occupies in a food chain, or a group of organisms in a community that occupy the same position in food chains.
+
+Tropism A growth response of plants in which the — direction of growth is determined by the direction of the stimulus.
+
+[U]
+Ultrafiltration — High hydrostatic pressure forces small molecules such as water, glucose, amino acids, sodium chloride, and urea through tiny pores in the capillaries of the glomerulus and into the Bowman’s capsule.
+
+Unlinked genes — Characteristics controlled by genes on separate chromosomes.
+
+[V]
+Variable A factor that is being changed, investigated, or — kept the same in an investigation.
+
+Variable number tandem repeats (VNTRs) — Short base sequences that show variation between individuals in terms of number of repeats. These major lengths of.
+
+Ventilation rate — The number of breaths (inhalations or exhalations) per minute.
+
+Ventilation system A pumping mechanism that moves air — into and out of the lungs efficiently, thereby maintaining the concentration gradients of oxygen and carbon dioxide for diffusion.
+
+Vitamins — Organic compounds that are required in only tiny amounts.
+
+[Z]
+Zona pellucida — Coat that surrounds the oocyte, made of glycoprotein.
+
+Zoonoses — Diseases of other animals that can be transmitted to humans.
+
+========================================
+WORD PARTS (PREFIXES / ROOTS / SUFFIXES)
+========================================
+
+[A]
+a-, an- — not, without. Examples: anaerobic, asexual.
+ab- — away from. Examples: abduction.
+ad- — toward. Examples: adduction.
+aero- — air, oxygen. Examples: aerobic.
+agro- — field, farming. Examples: agroecosystem.
+allo- — other, different. Examples: allosteric.
+amino- — amine group / amino acids. Examples: amino acid.
+amphi- — both, on both sides. Examples: amphipathic.
+andro- — male. Examples: androgen.
+angio- — vessel (blood/lymph). Examples: angiogenesis.
+anti- — against. Examples: antibody, antibiotic.
+apo- — away from, off; derived form. Examples: apoptosis, apoprotein.
+
+[B]
+bacill- — rod-shaped bacterium. Examples: bacillus.
+bacterio- — bacteria. Examples: bacteriophage.
+baro- — pressure. Examples: baroreceptor.
+bi- — two. Examples: bilateral.
+bio- — life. Examples: biochemistry.
+blast- — bud, germ/precursor cell. Examples: blastocyst, osteoblast.
+brachy- — short. Examples: brachydactyly.
+brady- — slow. Examples: bradycardia.
+
+[C]
+calc- — lime, calcium. Examples: calcification.
+calci- — lime, calcium. Examples: calcification.
+carbo- — carbon / carbohydrate. Examples: carbohydrate.
+carboxy- — carboxyl group. Examples: carboxylase.
+cardio- — heart. Examples: cardiac.
+cephalo- — head. Examples: cephalization.
+chemo- — chemical. Examples: chemotaxis.
+chloro- — green. Examples: chlorophyll.
+chondro- — cartilage. Examples: chondrocyte.
+chromo- — color; chromosome. Examples: chromatin.
+chrono- — time. Examples: circadian chronobiology.
+circum- — around. Examples: circumnutation.
+cis- — on the same side. Examples: cis-regulatory element.
+coelo- — hollow, cavity. Examples: coelom.
+cyano- — blue. Examples: cyanobacteria.
+cyto- — cell. Examples: cytoplasm.
+
+[D]
+de- — down from; removal. Examples: dehydration.
+dec- — ten. Examples: decapeptide.
+deca- — ten. Examples: decapeptide.
+derm- — skin. Examples: dermis.
+dermato- — skin. Examples: dermis.
+di- — two. Examples: disaccharide.
+dipl- — double. Examples: diploid.
+diplo- — double. Examples: diploid.
+dorsi- — back. Examples: dorsal.
+duodeno- — duodenum. Examples: duodenal.
+dys- — bad, disordered, difficult. Examples: dysfunction.
+
+[E]
+eco- — environment, home. Examples: ecology.
+ecto- — outside. Examples: ectoderm.
+electro- — electricity/charge. Examples: electrophoresis.
+endo- — within. Examples: endocytosis.
+entero- — intestine. Examples: enterocyte.
+enzym- — ferment, leaven. Examples: enzyme.
+epi- — upon, on. Examples: epidermis, epigenetics.
+erythro- — red. Examples: erythrocyte.
+eu- — true, good, normal. Examples: eukaryote.
+exo- — outside; outward. Examples: exocytosis.
+
+[F]
+fasci- — band. Examples: fascia.
+ferro- — iron. Examples: ferrochelatase.
+fibr- — fiber. Examples: fibroblast.
+fibro- — fiber. Examples: fibroblast.
+flagell- — whip. Examples: flagellum.
+flor- — flower. Examples: floriculture.
+foli- — leaf. Examples: foliar.
+fruct- — fruit; fruit sugar. Examples: fructose.
+fus- — spindle. Examples: fusiform.
+fusi- — spindle. Examples: fusiform.
+
+[G]
+galacto- — milk. Examples: galactose.
+gastro- — stomach. Examples: gastrulation.
+geno- — origin, producing. Examples: pathogen, genotype.
+geo- — earth. Examples: geotropism.
+glio- — glue; neuroglia. Examples: glial cell.
+gluco- — sweet; glucose. Examples: glucagon.
+glyco- — sugar. Examples: glycoprotein.
+gon- — seed; reproductive. Examples: gonad.
+gono- — seed; reproductive. Examples: gonad.
+granul- — grain. Examples: granulocyte.
+gyneco- — female. Examples: gynecology.
+
+[H]
+haplo- — single (set). Examples: haploid.
+hemato- — blood. Examples: hematology.
+hemi- — half. Examples: hemisphere.
+hemo- — blood. Examples: hematology.
+hepato- — liver. Examples: hepatocyte.
+hetero- — different. Examples: heterozygous.
+histo- — tissue. Examples: histology.
+holo- — whole. Examples: holoblastic cleavage.
+homo- — same. Examples: homozygous.
+hydro- — water. Examples: hydrolysis.
+hyper- — above / below; excessive / deficient. Examples: hypertonic, hypoglycemia.
+hypo- — above / below; excessive / deficient. Examples: hypertonic, hypoglycemia.
+
+[I]
+immuno- — immune. Examples: immunology.
+infra- — below. Examples: infradian rhythm.
+inter- — between. Examples: intercellular.
+intra- — within. Examples: intracellular.
+ion- — ion. Examples: ion channel.
+iono- — ion. Examples: ion channel.
+iso- — equal, same. Examples: isotonic.
+
+[J]
+jejuno- — jejunum. Examples: jejunal.
+jugul- — throat/neck. Examples: jugular.
+junct- — join. Examples: tight junction.
+juxta- — next to. Examples: juxtacrine, juxtaglomerular.
+
+[K]
+karyo- — nucleus. Examples: karyotype.
+karyokinesis — nuclear division. Examples: karyokinesis.
+kerato- — horn; keratin. Examples: keratinocyte.
+keto- — ketone. Examples: ketogenesis.
+kilo- — thousand (SI prefix). Examples: kilodalton.
+kine- — movement. Examples: kinesin.
+kines- — movement. Examples: kinesin.
+koilo- — hollow, cavity. Examples: coelom.
+kypho- — humped. Examples: kyphosis.
+
+[L]
+lact- — milk. Examples: lactase, lactation.
+lamin- — layer/plate. Examples: lamina.
+latero- — side. Examples: lateral.
+leuko- — white. Examples: leukocyte.
+lipo- — fat. Examples: lipid, lipoprotein.
+litho- — stone; calculus. Examples: lithiasis.
+lute- — yellow. Examples: corpus luteum.
+lymph- — lymph. Examples: lymphocyte.
+lysis — loosening, breaking. Examples: lysis, lysosome.
+lyso- — loosening, breaking. Examples: lysis, lysosome.
+
+[M]
+macro- — large. Examples: macromolecule.
+mega- — large; million (SI). Examples: megabase.
+meso- — middle. Examples: mesoderm.
+meta- — beyond, after, change. Examples: metabolism, metaphase.
+micro- — small. Examples: microscopy.
+mito- — thread (historical; mitochondrion). Examples: mitochondria.
+mono- — one. Examples: monosaccharide.
+morph- — form, shape. Examples: morphology.
+myco- — fungus. Examples: mycorrhiza.
+myo- — muscle. Examples: myosin.
+
+[N]
+nano- — billionth (SI). Examples: nanopore.
+naso- — nose. Examples: nasal.
+necro- — death. Examples: necrosis.
+neo- — new. Examples: neoplasm.
+neuro- — nerve. Examples: neuron.
+nitr- — nitrogen-related. Examples: nitrogen fixation.
+nitro- — nitrogen-related. Examples: nitrogen fixation.
+noci- — harm. Examples: nociceptor.
+noct- — night. Examples: nocturnal.
+noto- — back. Examples: notochord.
+nucleo- — nucleus. Examples: nucleic acid.
+
+[O]
+oligo- — few, scant. Examples: oligomer.
+omni- — all. Examples: omnivore.
+onco- — tumor/mass. Examples: oncogene.
+oo- — egg / ovary-bearing. Examples: oogenesis, oophorectomy.
+oophoro- — egg / ovary-bearing. Examples: oogenesis, oophorectomy.
+ophthalmo- — eye. Examples: ophthalmic.
+osteo- — bone. Examples: osteocyte.
+oto- — ear. Examples: otolith.
+oxo- — oxygen; sharp/acid. Examples: oxidation.
+oxy- — oxygen; sharp/acid. Examples: oxidation.
+
+[P]
+pan- — all. Examples: pandemic.
+para- — beside; abnormal. Examples: parasympathetic.
+peri- — around. Examples: pericardium.
+phago- — eat. Examples: phagocytosis.
+pheno- — appearing; phenotype. Examples: phenotype.
+phospho- — phosphate. Examples: phosphorylation.
+photo- — light. Examples: photosynthesis.
+phylo- — tribe, lineage. Examples: phylogeny.
+phyto- — plant. Examples: phytoplankton.
+pico- — trillionth (SI). Examples: picomolar.
+plasmo- — formed substance; plasma. Examples: plasmid.
+pleio- — more; many. Examples: pleiotropy.
+pneumo- — lung/air. Examples: pneumocyte.
+poly- — many. Examples: polypeptide.
+
+[Q]
+quadri- — four. Examples: quadriceps.
+quatern- — fourfold/4th. Examples: quaternary structure.
+quiesc- — resting. Examples: quiescent cell.
+quin- — five. Examples: quintuplet code.
+quint- — five. Examples: quintuplet code.
+
+[R]
+rad- — ray; radiation. Examples: radiation biology.
+re- — again, back. Examples: reabsorption.
+retro- — backward. Examples: retrovirus.
+rhachi- — spine. Examples: rhachis.
+rheo- — flow. Examples: rheology.
+rhino- — nose. Examples: rhinovirus.
+rhizo- — root. Examples: rhizome.
+ribo- — ribose. Examples: ribosome.
+rostr- — beak. Examples: rostral.
+
+[S]
+sacchar- — sugar. Examples: saccharide.
+sclero- — hard. Examples: sclerenchyma.
+scolio- — crooked. Examples: scoliosis.
+semi- — half. Examples: semipermeable.
+sero- — serum. Examples: serology.
+somato- — body. Examples: somatic cell.
+spiro- — coil/spiral. Examples: spirochete.
+staphylo- — grape-cluster. Examples: staphylococcus.
+steno- — narrow. Examples: stenosis.
+stereo- — solid/3D. Examples: stereoisomer.
+sub- — under. Examples: subcutaneous.
+super- — above. Examples: supramolecular.
+supra- — above. Examples: supramolecular.
+sym- — together. Examples: symbiosis, synapse.
+syn- — together. Examples: symbiosis, synapse.
+
+[T]
+tachy- — fast. Examples: tachycardia.
+tele- — far. Examples: telomere.
+thermo- — heat. Examples: thermoregulation.
+thrombo- — clot. Examples: thrombin.
+thyro- — thyroid. Examples: thyroxine.
+topo- — place. Examples: topoisomerase.
+tox- — poison. Examples: toxin.
+toxico- — poison. Examples: toxin.
+trans- — across. Examples: transmembrane.
+tricho- — hair. Examples: trichome.
+troph- — nourishment. Examples: autotroph, trophic level.
+
+[U]
+ubiquit- — everywhere. Examples: ubiquitin.
+ultra- — beyond. Examples: ultrafiltration.
+uni- — one. Examples: unicellular.
+ur- — urine; urinary tract. Examples: ureter, urology.
+ure- — urine/urea. Examples: urease.
+urea- — urine/urea. Examples: urease.
+uro- — urine; urinary tract. Examples: ureter, urology.
+uter- — uterus. Examples: uterine.
+utero- — uterus. Examples: uterine.
+
+[V]
+vacuol- — small cavity. Examples: vacuole.
+vaso- — vessel/duct. Examples: vasodilation.
+veno- — vein. Examples: venous.
+ventro- — belly/front. Examples: ventral.
+vertebr- — vertebra. Examples: vertebrate.
+vill- — tuft; villus. Examples: intestinal villi.
+
+[W]
+watt- — power unit (relevant in physiology/biophysics). Examples: work rate in watts.
+wood- — common-language combining form (biology/ecology). Examples: wood-decay fungi.
+
+[X]
+xanth- — yellow. Examples: xanthophyll.
+xeno- — foreign. Examples: xenograft.
+xyl- — wood. Examples: xylem, xylose.
+
+[Z]
+zona- — belt/zone. Examples: zona pellucida.
+zoo- — animal. Examples: zooplankton.
+zyg- — yoke; joined. Examples: zygote.
+zygo- — yoke; joined. Examples: zygote.
+zym- — ferment. Examples: enzyme, zymogen.
+
+[#]
+-dactyl- — finger/toe. Examples: syndactyly.
+-dynia — pain. Examples: mastodynia.
+-gen — origin, producing. Examples: pathogen, genotype.
+-itis — inflammation. Examples: arthritis.
+-ity — state/quality. Examples: immunity.
+-logist — study / one who studies. Examples: biology.
+-logy — study / one who studies. Examples: biology.
+-oma — tumor/swelling. Examples: lymphoma.
+-osis — condition, often pathological. Examples: fibrosis.
+-rrhea — flow/discharge. Examples: diarrhea.
+-stasis — standing still; equilibrium. Examples: homeostasis.
+-yl — chemical substituent/radical. Examples: acetyl, methyl.
+-zoa — animals (taxonomic). Examples: protozoa.
+-zyme — ferment, leaven. Examples: enzyme, zymogen.
+  Alt: ferment.
