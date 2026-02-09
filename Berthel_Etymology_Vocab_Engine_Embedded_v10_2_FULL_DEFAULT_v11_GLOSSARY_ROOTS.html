@@ -1,0 +1,3028 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berthel’s Etymology + Vocabulary Review Engine (Embedded FULL Default v10.2)</title>
+  <style>
+    :root {
+      --bg:#0b120e; --bg2:#0f1a14;
+      --card:#0f1e16; --surface:#11241a;
+      --border:#224232;
+      --fg:#ecf6f0; --muted:#b7cfc3;
+      --primary:#49a06e; --primary-2:#71c59a;
+      --ok:#4dd67f; --bad:#ff6b6b;
+      --shadow:0 16px 48px rgba(5,25,15,.45);
+      --opt-bg:#153322; --opt-bg-hover:#18402a; --opt-text:#f3fbf7;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%}
+    body{
+      color:var(--fg);
+      background:
+        radial-gradient(900px 500px at 90% -10%, #0e271b 10%, transparent 45%),
+        radial-gradient(1100px 600px at 10% -10%, #0d231a 10%, transparent 40%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      font:17px/1.6 Inter, system-ui,-apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    header{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:rgba(12,22,17,.55);
+      border-bottom:1px solid var(--border);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .mark{width:40px;height:40px;border-radius:12px;background:conic-gradient(from 220deg at 50% 50%, var(--primary), var(--primary-2), var(--primary));box-shadow:var(--shadow)}
+    h1{margin:0;font-size:22px;font-weight:800;letter-spacing:.25px}
+    main{max-width:1100px;margin:0 auto;padding:22px}
+    .card{background:linear-gradient(180deg, rgba(20,40,28,.9), rgba(14,28,22,.9));border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow)}
+    .pad{padding:20px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type="number"]{width:100%;color:var(--fg);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:16px}
+    .btn{background:linear-gradient(180deg,var(--primary),var(--primary-2));color:#06130c;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;box-shadow:0 8px 20px rgba(73,160,110,.3);transition:transform .06s,filter .15s,opacity .2s;font-size:16px}
+    .btn:active{transform:translateY(1px)}
+    .btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--border);box-shadow:none}
+    .btn:disabled{opacity:.5;cursor:not-allowed;filter:saturate(.6)}
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;border:1px solid var(--border);background:var(--surface);border-radius:999px;padding:6px 12px;font-weight:700}
+    .bar{height:10px;background:#0d2218;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+    .bar>div{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-2));width:0%}
+    .q{font-size:24px;margin:10px 0 14px;letter-spacing:.2px}
+    .opts{display:grid;gap:14px}
+    .opt{display:flex;align-items:center;gap:10px;background:var(--opt-bg);border:1px solid var(--border);color:var(--opt-text);border-radius:14px;padding:16px 18px;cursor:pointer;transition:transform .06s,border-color .18s,background .15s;text-align:left;font-size:18px}
+    .opt:hover{transform:translateY(-1px);background:var(--opt-bg-hover)}
+    .opt.correct{border-color:var(--ok)}
+    .opt.wrong{border-color:var(--bad)}
+    .kbd{font:16px ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;background:var(--surface);border:1px solid var(--border);border-bottom-width:3px;border-radius:10px;padding:3px 8px}
+    .term-badge{font-size:18px;padding:4px 10px;border-radius:12px;background:var(--surface);border:1px solid var(--border)}
+    details{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px}
+    .row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <h1>Berthel’s Etymology + Vocabulary Review Engine <span class="muted">(Embedded FULL Default v10.2)</span></h1>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" id="loader">
+      <div class="pad">
+        <div class="row">
+          <div style="min-width:220px">
+            <label>Questions</label>
+            <input id="qCount" type="number" min="1" value="40" />
+            <div class="muted" id="maxHint" style="font-size:13px;margin-top:6px"></div>
+          </div>
+          <div class="pill">Mixed: Etymology + Vocabulary · 4 choices · Fully embedded banks</div>
+          <div style="flex:1"></div>
+          <button id="startBtn" class="btn">Start</button>
+        </div>
+        <div style="height:10px"></div>
+        <div id="summary" class="muted"></div>
+        <div class="muted" style="font-size:13px;margin-top:6px">
+          Keys 1–4 answer · Enter next.
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="quiz" style="display:none">
+      <div class="pad">
+        <div class="row" style="margin-bottom:10px">
+          <div class="pill">Q <span id="qi">0</span>/<span id="qt">0</span></div>
+          <div class="pill">Score <span id="score">0</span></div>
+          <div style="flex:1;min-width:40%;margin-left:8px"><div class="bar"><div id="pbar"></div></div></div>
+        </div>
+        <div class="q" id="prompt"></div>
+        <div class="opts" id="opts" role="group" aria-label="options"></div>
+        <div class="row" style="margin-top:14px">
+          <div class="muted" id="feedback"></div>
+          <div style="display:flex; gap:10px">
+            <button id="nextBtn" class="btn" disabled>Next</button>
+            <button id="finishNowBtn" class="btn ghost">Finish</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="result" style="display:none">
+      <div class="pad">
+        <h2 style="margin:0 0 10px">Results</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <div class="pill">Score: <strong id="finalScore">0</strong></div>
+          <div class="pill">Questions: <strong id="finalTotal">0</strong></div>
+          <div class="pill">Accuracy: <strong id="finalPct">0%</strong></div>
+        </div>
+        <div style="height:12px"></div>
+        <details open>
+          <summary class="muted">Review</summary>
+          <ol id="review" style="margin-top:8px"></ol>
+        </details>
+        <div style="height:12px"></div>
+        <div class="row">
+          <button class="btn" id="retryBtn">Try again</button>
+          <button class="btn ghost" onclick="location.reload()">Exit</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script id="bank-ety" type="application/json">[
+  {
+    "term": "a-, an-",
+    "meaning": "without; not"
+  },
+  {
+    "term": "ab-",
+    "meaning": "away from"
+  },
+  {
+    "term": "ad-",
+    "meaning": "toward"
+  },
+  {
+    "term": "aero-",
+    "meaning": "air"
+  },
+  {
+    "term": "agro-",
+    "meaning": "field; farming"
+  },
+  {
+    "term": "ambi-",
+    "meaning": "both"
+  },
+  {
+    "term": "amphi-",
+    "meaning": "both; on both sides"
+  },
+  {
+    "term": "ana-",
+    "meaning": "up; back; again"
+  },
+  {
+    "term": "andr-",
+    "meaning": "male"
+  },
+  {
+    "term": "angi-",
+    "meaning": "vessel"
+  },
+  {
+    "term": "anthrop-",
+    "meaning": "human"
+  },
+  {
+    "term": "aqua-",
+    "meaning": "water"
+  },
+  {
+    "term": "arthr-",
+    "meaning": "joint"
+  },
+  {
+    "term": "audi-",
+    "meaning": "hearing"
+  },
+  {
+    "term": "auto-",
+    "meaning": "self"
+  },
+  {
+    "term": "baro-",
+    "meaning": "pressure"
+  },
+  {
+    "term": "bacteri-",
+    "meaning": "bacteria"
+  },
+  {
+    "term": "bi-",
+    "meaning": "two"
+  },
+  {
+    "term": "bio-",
+    "meaning": "life"
+  },
+  {
+    "term": "brachy-",
+    "meaning": "short"
+  },
+  {
+    "term": "brady-",
+    "meaning": "slow"
+  },
+  {
+    "term": "bronch-",
+    "meaning": "airway; bronchus"
+  },
+  {
+    "term": "cardi-",
+    "meaning": "heart"
+  },
+  {
+    "term": "carcin-",
+    "meaning": "cancer"
+  },
+  {
+    "term": "cephal-",
+    "meaning": "head"
+  },
+  {
+    "term": "cerebr-",
+    "meaning": "brain"
+  },
+  {
+    "term": "cervic-",
+    "meaning": "neck; cervix"
+  },
+  {
+    "term": "chemo-",
+    "meaning": "chemical"
+  },
+  {
+    "term": "chlor-",
+    "meaning": "green"
+  },
+  {
+    "term": "chole-",
+    "meaning": "bile"
+  },
+  {
+    "term": "chondro-",
+    "meaning": "cartilage"
+  },
+  {
+    "term": "chrom-",
+    "meaning": "color"
+  },
+  {
+    "term": "chrono-",
+    "meaning": "time"
+  },
+  {
+    "term": "circum-",
+    "meaning": "around"
+  },
+  {
+    "term": "cis-",
+    "meaning": "on this side of"
+  },
+  {
+    "term": "co-",
+    "meaning": "together; with"
+  },
+  {
+    "term": "col-",
+    "meaning": "colon"
+  },
+  {
+    "term": "contra-",
+    "meaning": "against"
+  },
+  {
+    "term": "coron-",
+    "meaning": "crown; heart vessels"
+  },
+  {
+    "term": "crani-",
+    "meaning": "skull"
+  },
+  {
+    "term": "cry-",
+    "meaning": "cold"
+  },
+  {
+    "term": "cut-",
+    "meaning": "skin"
+  },
+  {
+    "term": "cyan-",
+    "meaning": "blue"
+  },
+  {
+    "term": "cyto-",
+    "meaning": "cell"
+  },
+  {
+    "term": "dent-",
+    "meaning": "tooth"
+  },
+  {
+    "term": "derm-",
+    "meaning": "skin"
+  },
+  {
+    "term": "di-",
+    "meaning": "two"
+  },
+  {
+    "term": "dia-",
+    "meaning": "through; across"
+  },
+  {
+    "term": "dys-",
+    "meaning": "bad; difficult; disordered"
+  },
+  {
+    "term": "eco-",
+    "meaning": "environment; habitat"
+  },
+  {
+    "term": "ecto-",
+    "meaning": "outside"
+  },
+  {
+    "term": "endo-",
+    "meaning": "within; inner"
+  },
+  {
+    "term": "entero-",
+    "meaning": "intestine"
+  },
+  {
+    "term": "epi-",
+    "meaning": "upon; above"
+  },
+  {
+    "term": "erythr-",
+    "meaning": "red"
+  },
+  {
+    "term": "eu-",
+    "meaning": "good; normal"
+  },
+  {
+    "term": "exo-",
+    "meaning": "outside"
+  },
+  {
+    "term": "extra-",
+    "meaning": "outside; beyond"
+  },
+  {
+    "term": "ferro-",
+    "meaning": "iron"
+  },
+  {
+    "term": "fibr-",
+    "meaning": "fiber"
+  },
+  {
+    "term": "galacto-",
+    "meaning": "milk"
+  },
+  {
+    "term": "gastr-",
+    "meaning": "stomach"
+  },
+  {
+    "term": "geno-",
+    "meaning": "origin; genes"
+  },
+  {
+    "term": "gluc-",
+    "meaning": "glucose; sugar"
+  },
+  {
+    "term": "glyc-",
+    "meaning": "sugar"
+  },
+  {
+    "term": "glyco-",
+    "meaning": "sugar"
+  },
+  {
+    "term": "gyn-",
+    "meaning": "female"
+  },
+  {
+    "term": "hem-",
+    "meaning": "blood"
+  },
+  {
+    "term": "hemo-",
+    "meaning": "blood"
+  },
+  {
+    "term": "hemat-",
+    "meaning": "blood"
+  },
+  {
+    "term": "hepat-",
+    "meaning": "liver"
+  },
+  {
+    "term": "hetero-",
+    "meaning": "different"
+  },
+  {
+    "term": "homo-",
+    "meaning": "same"
+  },
+  {
+    "term": "hydr-",
+    "meaning": "water"
+  },
+  {
+    "term": "hydro-",
+    "meaning": "water"
+  },
+  {
+    "term": "hyper-",
+    "meaning": "above; excessive"
+  },
+  {
+    "term": "hypo-",
+    "meaning": "below; deficient"
+  },
+  {
+    "term": "histo-",
+    "meaning": "tissue"
+  },
+  {
+    "term": "homeo-",
+    "meaning": "same; stable"
+  },
+  {
+    "term": "immuno-",
+    "meaning": "immune; protection"
+  },
+  {
+    "term": "infra-",
+    "meaning": "below"
+  },
+  {
+    "term": "inter-",
+    "meaning": "between"
+  },
+  {
+    "term": "intra-",
+    "meaning": "within"
+  },
+  {
+    "term": "iso-",
+    "meaning": "equal; same"
+  },
+  {
+    "term": "karyo-",
+    "meaning": "nucleus"
+  },
+  {
+    "term": "kilo-",
+    "meaning": "thousand"
+  },
+  {
+    "term": "lacto-",
+    "meaning": "milk"
+  },
+  {
+    "term": "leuk-",
+    "meaning": "white"
+  },
+  {
+    "term": "lip-",
+    "meaning": "fat"
+  },
+  {
+    "term": "lipo-",
+    "meaning": "fat"
+  },
+  {
+    "term": "lith-",
+    "meaning": "stone; calculus"
+  },
+  {
+    "term": "macro-",
+    "meaning": "large"
+  },
+  {
+    "term": "mal-",
+    "meaning": "bad; poor"
+  },
+  {
+    "term": "mast-",
+    "meaning": "breast"
+  },
+  {
+    "term": "melan-",
+    "meaning": "black; dark pigment"
+  },
+  {
+    "term": "meno-",
+    "meaning": "month; menses"
+  },
+  {
+    "term": "meso-",
+    "meaning": "middle"
+  },
+  {
+    "term": "meta-",
+    "meaning": "change; beyond"
+  },
+  {
+    "term": "micro-",
+    "meaning": "small"
+  },
+  {
+    "term": "mono-",
+    "meaning": "one"
+  },
+  {
+    "term": "morph-",
+    "meaning": "form; shape"
+  },
+  {
+    "term": "multi-",
+    "meaning": "many"
+  },
+  {
+    "term": "my-",
+    "meaning": "muscle"
+  },
+  {
+    "term": "myo-",
+    "meaning": "muscle"
+  },
+  {
+    "term": "narco-",
+    "meaning": "sleep; stupor"
+  },
+  {
+    "term": "neo-",
+    "meaning": "new"
+  },
+  {
+    "term": "nephr-",
+    "meaning": "kidney"
+  },
+  {
+    "term": "neuro-",
+    "meaning": "nerve"
+  },
+  {
+    "term": "noct-",
+    "meaning": "night"
+  },
+  {
+    "term": "nucle-",
+    "meaning": "nucleus"
+  },
+  {
+    "term": "oligo-",
+    "meaning": "few"
+  },
+  {
+    "term": "onco-",
+    "meaning": "tumor"
+  },
+  {
+    "term": "ophthalm-",
+    "meaning": "eye"
+  },
+  {
+    "term": "opto-",
+    "meaning": "vision"
+  },
+  {
+    "term": "oro-",
+    "meaning": "mouth"
+  },
+  {
+    "term": "ortho-",
+    "meaning": "straight; correct"
+  },
+  {
+    "term": "osteo-",
+    "meaning": "bone"
+  },
+  {
+    "term": "oto-",
+    "meaning": "ear"
+  },
+  {
+    "term": "oxy-",
+    "meaning": "oxygen; sharp; acid"
+  },
+  {
+    "term": "pan-",
+    "meaning": "all"
+  },
+  {
+    "term": "para-",
+    "meaning": "beside; abnormal"
+  },
+  {
+    "term": "path-",
+    "meaning": "disease"
+  },
+  {
+    "term": "peri-",
+    "meaning": "around"
+  },
+  {
+    "term": "phago-",
+    "meaning": "eat; engulf"
+  },
+  {
+    "term": "pharmaco-",
+    "meaning": "drug"
+  },
+  {
+    "term": "phleb-",
+    "meaning": "vein"
+  },
+  {
+    "term": "photo-",
+    "meaning": "light"
+  },
+  {
+    "term": "phyto-",
+    "meaning": "plant"
+  },
+  {
+    "term": "pneumo-",
+    "meaning": "air; lung"
+  },
+  {
+    "term": "poly-",
+    "meaning": "many"
+  },
+  {
+    "term": "post-",
+    "meaning": "after"
+  },
+  {
+    "term": "pre-",
+    "meaning": "before"
+  },
+  {
+    "term": "pro-",
+    "meaning": "for; forward"
+  },
+  {
+    "term": "pseudo-",
+    "meaning": "false"
+  },
+  {
+    "term": "psych-",
+    "meaning": "mind"
+  },
+  {
+    "term": "pulmo-",
+    "meaning": "lung"
+  },
+  {
+    "term": "py-",
+    "meaning": "pus"
+  },
+  {
+    "term": "pyelo-",
+    "meaning": "renal pelvis"
+  },
+  {
+    "term": "pyro-",
+    "meaning": "fire; fever"
+  },
+  {
+    "term": "radi-",
+    "meaning": "ray; radiation"
+  },
+  {
+    "term": "re-",
+    "meaning": "again; back"
+  },
+  {
+    "term": "ren-",
+    "meaning": "kidney"
+  },
+  {
+    "term": "rhino-",
+    "meaning": "nose"
+  },
+  {
+    "term": "scler-",
+    "meaning": "hard"
+  },
+  {
+    "term": "somat-",
+    "meaning": "body"
+  },
+  {
+    "term": "sub-",
+    "meaning": "under"
+  },
+  {
+    "term": "super-",
+    "meaning": "above"
+  },
+  {
+    "term": "supra-",
+    "meaning": "above"
+  },
+  {
+    "term": "syn-",
+    "meaning": "together"
+  },
+  {
+    "term": "tachy-",
+    "meaning": "fast"
+  },
+  {
+    "term": "tele-",
+    "meaning": "distant"
+  },
+  {
+    "term": "thermo-",
+    "meaning": "heat"
+  },
+  {
+    "term": "thromb-",
+    "meaning": "clot"
+  },
+  {
+    "term": "topo-",
+    "meaning": "place"
+  },
+  {
+    "term": "tox-",
+    "meaning": "poison"
+  },
+  {
+    "term": "trans-",
+    "meaning": "across"
+  },
+  {
+    "term": "tri-",
+    "meaning": "three"
+  },
+  {
+    "term": "ultra-",
+    "meaning": "beyond"
+  },
+  {
+    "term": "uni-",
+    "meaning": "one"
+  },
+  {
+    "term": "vaso-",
+    "meaning": "vessel"
+  },
+  {
+    "term": "ventr-",
+    "meaning": "belly; ventricle"
+  },
+  {
+    "term": "xeno-",
+    "meaning": "foreign"
+  },
+  {
+    "term": "zoo-",
+    "meaning": "animal"
+  },
+  {
+    "term": "-al",
+    "meaning": "pertaining to"
+  },
+  {
+    "term": "-ary",
+    "meaning": "pertaining to"
+  },
+  {
+    "term": "-ase",
+    "meaning": "enzyme"
+  },
+  {
+    "term": "-blast",
+    "meaning": "immature cell"
+  },
+  {
+    "term": "-clast",
+    "meaning": "to break; breaker cell"
+  },
+  {
+    "term": "-cyte",
+    "meaning": "cell"
+  },
+  {
+    "term": "-ectomy",
+    "meaning": "surgical removal"
+  },
+  {
+    "term": "-emia",
+    "meaning": "blood condition"
+  },
+  {
+    "term": "-gen",
+    "meaning": "producer; origin"
+  },
+  {
+    "term": "-genesis",
+    "meaning": "origin; creation"
+  },
+  {
+    "term": "-gram",
+    "meaning": "record"
+  },
+  {
+    "term": "-graphy",
+    "meaning": "process of recording"
+  },
+  {
+    "term": "-iasis",
+    "meaning": "pathological condition"
+  },
+  {
+    "term": "-ic",
+    "meaning": "pertaining to"
+  },
+  {
+    "term": "-itis",
+    "meaning": "inflammation"
+  },
+  {
+    "term": "-logy",
+    "meaning": "study of"
+  },
+  {
+    "term": "-lysis",
+    "meaning": "breakdown; separation"
+  },
+  {
+    "term": "-megaly",
+    "meaning": "enlargement"
+  },
+  {
+    "term": "-oid",
+    "meaning": "resembling"
+  },
+  {
+    "term": "-oma",
+    "meaning": "tumor; mass"
+  },
+  {
+    "term": "-osis",
+    "meaning": "abnormal condition"
+  },
+  {
+    "term": "-otomy",
+    "meaning": "incision into"
+  },
+  {
+    "term": "-ostomy",
+    "meaning": "surgically created opening"
+  },
+  {
+    "term": "-pathy",
+    "meaning": "disease"
+  },
+  {
+    "term": "-penia",
+    "meaning": "deficiency; low count"
+  },
+  {
+    "term": "-phage",
+    "meaning": "eater"
+  },
+  {
+    "term": "-phagia",
+    "meaning": "eating; swallowing"
+  },
+  {
+    "term": "-philia",
+    "meaning": "attraction"
+  },
+  {
+    "term": "-phobia",
+    "meaning": "fear"
+  },
+  {
+    "term": "-plasia",
+    "meaning": "formation; development"
+  },
+  {
+    "term": "-plegia",
+    "meaning": "paralysis"
+  },
+  {
+    "term": "-pnea",
+    "meaning": "breathing"
+  },
+  {
+    "term": "-rrhea",
+    "meaning": "flow; discharge"
+  },
+  {
+    "term": "-rrhage",
+    "meaning": "bursting forth"
+  },
+  {
+    "term": "-scope",
+    "meaning": "instrument for viewing"
+  },
+  {
+    "term": "-scopy",
+    "meaning": "process of viewing"
+  },
+  {
+    "term": "-stasis",
+    "meaning": "stoppage; standing still"
+  },
+  {
+    "term": "-trophy",
+    "meaning": "nourishment; growth"
+  },
+  {
+    "term": "allo-",
+    "meaning": "other, different (e.g., allosteric)"
+  },
+  {
+    "term": "amino-",
+    "meaning": "amine group / amino acids (e.g., amino acid)"
+  },
+  {
+    "term": "andro-",
+    "meaning": "male (e.g., androgen)"
+  },
+  {
+    "term": "angio-",
+    "meaning": "vessel (blood/lymph) (e.g., angiogenesis)"
+  },
+  {
+    "term": "anti-",
+    "meaning": "against (e.g., antibody, antibiotic)"
+  },
+  {
+    "term": "apo-",
+    "meaning": "away from, off; derived form (e.g., apoptosis, apoprotein)"
+  },
+  {
+    "term": "bacill-",
+    "meaning": "rod-shaped bacterium (e.g., bacillus)"
+  },
+  {
+    "term": "bacterio-",
+    "meaning": "bacteria (e.g., bacteriophage)"
+  },
+  {
+    "term": "blast-",
+    "meaning": "bud, germ/precursor cell (e.g., blastocyst, osteoblast)"
+  },
+  {
+    "term": "calc- / calci-",
+    "meaning": "lime, calcium (e.g., calcification)"
+  },
+  {
+    "term": "carbo-",
+    "meaning": "carbon / carbohydrate (e.g., carbohydrate)"
+  },
+  {
+    "term": "cardio-",
+    "meaning": "heart (e.g., cardiac)"
+  },
+  {
+    "term": "carboxy-",
+    "meaning": "carboxyl group (e.g., carboxylase)"
+  },
+  {
+    "term": "cephalo-",
+    "meaning": "head (e.g., cephalization)"
+  },
+  {
+    "term": "chloro-",
+    "meaning": "green (e.g., chlorophyll)"
+  },
+  {
+    "term": "chromo-",
+    "meaning": "color; chromosome (e.g., chromatin)"
+  },
+  {
+    "term": "cyano-",
+    "meaning": "blue (e.g., cyanobacteria)"
+  },
+  {
+    "term": "de-",
+    "meaning": "down from; removal (e.g., dehydration)"
+  },
+  {
+    "term": "dec- / deca-",
+    "meaning": "ten (e.g., decapeptide)"
+  },
+  {
+    "term": "derm- / dermato-",
+    "meaning": "skin (e.g., dermis)"
+  },
+  {
+    "term": "dipl- / diplo-",
+    "meaning": "double (e.g., diploid)"
+  },
+  {
+    "term": "dorsi-",
+    "meaning": "back (e.g., dorsal)"
+  },
+  {
+    "term": "duodeno-",
+    "meaning": "duodenum (e.g., duodenal)"
+  },
+  {
+    "term": "-dactyl-",
+    "meaning": "finger/toe (e.g., syndactyly)"
+  },
+  {
+    "term": "-dynia",
+    "meaning": "pain (e.g., mastodynia)"
+  },
+  {
+    "term": "erythro-",
+    "meaning": "red (e.g., erythrocyte)"
+  },
+  {
+    "term": "enzym- / -zyme",
+    "meaning": "ferment, leaven (e.g., enzyme)"
+  },
+  {
+    "term": "electro-",
+    "meaning": "electricity/charge (e.g., electrophoresis)"
+  },
+  {
+    "term": "fasci-",
+    "meaning": "band (e.g., fascia)"
+  },
+  {
+    "term": "fibr- / fibro-",
+    "meaning": "fiber (e.g., fibroblast)"
+  },
+  {
+    "term": "flagell-",
+    "meaning": "whip (e.g., flagellum)"
+  },
+  {
+    "term": "flor-",
+    "meaning": "flower (e.g., floriculture)"
+  },
+  {
+    "term": "foli-",
+    "meaning": "leaf (e.g., foliar)"
+  },
+  {
+    "term": "fruct-",
+    "meaning": "fruit; fruit sugar (e.g., fructose)"
+  },
+  {
+    "term": "fus- / fusi-",
+    "meaning": "spindle (e.g., fusiform)"
+  },
+  {
+    "term": "gastro-",
+    "meaning": "stomach (e.g., gastrulation)"
+  },
+  {
+    "term": "geno- / -gen",
+    "meaning": "origin, producing (e.g., pathogen, genotype)"
+  },
+  {
+    "term": "geo-",
+    "meaning": "earth (e.g., geotropism)"
+  },
+  {
+    "term": "glio-",
+    "meaning": "glue; neuroglia (e.g., glial cell)"
+  },
+  {
+    "term": "gluco-",
+    "meaning": "sweet; glucose (e.g., glucagon)"
+  },
+  {
+    "term": "gon- / gono-",
+    "meaning": "seed; reproductive (e.g., gonad)"
+  },
+  {
+    "term": "granul-",
+    "meaning": "grain (e.g., granulocyte)"
+  },
+  {
+    "term": "gyneco-",
+    "meaning": "female (e.g., gynecology)"
+  },
+  {
+    "term": "haplo-",
+    "meaning": "single (set) (e.g., haploid)"
+  },
+  {
+    "term": "hemi-",
+    "meaning": "half (e.g., hemisphere)"
+  },
+  {
+    "term": "hemo- / hemato-",
+    "meaning": "blood (e.g., hematology)"
+  },
+  {
+    "term": "hepato-",
+    "meaning": "liver (e.g., hepatocyte)"
+  },
+  {
+    "term": "holo-",
+    "meaning": "whole (e.g., holoblastic cleavage)"
+  },
+  {
+    "term": "hyper- / hypo-",
+    "meaning": "above / below; excessive / deficient (e.g., hypertonic, hypoglycemia)"
+  },
+  {
+    "term": "ion- / iono-",
+    "meaning": "ion (e.g., ion channel)"
+  },
+  {
+    "term": "-ity / -itis (state/condition)",
+    "meaning": "state/quality (e.g., immunity)"
+  },
+  {
+    "term": "jejuno-",
+    "meaning": "jejunum (e.g., jejunal)"
+  },
+  {
+    "term": "jugul-",
+    "meaning": "throat/neck (e.g., jugular)"
+  },
+  {
+    "term": "junct-",
+    "meaning": "join (e.g., tight junction)"
+  },
+  {
+    "term": "juxta-",
+    "meaning": "next to (e.g., juxtacrine, juxtaglomerular)"
+  },
+  {
+    "term": "kerato-",
+    "meaning": "horn; keratin (e.g., keratinocyte)"
+  },
+  {
+    "term": "keto-",
+    "meaning": "ketone (e.g., ketogenesis)"
+  },
+  {
+    "term": "kines- / kine-",
+    "meaning": "movement (e.g., kinesin)"
+  },
+  {
+    "term": "koilo- / coelo-",
+    "meaning": "hollow, cavity (e.g., coelom)"
+  },
+  {
+    "term": "kypho-",
+    "meaning": "humped (e.g., kyphosis)"
+  },
+  {
+    "term": "karyokinesis",
+    "meaning": "nuclear division (e.g., karyokinesis)"
+  },
+  {
+    "term": "lact-",
+    "meaning": "milk (e.g., lactase, lactation)"
+  },
+  {
+    "term": "lamin-",
+    "meaning": "layer/plate (e.g., lamina)"
+  },
+  {
+    "term": "latero-",
+    "meaning": "side (e.g., lateral)"
+  },
+  {
+    "term": "leuko-",
+    "meaning": "white (e.g., leukocyte)"
+  },
+  {
+    "term": "litho-",
+    "meaning": "stone; calculus (e.g., lithiasis)"
+  },
+  {
+    "term": "lymph-",
+    "meaning": "lymph (e.g., lymphocyte)"
+  },
+  {
+    "term": "lysis / lyso-",
+    "meaning": "loosening, breaking (e.g., lysis, lysosome)"
+  },
+  {
+    "term": "lute-",
+    "meaning": "yellow (e.g., corpus luteum)"
+  },
+  {
+    "term": "-logy / -logist",
+    "meaning": "study / one who studies (e.g., biology)"
+  },
+  {
+    "term": "mega-",
+    "meaning": "large; million (SI) (e.g., megabase)"
+  },
+  {
+    "term": "mito-",
+    "meaning": "thread (historical; mitochondrion) (e.g., mitochondria)"
+  },
+  {
+    "term": "myco-",
+    "meaning": "fungus (e.g., mycorrhiza)"
+  },
+  {
+    "term": "nano-",
+    "meaning": "billionth (SI) (e.g., nanopore)"
+  },
+  {
+    "term": "naso-",
+    "meaning": "nose (e.g., nasal)"
+  },
+  {
+    "term": "necro-",
+    "meaning": "death (e.g., necrosis)"
+  },
+  {
+    "term": "nitr- / nitro-",
+    "meaning": "nitrogen-related (e.g., nitrogen fixation)"
+  },
+  {
+    "term": "noci-",
+    "meaning": "harm (e.g., nociceptor)"
+  },
+  {
+    "term": "nucleo-",
+    "meaning": "nucleus (e.g., nucleic acid)"
+  },
+  {
+    "term": "noto-",
+    "meaning": "back (e.g., notochord)"
+  },
+  {
+    "term": "omni-",
+    "meaning": "all (e.g., omnivore)"
+  },
+  {
+    "term": "oo- / oophoro-",
+    "meaning": "egg / ovary-bearing (e.g., oogenesis, oophorectomy)"
+  },
+  {
+    "term": "ophthalmo-",
+    "meaning": "eye (e.g., ophthalmic)"
+  },
+  {
+    "term": "oxo- / oxy-",
+    "meaning": "oxygen; sharp/acid (e.g., oxidation)"
+  },
+  {
+    "term": "pheno-",
+    "meaning": "appearing; phenotype (e.g., phenotype)"
+  },
+  {
+    "term": "phospho-",
+    "meaning": "phosphate (e.g., phosphorylation)"
+  },
+  {
+    "term": "phylo-",
+    "meaning": "tribe, lineage (e.g., phylogeny)"
+  },
+  {
+    "term": "pico-",
+    "meaning": "trillionth (SI) (e.g., picomolar)"
+  },
+  {
+    "term": "plasmo-",
+    "meaning": "formed substance; plasma (e.g., plasmid)"
+  },
+  {
+    "term": "pleio-",
+    "meaning": "more; many (e.g., pleiotropy)"
+  },
+  {
+    "term": "quadri-",
+    "meaning": "four (e.g., quadriceps)"
+  },
+  {
+    "term": "quatern-",
+    "meaning": "fourfold/4th (e.g., quaternary structure)"
+  },
+  {
+    "term": "quin- / quint-",
+    "meaning": "five (e.g., quintuplet code)"
+  },
+  {
+    "term": "quiesc-",
+    "meaning": "resting (e.g., quiescent cell)"
+  },
+  {
+    "term": "rad-",
+    "meaning": "ray; radiation (e.g., radiation biology)"
+  },
+  {
+    "term": "retro-",
+    "meaning": "backward (e.g., retrovirus)"
+  },
+  {
+    "term": "ribo-",
+    "meaning": "ribose (e.g., ribosome)"
+  },
+  {
+    "term": "rhachi-",
+    "meaning": "spine (e.g., rhachis)"
+  },
+  {
+    "term": "rheo-",
+    "meaning": "flow (e.g., rheology)"
+  },
+  {
+    "term": "rhizo-",
+    "meaning": "root (e.g., rhizome)"
+  },
+  {
+    "term": "rostr-",
+    "meaning": "beak (e.g., rostral)"
+  },
+  {
+    "term": "sacchar-",
+    "meaning": "sugar (e.g., saccharide)"
+  },
+  {
+    "term": "sclero-",
+    "meaning": "hard (e.g., sclerenchyma)"
+  },
+  {
+    "term": "scolio-",
+    "meaning": "crooked (e.g., scoliosis)"
+  },
+  {
+    "term": "semi-",
+    "meaning": "half (e.g., semipermeable)"
+  },
+  {
+    "term": "sero-",
+    "meaning": "serum (e.g., serology)"
+  },
+  {
+    "term": "somato-",
+    "meaning": "body (e.g., somatic cell)"
+  },
+  {
+    "term": "spiro-",
+    "meaning": "coil/spiral (e.g., spirochete)"
+  },
+  {
+    "term": "staphylo-",
+    "meaning": "grape-cluster (e.g., staphylococcus)"
+  },
+  {
+    "term": "steno-",
+    "meaning": "narrow (e.g., stenosis)"
+  },
+  {
+    "term": "stereo-",
+    "meaning": "solid/3D (e.g., stereoisomer)"
+  },
+  {
+    "term": "super- / supra-",
+    "meaning": "above (e.g., supramolecular)"
+  },
+  {
+    "term": "sym- / syn-",
+    "meaning": "together (e.g., symbiosis, synapse)"
+  },
+  {
+    "term": "thrombo-",
+    "meaning": "clot (e.g., thrombin)"
+  },
+  {
+    "term": "thyro-",
+    "meaning": "thyroid (e.g., thyroxine)"
+  },
+  {
+    "term": "tox- / toxico-",
+    "meaning": "poison (e.g., toxin)"
+  },
+  {
+    "term": "troph-",
+    "meaning": "nourishment (e.g., autotroph, trophic level)"
+  },
+  {
+    "term": "tricho-",
+    "meaning": "hair (e.g., trichome)"
+  },
+  {
+    "term": "ur- / uro-",
+    "meaning": "urine; urinary tract (e.g., ureter, urology)"
+  },
+  {
+    "term": "ure- / urea-",
+    "meaning": "urine/urea (e.g., urease)"
+  },
+  {
+    "term": "uter- / utero-",
+    "meaning": "uterus (e.g., uterine)"
+  },
+  {
+    "term": "ubiquit-",
+    "meaning": "everywhere (e.g., ubiquitin)"
+  },
+  {
+    "term": "vacuol-",
+    "meaning": "small cavity (e.g., vacuole)"
+  },
+  {
+    "term": "ventro-",
+    "meaning": "belly/front (e.g., ventral)"
+  },
+  {
+    "term": "veno-",
+    "meaning": "vein (e.g., venous)"
+  },
+  {
+    "term": "vertebr-",
+    "meaning": "vertebra (e.g., vertebrate)"
+  },
+  {
+    "term": "vill-",
+    "meaning": "tuft; villus (e.g., intestinal villi)"
+  },
+  {
+    "term": "watt-",
+    "meaning": "power unit (relevant in physiology/biophysics) (e.g., work rate in watts)"
+  },
+  {
+    "term": "wood-",
+    "meaning": "common-language combining form (biology/ecology) (e.g., wood-decay fungi)"
+  },
+  {
+    "term": "xanth-",
+    "meaning": "yellow (e.g., xanthophyll)"
+  },
+  {
+    "term": "xyl-",
+    "meaning": "wood (e.g., xylem, xylose)"
+  },
+  {
+    "term": "-yl",
+    "meaning": "chemical substituent/radical (e.g., acetyl, methyl)"
+  },
+  {
+    "term": "zyg- / zygo-",
+    "meaning": "yoke; joined (e.g., zygote)"
+  },
+  {
+    "term": "zym- / -zyme",
+    "meaning": "ferment (e.g., enzyme, zymogen)"
+  },
+  {
+    "term": "zona-",
+    "meaning": "belt/zone (e.g., zona pellucida)"
+  },
+  {
+    "term": "-zoa",
+    "meaning": "animals (taxonomic) (e.g., protozoa)"
+  }
+]</script>
+  <script id="bank-vocab" type="application/json">[
+  {
+    "term": "Abiotic",
+    "meaning": "Non-living components of an ecosystem."
+  },
+  {
+    "term": "Biotic",
+    "meaning": "Living components of an ecosystem (the community)."
+  },
+  {
+    "term": "Ecosystem",
+    "meaning": "A community of organisms and the environment they interact with."
+  },
+  {
+    "term": "Community",
+    "meaning": "Populations of different species living and interacting in the same habitat."
+  },
+  {
+    "term": "Population",
+    "meaning": "Organisms of the same species living in the same area at the same time."
+  },
+  {
+    "term": "Carrying capacity",
+    "meaning": "Maximum population size an environment can sustain long-term."
+  },
+  {
+    "term": "Limiting factor",
+    "meaning": "Environmental variable that restricts a biological process or population growth."
+  },
+  {
+    "term": "Homeostasis",
+    "meaning": "Maintenance of a stable internal environment."
+  },
+  {
+    "term": "Negative feedback",
+    "meaning": "Feedback that counteracts change and restores equilibrium."
+  },
+  {
+    "term": "Positive feedback",
+    "meaning": "Feedback that amplifies change, moving away from equilibrium."
+  },
+  {
+    "term": "Diffusion",
+    "meaning": "Passive movement of particles from high to low concentration."
+  },
+  {
+    "term": "Osmosis",
+    "meaning": "Passive diffusion of water across a partially permeable membrane."
+  },
+  {
+    "term": "Facilitated diffusion",
+    "meaning": "Passive transport through membrane proteins (channels or carriers)."
+  },
+  {
+    "term": "Active transport",
+    "meaning": "ATP-driven movement against a concentration gradient via membrane proteins."
+  },
+  {
+    "term": "Endocytosis",
+    "meaning": "Membrane invagination forming vesicles to bring material into the cell."
+  },
+  {
+    "term": "Exocytosis",
+    "meaning": "Vesicle fusion with the membrane releasing material from the cell."
+  },
+  {
+    "term": "Phagocytosis",
+    "meaning": "Endocytosis of large particles (“cell eating”)."
+  },
+  {
+    "term": "Pinocytosis",
+    "meaning": "Endocytosis of fluids (“cell drinking”)."
+  },
+  {
+    "term": "Enzyme",
+    "meaning": "A biological catalyst, typically a protein."
+  },
+  {
+    "term": "Active site",
+    "meaning": "Region of an enzyme where substrate binds and catalysis occurs."
+  },
+  {
+    "term": "Activation energy",
+    "meaning": "Energy barrier that must be overcome for a reaction to proceed."
+  },
+  {
+    "term": "Competitive inhibitor",
+    "meaning": "Molecule that competes with substrate for an enzyme’s active site."
+  },
+  {
+    "term": "Non-competitive inhibitor",
+    "meaning": "Molecule that binds away from the active site and reduces activity."
+  },
+  {
+    "term": "End-product inhibition",
+    "meaning": "Pathway product inhibits an early enzyme to regulate pathway flux."
+  },
+  {
+    "term": "Anabolism",
+    "meaning": "Synthesis of complex molecules from simpler ones."
+  },
+  {
+    "term": "Catabolism",
+    "meaning": "Breakdown of complex molecules into simpler ones."
+  },
+  {
+    "term": "Condensation",
+    "meaning": "Reaction joining molecules with water produced as a by-product."
+  },
+  {
+    "term": "Hydrolysis",
+    "meaning": "Reaction splitting molecules by adding water."
+  },
+  {
+    "term": "Photosynthesis",
+    "meaning": "Production of carbon compounds using light energy."
+  },
+  {
+    "term": "Action spectrum",
+    "meaning": "Wavelengths of light most effective for photosynthesis."
+  },
+  {
+    "term": "Absorption spectrum",
+    "meaning": "Wavelengths of light absorbed by a pigment."
+  },
+  {
+    "term": "Calvin cycle",
+    "meaning": "Stromal reactions fixing CO₂ using ATP and NADPH to form carbohydrates."
+  },
+  {
+    "term": "Chemiosmosis",
+    "meaning": "ATP synthesis driven by proton gradients across membranes."
+  },
+  {
+    "term": "Cell respiration",
+    "meaning": "Controlled release of energy from organic compounds to produce ATP."
+  },
+  {
+    "term": "Glycolysis",
+    "meaning": "Cytosolic pathway breaking glucose into pyruvate with ATP/NADH production."
+  },
+  {
+    "term": "Oxidation",
+    "meaning": "Loss of electrons."
+  },
+  {
+    "term": "Reduction",
+    "meaning": "Gain of electrons."
+  },
+  {
+    "term": "Electron carrier",
+    "meaning": "Molecule that accepts and donates electrons in redox reactions."
+  },
+  {
+    "term": "Gene",
+    "meaning": "Heritable DNA sequence influencing a characteristic."
+  },
+  {
+    "term": "Genome",
+    "meaning": "Complete genetic information of an organism."
+  },
+  {
+    "term": "Genotype",
+    "meaning": "Genetic makeup (alleles) of an organism."
+  },
+  {
+    "term": "Phenotype",
+    "meaning": "Observable characteristics resulting from genotype and environment."
+  },
+  {
+    "term": "Allele",
+    "meaning": "Variant form of a gene."
+  },
+  {
+    "term": "Homozygous",
+    "meaning": "Having two identical alleles for a gene."
+  },
+  {
+    "term": "Heterozygous",
+    "meaning": "Having two different alleles for a gene."
+  },
+  {
+    "term": "Dominant",
+    "meaning": "Allele expressed in heterozygotes."
+  },
+  {
+    "term": "Recessive",
+    "meaning": "Allele expressed only when homozygous (in simple Mendelian cases)."
+  },
+  {
+    "term": "Co-dominant",
+    "meaning": "Both alleles contribute to phenotype in heterozygotes."
+  },
+  {
+    "term": "Mutation",
+    "meaning": "Change in DNA sequence or chromosome structure/number."
+  },
+  {
+    "term": "Transcription",
+    "meaning": "Synthesis of RNA from DNA template."
+  },
+  {
+    "term": "Translation",
+    "meaning": "Synthesis of polypeptide from mRNA on ribosomes."
+  },
+  {
+    "term": "Promoter",
+    "meaning": "DNA region where transcription machinery binds to initiate transcription."
+  },
+  {
+    "term": "Transcription factor",
+    "meaning": "Protein regulating transcription by binding DNA."
+  },
+  {
+    "term": "PCR",
+    "meaning": "Technique amplifying DNA segments by cyclic replication in vitro."
+  },
+  {
+    "term": "Gel electrophoresis",
+    "meaning": "Method separating DNA/proteins by size through a gel matrix."
+  },
+  {
+    "term": "Antigen",
+    "meaning": "Molecule that can trigger an immune response and bind antibodies."
+  },
+  {
+    "term": "Antibody",
+    "meaning": "Protein produced by B cells that binds specific antigens."
+  },
+  {
+    "term": "Allergen",
+    "meaning": "Antigen that triggers allergic responses."
+  },
+  {
+    "term": "Epidemiology",
+    "meaning": "Study of disease occurrence, distribution, and control."
+  },
+  {
+    "term": "Pathogen",
+    "meaning": "Organism or agent that causes disease."
+  },
+  {
+    "term": "Antibiotic",
+    "meaning": "Substance that inhibits or kills bacteria (often selectively)."
+  },
+  {
+    "term": "Bioaccumulation",
+    "meaning": "Build-up of persistent substances within an organism over time."
+  },
+  {
+    "term": "Biomagnification",
+    "meaning": "Increase in concentration of a substance at higher trophic levels."
+  },
+  {
+    "term": "Food chain",
+    "meaning": "Linear sequence of feeding relationships."
+  },
+  {
+    "term": "Food web",
+    "meaning": "Network of interconnected food chains."
+  },
+  {
+    "term": "Trophic level",
+    "meaning": "Feeding position in a food chain/web."
+  },
+  {
+    "term": "Sustainability",
+    "meaning": "Resource use that can be maintained without long-term degradation."
+  },
+  {
+    "term": "Eutrophication",
+    "meaning": "Nutrient enrichment of water causing algal blooms and oxygen depletion."
+  },
+  {
+    "term": "BOD",
+    "meaning": "Biochemical oxygen demand; oxygen needed to decompose organic matter biologically."
+  },
+  {
+    "term": "Bioremediation",
+    "meaning": "Use of organisms to remove or neutralize pollutants."
+  },
+  {
+    "term": "Gene therapy",
+    "meaning": "Introducing functional genetic material to treat disease."
+  },
+  {
+    "term": "Genetic engineering",
+    "meaning": "Direct manipulation of DNA to change organism traits."
+  },
+  {
+    "term": "Transgenic",
+    "meaning": "Organism containing DNA from another species."
+  },
+  {
+    "term": "Clade",
+    "meaning": "Group consisting of an ancestor and all its descendants."
+  },
+  {
+    "term": "Cladistics",
+    "meaning": "Classification based on shared derived characteristics."
+  },
+  {
+    "term": "Cladogram",
+    "meaning": "Diagram showing inferred evolutionary relationships."
+  },
+  {
+    "term": "Speciation",
+    "meaning": "Evolution of new species."
+  },
+  {
+    "term": "Reproductive isolation",
+    "meaning": "Barriers preventing interbreeding between populations."
+  },
+  {
+    "term": "Fundamental niche",
+    "meaning": "Full set of conditions/resources a species could use in absence of competitors."
+  },
+  {
+    "term": "Realized niche",
+    "meaning": "Actual niche occupied due to biotic interactions."
+  },
+  {
+    "term": "Competitive exclusion",
+    "meaning": "One species outcompetes another when niches overlap."
+  },
+  {
+    "term": "Invasive species",
+    "meaning": "Non-native species that spreads and harms ecosystems."
+  },
+  {
+    "term": "Endemic",
+    "meaning": "Restricted to a particular geographic region."
+  },
+  {
+    "term": "Action potential",
+    "meaning": "The potential difference produced across the plasma membrane of the nerve cell when stimulated, reversing the resting potential from about −70 mV to about +40 mV."
+  },
+  {
+    "term": "Addict",
+    "meaning": "Someone who cannot control or abandon their drug use."
+  },
+  {
+    "term": "Addiction",
+    "meaning": "Physiological and psychological ongoing compulsion to take a mood-altering drug, being unable to give it up without experiencing very unpleasant side-effects."
+  },
+  {
+    "term": "Adhesion",
+    "meaning": "The force by which individual molecules stick to surrounding materials and surfaces."
+  },
+  {
+    "term": "Adipose tissue",
+    "meaning": "A tissue found beneath the skin layer, containing fat cells."
+  },
+  {
+    "term": "Alien species",
+    "meaning": "Species that are introduced into an area by human activity."
+  },
+  {
+    "term": "Alleles",
+    "meaning": "Different versions of the same gene (one from the father, one from the mother)."
+  },
+  {
+    "term": "Allergy",
+    "meaning": "An exaggerated response by the body to antigens."
+  },
+  {
+    "term": "Altricial",
+    "meaning": "Born in an undeveloped state after a short gestation period."
+  },
+  {
+    "term": "Altruism",
+    "meaning": "Selfless concern for the well-being of others."
+  },
+  {
+    "term": "Amphipathic",
+    "meaning": "A molecule that is partly hydrophilic and partly hydrophobic."
+  },
+  {
+    "term": "Analogous structures",
+    "meaning": "Anatomical features that appear similar in structure but have a different evolutionary origin."
+  },
+  {
+    "term": "Anesthetic",
+    "meaning": "A drug that can bring about reversible loss of consciousness."
+  },
+  {
+    "term": "Antibiotics",
+    "meaning": "Organic compounds which selectively inhibit or kill other microorganisms."
+  },
+  {
+    "term": "Antidiuretic hormone (ADH)",
+    "meaning": "Hormone secreted by the pituitary gland that controls the permeability of the walls of the collecting ducts of the kidney."
+  },
+  {
+    "term": "Antithrombin",
+    "meaning": "A small glycoprotein molecule that occurs in the blood plasma."
+  },
+  {
+    "term": "Catalyst",
+    "meaning": "A substance that speeds up the rate of a chemical reaction. Catalysts are effective in small amounts and remain unchanged at the end of the reaction."
+  },
+  {
+    "term": "Cell cycle",
+    "meaning": "Cells arise by the division of existing cells, grow,"
+  },
+  {
+    "term": "Diabetic",
+    "meaning": "A person whose body is failing to regulate blood and then divide."
+  },
+  {
+    "term": "Chemoheterotrophy",
+    "meaning": "Form of nutrition in which organisms obtain their nutrients from molecules taken in from the environment. In this form of heterotrophy, complex organic molecules are the source of food."
+  },
+  {
+    "term": "Chimera",
+    "meaning": "An organism with some cells that are genetically different from other cells in the body."
+  },
+  {
+    "term": "Climograph",
+    "meaning": "A graphical model that shows the relationship between temperature, precipitation, and ecosystem type."
+  },
+  {
+    "term": "Cohesion",
+    "meaning": "Force by which individual molecules stick together."
+  },
+  {
+    "term": "Coleoptile",
+    "meaning": "A protective sheath that surrounds the emerging root or stem."
+  },
+  {
+    "term": "Common ancestor",
+    "meaning": "A population of one species that has evolved into more than one species or groups."
+  },
+  {
+    "term": "Conditioning",
+    "meaning": "A form of learning associated with a reward (or punishment)."
+  },
+  {
+    "term": "Consumers",
+    "meaning": "Heterotrophs that feed on living organisms by ingestion."
+  },
+  {
+    "term": "Corpus luteum",
+    "meaning": "A hormone-secreting structure that develops from an ovarian follicle after an oocyte has been discharged. It degenerates after a few days unless pregnancy has begun."
+  },
+  {
+    "term": "Epigenetics",
+    "meaning": "The study of heritable changes in gene activity that are not caused by changes in the DNA base sequences. Mechanisms that produce such changes are DNA methylation and histone modifications."
+  },
+  {
+    "term": "Essential nutrient",
+    "meaning": "A nutrient that cannot be synthesized by the body and, therefore, has to be included in the diet."
+  },
+  {
+    "term": "Ethology",
+    "meaning": "The study of animal behaviour in natural conditions."
+  },
+  {
+    "term": "Evolution",
+    "meaning": "The gradual development of new types of living organism over geological time, from its earliest beginnings to the diversity of organisms known about today, both living and extinct. It occurs when heritable characteristics of a species change."
+  },
+  {
+    "term": "Exon",
+    "meaning": "The section of the gene that carries meaningful information (i.e. codes for amino acids)."
+  },
+  {
+    "term": "Exponential growth",
+    "meaning": "An increasing or accelerating rate of growth."
+  },
+  {
+    "term": "Expressed sequence tag (EST)",
+    "meaning": "A small section of complementary DNA (cDNA) that corresponds to a gene transcript."
+  },
+  {
+    "term": "Exsitu conservation",
+    "meaning": "The preservation of species outside their natural habitats."
+  },
+  {
+    "term": "Fertilization",
+    "meaning": "The fusion of male and female gametes to form a zygote."
+  },
+  {
+    "term": "Freeze-etching",
+    "meaning": "Cells are rapidly frozen and then fractured."
+  },
+  {
+    "term": "Heterotrophic",
+    "meaning": "An organism that obtains organic"
+  },
+  {
+    "term": "Gametogenesis",
+    "meaning": "The production of sex cells (gametes)."
+  },
+  {
+    "term": "Gas exchange",
+    "meaning": "The exchange of gases between an organism and its surroundings, including the uptake of oxygen and the release of carbon dioxide in animals and plants."
+  },
+  {
+    "term": "gbss",
+    "meaning": "A gene responsible for the enzymic machinery in potato cells that catalyses the synthesis of amylose."
+  },
+  {
+    "term": "Gene knockout (KO)",
+    "meaning": "Procedure that produces an organism with one non-functional gene, allowing researchers to investigate the function of that gene."
+  },
+  {
+    "term": "Gene pool",
+    "meaning": "All the genes (and their alleles) present in an interbreeding population."
+  },
+  {
+    "term": "Hydrophilic Attracted to water (i.e. ‘water-loving’);",
+    "meaning": "hydrogen bonds readily form between the phosphate head and water molecules."
+  },
+  {
+    "term": "Hydrophobic",
+    "meaning": "Repelled by water (i.e. ‘water-hating’)."
+  },
+  {
+    "term": "Hypertension",
+    "meaning": "A condition of persistently raised blood pressure"
+  },
+  {
+    "term": "Hypertonic",
+    "meaning": "When the external solution is more concentrated (i.e. has a higher solute potential) than the cell solution (cytosol), and there is a net flow of water out of the cell by osmosis."
+  },
+  {
+    "term": "Hypotonic",
+    "meaning": "When the external solution is less concentrated (i.e. has a lower solute potential) than the cell solution (cytosol), and there is a net inflow of water into the cell by osmosis."
+  },
+  {
+    "term": "Immunity",
+    "meaning": "The ability of the body to resist an infection by a pathogen."
+  },
+  {
+    "term": "Indicator species",
+    "meaning": "An organism used to assess a specific environmental condition."
+  },
+  {
+    "term": "Innate behaviour",
+    "meaning": "Behaviour that is inherited from parents and so develops independently of the environmental context. Innate behaviour includes behaviour that is due to a reflex action."
+  },
+  {
+    "term": "In situ conservation",
+    "meaning": "The conservation of species in their natural habitat."
+  },
+  {
+    "term": "Intercalated disc",
+    "meaning": "A double membrane with gap junctions, through which are cytoplasmic connections between adjacent cardiac cells."
+  },
+  {
+    "term": "Intergovernmental organizations (IGOs)",
+    "meaning": "Organizations established through international agreements."
+  },
+  {
+    "term": "Interspecific competition",
+    "meaning": "Competition between two species."
+  },
+  {
+    "term": "Intraspecific competition",
+    "meaning": "Competition between individuals of the same species."
+  },
+  {
+    "term": "Intron",
+    "meaning": "Non-coding nucleotide sequence of the DNA of chromosomes, present in eukaryotic chromosomes."
+  },
+  {
+    "term": "Isomer",
+    "meaning": "Two or more compounds with the same formula but a different arrangement of atoms in the molecule, and different corresponding properties."
+  },
+  {
+    "term": "Isotonic",
+    "meaning": "When the external solution is the same concentration (i.e. has the same solute potential) as the cell solution (cytosol), and there is no net entry or exit of Microorganisms Organisms that are too small to be water from the cell by osmosis."
+  },
+  {
+    "term": "Jaundice",
+    "meaning": "Condition in which the skin develops a yellowish tinge along with the whites of the eye (sclera)."
+  },
+  {
+    "term": "Joint",
+    "meaning": "The junction between two or more bones, usually formed of connective tissue and cartilage."
+  },
+  {
+    "term": "Karyogram",
+    "meaning": "Photograph showing individual chromosomes arranged in homologous pairs in descending order of size."
+  },
+  {
+    "term": "Karyotype",
+    "meaning": "The number and type of chromosomes in the nucleus."
+  },
+  {
+    "term": "Keystone species",
+    "meaning": "Species that have a key role in an ecosystem."
+  },
+  {
+    "term": "Lactation",
+    "meaning": "The production and secretion of milk by the mammary glands after birth."
+  },
+  {
+    "term": "Learnt behaviour",
+    "meaning": "Behaviour that develops as a result of experience."
+  },
+  {
+    "term": "Monohybrid",
+    "meaning": "Genetic cross involving one characteristic/ gene, such as eye colour."
+  },
+  {
+    "term": "Monomer",
+    "meaning": "A molecule that can be bonded to other identical molecules to form a polymer."
+  },
+  {
+    "term": "Mucosa",
+    "meaning": "The internal linings of lungs, trachea, and gut."
+  },
+  {
+    "term": "Mutualism",
+    "meaning": "Both organisms gain from a relationship."
+  },
+  {
+    "term": "Myogenic",
+    "meaning": "The control of the heartbeat originates within the heart muscle itself, rather than from the nervous system."
+  },
+  {
+    "term": "Native species",
+    "meaning": "A species found in an area where it originated, i.e. occurs naturally within a particular"
+  },
+  {
+    "term": "Net primary productivity (NPP)",
+    "meaning": "The gain by producers in energy or biomass per unit area per unit time remaining after allowing for respiratory losses."
+  },
+  {
+    "term": "Neurosecretory cell",
+    "meaning": "A special type of neuron that secretes chemical messengers which travel round the body via"
+  },
+  {
+    "term": "Neurotransmitter",
+    "meaning": "Chemical released at the pre-synaptic membrane of an axon, on arrival of an action potential, which transmits the action potential across the synapse."
+  },
+  {
+    "term": "Non-essential nutrients",
+    "meaning": "Those nutrients which are made in the body or which have a replacement nutrient that can fulfil the same dietary purpose."
+  },
+  {
+    "term": "Non-governmental organizations (NGOs)",
+    "meaning": "Organizations not run by, funded by, or influenced by governments of any country."
+  },
+  {
+    "term": "Nutrient",
+    "meaning": "A chemical substance found in foods that is used in the human body."
+  },
+  {
+    "term": "Oogenesis",
+    "meaning": "The production of egg cells in ovaries."
+  },
+  {
+    "term": "Osmoconformer",
+    "meaning": "Animal that maintains the osmotic concentration (osmolarity) of its cells and body fluids at factors that influence the numbers and structure of a the same concentration as that of the environment."
+  },
+  {
+    "term": "Osmolarity",
+    "meaning": "The concentration of a solution expressed as the total number of solute particles per litre."
+  },
+  {
+    "term": "Osmoreceptor",
+    "meaning": "Receptor in the central nervous system that responds to changes in the solute potential of the blood."
+  },
+  {
+    "term": "Osmoregulation",
+    "meaning": "Control of the water balance of the blood, tissue, or cytoplasm of a living organism."
+  },
+  {
+    "term": "Osmoregulator",
+    "meaning": "Animal that controls its internal osmolarity independently of environmental conditions."
+  },
+  {
+    "term": "Ovarian follicle",
+    "meaning": "A fluid-filled spherical sac that contains"
+  },
+  {
+    "term": "Proteome",
+    "meaning": "The entire set of proteins expressed by the and nourishes an immature egg, or oocyte."
+  },
+  {
+    "term": "Ovulation Release of oocyte (egg)",
+    "meaning": "from ovary."
+  },
+  {
+    "term": "Parturition",
+    "meaning": "The act of giving birth."
+  },
+  {
+    "term": "Passive transport",
+    "meaning": "No direct energy needed."
+  },
+  {
+    "term": "Pathway engineering",
+    "meaning": "The practice of manipulating genetic and regulatory processes within the cells of microorganisms to produce metabolites of interest."
+  },
+  {
+    "term": "Recessive Hidden by a dominant allele",
+    "meaning": "An allele that affects an animal’s appearance only if it is present in the homozygous state."
+  },
+  {
+    "term": "Recombinant",
+    "meaning": "DNA DNA that has been artificially changed involving joining together genes from different sources, typically from different species."
+  },
+  {
+    "term": "Reflex Immediate, automatic, involuntary (unconscious)",
+    "meaning": "and quick responses that are short lived."
+  },
+  {
+    "term": "Reproduction",
+    "meaning": "The production of new individuals by an existing member or members of the same species."
+  },
+  {
+    "term": "Resolution",
+    "meaning": "The ability to tell that two objects that are very close together are distinct objects rather than just one. The amount of detail that can be seen."
+  },
+  {
+    "term": "Response",
+    "meaning": "The activity of a cell or organism in terms of movement, hormone secretion, or enzyme production, as a result of a stimulus."
+  },
+  {
+    "term": "Resting potential",
+    "meaning": "The potential difference across a nerve cell membrane when it is not being stimulated. It is normally about −70 millivolts (mV)."
+  },
+  {
+    "term": "Saprotrophs",
+    "meaning": "Heterotrophs that obtain organic nutrients from dead organisms by external digestion."
+  },
+  {
+    "term": "Secondary sexual characteristics",
+    "meaning": "Physical characteristics developing at puberty which distinguish the sexes but are not directly involved in reproduction, e.g. facial hair in males, development of breasts and wider hips in females."
+  },
+  {
+    "term": "Seed dispersal",
+    "meaning": "The carrying of the seed away from the parent plant."
+  },
+  {
+    "term": "Sewage",
+    "meaning": "The fluid waste of human communities, consisting largely of used water, faeces, and urine."
+  },
+  {
+    "term": "Sex linkage",
+    "meaning": "A special case of linkage occurring when a gene is located on a sex chromosome (usually the X chromosome)."
+  },
+  {
+    "term": "Sexual (or mate) selection",
+    "meaning": "The struggle between individuals of one sex (normally the males) for access to individuals of the opposite sex."
+  },
+  {
+    "term": "Skeletal muscles",
+    "meaning": "Muscles that are attached to the moveable parts of skeletons; their contraction brings about locomotion."
+  },
+  {
+    "term": "Species",
+    "meaning": "Groups of organisms that can potentially interbreed to produce fertile offspring."
+  },
+  {
+    "term": "Spermatogenesis",
+    "meaning": "The production of sperm in testes."
+  },
+  {
+    "term": "Stamen",
+    "meaning": "Male part of flower, consisting of anther and filament."
+  },
+  {
+    "term": "Stimulus",
+    "meaning": "A change in the environment (internal or external) that is detected by a receptor and elicits a response."
+  },
+  {
+    "term": "Substrate",
+    "meaning": "The starting substance in a reaction catalysed by an enzyme. It is the molecule that the enzyme part with."
+  },
+  {
+    "term": "Succession",
+    "meaning": "The process of change over time in a community."
+  },
+  {
+    "term": "Supercoil",
+    "meaning": "A DNA double helix that has undergone additional twisting in the same direction as, or in the opposite direction from, the turns in the original helix."
+  },
+  {
+    "term": "Symbiosis",
+    "meaning": "A long-term biological interaction between different species."
+  },
+  {
+    "term": "Ventilation system",
+    "meaning": "A pumping mechanism that moves air into and out of the lungs efficiently, thereby maintaining the concentration gradients of oxygen and carbon dioxide for diffusion."
+  },
+  {
+    "term": "Vitamins",
+    "meaning": "Organic compounds that are required in only tiny amounts."
+  },
+  {
+    "term": "Aseptic",
+    "meaning": "Without contamination by any other organism."
+  },
+  {
+    "term": "Autotrophic",
+    "meaning": "An organism that synthesizes its organic molecules from simple inorganic substances."
+  },
+  {
+    "term": "Axon",
+    "meaning": "Carries impulses to other cells – either to other neurons or to body cells (muscle cells or gland cells)."
+  },
+  {
+    "term": "Balanced diet",
+    "meaning": "Essential and non-essential nutrients, taken in correct proportions."
+  },
+  {
+    "term": "Basophil",
+    "meaning": "White blood cell that circulates in the blood."
+  },
+  {
+    "term": "Behaviour",
+    "meaning": "The way in which organisms respond to the environment and to other members of the same species."
+  },
+  {
+    "term": "Benzene",
+    "meaning": "A cyclic hydrocarbon of molecular formula C6H6."
+  },
+  {
+    "term": "Bilayer",
+    "meaning": "Two rows of phospholipids, with the fatty acids pointing towards each other and the phosphates on the outside."
+  },
+  {
+    "term": "Bile salts",
+    "meaning": "Organic salts composed of cholic acid, which is manufactured by the liver from cholesterol, that are combined with an amino acid–sodium complex."
+  },
+  {
+    "term": "Biochemical oxygen demand (BOD)",
+    "meaning": "A measure of the amount of dissolved oxygen required to break down the organic material in a given volume of water through aerobic biological activity."
+  },
+  {
+    "term": "Biofilm",
+    "meaning": "Microorganisms that are stuck to each other and, usually, to a surface; frequently embedded in and held by a polysaccharide matrix, secreted by the cells of the biofilm."
+  },
+  {
+    "term": "Bioinformatics",
+    "meaning": "The storage, manipulation, and analysis of biological information via computer science."
+  },
+  {
+    "term": "Biopharming",
+    "meaning": "Technique that uses genetically modified animals and plants to produce proteins for therapeutic use."
+  },
+  {
+    "term": "Biotechnology",
+    "meaning": "The industrial and commercial application of biological science, exploiting organisms – mostly microorganisms – to produce foods, drugs, enzymes, or chemicals."
+  },
+  {
+    "term": "BLAST",
+    "meaning": "An acronym for Basic Local Alignment Search"
+  },
+  {
+    "term": "Blood pressure",
+    "meaning": "The pressure of the blood flowing through the arteries."
+  },
+  {
+    "term": "Brain stem",
+    "meaning": "A region of the brain that connects the cerebellum with the spinal cord, including the medulla."
+  },
+  {
+    "term": "Cardiac cycle",
+    "meaning": "The sequence of events of a heartbeat, by which blood is pumped all over the body."
+  },
+  {
+    "term": "Carpel",
+    "meaning": "Female part of flower, consisting of stigma, style, and ovary."
+  },
+  {
+    "term": "Cortical granules",
+    "meaning": "Prevent polyspermy during fertilization."
+  },
+  {
+    "term": "Cytokinesis",
+    "meaning": "Division of the cytoplasm."
+  },
+  {
+    "term": "Deamination",
+    "meaning": "The removal of NH2 from an amino acid."
+  },
+  {
+    "term": "Decarboxylation",
+    "meaning": "Chemical reaction that releases carbon dioxide."
+  },
+  {
+    "term": "Denatured",
+    "meaning": "When a protein loses its three-dimensional shape."
+  },
+  {
+    "term": "Detritivores",
+    "meaning": "Heterotrophs that obtain organic nutrients from detritus by internal digestion."
+  },
+  {
+    "term": "Diabetes",
+    "meaning": "Failure to regulate blood glucose levels. glucose levels correctly."
+  },
+  {
+    "term": "Diastole",
+    "meaning": "Relaxation of heart muscle."
+  },
+  {
+    "term": "Dichotomous key",
+    "meaning": "A stepwise tool for identification where there are two options based on different characteristics at each step."
+  },
+  {
+    "term": "Dietary minerals",
+    "meaning": "Essential chemical elements that cannot be made by the body."
+  },
+  {
+    "term": "Movement",
+    "meaning": "is passive (i.e. no direct energy needed)."
+  },
+  {
+    "term": "Digestive juice",
+    "meaning": "The fluid secreted onto food in the gut to aid digestion."
+  },
+  {
+    "term": "Disease",
+    "meaning": "A disorder of structure or function of the body."
+  },
+  {
+    "term": "DNA sequencing",
+    "meaning": "Investigation of the sequence of bases in particular lengths of DNA."
+  },
+  {
+    "term": "Ecology",
+    "meaning": "The study of living things in their environment."
+  },
+  {
+    "term": "Embolus",
+    "meaning": "A thrombus that breaks free and is circulated in the bloodstream."
+  },
+  {
+    "term": "Endemic species",
+    "meaning": "Species restricted to a particular region."
+  },
+  {
+    "term": "Endocrine glands",
+    "meaning": "Secrete hormones directly into the bloodstream."
+  },
+  {
+    "term": "Endometrium",
+    "meaning": "The lining of the uterus."
+  },
+  {
+    "term": "Endopeptidase",
+    "meaning": "A protease enzyme that breaks peptide linkages in the interior of the protein, producing shorter- chain polypeptides."
+  },
+  {
+    "term": "Endorphin",
+    "meaning": "A peptide that is a natural painkiller, produced in the pituitary gland."
+  },
+  {
+    "term": "Endothelium",
+    "meaning": "The innermost lining layer of arteries and veins. It is one cell thick, and is very smooth, reducing friction between blood cells and blood vessels."
+  },
+  {
+    "term": "Environmental resistance",
+    "meaning": "When limiting factors affect population growth."
+  },
+  {
+    "term": "Enzyme inhibitor",
+    "meaning": "A substance which slows or blocks enzyme action."
+  },
+  {
+    "term": "Genetic marker",
+    "meaning": "A gene or DNA sequence (such as a single nucleotide polymorphism, SNP, or tandem repeats) with a known location on a chromosome."
+  },
+  {
+    "term": "Genetic modification or engineering",
+    "meaning": "The transfer of a gene from one organism (the donor) to another (the recipient)."
+  },
+  {
+    "term": "Genetic profiling",
+    "meaning": "The identification of individual organisms or species using DNA."
+  },
+  {
+    "term": "Germination",
+    "meaning": "The resumption of growth by an embryonic plant in a seed or fruit, at the expense of stored food."
+  },
+  {
+    "term": "Gestation",
+    "meaning": "The period of development in the mother’s body, lasting from conception to birth."
+  },
+  {
+    "term": "Global warming",
+    "meaning": "An increase in the average temperature of the Earth’s atmosphere."
+  },
+  {
+    "term": "Glyphosate",
+    "meaning": "A systemic herbicide used to kill weeds in crops."
+  },
+  {
+    "term": "Gradualism",
+    "meaning": "Evolution that takes place through a long sequence of continuous intermediate forms. they would otherwise be."
+  },
+  {
+    "term": "Gross primary production (GPP)",
+    "meaning": "The amount of glucose produced by the plant in a specific area in a specific period of time"
+  },
+  {
+    "term": "Hepatitis B",
+    "meaning": "A disease of the liver caused by a virus."
+  },
+  {
+    "term": "Heritable",
+    "meaning": "Can be passed from one generation to another, from parents to offspring. molecules from other organisms."
+  },
+  {
+    "term": "Hierarchy",
+    "meaning": "A structure made from many different levels. In biology it relates to the different levels of classification from kingdom to species."
+  },
+  {
+    "term": "Histamine",
+    "meaning": "A small organic molecule produced by two types of white blood cell (mast cells and basophils) and which increases permeability of capillaries to white blood cells and antibodies. environment."
+  },
+  {
+    "term": "Homologous structures",
+    "meaning": "Anatomical features that occupy similar positions in an organism, have an underlying basic structure in common, but may have evolved different functions."
+  },
+  {
+    "term": "Hormones",
+    "meaning": "Chemical messengers that are produced and secreted from the cells of the ductless or endocrine glands. monoclonal antibodies, created by fusing a B lymphocyte with a cancer cell."
+  },
+  {
+    "term": "Linked genes",
+    "meaning": "Characteristics controlled by genes on the same chromosomes."
+  },
+  {
+    "term": "Link reaction",
+    "meaning": "The reactions that connect glycolysis to the reactions of the Krebs cycle by producing acetyl coenzyme A from pyruvate."
+  },
+  {
+    "term": "Lumen",
+    "meaning": "The hollow interior of a blood vessel, through which the blood passes."
+  },
+  {
+    "term": "Macroplastic",
+    "meaning": "Large debris that is easily visible, such as bottles, plastic bags, rubbish, and other material that have not degraded."
+  },
+  {
+    "term": "Malnutrition",
+    "meaning": "A serious condition that occurs when a person’s diet doesn’t contain the right amount of nutrients."
+  },
+  {
+    "term": "Malpighian tubule",
+    "meaning": "A tubular excretory organ which opens into the gut in insects."
+  },
+  {
+    "term": "Mast cell",
+    "meaning": "White blood cell found in connective tissue."
+  },
+  {
+    "term": "Maximum sustainable yield (MSY)",
+    "meaning": "The maximum average catch that a stock can sustain over a long period of time."
+  },
+  {
+    "term": "Medicine",
+    "meaning": "The science and practice of the diagnosis, treatment, and prevention of disease."
+  },
+  {
+    "term": "Melanism",
+    "meaning": "Development of a dark-coloured pigment, melanin, in the outer surface of an organism."
+  },
+  {
+    "term": "Memory",
+    "meaning": "The ability to record sensory stimuli, events, and information."
+  },
+  {
+    "term": "Menstrual cycle",
+    "meaning": "Monthly cycle of ovulation and menstruation in human females."
+  },
+  {
+    "term": "Menstruation",
+    "meaning": "Shedding of the endometrium from the uterus."
+  },
+  {
+    "term": "Meristem",
+    "meaning": "A group of cells in plants that retains the ability to divide by mitosis."
+  },
+  {
+    "term": "Mesocosm",
+    "meaning": "Enclosed experimental area that is set up to explore ecological relationships. Because it is a contained experimental area it can be closely controlled and variables monitored."
+  },
+  {
+    "term": "Metabolic pathway",
+    "meaning": "Sequence of enzyme-catalysed biochemical reactions in cells."
+  },
+  {
+    "term": "Metabolism",
+    "meaning": "The web of all the enzyme-catalysed reactions in a cell or organism."
+  },
+  {
+    "term": "Methylation",
+    "meaning": "The reversible addition of a methyl group (–CH3) within the chromatin, to histone tails or usually to the DNA molecule itself."
+  },
+  {
+    "term": "Microarray",
+    "meaning": "A collection of microscopic DNA spots attached to a solid surface. studied by the naked eye."
+  },
+  {
+    "term": "Microplastics",
+    "meaning": "Tiny plastic particles up to 5 mm in diameter."
+  },
+  {
+    "term": "Micropropagation",
+    "meaning": "Technique that rapidly multiplies stock plant material, in vitro, to produce large numbers of offspring, all genetically identical to the parent plant."
+  },
+  {
+    "term": "Mitotic index",
+    "meaning": "The number of cells undergoing mitosis divided by the total number of cells visible."
+  },
+  {
+    "term": "Model organism",
+    "meaning": "A non-human organism that can be used to understand simple and complex biological functions by analysing different types of data, according to different variables that are manipulated or controlled under laboratory conditions."
+  },
+  {
+    "term": "Monoclonal antibody",
+    "meaning": "Antibody produced by a single clone of B lymphocytes; it consists of a population of identical antibody molecules."
+  },
+  {
+    "term": "Penicillin",
+    "meaning": "An antibiotic produced by the fungus Penicillium chrysogenum."
+  },
+  {
+    "term": "Pesticide",
+    "meaning": "Chemical that is used to control harmful organisms which are a danger to crops or herds."
+  },
+  {
+    "term": "Phenotypic expression",
+    "meaning": "Physical characteristics."
+  },
+  {
+    "term": "Photolysis",
+    "meaning": "The splitting of water using light energy."
+  },
+  {
+    "term": "Photoperiodism",
+    "meaning": "Day-length control of flowering in plants."
+  },
+  {
+    "term": "Photophosphorylation",
+    "meaning": "The formation of ATP, using light energy (in the light-dependent step of photosynthesis in the grana)."
+  },
+  {
+    "term": "Phytochrome",
+    "meaning": "A photoreceptor protein that is able to absorb light of particular wavelength and change its structure as a consequence."
+  },
+  {
+    "term": "Placenta",
+    "meaning": "A temporary organ that joins the mother and fetus, transferring oxygen and nutrients from the mother to the fetus, with carbon dioxide and other waste material transported from fetus to mother."
+  },
+  {
+    "term": "Pollination",
+    "meaning": "The transfer of pollen from anther to stigma."
+  },
+  {
+    "term": "Polygenic inheritance",
+    "meaning": "The inheritance of phenotypes that are determined by the collective effect of several genes."
+  },
+  {
+    "term": "It",
+    "meaning": "leads to continuous variation."
+  },
+  {
+    "term": "Polymerase chain reaction (PCR)",
+    "meaning": "A technology used to amplify a single piece or very few pieces of DNA, generating many thousands of copies."
+  },
+  {
+    "term": "Polymorphic",
+    "meaning": "There are a number of possible genotypes at the locus for any specific marker 1."
+  },
+  {
+    "term": "Polyploidy",
+    "meaning": "An abrupt alteration in the number of whole sets of chromosomes."
+  },
+  {
+    "term": "Polyspermy",
+    "meaning": "Fertilization of an egg by many sperm."
+  },
+  {
+    "term": "Population ecology",
+    "meaning": "Concerned with the study of population."
+  },
+  {
+    "term": "Precocial",
+    "meaning": "Species in which the young are relatively mature and mobile from the moment of birth."
+  },
+  {
+    "term": "Primary defence",
+    "meaning": "The first line of defence against a disease, preventing the pathogen from entering the body in the first place."
+  },
+  {
+    "term": "Product",
+    "meaning": "The substance produced when an enzyme converts a substrate."
+  },
+  {
+    "term": "Psychoactive drug",
+    "meaning": "A drug that affects the mind."
+  },
+  {
+    "term": "Punctuated equilibria",
+    "meaning": "Where long periods of relative stability are punctuated by periods of rapid evolution."
+  },
+  {
+    "term": "Quadrat",
+    "meaning": "A square frame which outlines a known area for the purpose of sampling."
+  },
+  {
+    "term": "Rate of reaction",
+    "meaning": "The amount of substrate that has disappeared from a reaction mixture, or the amount of product that has accumulated, in a period of time."
+  },
+  {
+    "term": "Synapse",
+    "meaning": "The connection between two nerve cells; functionally a tiny gap, the synaptic cleft, traversed by transmitter substances."
+  },
+  {
+    "term": "Synovial fluid",
+    "meaning": "A thick viscous fluid found in a joint for lubrication."
+  },
+  {
+    "term": "Synthesis",
+    "meaning": "Produce a new substance as a result of a chemical or biological reaction involving simpler substances."
+  },
+  {
+    "term": "Systole",
+    "meaning": "Contraction of heart muscle."
+  },
+  {
+    "term": "Target gene",
+    "meaning": "A desired gene, transferred by the genetic engineer."
+  },
+  {
+    "term": "Target organ",
+    "meaning": "Specific site where a hormone has an effect."
+  },
+  {
+    "term": "Taxonomy",
+    "meaning": "The science of classification."
+  },
+  {
+    "term": "Tension",
+    "meaning": "The force that is transmitted through a substance when it is pulled tight by forces acting from opposite ends."
+  },
+  {
+    "term": "Thrombosis",
+    "meaning": "The formation or presence of a blood clot in a blood vessel."
+  },
+  {
+    "term": "Thrombus",
+    "meaning": "Blood clot formed within a blood vessel."
+  },
+  {
+    "term": "Tidal volume",
+    "meaning": "The volume of air that a human breathes into and out of their lungs while at rest."
+  },
+  {
+    "term": "Transcriptome",
+    "meaning": "The set of all the organism’s RNA molecules."
+  },
+  {
+    "term": "Transect",
+    "meaning": "Arbitrary line through a habitat, selected to sample the community."
+  },
+  {
+    "term": "Transferrins",
+    "meaning": "Glycoproteins that are present in the blood plasma."
+  },
+  {
+    "term": "Transgenic organisms",
+    "meaning": "Produce in their cells, proteins that were not previously part of their species proteome."
+  },
+  {
+    "term": "Transitional state",
+    "meaning": "The short-lived enzyme–substrate complex formed at the active site."
+  },
+  {
+    "term": "Translocation",
+    "meaning": "The movement of manufactured food (e.g. sugars and amino acids) which occurs in the phloem tissue of the vascular bundles."
+  },
+  {
+    "term": "Transpiration",
+    "meaning": "The evaporation of water from the spongy mesophyll tissue and its subsequent diffusion through the stomata."
+  },
+  {
+    "term": "Tropism",
+    "meaning": "A growth response of plants in which the direction of growth is determined by the direction of the stimulus."
+  },
+  {
+    "term": "Ultrafiltration",
+    "meaning": "High hydrostatic pressure forces small molecules such as water, glucose, amino acids, sodium chloride, and urea through tiny pores in the capillaries of the glomerulus and into the Bowman’s capsule."
+  },
+  {
+    "term": "Unlinked genes",
+    "meaning": "Characteristics controlled by genes on separate chromosomes."
+  },
+  {
+    "term": "Variable",
+    "meaning": "A factor that is being changed, investigated, or kept the same in an investigation."
+  },
+  {
+    "term": "Variable number tandem repeats (VNTRs)",
+    "meaning": "Short base sequences that show variation between individuals in terms of number of repeats. These major lengths of noncoding DNA are used in genetic profiling."
+  },
+  {
+    "term": "Ventilation rate",
+    "meaning": "The number of breaths (inhalations or exhalations) per minute."
+  },
+  {
+    "term": "Zona pellucida",
+    "meaning": "Coat that surrounds the oocyte, made of glycoprotein."
+  },
+  {
+    "term": "Zoonoses",
+    "meaning": "Diseases of other animals that can be transmitted to humans."
+  }
+]</script>
+
+  <script>
+    const CHOICES = 4;
+    const $ = (id) => document.getElementById(id);
+    const show = (el, on) => el.style.display = on ? '' : 'none';
+
+    function randomInt(max) {
+      if (max <= 0) return 0;
+      const c = window.crypto || window.msCrypto;
+      if (c && c.getRandomValues) {
+        const buf = new Uint32Array(1);
+        const range = 0xFFFFFFFF;
+        const limit = range - (range % max);
+        let x = 0;
+        do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+        return x % max;
+      }
+      return Math.floor(Math.random() * max);
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = randomInt(i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function dedupe(pairs) {
+      const seen = new Map();
+      (pairs || []).forEach(p => {
+        const term = (p?.term || '').trim();
+        const meaning = (p?.meaning || '').trim();
+        if (!term || !meaning) return;
+        if (!seen.has(term) || seen.get(term).length > meaning.length) seen.set(term, meaning);
+      });
+      return Array.from(seen, ([term, meaning]) => ({term, meaning}));
+    }
+
+    function parseBank(id) {
+      try {
+        const raw = $(id).textContent || '[]';
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? dedupe(arr) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    const bankEty = parseBank('bank-ety');
+    const bankVocab = parseBank('bank-vocab');
+
+    const combined = [
+      ...bankEty.map(x => ({kind:'ETY', term:x.term, meaning:x.meaning})),
+      ...bankVocab.map(x => ({kind:'VOCAB', term:x.term, meaning:x.meaning})),
+    ];
+
+    const poolEty = bankEty.map(x=>x.meaning);
+    const poolVocab = bankVocab.map(x=>x.meaning);
+
+    let plan = [];
+    let qIndex = 0, score = 0, answered = false, history = [];
+
+    function setPrompt(kind, term) {
+      const p = $('prompt');
+      p.innerHTML = '';
+      p.appendChild(document.createTextNode(kind === 'ETY' ? 'What is the meaning of ' : 'Which definition best matches '));
+      const b = document.createElement('span');
+      b.className = 'term-badge';
+      b.textContent = term;
+      p.appendChild(b);
+      p.appendChild(document.createTextNode('?'));
+    }
+
+    function buildChoices(correct, pool) {
+      const picks = [correct];
+      let tries = 0;
+      while (picks.length < CHOICES && tries < 2000) {
+        const c = pool[randomInt(pool.length)];
+        if (c && !picks.includes(c)) picks.push(c);
+        tries++;
+      }
+      while (picks.length < CHOICES) picks.push('—');
+      return shuffle(picks);
+    }
+
+    function renderChoices(choices, correct, record) {
+      const box = $('opts');
+      box.innerHTML = '';
+      choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt';
+        btn.dataset.correct = (choice === correct) ? '1' : '0';
+
+        const k = document.createElement('span');
+        k.className = 'kbd';
+        k.textContent = String(i + 1);
+
+        const t = document.createElement('span');
+        t.textContent = choice;
+
+        btn.appendChild(k); btn.appendChild(t);
+        btn.addEventListener('click', () => grade(btn, correct, {...record, picked: choice, ok: choice === correct}));
+        box.appendChild(btn);
+      });
+    }
+
+    function resetSession(total) {
+      qIndex = 0; score = 0; answered = false; history = [];
+      $('qi').textContent = '0';
+      $('qt').textContent = String(total);
+      $('score').textContent = '0';
+      $('pbar').style.width = '0%';
+      $('feedback').textContent = '';
+      $('nextBtn').disabled = true;
+    }
+
+    function nextQuestion() {
+      if (qIndex >= plan.length) return finish();
+      answered = false;
+      $('nextBtn').disabled = true;
+      $('feedback').textContent = '';
+
+      const item = combined[plan[qIndex]];
+      if (!item) { qIndex++; return nextQuestion(); }
+
+      $('qi').textContent = String(qIndex + 1);
+      setPrompt(item.kind, item.term);
+
+      const correct = item.meaning;
+      const record = {kind: item.kind, term: item.term, correct, picked:'', ok:false};
+      const pool = item.kind === 'ETY' ? poolEty : poolVocab;
+      const choices = buildChoices(correct, pool);
+      renderChoices(choices, correct, record);
+    }
+
+    function grade(btn, correct, record) {
+      if (answered) return;
+      answered = true;
+
+      const all = Array.from(document.querySelectorAll('.opt'));
+      all.forEach(el => el.disabled = true);
+
+      if (btn.dataset.correct === '1') {
+        btn.classList.add('correct');
+        score++;
+        $('feedback').textContent = 'Correct';
+      } else {
+        btn.classList.add('wrong');
+        $('feedback').textContent = 'Correct: ' + correct;
+        const target = all.find(el => el.dataset.correct === '1');
+        if (target) target.classList.add('correct');
+      }
+
+      $('score').textContent = String(score);
+      history.push(record);
+      qIndex++;
+      $('pbar').style.width = Math.round((qIndex / plan.length) * 100) + '%';
+      $('nextBtn').disabled = false;
+    }
+
+    function finish() {
+      show($('quiz'), false);
+      show($('result'), true);
+      $('finalScore').textContent = String(score);
+      $('finalTotal').textContent = String(plan.length);
+      $('finalPct').textContent = plan.length ? (Math.round((score / plan.length) * 100) + '%') : '0%';
+
+      const ol = $('review');
+      ol.innerHTML = '';
+      history.forEach(h => {
+        const li = document.createElement('li');
+        li.style.color = h.ok ? 'var(--ok)' : 'var(--bad)';
+        li.textContent = `${h.kind} · ${h.term} → ${h.correct}` + (h.ok ? '' : ` · you chose: ${h.picked}`);
+        ol.appendChild(li);
+      });
+
+      $('retryBtn').onclick = () => {
+        show($('result'), false);
+        show($('loader'), true);
+      };
+    }
+
+    function start() {
+      if (combined.length === 0) {
+        $('summary').textContent = 'Banks failed to load.';
+        return;
+      }
+      const requested = Math.min(Math.max(parseInt($('qCount').value || 40, 10), 1), combined.length);
+      const indices = Array.from({length: combined.length}, (_, i) => i);
+      shuffle(indices);
+      plan = indices.slice(0, requested);
+
+      resetSession(plan.length);
+
+      show($('loader'), false);
+      show($('result'), false);
+      show($('quiz'), true);
+
+      nextQuestion();
+    }
+
+    // Init text
+    (function init() {
+      const total = combined.length;
+      $('summary').textContent = `Loaded ${bankEty.length} etymologies + ${bankVocab.length} vocabulary terms = ${total} total items.`;
+      $('maxHint').textContent = 'Max questions this run: ' + total;
+      $('qCount').max = String(total);
+      $('startBtn').addEventListener('click', start);
+      $('nextBtn').addEventListener('click', nextQuestion);
+      $('finishNowBtn').addEventListener('click', finish);
+
+      window.addEventListener('keydown', (e) => {
+        if ($('quiz').style.display === 'none') return;
+        if (/^[1-4]$/.test(e.key)) {
+          const i = Number(e.key) - 1;
+          document.querySelectorAll('.opt')[i]?.click();
+        } else if (e.key === 'Enter') {
+          if (!$('nextBtn').disabled) $('nextBtn').click();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
