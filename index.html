@@ -348,7 +348,7 @@
           </div>
           <div class="titles">
             <h1>Berthel’s Biology</h1>
-            <p>Professional student testing and review workspace. Load banks, run quizzes, review attempts, and search IB Biology text.</p>
+            <p>Professional student testing and review workspace.</p>
           </div>
         </div>
 
@@ -383,8 +383,8 @@
 
         <div class="notice warn">
           <b>Important:</b> If you open this via <span class="mono">file://</span>, browsers typically block <span class="mono">fetch()</span>.
-          Use <b>Upload</b> buttons (banks + text) for reliable loading.
-          <div class="tiny" style="margin-top:6px">If you serve it (local server), the auto-load URL fields will work as well.</div>
+          Avatar loads fine from a local image file, but the bank auto-loader may be blocked.
+          Use the <b>Upload</b> controls (banks + text) for guaranteed loading, or serve the folder with a local web server.
         </div>
 
         <div class="hr"></div>
@@ -394,10 +394,10 @@
             <div class="pad">
               <h2>Quick start</h2>
               <ol style="margin:8px 0 0; padding-left: 18px; color: rgba(255,255,255,.86)">
-                <li>Go to <b>Etymology + Vocabulary Engine</b> and upload your glossary/banks (TXT or JSON).</li>
-                <li>Set question count, click <b>Start</b>. Use keys <span class="kbd">1</span>–<span class="kbd">4</span>, <span class="kbd">Enter</span> for Next.</li>
+                <li>Open <b>Etymology + Vocabulary Engine</b>. It will try to auto-load <span class="mono">ib_bio_clean_index.txt</span>.</li>
+                <li>If auto-load fails, upload the same file manually with <b>Upload combined glossary</b>.</li>
                 <li>Go to <b>MCQ (JSON-Driven)</b> and paste the JSON returned by your “MCQ JSON Machine”.</li>
-                <li>(Optional) Upload the full IB Biology text file under <b>IB Text Search</b>.</li>
+                <li>(Optional) Upload the full IB Biology text under <b>IB Text Search</b>.</li>
               </ol>
             </div>
           </div>
@@ -419,7 +419,6 @@
                 <button class="btn" id="jumpMcq">Open MCQ</button>
                 <button class="btn ghost" id="jumpSearch">Open Search</button>
               </div>
-              <div class="tiny" style="margin-top:8px">This page is intentionally strict about theme consistency: no external link-styled widgets, no green palettes.</div>
             </div>
           </div>
         </div>
@@ -432,6 +431,7 @@
         <div class="sectionTitle">
           <h2>Etymology + Vocabulary Review Engine</h2>
           <div class="right">
+            <span class="badge">Auto-load</span>
             <span class="badge">TXT/JSON upload</span>
             <span class="badge">Auto-dedupe</span>
             <span class="badge">Keyboard</span>
@@ -443,7 +443,7 @@
           <div class="card">
             <div class="pad">
               <h2>Load banks</h2>
-              <div class="subtle">Upload your bank(s). TXT parsing supports: tab-separated, “Term — Definition”, “Term - Definition”, “Term: Definition”, or two-column lines split by big spacing.</div>
+              <div class="subtle">Default bank file: <span class="mono">ib_bio_clean_index.txt</span> in the same directory as this HTML.</div>
 
               <div class="hr"></div>
 
@@ -451,7 +451,7 @@
                 <div class="min260 grow">
                   <label>Upload combined glossary (TXT or JSON)</label>
                   <input id="bankCombinedFile" type="file" accept=".txt,.json" />
-                  <div class="tiny">If you “already have the text file of everything”, use this.</div>
+                  <div class="tiny">Recommended if auto-load is blocked.</div>
                 </div>
                 <div class="min260 grow">
                   <label>Upload etymology-only bank (optional)</label>
@@ -467,9 +467,9 @@
 
               <div class="row">
                 <div class="min320 grow">
-                  <label>Auto-load URL (optional; needs server, not file://)</label>
-                  <input id="bankUrl" type="text" placeholder="e.g., ./banks/glossary.txt or https://..." />
-                  <div class="tiny">Use only if served from a web server (local or remote).</div>
+                  <label>Auto-load URL (default set)</label>
+                  <input id="bankUrl" type="text" />
+                  <div class="tiny">Works reliably when served via a local server or hosted site.</div>
                 </div>
                 <button class="btn" id="btnAutoLoadBank">Auto-load from URL</button>
                 <button class="btn ghost" id="btnClearBank">Clear banks</button>
@@ -500,7 +500,7 @@
             </div>
           </div>
 
-          <!-- Quiz panel -->
+          <!-- Run state -->
           <div class="card">
             <div class="pad">
               <h2>Run state</h2>
@@ -521,9 +521,9 @@
                     <li><span class="mono">Abiotic — Non-living components of an ecosystem.</span></li>
                     <li><span class="mono">Abiotic - Non-living components of an ecosystem.</span></li>
                     <li><span class="mono">Abiotic: Non-living components of an ecosystem.</span></li>
-                    <li>Two-column lines (like old glossary tables) split by large spacing; parsed as term/definition pairs.</li>
+                    <li>Two-column lines split by large spacing; parsed as term/definition pairs.</li>
                   </ul>
-                  If a line can’t be parsed as a new term, it is appended to the previous definition as a continuation.
+                  If a line can’t be parsed as a new term, it is appended to the previous definition as continuation.
                 </div>
               </details>
             </div>
@@ -577,7 +577,7 @@
             <div class="hr"></div>
 
             <details open>
-              <summary>Review (click to collapse)</summary>
+              <summary>Review</summary>
               <ol id="etyReview" style="margin-top:10px"></ol>
             </details>
 
@@ -635,7 +635,7 @@
               <div class="hr"></div>
 
               <details>
-                <summary>Schema your other GPT should emit (copy/paste)</summary>
+                <summary>Schema your other GPT should emit</summary>
                 <div class="tiny mono" style="margin-top:10px; white-space: pre-wrap">
 {
   "title": "Optional",
@@ -650,11 +650,6 @@
     }
   ]
 }
-                </div>
-                <div class="tiny" style="margin-top:10px">
-                  Normalization supports: <span class="mono">question</span>/<span class="mono">stem</span> for prompt,
-                  <span class="mono">options</span> for choices, and answers as <span class="mono">answer_index</span>,
-                  <span class="mono">answer</span> (0–3), or <span class="mono">answer_letter</span> (“A”–“D”).
                 </div>
               </details>
 
@@ -784,7 +779,7 @@
           <div class="card">
             <div class="pad">
               <h2>Load the full text</h2>
-              <div class="subtle">Upload the IB Biology text file you mentioned. This stays local in the browser.</div>
+              <div class="subtle">Upload the IB Biology text file. This stays local in the browser.</div>
 
               <div style="height:10px"></div>
               <label>Upload text (TXT)</label>
@@ -812,7 +807,7 @@
               <div class="hr"></div>
               <div class="notice" id="ibSearchMeta">
                 <b>Hits:</b> <span class="muted" id="ibHits">0</span>
-                <div class="tiny" style="margin-top:6px">Shows short context windows around matches. (Not a full IR engine; deliberately simple.)</div>
+                <div class="tiny" style="margin-top:6px">Shows short context windows around matches. (Deliberately simple.)</div>
               </div>
             </div>
           </div>
@@ -843,19 +838,24 @@
         <div class="grid" style="margin-top:12px">
           <div class="card">
             <div class="pad">
-              <h2>Avatar (chinstrap penguin)</h2>
-              <div class="subtle">If a base64 data URL is percent-encoded, this page decodes + strips whitespace before loading.</div>
+              <h2>Avatar</h2>
+              <div class="subtle">Default avatar file: <span class="mono">Chinstrap_LOgo.jfif</span> in the same directory as this HTML.</div>
 
               <div style="height:10px"></div>
 
-              <label>Avatar data URL (base64)</label>
+              <label>Avatar path (relative/absolute URL)</label>
+              <input id="avatarPath" type="text" />
+
+              <div style="height:10px"></div>
+
+              <label>Or avatar data URL (base64)</label>
               <input id="avatarDataUrl" type="text" placeholder='data:image/jpeg;base64,...' />
 
               <div style="height:10px"></div>
 
               <div class="row">
                 <div class="grow min260">
-                  <label>Or upload an image file (JPG/PNG/WebP)</label>
+                  <label>Or upload an image file (JPG/PNG/WebP/JFIF)</label>
                   <input id="avatarFile" type="file" accept="image/*" />
                 </div>
                 <button class="btn" id="applyAvatarBtn">Apply avatar</button>
@@ -867,28 +867,13 @@
               <div class="notice" id="avatarMsg">
                 <b>Avatar status:</b> <span class="muted" id="avatarMsgText">—</span>
               </div>
-
-              <div class="hr"></div>
-
-              <details>
-                <summary>Why images sometimes show as “broken”</summary>
-                <div class="tiny" style="margin-top:10px">
-                  Common causes:
-                  <ul>
-                    <li>Percent-encoded base64 (e.g., contains <span class="mono">%0A</span>) → must decode + remove whitespace.</li>
-                    <li>Data URL contains line breaks/spaces in the base64 region.</li>
-                    <li>Wrong MIME prefix (e.g., says PNG but bytes are JPG).</li>
-                    <li>Truncated string during copy/paste.</li>
-                  </ul>
-                </div>
-              </details>
             </div>
           </div>
 
           <div class="card">
             <div class="pad">
               <h2>Local persistence</h2>
-              <div class="subtle">This page stores avatar + loaded banks in <span class="mono">localStorage</span> when possible.</div>
+              <div class="subtle">Stores avatar and banks in <span class="mono">localStorage</span> when possible.</div>
 
               <div class="hr"></div>
 
@@ -910,12 +895,18 @@
 
     <footer>
       <div class="tiny">
-        Build discipline: one palette, one UI system, no theme collisions. If something still fails to load, it is almost always input format (TXT/JSON) or a blocked URL fetch.
+        If the bank doesn’t auto-load: open via a local server or use Upload. The site does not “scan” directories; it loads a specific file path.
       </div>
     </footer>
   </main>
 
   <script>
+    /***********************
+     * DEFAULT FILES (same directory as this HTML)
+     ***********************/
+    const DEFAULT_BANK_URL = './ib_bio_clean_index.txt';
+    const DEFAULT_AVATAR_PATH = './Chinstrap_LOgo.jfif';
+
     /***********************
      * TAB NAV
      ***********************/
@@ -935,7 +926,6 @@
         b.setAttribute('aria-selected', on ? 'true' : 'false');
         p.classList.toggle('hide', !on);
       }
-      // update URL hash
       const map = {
         'panel-home':'home',
         'panel-ety':'ety',
@@ -979,19 +969,24 @@
       if (!raw) return '';
       let t = String(raw).trim();
 
-      // decode percent-encoded (your string contains %0A etc)
-      if (/%[0-9A-Fa-f]{2}/.test(t)) {
+      // Only decode percent-encoding for data: URLs (paths may legitimately contain %20)
+      if (t.startsWith('data:') && /%[0-9A-Fa-f]{2}/.test(t)) {
         try { t = decodeURIComponent(t); } catch {}
       }
 
-      // strip whitespace/newlines from the data payload portion
-      const m = t.match(/^(data:[^,]+,)([\s\S]*)$/);
-      if (m){
-        const head = m[1];
-        const payload = m[2].replace(/\s+/g,'');
-        return head + payload;
+      // For data URLs: remove whitespace/newlines from payload
+      if (t.startsWith('data:')){
+        const m = t.match(/^(data:[^,]+,)([\s\S]*)$/);
+        if (m){
+          const head = m[1];
+          const payload = m[2].replace(/\s+/g,'');
+          return head + payload;
+        }
+        return t.replace(/\s+/g,'');
       }
-      return t.replace(/\s+/g,'');
+
+      // For file paths / URLs: keep as-is
+      return t;
     }
 
     async function readFileAsText(file){
@@ -1014,7 +1009,7 @@
     /***********************
      * AVATAR
      ***********************/
-    const DEFAULT_AVATAR_DATA_URL =
+    const FALLBACK_AVATAR_DATA_URL =
 `data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE
 BQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME
 DgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU
@@ -1041,24 +1036,31 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
           $('statusAvatar').textContent = ok ? 'loaded' : 'not loaded';
           if (persist && ok) {
             try { localStorage.setItem('bb.avatar', normalized); } catch {}
+            try { localStorage.setItem('bb.avatarKind', normalized.startsWith('data:') ? 'data' : 'path'); } catch {}
           }
           setStatus();
           resolve(ok);
         };
 
         img.onload = () => finish(true, 'Loaded.');
-        img.onerror = () => finish(false, 'Failed to load. Check MIME prefix, truncation, or encoding.');
+        img.onerror = () => finish(false, 'Failed to load. Check file name/path, or use Upload.');
         img.src = normalized;
       });
     }
 
     $('applyAvatarBtn').addEventListener('click', async () => {
-      const raw = $('avatarDataUrl').value.trim();
-      if (!raw) {
-        $('avatarMsgText').textContent = 'No data URL provided.';
+      const path = $('avatarPath').value.trim();
+      const durl = $('avatarDataUrl').value.trim();
+
+      if (path){
+        await applyAvatar(path, true);
         return;
       }
-      await applyAvatar(raw, true);
+      if (durl){
+        await applyAvatar(durl, true);
+        return;
+      }
+      $('avatarMsgText').textContent = 'No avatar input provided.';
     });
 
     $('avatarFile').addEventListener('change', async (e) => {
@@ -1066,13 +1068,17 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       if (!f) return;
       const durl = await readFileAsDataUrl(f);
       $('avatarDataUrl').value = durl;
+      $('avatarPath').value = '';
       await applyAvatar(durl, true);
     });
 
     $('resetAvatarBtn').addEventListener('click', async () => {
       $('avatarDataUrl').value = '';
+      $('avatarPath').value = DEFAULT_AVATAR_PATH;
       try { localStorage.removeItem('bb.avatar'); } catch {}
-      await applyAvatar(DEFAULT_AVATAR_DATA_URL, false);
+      try { localStorage.removeItem('bb.avatarKind'); } catch {}
+      const ok = await applyAvatar(DEFAULT_AVATAR_PATH, false);
+      if (!ok) await applyAvatar(FALLBACK_AVATAR_DATA_URL, false);
     });
 
     /***********************
@@ -1080,11 +1086,10 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
      ***********************/
     function classifyKind(term){
       const t = (term || '').trim();
-      // Heuristic for etymology forms: prefixes/suffixes/combiners
       const looksEty =
         /^-?[a-z]{1,12}-?$/.test(t) && (t.startsWith('-') || t.endsWith('-')) ||
-        /,\s*-\w+/.test(t) ||               // a-, an-
-        /-\w+$/.test(t) || /^\w+-/.test(t); // suffix/prefix style
+        /,\s*-\w+/.test(t) ||
+        /-\w+$/.test(t) || /^\w+-/.test(t);
       return looksEty ? 'ETY' : 'VOCAB';
     }
 
@@ -1107,11 +1112,9 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       const s = (line || '').trim();
       if (!s) return out;
 
-      // Ignore obvious headers
       const lower = s.toLowerCase();
       if (lower === 'glossary' || lower.startsWith('words in blue')) return out;
 
-      // Tabs first
       if (s.includes('\t')){
         const parts = s.split('\t').map(x => x.trim()).filter(Boolean);
         if (parts.length >= 2){
@@ -1120,10 +1123,8 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
         }
       }
 
-      // Two-column lines: split by 2+ spaces
       const cols = s.split(/\s{2,}/).map(x => x.trim()).filter(Boolean);
       if (cols.length >= 2){
-        // Pair columns (0,1), (2,3), ...
         for (let i=0; i<cols.length-1; i+=2){
           const term = cols[i];
           const meaning = cols[i+1] ?? '';
@@ -1132,14 +1133,12 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
         return out;
       }
 
-      // Em dash / en dash / hyphen with spacing
       const mDash = s.match(/^(.+?)\s*[—–-]\s+(.+)$/);
       if (mDash){
         out.push({term: mDash[1].trim(), meaning: mDash[2].trim(), kind: classifyKind(mDash[1])});
         return out;
       }
 
-      // Colon
       const mColon = s.match(/^(.+?)\s*:\s+(.+)$/);
       if (mColon){
         out.push({term: mColon[1].trim(), meaning: mColon[2].trim(), kind: classifyKind(mColon[1])});
@@ -1168,7 +1167,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
           continue;
         }
 
-        // Continuation line: append to last meaning if exists
         if (last && line.length > 2){
           last.meaning = (last.meaning + ' ' + line).replace(/\s+/g,' ').trim();
         }
@@ -1177,21 +1175,8 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       return dedupe(entries);
     }
 
-    function parseBankAny(textOrJson){
-      // Try JSON first
-      if (typeof textOrJson === 'string'){
-        const maybeJson = safeJsonParse(textOrJson);
-        if (maybeJson) return normalizeBankJson(maybeJson);
-        // else parse as glossary TXT
-        return parseGlossaryText(textOrJson);
-      }
-      return normalizeBankJson(textOrJson);
-    }
-
     function normalizeBankJson(obj){
-      // Accept: [{term, meaning}], or {items:[...]} or {bank:[...]}
       let arr = null;
-
       if (Array.isArray(obj)) arr = obj;
       else if (obj && Array.isArray(obj.items)) arr = obj.items;
       else if (obj && Array.isArray(obj.bank)) arr = obj.bank;
@@ -1209,6 +1194,15 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
         entries.push({term, meaning, kind: (kind === 'ETY' || kind === 'VOCAB') ? kind : classifyKind(term)});
       }
       return dedupe(entries);
+    }
+
+    function parseBankAny(textOrJson){
+      if (typeof textOrJson === 'string'){
+        const maybeJson = safeJsonParse(textOrJson);
+        if (maybeJson) return normalizeBankJson(maybeJson);
+        return parseGlossaryText(textOrJson);
+      }
+      return normalizeBankJson(textOrJson);
     }
 
     /***********************
@@ -1238,7 +1232,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       return arr;
     }
 
-    let bankAll = [];     // {kind, term, meaning}
+    let bankAll = [];
     let bankEty = [];
     let bankVocab = [];
 
@@ -1279,7 +1273,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       p.appendChild(lead);
       p.appendChild(badge);
       p.appendChild(document.createTextNode('?'));
-
       $('etyKindBadge').textContent = kind;
     }
 
@@ -1324,7 +1317,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       etyScore = 0;
       etyAnswered = false;
       etyHistory = [];
-
       $('etyQi').textContent = '0';
       $('etyQt').textContent = String(total);
       $('etyScore').textContent = '0';
@@ -1348,8 +1340,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
 
       const correct = item.meaning;
       const pool = (item.kind === 'ETY' ? bankEty : bankVocab).map(x => x.meaning);
-
-      // If one side is empty (e.g., everything is VOCAB), fall back to all meanings to avoid dead pools.
       const effectivePool = pool.length >= 4 ? pool : bankAll.map(x => x.meaning);
 
       const record = {kind: item.kind, term: item.term, correct, picked:'', ok:false};
@@ -1408,7 +1398,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
         $('etyParseState').textContent = 'No banks loaded.';
         return;
       }
-
       const requested = clamp(parseInt($('etyQCount').value || 40, 10), 1, bankAll.length);
       const indices = Array.from({length: bankAll.length}, (_, i) => i);
       shuffle(indices);
@@ -1419,7 +1408,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
 
       $('etyResultCard').classList.add('hide');
       $('etyQuizCard').classList.remove('hide');
-
       nextEtyQuestion();
     }
 
@@ -1442,12 +1430,9 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       $('etyQuizCard').classList.add('hide');
     });
 
-    // keyboard controls
     window.addEventListener('keydown', (e) => {
       if (!$('panel-ety') || $('panel-ety').classList.contains('hide')) return;
-
-      const quizVisible = !$('etyQuizCard').classList.contains('hide');
-      if (!quizVisible) return;
+      if ($('etyQuizCard').classList.contains('hide')) return;
 
       if (/^[1-4]$/.test(e.key)){
         const i = Number(e.key) - 1;
@@ -1458,7 +1443,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     });
 
     /***********************
-     * BANK LOADING (upload + URL)
+     * BANK LOADING
      ***********************/
     async function loadBankFromFileInput(inputEl){
       const f = inputEl.files?.[0];
@@ -1476,10 +1461,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
 
     async function ingestBanks({combined, etyOnly, vocabOnly}){
       let entries = [];
-
-      if (combined){
-        entries = entries.concat(parseBankAny(combined.content));
-      }
+      if (combined) entries = entries.concat(parseBankAny(combined.content));
       if (etyOnly){
         const e = parseBankAny(etyOnly.content).map(x => ({...x, kind:'ETY'}));
         entries = entries.concat(e);
@@ -1490,15 +1472,13 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       }
 
       bankAll = dedupe(entries);
-
       updateBankUI();
 
-      // persist banks
       try { localStorage.setItem('bb.bankAll', JSON.stringify(bankAll)); } catch {}
 
       $('etyParseState').textContent =
         `${bankAll.length} items loaded` +
-        (combined ? ` · combined: ${combined.name}` : '') +
+        (combined ? ` · ${combined.name}` : '') +
         (etyOnly ? ` · ety: ${etyOnly.name}` : '') +
         (vocabOnly ? ` · vocab: ${vocabOnly.name}` : '');
     }
@@ -1545,12 +1525,12 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     /***********************
      * MCQ JSON RUNNER
      ***********************/
-    let mcqBank = null;       // normalized {title, description, questions:[{prompt, choices[], answer_index, explanation, tags[]}]}
+    let mcqBank = null;
     let mcqPlan = [];
     let mcqIndex = 0;
     let mcqScore = 0;
     let mcqAnswered = false;
-    let mcqAttempts = [];     // record attempts for export
+    let mcqAttempts = [];
 
     function normalizeMcqJson(raw){
       const obj = raw;
@@ -1568,14 +1548,12 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       const questions = [];
       for (const q of qArr){
         if (!q) continue;
-
         const prompt = String(q.prompt ?? q.question ?? q.stem ?? q.text ?? '').trim();
         const choices = q.choices ?? q.options ?? q.answers ?? null;
-
         if (!prompt || !Array.isArray(choices) || choices.length < 2) continue;
+
         const ch = choices.map(x => String(x).trim());
 
-        // answer normalization
         let ai = null;
         if (Number.isInteger(q.answer_index)) ai = q.answer_index;
         else if (Number.isInteger(q.answer)) ai = q.answer;
@@ -1586,13 +1564,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
           const L = q.correct.trim().toUpperCase();
           ai = 'ABCD'.indexOf(L);
         }
-
-        // fallback: if answer provided as exact string match
-        if (ai == null && typeof q.answer_text === 'string'){
-          const idx = ch.findIndex(x => x === q.answer_text);
-          if (idx >= 0) ai = idx;
-        }
-
         if (ai == null || ai < 0 || ai >= ch.length) continue;
 
         const explanation = String(q.explanation ?? q.rationale ?? '').trim();
@@ -1618,7 +1589,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     }
 
     async function loadMcqFromTextareaOrFile(){
-      // file overrides textarea if present
       const f = $('mcqJsonFile').files?.[0];
       let raw = null;
 
@@ -1634,7 +1604,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       }
 
       const normalized = normalizeMcqJson(raw);
-      if (!normalized) throw new Error('JSON parsed, but did not match expected MCQ schema (or normalization failed).');
+      if (!normalized) throw new Error('JSON parsed, but did not match expected MCQ schema.');
 
       mcqBank = normalized;
       updateMcqUI();
@@ -1698,7 +1668,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       const opts = $('mcqOpts');
       opts.innerHTML = '';
 
-      // choices (optionally shuffle choices? currently no—keeps answer index stable)
       q.choices.forEach((choice, i) => {
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -1779,9 +1748,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       renderMcqQuestion();
     }
 
-    function nextMcq(){
-      renderMcqQuestion();
-    }
+    function nextMcq(){ renderMcqQuestion(); }
 
     function finishMcq(){
       $('mcqQuizCard').classList.add('hide');
@@ -1798,7 +1765,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
         li.style.color = a.ok ? 'var(--ok)' : 'var(--bad)';
         const picked = a.picked_index != null ? ('ABCD'[a.picked_index] || a.picked_index) : '?';
         const ans = a.answer_index != null ? ('ABCD'[a.answer_index] || a.answer_index) : '?';
-        li.textContent = `${a.ok ? '✓' : '✗'} [${picked} vs ${ans}] ${a.prompt}` + (a.ok ? '' : ` · correct: ${a.answer_index}`);
+        li.textContent = `${a.ok ? '✓' : '✗'} [${picked} vs ${ans}] ${a.prompt}`;
         if (a.explanation){
           const div = document.createElement('div');
           div.className = 'tiny';
@@ -1846,7 +1813,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       URL.revokeObjectURL(url);
     });
 
-    // Keyboard for MCQ: A-D or 1-4, Enter for next
     window.addEventListener('keydown', (e) => {
       if ($('panel-mcq').classList.contains('hide')) return;
       if ($('mcqQuizCard').classList.contains('hide')) return;
@@ -1891,12 +1857,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       while ((m = re.exec(ibText)) && count < 50){
         const start = Math.max(0, m.index - ctx);
         const end = Math.min(ibText.length, m.index + query.length + ctx);
-        const snippet = ibText.slice(start, end);
-
-        results.push({
-          index: m.index,
-          snippet
-        });
+        results.push({ index: m.index, snippet: ibText.slice(start, end) });
         count++;
       }
       return results;
@@ -1933,10 +1894,9 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
      ***********************/
     $('saveStateBtn').addEventListener('click', () => {
       try{
-        // bankAll + avatar already persisted as we go; this is just a sanity "force"
         if (bankAll?.length) localStorage.setItem('bb.bankAll', JSON.stringify(bankAll));
         $('stateMsgText').textContent = 'Saved (localStorage).';
-      } catch (e){
+      } catch {
         $('stateMsgText').textContent = 'Save failed (storage blocked).';
       }
     });
@@ -1956,7 +1916,6 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
             updateBankUI();
           }
         }
-
         $('stateMsgText').textContent = 'Loaded saved state.';
       } catch {
         $('stateMsgText').textContent = 'Load failed.';
@@ -1966,6 +1925,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     $('wipeStateBtn').addEventListener('click', () => {
       try{
         localStorage.removeItem('bb.avatar');
+        localStorage.removeItem('bb.avatarKind');
         localStorage.removeItem('bb.bankAll');
         $('stateMsgText').textContent = 'Wiped.';
       } catch {
@@ -1982,39 +1942,47 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       window.__mcqLoaded = 0;
       window.__ibTextLoaded = false;
 
-      // avatar: try saved avatar first, else default.
+      // Pre-fill defaults
+      $('bankUrl').value = DEFAULT_BANK_URL;
+      $('avatarPath').value = DEFAULT_AVATAR_PATH;
+
+      // Avatar: prefer saved; else default file; else fallback embedded.
       const savedAvatar = (() => { try { return localStorage.getItem('bb.avatar'); } catch { return null; } })();
-      const rawAvatar = savedAvatar || DEFAULT_AVATAR_DATA_URL;
+      let ok = false;
+      if (savedAvatar){
+        ok = await applyAvatar(savedAvatar, false);
+      } else {
+        ok = await applyAvatar(DEFAULT_AVATAR_PATH, false);
+        if (!ok) ok = await applyAvatar(FALLBACK_AVATAR_DATA_URL, false);
+      }
+      $('avatarMsgText').textContent = ok ? 'Loaded.' : 'Failed to load.';
 
-      // also prefill settings field with the user-provided problematic format possibility:
-      $('avatarDataUrl').value = savedAvatar || '';
-
-      await applyAvatar(rawAvatar, false);
-      $('statusAvatar').textContent = window.__avatarOk ? 'loaded' : 'not loaded';
-      $('avatarMsgText').textContent = window.__avatarOk ? 'Loaded.' : 'Failed to load (check data URL).';
-
-      // banks: try restore
+      // Banks: restore from saved; else try auto-load DEFAULT_BANK_URL.
       try{
         const b = localStorage.getItem('bb.bankAll');
-        if (b){
-          const arr = safeJsonParse(b);
-          if (Array.isArray(arr) && arr.length){
-            bankAll = dedupe(arr.map(x => ({
-              term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
-            })));
-            updateBankUI();
-            $('etyParseState').textContent = `Restored ${bankAll.length} items from saved state.`;
-          } else {
-            updateBankUI();
-          }
+        const arr = b ? safeJsonParse(b) : null;
+        if (Array.isArray(arr) && arr.length){
+          bankAll = dedupe(arr.map(x => ({
+            term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
+          })));
+          updateBankUI();
+          $('etyParseState').textContent = `Restored ${bankAll.length} items from saved state.`;
         } else {
           updateBankUI();
+          try{
+            const combined = await loadBankFromUrl(DEFAULT_BANK_URL);
+            await ingestBanks({combined, etyOnly:null, vocabOnly:null});
+            $('etyParseState').textContent = `Auto-loaded ${bankAll.length} items from ${DEFAULT_BANK_URL}.`;
+          } catch (err){
+            $('etyParseState').textContent =
+              `Auto-load failed for ${DEFAULT_BANK_URL}. Use Upload, or serve the folder via a local server (fetch is often blocked on file://).`;
+          }
         }
       } catch {
         updateBankUI();
+        $('etyParseState').textContent = 'Bank restore/load failed. Use Upload.';
       }
 
-      // set initial status
       setStatus();
     })();
   </script>
