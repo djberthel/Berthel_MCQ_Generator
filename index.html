@@ -3,909 +3,1381 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Berthel's Biology — unified MCQ testing, logging, etymology/vocab practice, and IB text search." />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Berthel's Biology · Unified Workspace v2026.02.10</title>
-
+  <title>Berthel’s Biology — Unified Workspace</title>
+  <meta name="color-scheme" content="dark" />
   <style>
     :root{
-      color-scheme: light;
+      --bg0:#050506;
+      --bg1:#0b0c0e;
+      --bg2:#141518;
 
-      --bg:#f2f2f2;
-      --surface:#ffffff;
-      --ink:#101010;
-      --muted:#4a4a4a;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.045);
+      --surface: rgba(255,255,255,.055);
+      --surface2: rgba(255,255,255,.035);
+      --border: rgba(255,255,255,.12);
 
-      --line:#d6d6d6;
-      --line-strong:#a6a6a6;
+      --fg:#f3f4f6;
+      --muted:#b7bcc6;
 
-      --ok:#1f6a2f;
-      --bad:#9a1f1f;
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --shadow2: 0 10px 24px rgba(0,0,0,.45);
 
-      --shadow: 0 10px 22px rgba(0,0,0,.06);
+      --ok:#e9edf3;      /* monochrome "correct" */
+      --bad:#ff5a5f;     /* keep a single strong error color */
+      --focus:#ffffff;
 
-      --header0:#121212;
-      --header1:#2b2b2b;
+      --radius: 18px;
+      --radius2: 14px;
+      --pad: 18px;
 
-      --radius: 14px;
-      --radius-sm: 10px;
-      --radius-pill: 999px;
+      --container: 1120px;
 
-      --focus: rgba(255,255,255,.22);
-      --focus-dark: rgba(0,0,0,.28);
-
-      --tap: rgba(0,0,0,.04);
+      --btn-bg: linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.70));
+      --btn-fg: #090a0c;
+      --btn-ghost: rgba(255,255,255,.06);
+      --btn-ghost-hover: rgba(255,255,255,.085);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      background:var(--bg);
-      color:var(--ink);
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      line-height:1.5;
-      text-rendering: optimizeLegibility;
+      color:var(--fg);
+      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      background:
+        radial-gradient(1200px 600px at 14% -12%, rgba(255,255,255,.09) 8%, transparent 50%),
+        radial-gradient(900px 520px at 88% -18%, rgba(255,255,255,.06) 12%, transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
+      overflow-x:hidden;
     }
 
-    .wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
+    .container{max-width:var(--container); margin:0 auto; padding: 0 18px;}
+    a{color:inherit}
 
-    /* Header */
-    header{
-      color:#fff;
-      background: radial-gradient(1200px 500px at 20% 0%, #3a3a3a 0%, transparent 60%),
-                  linear-gradient(180deg, var(--header0), var(--header1));
-      border-bottom:1px solid #5f5f5f;
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(12px) saturate(140%);
+      background: rgba(10,11,13,.62);
+      border-bottom: 1px solid var(--border);
     }
-
-    .hero{
-      padding:22px 0;
+    .topbar-inner{
       display:flex;
       align-items:center;
-      gap:16px;
-    }
-
-    .avatar{
-      width:86px;
-      height:70px;               /* oval */
-      border-radius: var(--radius-pill);
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.35);
-      background:#fff;
-      flex: 0 0 auto;
-      box-shadow: 0 10px 18px rgba(0,0,0,.22);
-    }
-    .avatar img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      object-position: 55% 30%;
-      display:block;
+      justify-content:space-between;
+      gap: 16px;
+      padding: 14px 0;
+      flex-wrap: wrap;
     }
 
     .brand{
       display:flex;
       align-items:center;
-      gap:16px;
-      min-width: 0;
+      gap: 14px;
+      min-width: 320px;
     }
-    .brand-text{ min-width:0; }
+    .avatar{
+      width: 56px;
+      height: 46px;            /* oval */
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow2);
+      object-fit: cover;
+      object-position: 58% 34%; /* adjust if you want more/less head */
+      flex: 0 0 auto;
+      background: rgba(255,255,255,.03);
+    }
+    .brand-text{display:flex; flex-direction:column; gap:4px; min-width: 220px;}
+    .brand-title{
+      font-size: 32px;
+      line-height: 1.05;
+      font-weight: 900;
+      letter-spacing: .2px;
+    }
+    .brand-sub{
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 640px;
+    }
 
-    h1{
-      margin:0;
-      font-size:34px;
-      letter-spacing:.2px;
-      line-height: 1.1;
-    }
-    .subtitle{
-      margin:8px 0 0;
-      color:#e2e2e2;
-      max-width: 920px;
-      font-size: 15px;
-    }
-
-    .build-chip{
-      margin-top:10px;
+    .pill{
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:6px 10px;
-      border:1px solid rgba(255,255,255,.38);
-      border-radius: var(--radius-pill);
-      background: rgba(0,0,0,.26);
-      color:#f4f4f4;
-      font-size:12px;
-      letter-spacing:.35px;
-      user-select:none;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:#fff;
-      opacity:.85;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      color: var(--fg);
+      font-weight: 700;
+      font-size: 12.5px;
+      width: fit-content;
     }
 
     /* Tabs */
-    nav{
-      position:sticky;
-      top:0;
-      z-index:10;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-
-    .tabs{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      padding:12px 0;
-    }
-
-    .tab-btn{
-      border:1px solid var(--line-strong);
-      border-radius: var(--radius-pill);
-      background:#fff;
-      color:#1f1f1f;
-      padding:9px 14px;
-      font-weight:900;
+    .tabs{display:flex; gap:10px; align-items:center; flex-wrap: wrap; justify-content:flex-end}
+    .tab{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.035);
+      color: var(--fg);
+      padding: 9px 12px;
+      border-radius: 999px;
       cursor:pointer;
-      transition: transform .05s ease, background .18s ease, border-color .18s ease, color .18s ease;
+      font-weight: 800;
+      font-size: 13.5px;
+      transition: transform .06s, background .15s, border-color .15s;
+      user-select:none;
     }
-    .tab-btn:hover{ background: #f6f6f6; }
-    .tab-btn:active{ transform: translateY(1px); }
-
-    .tab-btn[aria-selected="true"]{
-      background:#161616;
-      color:#fff;
-      border-color:#161616;
-    }
-    .tab-btn:focus-visible{
-      outline:3px solid var(--focus-dark);
-      outline-offset:2px;
+    .tab:hover{background: rgba(255,255,255,.055)}
+    .tab:active{transform: translateY(1px)}
+    .tab[aria-selected="true"]{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.20);
     }
 
-    /* Layout */
-    main{ padding:18px 0 44px; }
+    /* Panels */
+    main{padding: 18px 0 30px}
+    .panel{display:none}
+    .panel.active{display:block}
 
-    .panel{ display:none; }
-    .panel.active{ display:block; }
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+    }
+    @media (max-width: 960px){
+      .grid{grid-template-columns:1fr}
+      .brand-title{font-size: 28px}
+    }
 
     .card{
-      border:1px solid var(--line);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--card), var(--card2));
       border-radius: var(--radius);
-      background: var(--surface);
-      padding:18px;
-      margin-bottom:16px;
       box-shadow: var(--shadow);
     }
-    .card h2,.card h3{ margin:0 0 10px; }
-    .card p{ margin: 10px 0 0; }
-
-    .grid{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
-    .subgrid{ display:grid; gap:14px; grid-template-columns: 2fr 1fr; }
-    @media (max-width:920px){ .subgrid{ grid-template-columns:1fr; } }
-
-    /* Forms */
-    label{
-      display:block;
-      margin:10px 0 6px;
-      font-weight:900;
-      font-size:13px;
-      color:var(--muted);
-      letter-spacing:.2px;
+    .pad{padding: var(--pad)}
+    .h2{
+      margin:0 0 8px;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: .2px;
     }
+    .muted{color: var(--muted)}
+    .small{font-size: 13px}
+    .divider{height:1px; background: var(--border); margin: 14px 0}
 
-    input[type="number"], input[type="search"], textarea{
-      width:100%;
-      border:1px solid #b8b8b8;
-      border-radius: var(--radius-sm);
-      padding:11px 12px;
-      font-size:15px;
-      font-family:inherit;
-      color: var(--ink);
-      background:#fff;
-      box-shadow: 0 1px 0 rgba(0,0,0,.03);
-    }
-    /* Force number input text visibility across odd UA styles */
-    input[type="number"]{
-      font-weight:900;
-      letter-spacing:.2px;
-      appearance: textfield;
-      -moz-appearance: textfield;
-    }
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button{
-      -webkit-appearance: none;
-      margin: 0;
-    }
-
-    textarea{ min-height:170px; resize:vertical; }
-
-    input:focus-visible, textarea:focus-visible{
-      outline:3px solid var(--focus-dark);
-      outline-offset:2px;
-    }
-
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top:10px;
-      align-items:center;
-    }
-
-    button, .btn{
-      border:1px solid #1f1f1f;
-      border-radius: var(--radius-sm);
-      padding:9px 14px;
-      font:inherit;
-      font-weight:900;
-      background:#fff;
-      color:#1f1f1f;
+    /* Buttons / inputs */
+    .row{display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap}
+    .btn{
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 16px;
+      font-weight: 900;
       cursor:pointer;
-      text-decoration:none;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
+      color: var(--btn-fg);
+      background: var(--btn-bg);
+      box-shadow: 0 10px 26px rgba(0,0,0,.35);
+      transition: transform .06s, filter .15s, opacity .15s, background .15s;
       user-select:none;
-      transition: transform .05s ease, background .18s ease, color .18s ease, border-color .18s ease;
     }
-    button:hover, .btn:hover{ background:#f6f6f6; }
-    button:active, .btn:active{ transform: translateY(1px); }
-    button.primary, .btn.primary{
-      background:#1a1a1a;
-      color:#fff;
-      border-color:#1a1a1a;
+    .btn:hover{filter: brightness(1.02)}
+    .btn:active{transform: translateY(1px)}
+    .btn:disabled{opacity:.5; cursor:not-allowed; filter:saturate(.7)}
+    .btn.ghost{
+      color: var(--fg);
+      border: 1px solid var(--border);
+      background: var(--btn-ghost);
+      box-shadow: none;
     }
-    button.primary:hover, .btn.primary:hover{ background:#0f0f0f; }
+    .btn.ghost:hover{background: var(--btn-ghost-hover)}
 
-    button:focus-visible, .btn:focus-visible{
-      outline:3px solid var(--focus-dark);
-      outline-offset:2px;
+    label{display:block; font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 6px}
+    input[type="text"], input[type="number"], textarea, select{
+      width:100%;
+      color: var(--fg);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 15px;
+      outline: none;
+      caret-color: var(--focus);
+      transition: border-color .15s, background .15s, box-shadow .15s;
     }
-
-    .status{
-      color:var(--muted);
-      font-size:13px;
-      margin:8px 0 0;
-    }
-    .status.good{ color: var(--ok); font-weight:800; }
-    .status.bad{ color: var(--bad); font-weight:800; }
-
-    .hidden{ display:none !important; }
-
-    /* MCQ blocks */
-    .question{
-      border:1px solid var(--line);
-      border-radius: var(--radius-sm);
-      background:#fafafa;
-      padding:12px;
-      margin:12px 0;
-    }
-    .question-head{
-      font-weight:1000;
-      margin-bottom:6px;
-      letter-spacing:.2px;
+    input[type="text"]::placeholder, textarea::placeholder{color: rgba(255,255,255,.45)}
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus{
+      border-color: rgba(255,255,255,.40);
+      box-shadow: 0 0 0 4px rgba(255,255,255,.08);
+      background: rgba(255,255,255,.08);
     }
 
-    .option{
-      display:grid;
-      grid-template-columns:28px 1fr;
-      gap:10px;
-      margin:8px 0;
-      border:1px solid #cfcfcf;
-      border-radius: 10px;
-      background:#fff;
-      padding:10px;
+    /* Make number inputs actually readable + remove ugly spinners */
+    input[type="number"]{appearance:textfield; -moz-appearance:textfield}
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+
+    textarea{min-height: 120px; resize: vertical}
+    select{cursor:pointer}
+
+    /* Quiz option buttons (shared look) */
+    .opts{display:grid; gap: 12px}
+    .opt{
+      width:100%;
+      text-align:left;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: var(--fg);
+      border-radius: 14px;
+      padding: 14px 14px;
       cursor:pointer;
-      transition: background .12s ease, border-color .12s ease;
+      transition: transform .06s, background .15s, border-color .15s;
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
     }
-    .option:hover{ background: #fbfbfb; }
-    .option:active{ background: #f4f4f4; }
-    .option input{ margin-top:3px; }
+    .opt:hover{background: rgba(255,255,255,.075); transform: translateY(-1px)}
+    .opt:active{transform: translateY(0px)}
+    .opt:disabled{cursor:not-allowed; opacity:.92}
+    .opt.correct{border-color: rgba(255,255,255,.55)}
+    .opt.wrong{border-color: rgba(255,90,95,.75); background: rgba(255,90,95,.10)}
+    .kbd{
+      font: 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(0,0,0,.20);
+      padding: 2px 7px;
+      border-radius: 10px;
+      flex: 0 0 auto;
+      margin-top: 1px;
+    }
 
-    .score{ font-size:22px; font-weight:1000; margin:0 0 10px; }
-    .correct{ color:var(--ok); font-weight:1000; }
-    .incorrect{ color:var(--bad); font-weight:1000; }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      overflow:hidden;
+      min-width: 220px;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(255,255,255,.85), rgba(255,255,255,.45));
+      transition: width .2s ease;
+    }
 
-    /* Details (JSON output) */
+    .q{
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      margin: 10px 0 12px;
+    }
+
     details{
-      margin-top:10px;
-      border:1px solid var(--line);
-      border-radius: var(--radius-sm);
-      background: #fbfbfb;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px;
       padding: 10px 12px;
     }
-    summary{
-      cursor:pointer;
-      font-weight:1000;
-      list-style:none;
-    }
-    summary::-webkit-details-marker{ display:none; }
-    details[open] summary{ margin-bottom:8px; }
+    summary{cursor:pointer}
 
-    /* Etymology panel: match header palette */
-    .card.dark{
-      border-color: rgba(255,255,255,.18);
-      background: radial-gradient(1000px 420px at 18% 0%, #3a3a3a 0%, transparent 60%),
-                  linear-gradient(180deg, #111, #2a2a2a);
-      color: #f2f2f2;
-      box-shadow: 0 16px 28px rgba(0,0,0,.14);
-    }
-    .card.dark .status{ color: #d6d6d6; }
-    .card.dark h2{ color:#fff; }
-    .card.dark iframe{
-      border-color: rgba(255,255,255,.20);
-      background:#fff;
+    .footer{
+      padding: 14px 0 30px;
+      color: rgba(255,255,255,.45);
+      font-size: 12px;
     }
 
-    iframe{
-      width:100%;
-      min-height:720px;
-      border:1px solid var(--line);
-      border-radius: var(--radius-sm);
-      background:#fff;
-    }
-
-    /* Search results */
-    .search-results{
-      max-height:520px;
-      overflow:auto;
-      border:1px solid var(--line);
-      border-radius: var(--radius-sm);
-      background:#fff;
-      margin-top:10px;
-    }
-    .result-item{
-      padding:10px 12px;
-      border-bottom:1px solid #ececec;
-      font-size:14px;
-      white-space:pre-wrap;
-    }
-    .result-item:last-child{ border-bottom:none; }
-
-    /* Tables */
-    table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:14px;
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius: var(--radius-sm);
-      overflow:hidden;
-      margin-top:10px;
-    }
-    thead th{
-      position: sticky;
-      top: 0;
-      background:#f6f6f6;
-      z-index: 1;
-    }
-    th,td{ border-bottom:1px solid #ececec; padding:8px 10px; text-align:left; }
-
-    footer{
-      text-align:center;
-      color:var(--muted);
-      font-size:13px;
-      padding:16px;
-    }
-
-    code{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-      font-size:.95em;
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; scroll-behavior:auto !important}
     }
   </style>
 </head>
 
 <body>
-<header>
-  <div class="wrap hero">
-    <div class="brand">
-      <!-- Avatar: photoreal chinstrap penguin, oval crop -->
-      <div class="avatar" aria-label="Chinstrap penguin avatar">
-        <picture>
-          <source type="image/webp" srcset="chinstrap_avatar_256.webp?v=20260210">
-          <source type="image/jpeg" srcset="chinstrap_avatar_256.jpg?v=20260210">
-          <!-- Last-resort fallback to your original JFIF, if present -->
-          <img src="Chinstrap_LOgo.jfif" alt="Chinstrap penguin portrait" loading="eager" decoding="async">
-        </picture>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <!-- Embedded JPG (avoids .jfif loading issues). Replace with your own file if desired. -->
+        <img
+          class="avatar"
+          alt="Chinstrap penguin avatar"
+          src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE
+BQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME
+DgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU
+FBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA
+AAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB
+BhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/
+xAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A
+9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o
+lq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI
+3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5
+p+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU
+qVKlSpUqVKlSpUqVKlf/2Q=="
+        />
+
+        <div class="brand-text">
+          <div class="brand-title">Berthel’s Biology</div>
+          <div class="brand-sub">
+            Professional student testing and review workspace. Answer MCQs, log attempts, review explanations,
+            practice etymology/vocabulary, and search the full IB Biology text file.
+          </div>
+          <div class="pill">LIVE BUILD: Unified Workspace v2026.02.09</div>
+        </div>
       </div>
 
-      <div class="brand-text">
-        <h1>Berthel's Biology</h1>
-        <p class="subtitle">
-          Professional student testing and review workspace. Answer MCQs, log attempts, review explanations,
-          practice etymology/vocabulary, and search the full IB Biology text file.
-        </p>
-        <div class="build-chip"><span class="dot"></span>LIVE BUILD: Unified Workspace v2026.02.10</div>
-      </div>
+      <nav class="tabs" role="tablist" aria-label="Workspace sections">
+        <button class="tab" role="tab" data-tab="home" aria-selected="true">Workspace</button>
+        <button class="tab" role="tab" data-tab="mcq" aria-selected="false">MCQs</button>
+        <button class="tab" role="tab" data-tab="ety" aria-selected="false">Etymology</button>
+        <button class="tab" role="tab" data-tab="search" aria-selected="false">Text Search</button>
+      </nav>
     </div>
-  </div>
-</header>
+  </header>
 
-<nav>
-  <div class="wrap tabs" role="tablist" aria-label="Workspace modules">
-    <button class="tab-btn" role="tab" aria-selected="true" data-panel="dashboard" type="button">Dashboard</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-panel="mcq" type="button">MCQ Test + Review</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-panel="etymo" type="button">Etymology &amp; Vocab</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-panel="glossary" type="button">IB Text Search</button>
-  </div>
-</nav>
-
-<main class="wrap">
-  <section class="panel active" id="dashboard">
-    <div class="card">
-      <h2>All Modules Ready</h2>
+  <main class="container">
+    <!-- ===================== -->
+    <!-- Workspace / Dashboard  -->
+    <!-- ===================== -->
+    <section id="home" class="panel active" aria-label="Workspace dashboard">
       <div class="grid">
-        <div><strong>MCQ Generator:</strong><br/>Build randomized MCQs from term–definition pairs (no external tooling).</div>
-        <div><strong>MCQ Test + Log:</strong><br/>Students answer once → graded review. Guesses are logged in-browser.</div>
-        <div><strong>Etymology + Vocab:</strong><br/>Runs embedded on this page (no separate navigation, no theme clash UI elements).</div>
-        <div><strong>IB Text Search:</strong><br/>Search every line from <code>ib_bio_clean_index.txt</code>.</div>
-      </div>
-      <p class="status">Tip: This site is static; if you change files, hard-refresh (Ctrl+F5). Query-string cache-busting is already applied where it matters.</p>
-    </div>
-  </section>
+        <div class="card">
+          <div class="pad">
+            <div class="h2">Quick Actions</div>
+            <div class="muted small">
+              Single-page integration: no external links, no theme clashes, no “open the other page” behavior.
+            </div>
+            <div class="divider"></div>
 
-  <section class="panel" id="mcq">
-    <div class="subgrid">
-      <div class="card">
-        <h2>MCQ Generator</h2>
-        <p class="status">Input format: one pair per line as <code>term | definition</code>. The generator auto-loads its output into the reviewer.</p>
+            <div class="row">
+              <div>
+                <div class="pill">MCQ Practice · attempt logging · explanations</div>
+              </div>
+              <button class="btn" data-jump="mcq">Open MCQs</button>
+            </div>
 
-        <label for="pairInput">Source terms</label>
-        <textarea id="pairInput" spellcheck="false"
-          placeholder="mitochondrion | site of aerobic respiration and ATP production&#10;ribosome | site of protein synthesis"></textarea>
+            <div style="height:10px"></div>
 
-        <div class="grid">
-          <div>
-            <label for="qCount">Number of questions</label>
-            <input id="qCount" type="number" min="1" step="1" inputmode="numeric" value="8" aria-label="Number of questions to generate" />
-            <p class="status" id="qCountHelp">Type a number (e.g., 10). It will clamp to the number of available pairs.</p>
+            <div class="row">
+              <div>
+                <div class="pill">Etymology + Vocabulary · fast recall drills</div>
+              </div>
+              <button class="btn" data-jump="ety">Open Etymology</button>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <div class="row">
+              <div>
+                <div class="pill">IB Biology text · local file search</div>
+              </div>
+              <button class="btn" data-jump="search">Open Text Search</button>
+            </div>
+
+            <div class="divider"></div>
+            <div class="muted small">
+              Note: attempt logs are stored locally in the browser (localStorage). Clearing browser data clears logs.
+            </div>
           </div>
         </div>
 
-        <div class="actions">
-          <button class="primary" id="generateBtn" type="button">Generate + Load into Reviewer</button>
-          <button id="useSamplePairsBtn" type="button">Load sample pairs</button>
+        <div class="card">
+          <div class="pad">
+            <div class="h2">Recent Attempts</div>
+            <div class="muted small">Last 12 attempts across modules (local). Export if you care.</div>
+            <div class="divider"></div>
+
+            <div id="attemptsList" class="muted small">No attempts logged yet.</div>
+
+            <div class="divider"></div>
+            <div class="row">
+              <button class="btn ghost" id="exportAttemptsBtn">Export CSV</button>
+              <button class="btn ghost" id="clearAttemptsBtn">Clear Logs</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== -->
+    <!-- MCQ MODULE (Integrated) -->
+    <!-- ===================== -->
+    <section id="mcq" class="panel" aria-label="MCQ practice">
+      <div class="card">
+        <div class="pad">
+          <div class="row">
+            <div>
+              <div class="h2">MCQ Practice</div>
+              <div class="muted small">Runs directly inside this page. Keyboard: 1–5 answer · Enter next.</div>
+            </div>
+            <div class="pill">Integrated · Attempt log · Explanations</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <section class="card" id="mcq-loader">
+        <div class="pad">
+          <div class="row">
+            <div style="min-width:240px">
+              <label for="mcq-topic">Topic</label>
+              <select id="mcq-topic"></select>
+            </div>
+
+            <div style="min-width:200px">
+              <label for="mcq-count">Questions</label>
+              <input id="mcq-count" type="number" min="1" value="20" />
+              <div class="muted small" id="mcq-maxHint" style="margin-top:6px"></div>
+            </div>
+
+            <div style="flex:1"></div>
+
+            <button id="mcq-startBtn" class="btn">Start</button>
+          </div>
+
+          <div style="height:10px"></div>
+          <div id="mcq-summary" class="muted small"></div>
+        </div>
+      </section>
+
+      <div style="height:14px"></div>
+
+      <section class="card" id="mcq-quiz" style="display:none">
+        <div class="pad">
+          <div class="row" style="margin-bottom:10px">
+            <div class="pill">Q <span id="mcq-qi">0</span>/<span id="mcq-qt">0</span></div>
+            <div class="pill">Score <span id="mcq-score">0</span></div>
+            <div style="flex:1;min-width:40%">
+              <div class="bar"><div id="mcq-pbar"></div></div>
+            </div>
+          </div>
+
+          <div class="q" id="mcq-stem"></div>
+          <div class="opts" id="mcq-opts" role="group" aria-label="MCQ options"></div>
+
+          <div style="height:10px"></div>
+          <details id="mcq-explainBox" style="display:none" open>
+            <summary class="muted small">Explanation</summary>
+            <div id="mcq-explain" class="small" style="margin-top:8px"></div>
+          </details>
+
+          <div class="row" style="margin-top:14px">
+            <div class="muted" id="mcq-feedback"></div>
+            <div style="display:flex; gap:10px">
+              <button id="mcq-nextBtn" class="btn" disabled>Next</button>
+              <button id="mcq-finishBtn" class="btn ghost">Finish</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height:14px"></div>
+
+      <section class="card" id="mcq-result" style="display:none">
+        <div class="pad">
+          <div class="row">
+            <div>
+              <div class="h2">Results</div>
+              <div class="muted small">Review is included; “Try again” returns to setup.</div>
+            </div>
+            <div class="pill">Logged locally</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="pill">Score: <strong id="mcq-finalScore">0</strong></div>
+            <div class="pill">Questions: <strong id="mcq-finalTotal">0</strong></div>
+            <div class="pill">Accuracy: <strong id="mcq-finalPct">0%</strong></div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <details open>
+            <summary class="muted small">Review</summary>
+            <ol id="mcq-review" style="margin-top:8px"></ol>
+          </details>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <button class="btn" id="mcq-retryBtn">Try again</button>
+            <button class="btn ghost" id="mcq-exitBtn">Exit</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ===================== -->
+    <!-- ETYMOLOGY MODULE (Integrated + monochrome theme) -->
+    <!-- ===================== -->
+    <section id="ety" class="panel" aria-label="Etymology and vocabulary engine">
+      <div class="card">
+        <div class="pad">
+          <div class="row">
+            <div>
+              <div class="h2">Etymology + Vocabulary Review Engine</div>
+              <div class="muted small">Monochrome rebuild to match site. Keyboard: 1–4 answer · Enter next.</div>
+            </div>
+            <div class="pill">Mixed bank · 4 choices · Fast drill</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <section class="card" id="ety-loader">
+        <div class="pad">
+          <div class="row">
+            <div style="min-width:220px">
+              <label for="ety-qCount">Questions</label>
+              <input id="ety-qCount" type="number" min="1" value="40" />
+              <div class="muted small" id="ety-maxHint" style="margin-top:6px"></div>
+            </div>
+
+            <div class="pill">Mixed: Etymology + Vocabulary · 4 choices</div>
+
+            <div style="flex:1"></div>
+
+            <button id="ety-startBtn" class="btn">Start</button>
+          </div>
+
+          <div style="height:10px"></div>
+          <div id="ety-summary" class="muted small"></div>
+          <div class="muted small" style="margin-top:6px">Keys 1–4 answer · Enter next.</div>
+        </div>
+      </section>
+
+      <div style="height:14px"></div>
+
+      <section class="card" id="ety-quiz" style="display:none">
+        <div class="pad">
+          <div class="row" style="margin-bottom:10px">
+            <div class="pill">Q <span id="ety-qi">0</span>/<span id="ety-qt">0</span></div>
+            <div class="pill">Score <span id="ety-score">0</span></div>
+            <div style="flex:1;min-width:40%"><div class="bar"><div id="ety-pbar"></div></div></div>
+          </div>
+
+          <div class="q" id="ety-prompt"></div>
+          <div class="opts" id="ety-opts" role="group" aria-label="options"></div>
+
+          <div class="row" style="margin-top:14px">
+            <div class="muted" id="ety-feedback"></div>
+            <div style="display:flex; gap:10px">
+              <button id="ety-nextBtn" class="btn" disabled>Next</button>
+              <button id="ety-finishNowBtn" class="btn ghost">Finish</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height:14px"></div>
+
+      <section class="card" id="ety-result" style="display:none">
+        <div class="pad">
+          <div class="h2">Results</div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap; margin-top:10px">
+            <div class="pill">Score: <strong id="ety-finalScore">0</strong></div>
+            <div class="pill">Questions: <strong id="ety-finalTotal">0</strong></div>
+            <div class="pill">Accuracy: <strong id="ety-finalPct">0%</strong></div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <details open>
+            <summary class="muted small">Review</summary>
+            <ol id="ety-review" style="margin-top:8px"></ol>
+          </details>
+
+          <div class="divider"></div>
+
+          <div class="row">
+            <button class="btn" id="ety-retryBtn">Try again</button>
+            <button class="btn ghost" id="ety-exitBtn">Exit</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Banks: paste your existing FULL JSON arrays into these script tags (unchanged). -->
+      <script id="ety-bank-ety" type="application/json">[]</script>
+      <script id="ety-bank-vocab" type="application/json">[]</script>
+    </section>
+
+    <!-- ===================== -->
+    <!-- TEXT SEARCH MODULE -->
+    <!-- ===================== -->
+    <section id="search" class="panel" aria-label="IB Biology text search">
+      <div class="card">
+        <div class="pad">
+          <div class="row">
+            <div>
+              <div class="h2">IB Biology Text Search</div>
+              <div class="muted small">Load a local .txt file once; then search instantly (stored locally).</div>
+            </div>
+            <div class="pill">Local-only · No uploads</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:14px"></div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="pad">
+            <div class="h2">Load Text</div>
+
+            <label for="txtFile">IB Biology text file (.txt)</label>
+            <input id="txtFile" type="file" accept=".txt,.text,.md" />
+
+            <div style="height:10px"></div>
+
+            <div class="row">
+              <button class="btn ghost" id="clearTextBtn">Clear Loaded Text</button>
+              <div class="muted small" id="textStats">No text loaded.</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="muted small">
+              Tip: if your text is huge, keep it plain (no PDF). This is a lightweight local search, not OCR.
+            </div>
+          </div>
         </div>
 
-        <p class="status" id="genStatus"></p>
+        <div class="card">
+          <div class="pad">
+            <div class="h2">Search</div>
 
-        <details id="jsonDetails">
-          <summary>Show generated MCQ JSON</summary>
-          <textarea id="generatedJson" spellcheck="false" readonly></textarea>
-        </details>
+            <label for="query">Query</label>
+            <input id="query" type="text" placeholder="e.g., chemiosmosis, meiosis, Hardy-Weinberg…" />
+
+            <div style="height:10px"></div>
+
+            <div class="row">
+              <button class="btn" id="runSearchBtn">Search</button>
+              <button class="btn ghost" id="clearResultsBtn">Clear Results</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="muted small" id="resultsMeta">No results.</div>
+          </div>
+        </div>
       </div>
+
+      <div style="height:14px"></div>
 
       <div class="card">
-        <h2>MCQ Reviewer</h2>
-
-        <label for="jsonInput">Paste MCQ JSON</label>
-        <textarea id="jsonInput" spellcheck="false"
-          placeholder='{"questions":[{"id":1,"stem":"...","options":{"A":"...","B":"...","C":"...","D":"..."},"correct":"A","rationale_correct":"...","rationale_wrong":{"A":"...","B":"...","C":"...","D":"..."}}]}'></textarea>
-
-        <div class="actions">
-          <button class="primary" id="loadBtn" type="button">Load Quiz</button>
-          <button id="sampleBtn" type="button">Load sample quiz</button>
-          <button id="resetBtn" type="button">Clear</button>
+        <div class="pad">
+          <div class="h2">Results</div>
+          <div id="results" class="muted small">—</div>
         </div>
-
-        <p class="status" id="revStatus">Workflow: answer all questions → submit once → full graded review.</p>
       </div>
+    </section>
+
+    <div class="footer">
+      Single-file workspace · Monochrome theme · Integrated modules (no external links).
     </div>
+  </main>
 
-    <div class="card hidden" id="quizCard">
-      <h3>Student Test</h3>
-      <div id="quiz"></div>
-      <div class="actions">
-        <button class="primary" id="submitBtn" type="button">Submit Answers</button>
-      </div>
-    </div>
-
-    <div class="card hidden" id="resultsCard">
-      <h3>Graded Review and Explanations</h3>
-      <div id="results"></div>
-    </div>
-
-    <div class="card" id="attemptLogCard">
-      <h3>Attempt Log (Guesses Recorded)</h3>
-      <p class="status">Logged per submission: chosen answer, correct answer, correctness, timestamp. Stored in this browser’s localStorage.</p>
-      <div class="actions">
-        <button id="clearLogBtn" type="button">Clear Log</button>
-      </div>
-      <div id="attemptLogWrap"></div>
-    </div>
-  </section>
-
-  <section class="panel" id="etymo">
-    <div class="card dark">
-      <h2>Etymology + Vocabulary Review</h2>
-      <p class="status">Embedded below with the site’s header palette. If the embedded page changes, keep it in the same folder as <code>index.html</code>.</p>
-
-      <iframe
-        src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html?v=20260210"
-        title="Etymology and Vocabulary Engine"
-        loading="lazy"></iframe>
-    </div>
-  </section>
-
-  <section class="panel" id="glossary">
-    <div class="card">
-      <h2>IB Biology Full Text Search</h2>
-
-      <label for="glossarySearch">Search all lines from ib_bio_clean_index.txt</label>
-      <input id="glossarySearch" type="search" placeholder="Try: photosynthesis, ATP, evolution" />
-
-      <p id="glossaryStatus" class="status">Loading full text file…</p>
-      <div class="search-results" id="glossaryResults"></div>
-    </div>
-  </section>
-</main>
-
-<footer>Berthel's Biology · Built for smooth classroom testing and revision.</footer>
-
-<script>
-(() => {
-  const state = {
-    currentQuiz: null,
-    glossaryLines: [],
-    attemptLog: JSON.parse(localStorage.getItem('berthelAttemptLog') || '[]')
-  };
-
-  const $ = (id) => document.getElementById(id);
-  const setStatus = (el, msg, tone) => {
-    el.textContent = msg || '';
-    el.classList.remove('good','bad');
-    if (tone === 'good') el.classList.add('good');
-    if (tone === 'bad') el.classList.add('bad');
-  };
-
-  // Tabs / Panels
-  const tabs = [...document.querySelectorAll('.tab-btn')];
-  const panels = [...document.querySelectorAll('.panel')];
-
-  function switchPanel(panelId) {
-    tabs.forEach(btn => {
-      const active = (btn.dataset.panel === panelId);
-      btn.setAttribute('aria-selected', active ? 'true' : 'false');
-    });
-    panels.forEach(panel => panel.classList.toggle('active', panel.id === panelId));
-    localStorage.setItem('bb_active_panel', panelId);
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  }
-  tabs.forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
-
-  // Restore last panel
-  const savedPanel = localStorage.getItem('bb_active_panel');
-  if (savedPanel && document.getElementById(savedPanel)) switchPanel(savedPanel);
-
-  // Sample data
-  const samplePairs = [
-    'mitochondrion | site of aerobic respiration and ATP production',
-    'ribosome | site of protein synthesis',
-    'chlorophyll | green pigment that absorbs light for photosynthesis',
-    'osmosis | movement of water across a selectively permeable membrane',
-    'enzyme | biological catalyst that lowers activation energy',
-    'nucleus | organelle containing DNA in eukaryotic cells',
-    'allele | one version of a gene',
-    'active transport | movement against concentration gradient using ATP'
-  ].join('\n');
-
-  const sampleQuiz = {
-    questions: [
-      {
-        id: 1,
-        stem: 'Which organelle is primarily responsible for ATP production in eukaryotic cells?',
-        options: { A: 'Nucleus', B: 'Mitochondrion', C: 'Ribosome', D: 'Golgi apparatus' },
-        correct: 'B',
-        rationale_correct: 'Mitochondria carry out aerobic respiration and produce most ATP in eukaryotic cells.',
-        rationale_wrong: {
-          A: 'The nucleus stores genetic information; it is not the main ATP source.',
-          B: 'Correct.',
-          C: 'Ribosomes build proteins, not ATP as a primary role.',
-          D: 'Golgi modifies and packages proteins/lipids.'
-        }
-      }
+  <!-- ===================== -->
+  <!-- MCQ BANK (paste yours here) -->
+  <!-- Format:
+    [
+      {"id":"B2.1-001","topic":"B2.1 Membranes","stem":"…","choices":["A","B","C","D"],"answerIndex":2,"explanation":"…"},
+      ...
     ]
-  };
-
-  // Generator helpers
-  function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
+  -->
+  <script id="mcq-bank" type="application/json">[
+    {
+      "id": "DEMO-001",
+      "topic": "Demo",
+      "stem": "Which statement best describes facilitated diffusion?",
+      "choices": [
+        "ATP-driven transport against a gradient",
+        "Passive transport via membrane proteins down a gradient",
+        "Bulk transport via vesicles",
+        "Water diffusion only, through a partially permeable membrane"
+      ],
+      "answerIndex": 1,
+      "explanation": "Facilitated diffusion is passive and uses channels/carriers; it moves substances down their concentration gradient without ATP."
     }
-    return a;
-  }
+  ]</script>
 
-  function parsePairs(text) {
-    return text.split('\n')
-      .map(s => s.trim())
-      .filter(Boolean)
-      .map(line => {
-        const parts = line.split('|').map(x => x.trim());
-        if (parts.length < 2 || !parts[0] || !parts[1]) return null;
-        return { term: parts[0], definition: parts.slice(1).join(' | ') };
-      })
-      .filter(Boolean);
-  }
+  <script>
+    /* =======================
+       Tab navigation
+    ======================= */
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const panels = Array.from(document.querySelectorAll('.panel'));
 
-  $('useSamplePairsBtn').addEventListener('click', () => {
-    $('pairInput').value = samplePairs;
-    setStatus($('genStatus'), 'Loaded sample pairs.', 'good');
-  });
-
-  $('sampleBtn').addEventListener('click', () => {
-    $('jsonInput').value = JSON.stringify(sampleQuiz, null, 2);
-    setStatus($('revStatus'), 'Sample quiz loaded. Click “Load Quiz”.', 'good');
-  });
-
-  $('generateBtn').addEventListener('click', () => {
-    const pairs = parsePairs($('pairInput').value);
-    const genStatus = $('genStatus');
-    if (pairs.length < 4) {
-      setStatus(genStatus, 'Provide at least 4 valid "term | definition" pairs.', 'bad');
-      return;
+    function showPanel(id){
+      panels.forEach(p => p.classList.toggle('active', p.id === id));
+      tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.tab === id)));
+      history.replaceState(null, '', '#' + id);
+      window.scrollTo({top:0, behavior:'instant'});
     }
 
-    const rawCount = Number($('qCount').value);
-    const count = Math.max(1, Math.min(Number.isFinite(rawCount) ? rawCount : 1, pairs.length));
-    $('qCount').value = String(count);
+    tabs.forEach(t => t.addEventListener('click', () => showPanel(t.dataset.tab)));
+    document.querySelectorAll('[data-jump]').forEach(b => b.addEventListener('click', () => showPanel(b.dataset.jump)));
 
-    const selected = shuffle(pairs).slice(0, count);
+    // hash routing
+    (function(){
+      const hash = (location.hash || '').replace('#','').trim();
+      if (hash && panels.some(p => p.id === hash)) showPanel(hash);
+    })();
 
-    const questions = selected.map((item, index) => {
-      const wrongDefs = shuffle(pairs.filter(p => p.term !== item.term).map(p => p.definition)).slice(0, 3);
-      const optionsArray = shuffle([item.definition, ...wrongDefs]).slice(0, 4);
-      const letters = ['A','B','C','D'];
+    /* =======================
+       Local storage helpers
+    ======================= */
+    function safeJSONParse(s, fallback){
+      try{ return JSON.parse(s); } catch{ return fallback; }
+    }
+    function lsGet(key, fallback){
+      try{
+        const v = localStorage.getItem(key);
+        return v === null ? fallback : safeJSONParse(v, fallback);
+      } catch { return fallback; }
+    }
+    function lsSet(key, obj){
+      try{ localStorage.setItem(key, JSON.stringify(obj)); } catch {}
+    }
+    function lsDel(key){ try{ localStorage.removeItem(key); } catch {} }
 
-      const options = {};
-      let correct = 'A';
-      letters.forEach((letter, i) => {
-        options[letter] = optionsArray[i] || '(missing option)';
-        if (options[letter] === item.definition) correct = letter;
+    const ATTEMPT_KEY = 'bb_attempts_v1';
+
+    function logAttempt(moduleName, meta){
+      const attempts = lsGet(ATTEMPT_KEY, []);
+      attempts.unshift({
+        ts: new Date().toISOString(),
+        module: moduleName,
+        ...meta
       });
+      lsSet(ATTEMPT_KEY, attempts.slice(0, 200));
+      renderAttempts();
+    }
 
-      const wrong = {};
-      letters.forEach(letter => {
-        wrong[letter] = (options[letter] === item.definition) ? 'Correct option.' : 'This choice does not match the target term.';
-      });
-
-      return {
-        id: index + 1,
-        stem: `What is the best definition of "${item.term}"?`,
-        options,
-        correct,
-        rationale_correct: `The correct definition for "${item.term}" is: ${item.definition}.`,
-        rationale_wrong: wrong
-      };
-    });
-
-    const payload = { questions };
-    $('generatedJson').value = JSON.stringify(payload, null, 2);
-    $('jsonDetails').open = true;
-
-    $('jsonInput').value = $('generatedJson').value;
-    setStatus($('revStatus'), `Generated ${questions.length} question(s). Click “Load Quiz” to start.`, 'good');
-    setStatus(genStatus, `Generated ${questions.length} question(s) and loaded JSON into the reviewer.`, 'good');
-
-    switchPanel('mcq');
-  });
-
-  // Reviewer
-  function parseQuizData() {
-    try {
-      const data = JSON.parse($('jsonInput').value);
-      if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
-        setStatus($('revStatus'), 'JSON must include a non-empty "questions" array.', 'bad');
-        return null;
+    function renderAttempts(){
+      const box = document.getElementById('attemptsList');
+      const attempts = lsGet(ATTEMPT_KEY, []);
+      if (!attempts.length){
+        box.textContent = 'No attempts logged yet.';
+        return;
       }
-      setStatus($('revStatus'), `Quiz detected: ${data.questions.length} question(s).`, 'good');
-      return data;
-    } catch (err) {
-      setStatus($('revStatus'), `Invalid JSON: ${err.message}`, 'bad');
-      return null;
+      const rows = attempts.slice(0, 12).map(a => {
+        const when = a.ts.replace('T',' ').replace('Z','');
+        const score = (typeof a.score === 'number' && typeof a.total === 'number')
+          ? `${a.score}/${a.total} (${Math.round((a.score/a.total)*100)}%)`
+          : '—';
+        const extra = a.topic ? ` · ${a.topic}` : '';
+        return `• ${when} · ${a.module}${extra} · ${score}`;
+      });
+      box.textContent = rows.join('\n');
+      box.style.whiteSpace = 'pre-line';
     }
-  }
 
-  function clearNode(node) {
-    while (node.firstChild) node.removeChild(node.firstChild);
-  }
+    document.getElementById('clearAttemptsBtn').addEventListener('click', () => {
+      lsDel(ATTEMPT_KEY);
+      renderAttempts();
+    });
 
-  $('loadBtn').addEventListener('click', () => {
-    const data = parseQuizData();
-    if (!data) return;
+    document.getElementById('exportAttemptsBtn').addEventListener('click', () => {
+      const attempts = lsGet(ATTEMPT_KEY, []);
+      const header = ['ts','module','topic','score','total','accuracy'];
+      const lines = [header.join(',')];
+      attempts.forEach(a => {
+        const score = a.score ?? '';
+        const total = a.total ?? '';
+        const acc = (typeof a.score === 'number' && typeof a.total === 'number' && a.total)
+          ? Math.round((a.score/a.total)*100)
+          : '';
+        const row = [
+          a.ts,
+          (a.module || '').replaceAll(',',' '),
+          (a.topic || '').replaceAll(',',' '),
+          score,
+          total,
+          acc
+        ];
+        lines.push(row.join(','));
+      });
+      const blob = new Blob([lines.join('\n')], {type:'text/csv;charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'bertels_biology_attempts.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
 
-    state.currentQuiz = data;
-    const quizEl = $('quiz');
+    renderAttempts();
 
-    clearNode(quizEl);
-    clearNode($('results'));
-    $('resultsCard').classList.add('hidden');
+    /* =======================
+       RNG helpers (stable-ish)
+    ======================= */
+    function randomInt(max){
+      if (max <= 0) return 0;
+      const c = window.crypto || window.msCrypto;
+      if (c && c.getRandomValues){
+        const buf = new Uint32Array(1);
+        const range = 0xFFFFFFFF;
+        const limit = range - (range % max);
+        let x = 0;
+        do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+        return x % max;
+      }
+      return Math.floor(Math.random() * max);
+    }
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = randomInt(i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
 
-    data.questions.forEach((q, i) => {
-      const qId = (q.id ?? (i + 1));
-      const qWrap = document.createElement('div');
-      qWrap.className = 'question';
+    /* =======================
+       MCQ MODULE
+    ======================= */
+    const MCQ_CHOICES_MAX = 5;
 
-      const head = document.createElement('div');
-      head.className = 'question-head';
-      head.textContent = `Question ${qId}`;
-      qWrap.appendChild(head);
+    const mcq$ = (id) => document.getElementById(id);
+    const mcqShow = (el, on) => el.style.display = on ? '' : 'none';
 
-      const stem = document.createElement('div');
-      stem.textContent = q.stem || 'No question text provided.';
-      qWrap.appendChild(stem);
+    function parseMcqBank(){
+      const raw = (mcq$('mcq-bank').textContent || '[]').trim();
+      const arr = safeJSONParse(raw, []);
+      if (!Array.isArray(arr)) return [];
+      // minimal validation
+      return arr.filter(q =>
+        q && typeof q.stem === 'string' &&
+        Array.isArray(q.choices) && q.choices.length >= 2 &&
+        Number.isInteger(q.answerIndex) && q.answerIndex >= 0 && q.answerIndex < q.choices.length
+      );
+    }
 
-      ['A','B','C','D'].forEach(letter => {
-        const optText = (q.options && q.options[letter]) ? q.options[letter] : '(missing option)';
+    const mcqBank = parseMcqBank();
 
-        const label = document.createElement('label');
-        label.className = 'option';
+    function mcqTopics(bank){
+      const set = new Set(bank.map(q => (q.topic || 'Uncategorized').trim() || 'Uncategorized'));
+      return ['All topics', ...Array.from(set).sort((a,b)=>a.localeCompare(b))];
+    }
 
-        const input = document.createElement('input');
-        input.type = 'radio';
-        input.name = `q${qId}`;
-        input.value = letter;
+    function fillMcqTopics(){
+      const sel = mcq$('mcq-topic');
+      sel.innerHTML = '';
+      mcqTopics(mcqBank).forEach(t => {
+        const opt = document.createElement('option');
+        opt.value = t;
+        opt.textContent = t;
+        sel.appendChild(opt);
+      });
+    }
 
-        const text = document.createElement('div');
-        const strong = document.createElement('b');
-        strong.textContent = `${letter}. `;
-        text.appendChild(strong);
-        text.appendChild(document.createTextNode(optText));
+    let mcqPlan = [];
+    let mcqIndex = 0;
+    let mcqScore = 0;
+    let mcqAnswered = false;
+    let mcqHistory = [];
+    let mcqActiveTopic = 'All topics';
 
-        label.appendChild(input);
-        label.appendChild(text);
-        qWrap.appendChild(label);
+    function mcqReset(total){
+      mcqIndex = 0;
+      mcqScore = 0;
+      mcqAnswered = false;
+      mcqHistory = [];
+      mcq$('mcq-qi').textContent = '0';
+      mcq$('mcq-qt').textContent = String(total);
+      mcq$('mcq-score').textContent = '0';
+      mcq$('mcq-pbar').style.width = '0%';
+      mcq$('mcq-feedback').textContent = '';
+      mcq$('mcq-nextBtn').disabled = true;
+      mcqShow(mcq$('mcq-explainBox'), false);
+      mcq$('mcq-explain').textContent = '';
+    }
+
+    function mcqRenderChoices(q){
+      const box = mcq$('mcq-opts');
+      box.innerHTML = '';
+      const choices = q.choices.slice(0, MCQ_CHOICES_MAX);
+      choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt';
+        btn.dataset.correct = (i === q.answerIndex) ? '1' : '0';
+
+        const k = document.createElement('span');
+        k.className = 'kbd';
+        k.textContent = String(i + 1);
+
+        const t = document.createElement('span');
+        t.textContent = choice;
+
+        btn.appendChild(k);
+        btn.appendChild(t);
+        btn.addEventListener('click', () => mcqGrade(btn, q, i));
+        box.appendChild(btn);
+      });
+    }
+
+    function mcqNext(){
+      if (mcqIndex >= mcqPlan.length) return mcqFinish();
+      mcqAnswered = false;
+      mcq$('mcq-nextBtn').disabled = true;
+      mcq$('mcq-feedback').textContent = '';
+      mcqShow(mcq$('mcq-explainBox'), false);
+      mcq$('mcq-explain').textContent = '';
+
+      const q = mcqPlan[mcqIndex];
+      mcq$('mcq-qi').textContent = String(mcqIndex + 1);
+      mcq$('mcq-stem').textContent = q.stem;
+
+      mcqRenderChoices(q);
+    }
+
+    function mcqGrade(btn, q, pickedIndex){
+      if (mcqAnswered) return;
+      mcqAnswered = true;
+
+      const all = Array.from(mcq$('mcq-opts').querySelectorAll('.opt'));
+      all.forEach(el => el.disabled = true);
+
+      const ok = pickedIndex === q.answerIndex;
+
+      if (ok){
+        btn.classList.add('correct');
+        mcqScore++;
+        mcq$('mcq-feedback').textContent = 'Correct';
+      } else {
+        btn.classList.add('wrong');
+        const correctBtn = all[q.answerIndex];
+        if (correctBtn) correctBtn.classList.add('correct');
+        mcq$('mcq-feedback').textContent = 'Correct: ' + q.choices[q.answerIndex];
+      }
+
+      mcq$('mcq-score').textContent = String(mcqScore);
+
+      mcqHistory.push({
+        id: q.id || '',
+        topic: q.topic || 'Uncategorized',
+        stem: q.stem,
+        picked: q.choices[pickedIndex],
+        correct: q.choices[q.answerIndex],
+        ok,
+        explanation: q.explanation || ''
       });
 
-      quizEl.appendChild(qWrap);
-    });
+      mcqIndex++;
+      mcq$('mcq-pbar').style.width = Math.round((mcqIndex / mcqPlan.length) * 100) + '%';
+      mcq$('mcq-nextBtn').disabled = false;
 
-    $('quizCard').classList.remove('hidden');
-  });
-
-  $('resetBtn').addEventListener('click', () => {
-    $('jsonInput').value = '';
-    clearNode($('quiz'));
-    clearNode($('results'));
-    $('quizCard').classList.add('hidden');
-    $('resultsCard').classList.add('hidden');
-    state.currentQuiz = null;
-    setStatus($('revStatus'), 'Cleared.', null);
-  });
-
-  // Attempt log
-  function renderAttemptLog() {
-    const wrap = $('attemptLogWrap');
-    if (!state.attemptLog.length) {
-      wrap.innerHTML = '<p class="status">No attempts logged yet.</p>';
-      return;
-    }
-    let html = '<table><thead><tr><th>Time</th><th>Question</th><th>Guess</th><th>Correct</th><th>Result</th></tr></thead><tbody>';
-    state.attemptLog.slice().reverse().forEach(entry => {
-      html += `<tr><td>${entry.time}</td><td>${entry.question}</td><td>${entry.guess}</td><td>${entry.correct}</td><td>${entry.result}</td></tr>`;
-    });
-    html += '</tbody></table>';
-    wrap.innerHTML = html;
-  }
-
-  function saveAttemptLog() {
-    localStorage.setItem('berthelAttemptLog', JSON.stringify(state.attemptLog));
-    renderAttemptLog();
-  }
-
-  $('clearLogBtn').addEventListener('click', () => {
-    state.attemptLog = [];
-    saveAttemptLog();
-  });
-
-  $('submitBtn').addEventListener('click', () => {
-    if (!state.currentQuiz) {
-      setStatus($('revStatus'), 'Load a quiz first.', 'bad');
-      return;
+      if (q.explanation){
+        mcqShow(mcq$('mcq-explainBox'), true);
+        mcq$('mcq-explain').textContent = q.explanation;
+      }
     }
 
-    const resultsEl = $('results');
-    clearNode(resultsEl);
+    function mcqFinish(){
+      mcqShow(mcq$('mcq-quiz'), false);
+      mcqShow(mcq$('mcq-result'), true);
 
-    let score = 0;
-    state.currentQuiz.questions.forEach((q, i) => {
-      const qId = (q.id ?? (i + 1));
-      const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
-      const guess = chosen?.value || 'No answer';
-      const correct = q.correct || '?';
-      const isCorrect = (guess === correct);
-      if (isCorrect) score++;
+      const total = mcqPlan.length;
+      mcq$('mcq-finalScore').textContent = String(mcqScore);
+      mcq$('mcq-finalTotal').textContent = String(total);
+      mcq$('mcq-finalPct').textContent = total ? (Math.round((mcqScore / total) * 100) + '%') : '0%';
 
-      state.attemptLog.push({
-        time: new Date().toLocaleString(),
-        question: String(qId),
-        guess,
-        correct,
-        result: isCorrect ? 'Correct' : 'Incorrect'
+      const ol = mcq$('mcq-review');
+      ol.innerHTML = '';
+      mcqHistory.forEach(h => {
+        const li = document.createElement('li');
+        li.style.color = h.ok ? 'var(--ok)' : 'var(--bad)';
+        const expl = h.explanation ? ` — ${h.explanation}` : '';
+        li.textContent = `${h.topic} · ${h.correct}` + (h.ok ? '' : ` · you chose: ${h.picked}`) + expl;
+        ol.appendChild(li);
       });
 
-      const block = document.createElement('div');
-      block.className = 'question';
+      logAttempt('MCQ', { topic: mcqActiveTopic, score: mcqScore, total });
 
-      const verdict = document.createElement('div');
-      verdict.className = isCorrect ? 'correct' : 'incorrect';
-      verdict.textContent = `Question ${qId}: ${isCorrect ? 'Correct' : 'Incorrect'}`;
-      block.appendChild(verdict);
-
-      const yourAns = document.createElement('div');
-      yourAns.innerHTML = `<b>Your answer:</b> ${guess}`;
-      block.appendChild(yourAns);
-
-      const best = document.createElement('div');
-      const bestText = (q.options && q.options[correct]) ? q.options[correct] : 'Unavailable';
-      best.innerHTML = `<b>Best answer:</b> ${correct} — ${bestText}`;
-      block.appendChild(best);
-
-      const expl = document.createElement('div');
-      expl.innerHTML = `<b>Explanation:</b> ${q.rationale_correct || 'No explanation provided.'}`;
-      block.appendChild(expl);
-
-      resultsEl.appendChild(block);
-    });
-
-    saveAttemptLog();
-
-    const scoreLine = document.createElement('p');
-    scoreLine.className = 'score';
-    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}`;
-    resultsEl.prepend(scoreLine);
-
-    $('resultsCard').classList.remove('hidden');
-    setStatus($('revStatus'), 'Submitted and graded. Review below.', 'good');
-  });
-
-  // Glossary search
-  const glossaryResults = $('glossaryResults');
-  function renderGlossary(lines) {
-    glossaryResults.innerHTML = '';
-    if (!lines.length) {
-      glossaryResults.innerHTML = '<div class="result-item">No matches found.</div>';
-      return;
+      mcq$('mcq-retryBtn').onclick = () => {
+        mcqShow(mcq$('mcq-result'), false);
+        mcqShow(mcq$('mcq-loader'), true);
+      };
+      mcq$('mcq-exitBtn').onclick = () => showPanel('home');
     }
-    lines.slice(0, 400).forEach(line => {
-      const div = document.createElement('div');
-      div.className = 'result-item';
-      div.textContent = line;
-      glossaryResults.appendChild(div);
+
+    function mcqStart(){
+      if (!mcqBank.length){
+        mcq$('mcq-summary').textContent = 'MCQ bank is empty/invalid. Paste your questions into the #mcq-bank JSON.';
+        return;
+      }
+
+      mcqActiveTopic = mcq$('mcq-topic').value || 'All topics';
+      const filtered = mcqActiveTopic === 'All topics'
+        ? mcqBank.slice()
+        : mcqBank.filter(q => (q.topic || 'Uncategorized') === mcqActiveTopic);
+
+      if (!filtered.length){
+        mcq$('mcq-summary').textContent = 'No questions in this topic.';
+        return;
+      }
+
+      const requested = Math.min(Math.max(parseInt(mcq$('mcq-count').value || 20, 10), 1), filtered.length);
+      shuffle(filtered);
+      mcqPlan = filtered.slice(0, requested);
+
+      mcqReset(mcqPlan.length);
+
+      mcqShow(mcq$('mcq-loader'), false);
+      mcqShow(mcq$('mcq-result'), false);
+      mcqShow(mcq$('mcq-quiz'), true);
+
+      mcqNext();
+    }
+
+    (function mcqInit(){
+      fillMcqTopics();
+
+      const total = mcqBank.length;
+      mcq$('mcq-summary').textContent = `Loaded ${total} MCQ items.`;
+      mcq$('mcq-maxHint').textContent = `Max questions this run: ${total}`;
+      mcq$('mcq-count').max = String(Math.max(1, total));
+
+      mcq$('mcq-startBtn').addEventListener('click', mcqStart);
+      mcq$('mcq-nextBtn').addEventListener('click', mcqNext);
+      mcq$('mcq-finishBtn').addEventListener('click', mcqFinish);
+
+      window.addEventListener('keydown', (e) => {
+        if (mcq$('mcq-quiz').style.display === 'none') return;
+        if (/^[1-5]$/.test(e.key)){
+          const i = Number(e.key) - 1;
+          mcq$('mcq-opts').querySelectorAll('.opt')[i]?.click();
+        } else if (e.key === 'Enter'){
+          if (!mcq$('mcq-nextBtn').disabled) mcq$('mcq-nextBtn').click();
+        }
+      });
+    })();
+
+    /* =======================
+       ETYMOLOGY MODULE
+    ======================= */
+    const ety$ = (id) => document.getElementById(id);
+    const etyShow = (el, on) => el.style.display = on ? '' : 'none';
+
+    const ETY_CHOICES = 4;
+
+    function etyDedupe(pairs){
+      const seen = new Map();
+      (pairs || []).forEach(p => {
+        const term = (p?.term || '').trim();
+        const meaning = (p?.meaning || '').trim();
+        if (!term || !meaning) return;
+        if (!seen.has(term) || seen.get(term).length > meaning.length) seen.set(term, meaning);
+      });
+      return Array.from(seen, ([term, meaning]) => ({term, meaning}));
+    }
+
+    function etyParseBank(id){
+      try{
+        const raw = ety$(id).textContent || '[]';
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? etyDedupe(arr) : [];
+      } catch { return []; }
+    }
+
+    const bankEty = etyParseBank('ety-bank-ety');
+    const bankVocab = etyParseBank('ety-bank-vocab');
+
+    const etyCombined = [
+      ...bankEty.map(x => ({kind:'ETY', term:x.term, meaning:x.meaning})),
+      ...bankVocab.map(x => ({kind:'VOCAB', term:x.term, meaning:x.meaning})),
+    ];
+
+    const poolEty = bankEty.map(x => x.meaning);
+    const poolVocab = bankVocab.map(x => x.meaning);
+
+    let etyPlan = [];
+    let etyIndex = 0, etyScore = 0, etyAnswered = false, etyHistory = [];
+
+    function etySetPrompt(kind, term){
+      const p = ety$('ety-prompt');
+      p.textContent = (kind === 'ETY')
+        ? `What is the meaning of ${term}?`
+        : `Which definition best matches ${term}?`;
+    }
+
+    function etyBuildChoices(correct, pool){
+      const picks = [correct];
+      let tries = 0;
+      while (picks.length < ETY_CHOICES && tries < 2000){
+        const c = pool[randomInt(pool.length)];
+        if (c && !picks.includes(c)) picks.push(c);
+        tries++;
+      }
+      while (picks.length < ETY_CHOICES) picks.push('—');
+      return shuffle(picks);
+    }
+
+    function etyRenderChoices(choices, correct, record){
+      const box = ety$('ety-opts');
+      box.innerHTML = '';
+      choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt';
+        btn.dataset.correct = (choice === correct) ? '1' : '0';
+
+        const k = document.createElement('span');
+        k.className = 'kbd';
+        k.textContent = String(i + 1);
+
+        const t = document.createElement('span');
+        t.textContent = choice;
+
+        btn.appendChild(k);
+        btn.appendChild(t);
+
+        btn.addEventListener('click', () => etyGrade(btn, correct, {...record, picked: choice, ok: choice === correct}));
+        box.appendChild(btn);
+      });
+    }
+
+    function etyReset(total){
+      etyIndex = 0; etyScore = 0; etyAnswered = false; etyHistory = [];
+      ety$('ety-qi').textContent = '0';
+      ety$('ety-qt').textContent = String(total);
+      ety$('ety-score').textContent = '0';
+      ety$('ety-pbar').style.width = '0%';
+      ety$('ety-feedback').textContent = '';
+      ety$('ety-nextBtn').disabled = true;
+    }
+
+    function etyNext(){
+      if (etyIndex >= etyPlan.length) return etyFinish();
+      etyAnswered = false;
+      ety$('ety-nextBtn').disabled = true;
+      ety$('ety-feedback').textContent = '';
+
+      const item = etyCombined[etyPlan[etyIndex]];
+      if (!item){ etyIndex++; return etyNext(); }
+
+      ety$('ety-qi').textContent = String(etyIndex + 1);
+      etySetPrompt(item.kind, item.term);
+
+      const correct = item.meaning;
+      const record = {kind: item.kind, term: item.term, correct, picked:'', ok:false};
+
+      const pool = item.kind === 'ETY' ? poolEty : poolVocab;
+      const choices = etyBuildChoices(correct, pool);
+
+      etyRenderChoices(choices, correct, record);
+    }
+
+    function etyGrade(btn, correct, record){
+      if (etyAnswered) return;
+      etyAnswered = true;
+
+      const all = Array.from(ety$('ety-opts').querySelectorAll('.opt'));
+      all.forEach(el => el.disabled = true);
+
+      if (btn.dataset.correct === '1'){
+        btn.classList.add('correct');
+        etyScore++;
+        ety$('ety-feedback').textContent = 'Correct';
+      } else {
+        btn.classList.add('wrong');
+        ety$('ety-feedback').textContent = 'Correct: ' + correct;
+        const target = all.find(el => el.dataset.correct === '1');
+        if (target) target.classList.add('correct');
+      }
+
+      ety$('ety-score').textContent = String(etyScore);
+      etyHistory.push(record);
+
+      etyIndex++;
+      ety$('ety-pbar').style.width = Math.round((etyIndex / etyPlan.length) * 100) + '%';
+      ety$('ety-nextBtn').disabled = false;
+    }
+
+    function etyFinish(){
+      etyShow(ety$('ety-quiz'), false);
+      etyShow(ety$('ety-result'), true);
+
+      ety$('ety-finalScore').textContent = String(etyScore);
+      ety$('ety-finalTotal').textContent = String(etyPlan.length);
+      ety$('ety-finalPct').textContent = etyPlan.length ? (Math.round((etyScore / etyPlan.length) * 100) + '%') : '0%';
+
+      const ol = ety$('ety-review');
+      ol.innerHTML = '';
+      etyHistory.forEach(h => {
+        const li = document.createElement('li');
+        li.style.color = h.ok ? 'var(--ok)' : 'var(--bad)';
+        li.textContent = `${h.kind} · ${h.term} → ${h.correct}` + (h.ok ? '' : ` · you chose: ${h.picked}`);
+        ol.appendChild(li);
+      });
+
+      logAttempt('Etymology', { score: etyScore, total: etyPlan.length });
+      ety$('ety-retryBtn').onclick = () => { etyShow(ety$('ety-result'), false); etyShow(ety$('ety-loader'), true); };
+      ety$('ety-exitBtn').onclick = () => showPanel('home');
+    }
+
+    function etyStart(){
+      if (etyCombined.length === 0){
+        ety$('ety-summary').textContent = 'Banks are empty. Paste your etymology/vocabulary JSON into #ety-bank-ety and #ety-bank-vocab.';
+        return;
+      }
+      const requested = Math.min(Math.max(parseInt(ety$('ety-qCount').value || 40, 10), 1), etyCombined.length);
+      const indices = Array.from({length: etyCombined.length}, (_, i) => i);
+      shuffle(indices);
+      etyPlan = indices.slice(0, requested);
+
+      etyReset(etyPlan.length);
+
+      etyShow(ety$('ety-loader'), false);
+      etyShow(ety$('ety-result'), false);
+      etyShow(ety$('ety-quiz'), true);
+
+      etyNext();
+    }
+
+    (function etyInit(){
+      const total = etyCombined.length;
+      ety$('ety-summary').textContent = `Loaded ${bankEty.length} etymologies + ${bankVocab.length} vocabulary terms = ${total} total items.`;
+      ety$('ety-maxHint').textContent = 'Max questions this run: ' + total;
+      ety$('ety-qCount').max = String(Math.max(1, total));
+
+      ety$('ety-startBtn').addEventListener('click', etyStart);
+      ety$('ety-nextBtn').addEventListener('click', etyNext);
+      ety$('ety-finishNowBtn').addEventListener('click', etyFinish);
+
+      window.addEventListener('keydown', (e) => {
+        if (ety$('ety-quiz').style.display === 'none') return;
+        if (/^[1-4]$/.test(e.key)){
+          const i = Number(e.key) - 1;
+          ety$('ety-opts').querySelectorAll('.opt')[i]?.click();
+        } else if (e.key === 'Enter'){
+          if (!ety$('ety-nextBtn').disabled) ety$('ety-nextBtn').click();
+        }
+      });
+    })();
+
+    /* =======================
+       TEXT SEARCH MODULE
+    ======================= */
+    const TEXT_KEY = 'bb_ib_text_v1';
+    let ibText = '';
+
+    function loadStoredText(){
+      ibText = (lsGet(TEXT_KEY, '') || '');
+      renderTextStats();
+    }
+
+    function renderTextStats(){
+      const stats = document.getElementById('textStats');
+      if (!ibText){
+        stats.textContent = 'No text loaded.';
+        return;
+      }
+      stats.textContent = `${ibText.length.toLocaleString()} characters loaded.`;
+    }
+
+    document.getElementById('txtFile').addEventListener('change', (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        ibText = String(reader.result || '');
+        lsSet(TEXT_KEY, ibText);
+        renderTextStats();
+      };
+      reader.readAsText(f);
     });
-  }
 
-  const txtUrl = `ib_bio_clean_index.txt?v=20260210`;
-  fetch(txtUrl, { cache: 'no-store' })
-    .then(resp => {
-      if (!resp.ok) throw new Error(`HTTP ${resp.status} loading ${txtUrl}`);
-      return resp.text();
-    })
-    .then(text => {
-      state.glossaryLines = text.split('\n');
-      $('glossaryStatus').textContent = `Loaded: ${state.glossaryLines.length} lines (showing first 400 when unfiltered).`;
-      renderGlossary(state.glossaryLines);
-    })
-    .catch(err => {
-      $('glossaryStatus').textContent =
-        `Could not load ib_bio_clean_index.txt. Ensure it exists beside index.html. (${err.message})`;
+    document.getElementById('clearTextBtn').addEventListener('click', () => {
+      ibText = '';
+      lsDel(TEXT_KEY);
+      renderTextStats();
+      document.getElementById('results').textContent = '—';
+      document.getElementById('resultsMeta').textContent = 'No results.';
     });
 
-  $('glossarySearch').addEventListener('input', () => {
-    const term = $('glossarySearch').value.trim().toLowerCase();
-    if (!term) { renderGlossary(state.glossaryLines); return; }
-    renderGlossary(state.glossaryLines.filter(line => line.toLowerCase().includes(term)));
-  });
+    function escapeHTML(s){
+      return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
 
-  renderAttemptLog();
-})();
-</script>
+    function runSearch(){
+      const q = document.getElementById('query').value.trim();
+      const results = document.getElementById('results');
+      const meta = document.getElementById('resultsMeta');
+
+      if (!ibText){
+        meta.textContent = 'No text loaded.';
+        results.textContent = '—';
+        return;
+      }
+      if (!q){
+        meta.textContent = 'Enter a query.';
+        results.textContent = '—';
+        return;
+      }
+
+      const hay = ibText;
+      const needle = q.toLowerCase();
+      const hayLower = hay.toLowerCase();
+
+      const hits = [];
+      let idx = 0;
+      const MAX_HITS = 80;
+      const SNIP = 80;
+
+      while (idx < hayLower.length && hits.length < MAX_HITS){
+        const pos = hayLower.indexOf(needle, idx);
+        if (pos === -1) break;
+
+        const start = Math.max(0, pos - SNIP);
+        const end = Math.min(hay.length, pos + needle.length + SNIP);
+        const before = hay.slice(start, pos);
+        const match = hay.slice(pos, pos + q.length);
+        const after = hay.slice(pos + q.length, end);
+
+        hits.push({start, pos, end, before, match, after});
+        idx = pos + needle.length;
+      }
+
+      meta.textContent = hits.length
+        ? `Showing ${hits.length} hit(s) (max ${MAX_HITS}).`
+        : 'No matches found.';
+
+      if (!hits.length){
+        results.textContent = '—';
+        return;
+      }
+
+      results.innerHTML = hits.map((h, i) => {
+        const snippet =
+          escapeHTML(h.before) +
+          '<span style="color:#000;background:rgba(255,255,255,.85);border-radius:6px;padding:0 4px;font-weight:900">' +
+          escapeHTML(h.match) +
+          '</span>' +
+          escapeHTML(h.after);
+
+        return `<div style="padding:10px 0;border-top:1px solid rgba(255,255,255,.10)">
+          <div class="muted small">#${i+1} · index ${h.pos}</div>
+          <div style="margin-top:6px">${snippet}</div>
+        </div>`;
+      }).join('');
+    }
+
+    document.getElementById('runSearchBtn').addEventListener('click', runSearch);
+    document.getElementById('clearResultsBtn').addEventListener('click', () => {
+      document.getElementById('resultsMeta').textContent = 'No results.';
+      document.getElementById('results').textContent = '—';
+    });
+
+    loadStoredText();
+  </script>
 </body>
 </html>
