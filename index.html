@@ -7,15 +7,16 @@
 
   <style>
     :root{
-      --bg:#ffffff;
-      --ink:#111827;
-      --muted:#6b7280;
-      --line:#e5e7eb;
-      --panel:#ffffff;
-      --soft:#f9fafb;
+      /* Dark, black/white minimalist */
+      --bg:#0b0c0f;
+      --panel:#0f1115;
+      --panel2:#0c0e12;
+      --ink:#f3f4f6;
+      --muted:#a1a1aa;
+      --line:#23262d;
 
-      --ok:#15803d;   /* green */
-      --bad:#b91c1c;  /* red */
+      --ok:#22c55e;
+      --bad:#ef4444;
 
       --radius:16px;
     }
@@ -25,7 +26,7 @@
       background:var(--bg);
       color:var(--ink);
 
-      /* Latin Modern first; graceful fallbacks */
+      /* Latin Modern everywhere (fallbacks included) */
       font-family:
         "Latin Modern Roman",
         "LatinModernRoman",
@@ -34,7 +35,7 @@
         "Times New Roman",
         serif;
 
-      font-size:18px;         /* larger */
+      font-size:20px;
       line-height:1.45;
     }
     *{ box-sizing:border-box; }
@@ -64,18 +65,18 @@
       min-width: 0;
     }
     .avatar{
-      width:48px;
-      height:48px;
+      width:52px;
+      height:52px;
       border-radius:14px;
       border:1px solid var(--line);
-      background:var(--soft);
+      background:var(--panel2);
       object-fit:cover;
       flex:0 0 auto;
     }
     .titlebox{ min-width: 0; }
     .title{
-      font-size: 22px;
-      font-weight: 800;
+      font-size: 24px;
+      font-weight: 900;
       letter-spacing: .2px;
       margin:0;
       white-space:nowrap;
@@ -85,10 +86,11 @@
     .subtitle{
       margin:2px 0 0;
       color:var(--muted);
-      font-size: 15px;
+      font-size: 16px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
+      font-weight:700;
     }
     .version{
       color:var(--muted);
@@ -96,7 +98,7 @@
       white-space:nowrap;
       padding-left:10px;
       border-left:1px solid var(--line);
-      font-weight:700;
+      font-weight:900;
     }
 
     nav{
@@ -111,17 +113,17 @@
     }
     .tabbtn{
       border:1px solid var(--line);
-      background: var(--bg);
-      padding: 9px 14px;
+      background: transparent;
+      padding: 10px 14px;
       border-radius: 999px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       color: var(--ink);
-      font-size: 15px;
+      font-size: 16px;
     }
     .tabbtn[aria-selected="true"]{
       background: var(--ink);
-      color: var(--bg);
+      color: #0b0c0f;
       border-color: var(--ink);
     }
 
@@ -144,7 +146,7 @@
     .card{
       border:1px solid var(--line);
       border-radius: var(--radius);
-      background: var(--bg);
+      background: transparent;
       padding: 12px;
     }
 
@@ -153,32 +155,36 @@
       color:var(--muted);
       font-size: 14px;
       margin-bottom: 6px;
-      font-weight:800;
+      font-weight:900;
     }
 
     .num{
-      width: 170px;
-      padding: 11px 12px;
+      width: 190px;
+      padding: 12px 12px;
       border:1px solid var(--line);
       border-radius: 14px;
-      background: var(--bg);
+      background: #0b0c0f;
+      color: var(--ink);
       outline:none;
-      font-weight:800;
+      font-weight:900;
+      font-size: 18px;
     }
-    .num:focus{ border-color:#cbd5e1; }
+    .num:focus{ border-color:#3a3f48; }
 
     .btn{
       border:1px solid var(--line);
-      background: var(--bg);
-      padding: 11px 12px;
+      background: transparent;
+      color: var(--ink);
+      padding: 12px 12px;
       border-radius: 14px;
       cursor:pointer;
-      font-weight:900;
+      font-weight:950;
+      font-size: 16px;
     }
     .btn.primary{
       background: var(--ink);
       border-color: var(--ink);
-      color: var(--bg);
+      color: #0b0c0f;
     }
     .btn:disabled{ opacity:.55; cursor:not-allowed; }
 
@@ -186,21 +192,35 @@
       color:var(--muted);
       font-size: 14px;
       margin: 8px 0 0;
-      font-weight:700;
+      font-weight:800;
     }
 
     .bar{
       display:none;
       margin-top: 10px;
       padding: 10px;
-      border:1px solid rgba(185,28,28,.25);
-      background: rgba(185,28,28,.06);
+      border:1px solid rgba(239,68,68,.28);
+      background: rgba(239,68,68,.08);
       border-radius: var(--radius);
       color: var(--bad);
-      font-weight:900;
+      font-weight:950;
       font-size: 14px;
     }
     .bar.show{ display:block; }
+
+    textarea{
+      width:100%;
+      min-height:140px;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      outline:none;
+      resize:vertical;
+      background: #0b0c0f;
+      color: var(--ink);
+      font-weight:800;
+      font-size: 16px;
+    }
 
     /* Quiz */
     .quizTop{
@@ -213,18 +233,18 @@
     .progress{
       color:var(--muted);
       font-size: 14px;
-      font-weight:900;
+      font-weight:950;
     }
     .qstem{
-      font-size: 22px;
-      font-weight: 900;
+      font-size: 24px;
+      font-weight: 950;
       margin: 8px 0 12px;
       line-height:1.25;
     }
     .options{
       display:flex;
       flex-direction:column;
-      gap:9px;
+      gap:10px;
     }
     .opt{
       display:flex;
@@ -232,16 +252,17 @@
       align-items:flex-start;
       border:1px solid var(--line);
       border-radius: 14px;
-      padding: 11px 11px;
-      background: var(--bg);
+      padding: 12px 12px;
+      background: #0b0c0f;
       cursor:pointer;
     }
+    .opt:hover{ border-color:#3a3f48; }
     .opt input{ margin-top:4px; transform: scale(1.15); }
     .opt .otxt{
       flex:1;
       color: var(--ink);
-      font-size: 16px;
-      font-weight:700;
+      font-size: 17px;
+      font-weight:800;
     }
     .quizActions{
       display:flex;
@@ -254,7 +275,7 @@
     .hintBad{
       color: var(--bad);
       font-size: 14px;
-      font-weight:900;
+      font-weight:950;
     }
 
     /* Summary */
@@ -266,14 +287,14 @@
       margin-bottom: 10px;
     }
     .scoreBig{
-      font-size: 22px;
-      font-weight: 950;
+      font-size: 24px;
+      font-weight: 1000;
       margin:0;
     }
     .scoreMeta{
       color:var(--muted);
       font-size: 14px;
-      font-weight:900;
+      font-weight:950;
     }
     .pill{
       display:inline-flex;
@@ -283,11 +304,11 @@
       border-radius:999px;
       padding: 7px 11px;
       font-size: 14px;
-      font-weight:950;
-      background: var(--soft);
+      font-weight:1000;
+      background: rgba(255,255,255,.03);
     }
-    .pill.ok{ color: var(--ok); border-color: rgba(21,128,61,.25); background: rgba(21,128,61,.06); }
-    .pill.bad{ color: var(--bad); border-color: rgba(185,28,28,.25); background: rgba(185,28,28,.06); }
+    .pill.ok{ color: var(--ok); border-color: rgba(34,197,94,.25); background: rgba(34,197,94,.08); }
+    .pill.bad{ color: var(--bad); border-color: rgba(239,68,68,.25); background: rgba(239,68,68,.08); }
 
     .reviewList{
       display:flex;
@@ -299,10 +320,10 @@
       border:1px solid var(--line);
       border-radius: var(--radius);
       padding: 10px;
-      background: var(--bg);
+      background: #0b0c0f;
     }
-    .reviewItem.ok{ border-color: rgba(21,128,61,.25); background: rgba(21,128,61,.04); }
-    .reviewItem.bad{ border-color: rgba(185,28,28,.25); background: rgba(185,28,28,.04); }
+    .reviewItem.ok{ border-color: rgba(34,197,94,.25); background: rgba(34,197,94,.05); }
+    .reviewItem.bad{ border-color: rgba(239,68,68,.25); background: rgba(239,68,68,.05); }
     .reviewTop{
       display:flex;
       justify-content:space-between;
@@ -311,11 +332,11 @@
       margin-bottom: 6px;
     }
     .reviewQ{
-      font-weight:950;
+      font-weight:1000;
       font-size: 15px;
     }
     .mark{
-      font-weight:950;
+      font-weight:1000;
       font-size: 14px;
       white-space:nowrap;
     }
@@ -323,11 +344,11 @@
     .mark.bad{ color: var(--bad); }
     .reviewLine{
       color: var(--ink);
-      font-size: 14.5px;
+      font-size: 15px;
       margin: 4px 0;
-      font-weight:700;
+      font-weight:800;
     }
-    .reviewLine .k{ color: var(--muted); font-weight:950; }
+    .reviewLine .k{ color: var(--muted); font-weight:1000; }
     .reviewLine .v{ color: var(--ink); }
 
     /* Home updates */
@@ -341,43 +362,31 @@
       border:1px solid var(--line);
       border-radius: var(--radius);
       padding: 10px;
-      background: var(--bg);
+      background: #0b0c0f;
     }
     .updateTime{
       color:var(--muted);
       font-size: 13.5px;
-      font-weight:950;
+      font-weight:1000;
       margin-bottom: 6px;
     }
     .updateMsg{
       margin:0;
-      font-size: 15px;
-      font-weight:750;
+      font-size: 16px;
+      font-weight:850;
     }
 
-    /* Admin panel (hidden by default; unlock via Ctrl+Shift+U) */
+    /* Admin panel (hidden; unlock Ctrl+Shift+U) */
     .admin{
       display:none;
       margin-top: 12px;
     }
     .admin.show{ display:block; }
-    textarea{
-      width:100%;
-      min-height:130px;
-      padding:12px;
-      border:1px solid var(--line);
-      border-radius: 14px;
-      outline:none;
-      resize:vertical;
-      background: var(--bg);
-      font-weight:700;
-      font-size: 16px;
-    }
 
     @media (max-width:520px){
+      html,body{ font-size:19px; }
       .version{ border-left:none; padding-left:0; }
       header{ align-items:flex-start; }
-      html,body{ font-size:17px; }
     }
   </style>
 </head>
@@ -427,13 +436,13 @@
       <section id="ety" role="tabpanel" aria-labelledby="tab-ety">
         <div class="card">
           <div class="row">
-            <div style="min-width:240px">
+            <div style="min-width:260px">
               <span class="label">Number of questions (1–100)</span>
-              <input id="etyN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="e.g., 20" />
+              <input id="etyN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="e.g., 25" />
             </div>
             <div style="flex:1; min-width:260px">
               <div class="label">Status</div>
-              <div id="etyStatus" class="quiet">Loading question bank…</div>
+              <div id="etyStatus" class="quiet">Loading banks…</div>
             </div>
             <div>
               <div class="label" style="visibility:hidden">Generate</div>
@@ -457,11 +466,11 @@
       <section id="custom" role="tabpanel" aria-labelledby="tab-custom">
         <div class="card">
           <div class="row">
-            <div style="flex:1; min-width:300px">
+            <div style="flex:1; min-width:320px">
               <span class="label">Paste MCQ JSON</span>
               <textarea id="customJson" placeholder=""></textarea>
             </div>
-            <div style="min-width:260px">
+            <div style="min-width:280px">
               <span class="label">Or upload JSON file</span>
               <input type="file" id="customFile" accept="application/json,.json" />
               <div style="height:12px"></div>
@@ -486,11 +495,9 @@
 
   <script>
     /********************
-     * Version (stable-per-build for each visitor):
-     * - BUILD_ID changes when you deploy new code
-     * - version timestamp is set once per BUILD_ID in localStorage (UTC+8)
+     * Version code (build-stamped on first load per BUILD_ID, Beijing UTC+8)
      ********************/
-    const BUILD_ID = "2026-02-10_update_002"; // change this on each deployment
+    const BUILD_ID = "2026-02-10_dark_fix_distractors_001";
     const VERSION_KEY = "bertBio_buildVersion_" + BUILD_ID;
 
     function beijingStamp(){
@@ -515,7 +522,6 @@
      * Avatar fallback
      ********************/
     const AVATAR_FALLBACK_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE%0ABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME%0ADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU%0AFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA%0AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB%0ABhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/%0AxAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A%0A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o%0Alq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI%0A3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5%0Ap+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU%0AqVKlSpUqVKlSpUqVKlf/2Q==";
-
     const avatar = document.getElementById("avatar");
     avatar.addEventListener("error", () => { avatar.src = AVATAR_FALLBACK_DATA_URL; }, { once:true });
 
@@ -543,12 +549,12 @@
     /********************
      * Home updates
      ********************/
-    const UPDATES_KEY = "bertBio_updates_v2";
+    const UPDATES_KEY = "bertBio_updates_v3";
     const UPDATES_JSON_PATH = "updates.json";
     const DEFAULT_UPDATES = [
       {
         ts: "2026-02-10 15:06:41",
-        msg: "Next update: repaired numeric input handling (all integers 1–100), improved submission flow, and a clearer results summary with red/green indicators plus retry/new-quiz options."
+        msg: "Next update: repaired numeric input handling (all integers 1–100), corrected distractor selection by question type, and removed etymology examples from answer choices."
       }
     ];
 
@@ -700,9 +706,189 @@
       el.addEventListener("blur", normalize);
       el.addEventListener("keydown", (e) => { if (e.key === "Enter") normalize(); });
     }
+    function stripExamples(def){
+      let d = String(def || "");
+      // remove "Examples:" or "Example:" and everything after (case-insensitive)
+      d = d.replace(/\bExamples?\s*:\s*.*$/i, "");
+      d = escapeSpaces(d);
+      // clean dangling punctuation
+      d = d.replace(/[;,\s]+$/g, "").trim();
+      return d;
+    }
+    function isWordPartToken(tok){
+      const t = (tok || "").trim();
+      if (!t) return false;
+      if (t.includes(" ")) return false;
+      if (t.length > 22) return false;
+      // common word-part shapes: "di-", "-phage", "ventr-", "bio-", "-itis"
+      const hasHyphen = t.includes("-");
+      const looksAffix = hasHyphen || /^[a-zA-Z]{1,6}$/.test(t);
+      // prefer hyphenated for etymology
+      return looksAffix && (hasHyphen || t.length <= 6);
+    }
+    function startsDashMeaningLine(line){
+      const s = (line || "").trim();
+      return s.startsWith("—") || s.startsWith("–") || s.startsWith("-");
+    }
+    function stripDashPrefix(line){
+      return escapeSpaces(String(line || "").replace(/^[—–-]+\s*/,""));
+    }
 
     /********************
-     * Quiz engine (supports "Finish now" at any time)
+     * Bank parsing: separate into TWO banks
+     * - etyBank: word parts / affixes (examples removed)
+     * - vocabBank: standard terms/definitions
+     * Critical rule: distractors pulled ONLY within the same bank as the stem's bank.
+     ********************/
+    function parseBanksFromText(text){
+      const lines = String(text || "").replace(/\r/g,"").split("\n");
+
+      const ety = [];
+      const vocab = [];
+
+      // state
+      let pendingAffix = null;
+      let pendingTerm = null;
+      let pendingDef = [];
+
+      function flushVocab(){
+        if (!pendingTerm) return;
+        const def = escapeSpaces(pendingDef.join(" "));
+        if (pendingTerm && def){
+          vocab.push({ term: pendingTerm, def });
+        }
+        pendingTerm = null;
+        pendingDef = [];
+      }
+
+      function addEty(term, defRaw){
+        const def = stripExamples(defRaw);
+        if (!term || !def) return;
+        if (def.length < 3) return;
+        ety.push({ term: term.trim(), def });
+      }
+      function addVocab(term, defRaw){
+        const def = escapeSpaces(defRaw);
+        if (!term || !def) return;
+        if (def.length < 3) return;
+        vocab.push({ term: term.trim(), def });
+      }
+
+      // inline: "TERM — DEF" or "TERM\tDEF"
+      const tabRe  = /^(.*?)\t+(.+)$/;
+      const dashRe = /^(.*?)\s*(?:—|–|-|:)\s*(.+)$/;
+
+      for (let i=0;i<lines.length;i++){
+        const raw = lines[i];
+        const line = raw.trimEnd();
+        const trimmed = line.trim();
+
+        // ignore headers
+        const low = trimmed.toLowerCase();
+        if (!trimmed) {
+          flushVocab();
+          pendingAffix = null;
+          continue;
+        }
+        if (low === "glossary" || low.startsWith("words in blue")) continue;
+
+        // handle "affix" on its own line; meaning on the next line beginning with dash
+        if (pendingAffix && startsDashMeaningLine(trimmed)){
+          const def = stripDashPrefix(trimmed);
+          addEty(pendingAffix, def);
+          pendingAffix = null;
+          continue;
+        }
+
+        // possible inline term-def
+        let m = trimmed.match(tabRe);
+        if (!m) m = trimmed.match(dashRe);
+
+        if (m){
+          const left = escapeSpaces(m[1]);
+          const right = escapeSpaces(m[2]);
+
+          // If left looks like a word part (affix), classify as etymology.
+          // Also classify as etymology if the right contains "Examples:".
+          if (isWordPartToken(left) || /\bExamples?\s*:/i.test(right)){
+            flushVocab();
+            addEty(left, right);
+            continue;
+          }
+
+          // otherwise vocabulary
+          flushVocab();
+          addVocab(left, right);
+          continue;
+        }
+
+        // meaning line that begins with dash without an explicit term:
+        // if previous line looked like an affix, we handled above; else ignore as unbound.
+        if (startsDashMeaningLine(trimmed)){
+          // unbound meaning line -> ignore (prevents polluting vocab distractors)
+          pendingAffix = null;
+          continue;
+        }
+
+        // A single-token affix line (e.g., "ventr-" or "-itis") waiting for next dash meaning line
+        if (isWordPartToken(trimmed) && !trimmed.includes(" ")){
+          // If we were building a vocab entry, flush first (new entry boundary)
+          flushVocab();
+          pendingAffix = trimmed;
+          continue;
+        }
+
+        // Vocabulary "term line" followed by definitions on subsequent lines
+        // Heuristic: a term line is short-ish, no terminal punctuation, and not obviously a sentence.
+        const looksLikeTerm =
+          trimmed.length <= 60 &&
+          !/[.?!]$/.test(trimmed) &&
+          !trimmed.includes("—") &&
+          !trimmed.includes("\t") &&
+          !/\bExamples?\s*:/i.test(trimmed) &&
+          // avoid treating ordinary sentences as terms
+          !(trimmed.split(" ").length > 8);
+
+        if (looksLikeTerm){
+          // start new vocab term
+          flushVocab();
+          pendingTerm = trimmed;
+          pendingDef = [];
+          continue;
+        }
+
+        // Otherwise: treat as definition continuation (only if we have a pendingTerm)
+        if (pendingTerm){
+          pendingDef.push(trimmed);
+        }
+      }
+
+      flushVocab();
+
+      // Deduplicate within each bank by term (keep longer definition)
+      function dedupe(bank){
+        const map = new Map();
+        for (const it of bank){
+          const k = it.term.toLowerCase();
+          if (!map.has(k) || (map.get(k).def.length < it.def.length)){
+            map.set(k, it);
+          }
+        }
+        return Array.from(map.values());
+      }
+
+      let etyBank = dedupe(ety).filter(x => x.term.length >= 1 && x.def.length >= 3);
+      let vocabBank = dedupe(vocab).filter(x => x.term.length >= 2 && x.def.length >= 3);
+
+      // Sort for stability
+      etyBank.sort((a,b)=> a.term.localeCompare(b.term));
+      vocabBank.sort((a,b)=> a.term.localeCompare(b.term));
+
+      return { etyBank, vocabBank };
+    }
+
+    /********************
+     * Quiz engine (finish any time; summary always available)
      ********************/
     function mkQuizUI(mount){
       mount.innerHTML = "";
@@ -919,7 +1105,7 @@
         } else if (ok){
           rationaleText = "Matched the correct definition/claim.";
         } else {
-          rationaleText = "Selected option is plausible but mismatched; align the term/stem to the correct definition/claim.";
+          rationaleText = "Selected option is plausible but mismatched; align the stem to the correct definition/claim.";
         }
         rat.innerHTML = `<span class="k">Rationale: </span><span class="v">${rationaleText}</span>`;
 
@@ -937,7 +1123,9 @@
     }
 
     /********************
-     * ETY/VOCAB: load bank, then require N + Generate
+     * ETY/VOCAB: load file then generate mixed quiz.
+     * Key constraint: options/distractors must come ONLY from that question's bank type.
+     * Etymology definitions have examples removed.
      ********************/
     const BANK_TXT_PATH = "ib_bio_clean_index.txt";
     const etyStatus = document.getElementById("etyStatus");
@@ -950,71 +1138,16 @@
     hardenIntegerInput(etyN);
 
     let etyBank = [];
-    let etyQuiz = null;
-
-    function parseIndexText(text){
-      const lines = (text || "").replace(/\r/g,"").split("\n");
-      const items = [];
-      let last = null;
-
-      const dashRe = /^(.*?)\s*(?:—|–|-|:)\s*(.+)$/;
-      const tabRe  = /^(.*?)\t+(.+)$/;
-
-      for (let raw of lines){
-        const line = raw.trimEnd();
-        if (!line.trim()) continue;
-
-        const h = line.trim().toLowerCase();
-        if (h === "glossary" || h.startsWith("words in blue")) continue;
-
-        if (/^\s+/.test(raw) && last){
-          last.def = escapeSpaces(last.def + " " + line.trim());
-          continue;
-        }
-
-        let m = line.match(tabRe);
-        if (!m) m = line.match(dashRe);
-
-        if (!m){
-          const parts = line.split(/\s{2,}/);
-          if (parts.length >= 2){
-            const term = escapeSpaces(parts.shift());
-            const def = escapeSpaces(parts.join(" "));
-            if (term && def){
-              last = { term, def };
-              items.push(last);
-            }
-          }
-          continue;
-        }
-
-        const term = escapeSpaces(m[1]);
-        const def  = escapeSpaces(m[2]);
-        if (!term || !def) continue;
-
-        last = { term, def };
-        items.push(last);
-      }
-
-      const map = new Map();
-      for (const it of items){
-        const k = it.term.toLowerCase();
-        if (!map.has(k) || (map.get(k).def.length < it.def.length)){
-          map.set(k, it);
-        }
-      }
-      const out = Array.from(map.values()).filter(x => x.term.length >= 2 && x.def.length >= 6);
-      out.sort((a,b)=> a.term.localeCompare(b.term));
-      return out;
-    }
+    let vocabBank = [];
+    let mixedQuiz = null;
 
     async function tryLoadBankViaFetch(){
       try{
         const r = await fetch(BANK_TXT_PATH, { cache:"no-store" });
         if (!r.ok) throw new Error("fetch not ok");
         const t = await r.text();
-        const parsed = parseIndexText(t);
-        if (!parsed.length) throw new Error("empty parse");
+        const parsed = parseBanksFromText(t);
+        if (!parsed.etyBank.length && !parsed.vocabBank.length) throw new Error("empty parse");
         return parsed;
       }catch(_){
         return null;
@@ -1022,93 +1155,149 @@
     }
 
     function refreshEtyControls(){
-      const raw = etyN.value;
-      const n = clampInt(raw, 1, 100);
-      const ready = etyBank.length > 0 && n !== null;
+      const n = clampInt(etyN.value, 1, 100);
+      const ready = (etyBank.length + vocabBank.length) > 0 && n !== null;
       etyGenerate.disabled = !ready;
 
-      if (!etyBank.length){
-        etyStatus.textContent = "Question bank not loaded.";
+      if ((etyBank.length + vocabBank.length) === 0){
+        etyStatus.textContent = "Banks not loaded.";
       } else {
-        etyStatus.textContent = `Ready. Bank loaded: ${etyBank.length} terms.`;
+        etyStatus.textContent = `Ready. Vocabulary: ${vocabBank.length} • Etymology: ${etyBank.length}`;
       }
     }
 
-    function makeEtyQuiz(n){
-      const maxN = Math.min(100, etyBank.length);
-      const nn = Math.min(n, maxN);
-
-      const pool = etyBank.slice();
+    function pickDistinct(bank, k){
+      const pool = bank.slice();
       shuffle(pool);
-      const pick = pool.slice(0, nn);
-
-      return pick.map((item) => {
-        const others = [];
-        while (others.length < 3){
-          const cand = etyBank[Math.floor(Math.random() * etyBank.length)];
-          if (!cand) continue;
-          if (cand.term === item.term) continue;
-          if (others.some(x => x.term === cand.term)) continue;
-          others.push(cand);
-        }
-        const opts = [ item.def, others[0].def, others[1].def, others[2].def ];
-        const idxs = [0,1,2,3];
-        shuffle(idxs);
-        const options = idxs.map(i => opts[i]);
-        const correctIndex = options.indexOf(item.def);
-        return { stem: item.term, options, correctIndex };
-      });
+      return pool.slice(0, Math.min(k, pool.length));
     }
 
-    function startEtyQuiz(){
-      const n = clampInt(etyN.value, 1, 100);
-      if (!etyBank.length || n === null) return;
+    function buildQuestionFromItem(item, bankType){
+      // bankType: "vocab" or "ety"
+      const bank = (bankType === "ety") ? etyBank : vocabBank;
 
-      const questions = makeEtyQuiz(n);
+      // Correct definition
+      const correctDef = item.def;
+
+      // Distractors: from SAME bank only
+      const distractors = [];
+      const seenDefs = new Set([correctDef.toLowerCase()]);
+      const seenTerms = new Set([item.term.toLowerCase()]);
+
+      // hard cap attempts to avoid infinite loops on small banks
+      let attempts = 0;
+      while (distractors.length < 3 && attempts < 2000){
+        attempts++;
+        const cand = bank[Math.floor(Math.random() * bank.length)];
+        if (!cand) continue;
+        const t = cand.term.toLowerCase();
+        const d = cand.def.toLowerCase();
+        if (seenTerms.has(t)) continue;
+        if (seenDefs.has(d)) continue;
+        seenTerms.add(t);
+        seenDefs.add(d);
+        distractors.push(cand.def);
+      }
+
+      // If bank is too small, pad by allowing reused distractors (still same bank)
+      while (distractors.length < 3 && bank.length){
+        const cand = bank[Math.floor(Math.random() * bank.length)];
+        if (!cand) continue;
+        if (cand.term.toLowerCase() === item.term.toLowerCase()) continue;
+        distractors.push(cand.def);
+      }
+
+      const opts = [correctDef, distractors[0], distractors[1], distractors[2]].map(x => escapeSpaces(x));
+      const idxs = [0,1,2,3];
+      shuffle(idxs);
+      const options = idxs.map(i => opts[i]);
+      const correctIndex = options.indexOf(correctDef);
+
+      return {
+        stem: item.term,
+        options,
+        correctIndex,
+        type: bankType
+      };
+    }
+
+    function makeMixedQuiz(n){
+      const nMax = Math.min(100, (etyBank.length + vocabBank.length));
+      const N = Math.min(n, nMax);
+
+      // Aim for a mix (roughly 50/50), then adjust for bank sizes
+      let targetEty = Math.floor(N / 2);
+      let targetVocab = N - targetEty;
+
+      if (etyBank.length < targetEty){
+        targetVocab += (targetEty - etyBank.length);
+        targetEty = etyBank.length;
+      }
+      if (vocabBank.length < targetVocab){
+        targetEty += (targetVocab - vocabBank.length);
+        targetVocab = vocabBank.length;
+      }
+      targetEty = Math.min(targetEty, etyBank.length);
+      targetVocab = Math.min(targetVocab, vocabBank.length);
+
+      const etyPick = pickDistinct(etyBank, targetEty);
+      const vocabPick = pickDistinct(vocabBank, targetVocab);
+
+      const questions = [];
+      for (const it of etyPick) questions.push(buildQuestionFromItem(it, "ety"));
+      for (const it of vocabPick) questions.push(buildQuestionFromItem(it, "vocab"));
+
+      shuffle(questions);
+      return questions;
+    }
+
+    function startMixedQuiz(){
+      const n = clampInt(etyN.value, 1, 100);
+      if ((etyBank.length + vocabBank.length) === 0 || n === null) return;
+
+      const questions = makeMixedQuiz(n);
       const holder = mkQuizUI(etyView);
 
-      etyQuiz = {
+      mixedQuiz = {
         questions,
         idx: 0,
         answers: new Array(questions.length).fill(null),
         onExit: () => { etyView.innerHTML = ""; },
-        onFinish: () => { renderSummary(holder, etyQuiz, "generic"); },
+        onFinish: () => { renderSummary(holder, mixedQuiz, "generic"); },
         onRetrySame: () => {
-          etyQuiz.idx = 0;
-          etyQuiz.answers = new Array(questions.length).fill(null);
-          renderQuiz(holder, etyQuiz);
+          mixedQuiz.idx = 0;
+          mixedQuiz.answers = new Array(questions.length).fill(null);
+          renderQuiz(holder, mixedQuiz);
         },
         onNewQuiz: () => {
           etyView.innerHTML = "";
         }
       };
 
-      renderQuiz(holder, etyQuiz);
+      renderQuiz(holder, mixedQuiz);
     }
 
     etyN.addEventListener("input", refreshEtyControls);
-    etyGenerate.addEventListener("click", startEtyQuiz);
+    etyGenerate.addEventListener("click", startMixedQuiz);
 
     bankFile.addEventListener("change", async (e) => {
       const f = e.target.files && e.target.files[0];
       if (!f) return;
       const t = await f.text();
-      const parsed = parseIndexText(t);
-      if (parsed.length){
-        etyBank = parsed;
-        bankBar.classList.remove("show");
-      }else{
-        etyBank = [];
-      }
+      const parsed = parseBanksFromText(t);
+      etyBank = parsed.etyBank;
+      vocabBank = parsed.vocabBank;
+      bankBar.classList.toggle("show", (etyBank.length + vocabBank.length) === 0);
       refreshEtyControls();
       e.target.value = "";
     });
 
-    (async function initBank(){
+    (async function initBanks(){
       const parsed = await tryLoadBankViaFetch();
       if (parsed){
-        etyBank = parsed;
-        bankBar.classList.remove("show");
+        etyBank = parsed.etyBank;
+        vocabBank = parsed.vocabBank;
+        bankBar.classList.toggle("show", (etyBank.length + vocabBank.length) === 0);
       } else {
         bankBar.classList.add("show");
       }
@@ -1116,7 +1305,7 @@
     })();
 
     /********************
-     * CUSTOM JSON: require JSON load, then require N + Generate
+     * CUSTOM JSON tab (unchanged logic; still supports rationales)
      ********************/
     const customJson = document.getElementById("customJson");
     const customFile = document.getElementById("customFile");
