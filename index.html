@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Berthel's Biology</title>
+
   <style>
     :root{
       --bg:#ffffff;
@@ -12,29 +13,38 @@
       --line:#e5e7eb;
       --panel:#ffffff;
       --soft:#f9fafb;
-      --ok:#15803d;      /* green */
-      --bad:#b91c1c;     /* red */
-      --accent:#111827;  /* keep monochrome */
-      --radius:14px;
+
+      --ok:#15803d;   /* green */
+      --bad:#b91c1c;  /* red */
+
+      --radius:16px;
     }
 
-    /* Latin Modern (if installed); otherwise clean serif fallback */
     html,body{
       height:100%;
       background:var(--bg);
       color:var(--ink);
-      font-family:"Latin Modern Roman","LatinModernRoman","Computer Modern Serif","Times New Roman",serif;
-      font-size:16px;
-      line-height:1.35;
+
+      /* Latin Modern first; graceful fallbacks */
+      font-family:
+        "Latin Modern Roman",
+        "LatinModernRoman",
+        "LM Roman 10",
+        "Computer Modern Serif",
+        "Times New Roman",
+        serif;
+
+      font-size:18px;         /* larger */
+      line-height:1.45;
     }
     *{ box-sizing:border-box; }
     a{ color:inherit; text-decoration:none; }
     button,input,textarea{ font:inherit; }
 
     .wrap{
-      max-width: 1020px;
+      max-width: 1040px;
       margin: 0 auto;
-      padding: 18px 14px 40px;
+      padding: 18px 14px 44px;
     }
 
     header{
@@ -54,20 +64,18 @@
       min-width: 0;
     }
     .avatar{
-      width:44px;
-      height:44px;
-      border-radius:12px;
+      width:48px;
+      height:48px;
+      border-radius:14px;
       border:1px solid var(--line);
       background:var(--soft);
       object-fit:cover;
       flex:0 0 auto;
     }
-    .titlebox{
-      min-width: 0;
-    }
+    .titlebox{ min-width: 0; }
     .title{
-      font-size: 20px;
-      font-weight: 700;
+      font-size: 22px;
+      font-weight: 800;
       letter-spacing: .2px;
       margin:0;
       white-space:nowrap;
@@ -77,17 +85,18 @@
     .subtitle{
       margin:2px 0 0;
       color:var(--muted);
-      font-size: 13.5px;
+      font-size: 15px;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
     .version{
       color:var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       white-space:nowrap;
       padding-left:10px;
       border-left:1px solid var(--line);
+      font-weight:700;
     }
 
     nav{
@@ -103,11 +112,12 @@
     .tabbtn{
       border:1px solid var(--line);
       background: var(--bg);
-      padding: 8px 12px;
+      padding: 9px 14px;
       border-radius: 999px;
       cursor:pointer;
-      font-weight:600;
+      font-weight:800;
       color: var(--ink);
+      font-size: 15px;
     }
     .tabbtn[aria-selected="true"]{
       background: var(--ink);
@@ -115,9 +125,7 @@
       border-color: var(--ink);
     }
 
-    main{
-      margin-top: 12px;
-    }
+    main{ margin-top: 12px; }
     section{
       display:none;
       border:1px solid var(--line);
@@ -133,7 +141,6 @@
       flex-wrap:wrap;
       align-items:center;
     }
-
     .card{
       border:1px solid var(--line);
       border-radius: var(--radius);
@@ -144,44 +151,56 @@
     .label{
       display:block;
       color:var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       margin-bottom: 6px;
-      font-weight:600;
+      font-weight:800;
     }
 
     .num{
-      width: 140px;
-      padding: 10px 10px;
+      width: 170px;
+      padding: 11px 12px;
       border:1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 14px;
       background: var(--bg);
       outline:none;
+      font-weight:800;
     }
     .num:focus{ border-color:#cbd5e1; }
 
     .btn{
       border:1px solid var(--line);
       background: var(--bg);
-      padding: 10px 12px;
-      border-radius: 12px;
+      padding: 11px 12px;
+      border-radius: 14px;
       cursor:pointer;
-      font-weight:700;
+      font-weight:900;
     }
     .btn.primary{
       background: var(--ink);
       border-color: var(--ink);
       color: var(--bg);
     }
-    .btn:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-    }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
 
     .quiet{
       color:var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       margin: 8px 0 0;
+      font-weight:700;
     }
+
+    .bar{
+      display:none;
+      margin-top: 10px;
+      padding: 10px;
+      border:1px solid rgba(185,28,28,.25);
+      background: rgba(185,28,28,.06);
+      border-radius: var(--radius);
+      color: var(--bad);
+      font-weight:900;
+      font-size: 14px;
+    }
+    .bar.show{ display:block; }
 
     /* Quiz */
     .quizTop{
@@ -193,34 +212,36 @@
     }
     .progress{
       color:var(--muted);
-      font-size: 13px;
-      font-weight:600;
+      font-size: 14px;
+      font-weight:900;
     }
     .qstem{
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 22px;
+      font-weight: 900;
       margin: 8px 0 12px;
+      line-height:1.25;
     }
     .options{
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:9px;
     }
     .opt{
       display:flex;
       gap:10px;
       align-items:flex-start;
       border:1px solid var(--line);
-      border-radius: 12px;
-      padding: 10px 10px;
+      border-radius: 14px;
+      padding: 11px 11px;
       background: var(--bg);
       cursor:pointer;
     }
-    .opt input{ margin-top:3px; }
+    .opt input{ margin-top:4px; transform: scale(1.15); }
     .opt .otxt{
       flex:1;
       color: var(--ink);
-      font-size: 15px;
+      font-size: 16px;
+      font-weight:700;
     }
     .quizActions{
       display:flex;
@@ -232,8 +253,8 @@
     }
     .hintBad{
       color: var(--bad);
-      font-size: 13px;
-      font-weight:700;
+      font-size: 14px;
+      font-weight:900;
     }
 
     /* Summary */
@@ -245,14 +266,14 @@
       margin-bottom: 10px;
     }
     .scoreBig{
-      font-size: 20px;
-      font-weight: 900;
+      font-size: 22px;
+      font-weight: 950;
       margin:0;
     }
     .scoreMeta{
       color:var(--muted);
-      font-size: 13px;
-      font-weight:700;
+      font-size: 14px;
+      font-weight:900;
     }
     .pill{
       display:inline-flex;
@@ -260,9 +281,9 @@
       gap:8px;
       border:1px solid var(--line);
       border-radius:999px;
-      padding: 6px 10px;
-      font-size: 13px;
-      font-weight:800;
+      padding: 7px 11px;
+      font-size: 14px;
+      font-weight:950;
       background: var(--soft);
     }
     .pill.ok{ color: var(--ok); border-color: rgba(21,128,61,.25); background: rgba(21,128,61,.06); }
@@ -290,22 +311,23 @@
       margin-bottom: 6px;
     }
     .reviewQ{
-      font-weight:900;
-      font-size: 14px;
+      font-weight:950;
+      font-size: 15px;
     }
     .mark{
-      font-weight:900;
-      font-size: 13px;
+      font-weight:950;
+      font-size: 14px;
       white-space:nowrap;
     }
     .mark.ok{ color: var(--ok); }
     .mark.bad{ color: var(--bad); }
     .reviewLine{
       color: var(--ink);
-      font-size: 13.5px;
+      font-size: 14.5px;
       margin: 4px 0;
+      font-weight:700;
     }
-    .reviewLine .k{ color: var(--muted); font-weight:800; }
+    .reviewLine .k{ color: var(--muted); font-weight:950; }
     .reviewLine .v{ color: var(--ink); }
 
     /* Home updates */
@@ -323,13 +345,14 @@
     }
     .updateTime{
       color:var(--muted);
-      font-size: 12.5px;
-      font-weight:800;
+      font-size: 13.5px;
+      font-weight:950;
       margin-bottom: 6px;
     }
     .updateMsg{
       margin:0;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight:750;
     }
 
     /* Admin panel (hidden by default; unlock via Ctrl+Shift+U) */
@@ -340,34 +363,21 @@
     .admin.show{ display:block; }
     textarea{
       width:100%;
-      min-height:110px;
-      padding:10px;
+      min-height:130px;
+      padding:12px;
       border:1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 14px;
       outline:none;
       resize:vertical;
       background: var(--bg);
+      font-weight:700;
+      font-size: 16px;
     }
 
-    /* “Bank missing” bar only shows if needed */
-    .bar{
-      display:none;
-      margin-top: 10px;
-      padding: 10px;
-      border:1px solid rgba(185,28,28,.25);
-      background: rgba(185,28,28,.06);
-      border-radius: var(--radius);
-      color: var(--bad);
-      font-weight:800;
-      font-size: 13px;
-    }
-    .bar.show{ display:block; }
-    .bar .row{ margin-top: 8px; }
-
-    /* Small screens */
     @media (max-width:520px){
       .version{ border-left:none; padding-left:0; }
       header{ align-items:flex-start; }
+      html,body{ font-size:17px; }
     }
   </style>
 </head>
@@ -408,7 +418,7 @@
               <input type="file" id="importUpdatesFile" accept="application/json" style="display:none" />
               <button class="btn" id="importUpdates">Import updates.json</button>
             </div>
-            <p class="quiet">Posted updates are timestamped (UTC+8) at the moment of posting.</p>
+            <p class="quiet">Updates are timestamped (UTC+8) at posting time.</p>
           </div>
         </div>
       </section>
@@ -417,19 +427,23 @@
       <section id="ety" role="tabpanel" aria-labelledby="tab-ety">
         <div class="card">
           <div class="row">
-            <div>
+            <div style="min-width:240px">
               <span class="label">Number of questions (1–100)</span>
-              <input id="etyN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" value="20" />
+              <input id="etyN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="e.g., 20" />
             </div>
-            <div style="flex:1; min-width:240px">
+            <div style="flex:1; min-width:260px">
               <div class="label">Status</div>
               <div id="etyStatus" class="quiet">Loading question bank…</div>
+            </div>
+            <div>
+              <div class="label" style="visibility:hidden">Generate</div>
+              <button class="btn primary" id="etyGenerate" disabled>Generate quiz</button>
             </div>
           </div>
 
           <div id="bankBar" class="bar">
-            The question bank could not be auto-loaded. If you are opening this as a local file, use a local web server, or select the bank file once below.
-            <div class="row">
+            The bank could not be auto-loaded. If you are opening this as a local file, use a local web server, or select the bank file once below.
+            <div class="row" style="margin-top:8px">
               <input type="file" id="bankFile" accept=".txt,text/plain" />
             </div>
           </div>
@@ -443,21 +457,23 @@
       <section id="custom" role="tabpanel" aria-labelledby="tab-custom">
         <div class="card">
           <div class="row">
-            <div style="flex:1; min-width:260px">
+            <div style="flex:1; min-width:300px">
               <span class="label">Paste MCQ JSON</span>
               <textarea id="customJson" placeholder=""></textarea>
             </div>
-            <div style="min-width:220px">
+            <div style="min-width:260px">
               <span class="label">Or upload JSON file</span>
               <input type="file" id="customFile" accept="application/json,.json" />
               <div style="height:12px"></div>
               <span class="label">Number of questions (1–100)</span>
-              <input id="customN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" value="20" />
+              <input id="customN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" placeholder="e.g., 20" />
+              <div style="height:12px"></div>
+              <button class="btn primary" id="customGenerate" disabled>Generate quiz</button>
             </div>
           </div>
 
           <div class="row" style="margin-top:10px">
-            <button class="btn primary" id="customLoad">Load JSON</button>
+            <button class="btn" id="customLoad">Load JSON</button>
             <div id="customStatus" class="quiet">Awaiting JSON…</div>
           </div>
 
@@ -470,10 +486,30 @@
 
   <script>
     /********************
-     * Build/version
+     * Version (stable-per-build for each visitor):
+     * - BUILD_ID changes when you deploy new code
+     * - version timestamp is set once per BUILD_ID in localStorage (UTC+8)
      ********************/
-    const BUILD_VERSION = "2026-02-10 15:06:41 (UTC+8)"; // build timestamp (Beijing time)
-    document.getElementById("version").textContent = "v" + BUILD_VERSION;
+    const BUILD_ID = "2026-02-10_update_002"; // change this on each deployment
+    const VERSION_KEY = "bertBio_buildVersion_" + BUILD_ID;
+
+    function beijingStamp(){
+      const d = new Date();
+      const s = d.toLocaleString("sv-SE", {
+        timeZone: "Asia/Shanghai",
+        year:"numeric", month:"2-digit", day:"2-digit",
+        hour:"2-digit", minute:"2-digit", second:"2-digit",
+        hour12:false
+      });
+      return s.replace(",", "");
+    }
+
+    let buildVersion = localStorage.getItem(VERSION_KEY);
+    if (!buildVersion){
+      buildVersion = beijingStamp() + " (UTC+8)";
+      localStorage.setItem(VERSION_KEY, buildVersion);
+    }
+    document.getElementById("version").textContent = "v" + buildVersion;
 
     /********************
      * Avatar fallback
@@ -481,9 +517,7 @@
     const AVATAR_FALLBACK_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE%0ABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME%0ADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU%0AFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA%0AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB%0ABhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/%0AxAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A%0A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o%0Alq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI%0A3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5%0Ap+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU%0AqVKlSpUqVKlSpUqVKlf/2Q==";
 
     const avatar = document.getElementById("avatar");
-    avatar.addEventListener("error", () => {
-      avatar.src = AVATAR_FALLBACK_DATA_URL;
-    }, { once:true });
+    avatar.addEventListener("error", () => { avatar.src = AVATAR_FALLBACK_DATA_URL; }, { once:true });
 
     /********************
      * Tabs
@@ -507,22 +541,7 @@
     }
 
     /********************
-     * Time helpers (UTC+8)
-     ********************/
-    function beijingStamp(){
-      const d = new Date();
-      const s = d.toLocaleString("sv-SE", {
-        timeZone: "Asia/Shanghai",
-        year:"numeric", month:"2-digit", day:"2-digit",
-        hour:"2-digit", minute:"2-digit", second:"2-digit",
-        hour12:false
-      });
-      // sv-SE gives "YYYY-MM-DD HH:MM:SS"
-      return s.replace(",", "");
-    }
-
-    /********************
-     * Home updates (site-wide requires updates.json on server; localStorage for authoring)
+     * Home updates
      ********************/
     const UPDATES_KEY = "bertBio_updates_v2";
     const UPDATES_JSON_PATH = "updates.json";
@@ -559,7 +578,6 @@
     }
 
     async function loadUpdates(){
-      // Prefer server updates.json if present; otherwise localStorage; otherwise default.
       let fromServer = null;
       try{
         const r = await fetch(UPDATES_JSON_PATH, { cache:"no-store" });
@@ -569,12 +587,10 @@
           else if (j && Array.isArray(j.updates)) fromServer = j.updates;
         }
       }catch(_){}
-
       if (fromServer && fromServer.length){
         renderUpdates(fromServer);
         return fromServer;
       }
-
       const raw = localStorage.getItem(UPDATES_KEY);
       if (raw){
         try{
@@ -592,9 +608,8 @@
     let updatesState = [];
     loadUpdates().then(list => updatesState = list);
 
-    // Admin unlock (client-side; intended for authoring convenience)
     const ADMIN_PANEL = document.getElementById("adminPanel");
-    const ADMIN_KEY = "BERTHEL_ADMIN"; // change if you want
+    const ADMIN_KEY = "BERTHEL_ADMIN";
     let adminUnlocked = false;
 
     window.addEventListener("keydown", (e) => {
@@ -612,7 +627,6 @@
       const ta = document.getElementById("adminMsg");
       const msg = (ta.value || "").trim();
       if (!msg) return;
-
       const entry = { ts: beijingStamp(), msg };
       updatesState = [entry, ...updatesState];
       localStorage.setItem(UPDATES_KEY, JSON.stringify(updatesState));
@@ -636,6 +650,7 @@
       if (!adminUnlocked) return;
       document.getElementById("importUpdatesFile").click();
     });
+
     document.getElementById("importUpdatesFile").addEventListener("change", async (e) => {
       if (!adminUnlocked) return;
       const f = e.target.files && e.target.files[0];
@@ -654,14 +669,14 @@
     });
 
     /********************
-     * Shared quiz renderer (minimal, student-facing)
+     * Utilities
      ********************/
     function clampInt(v, lo, hi){
       const n = Math.trunc(Number(v));
-      if (!Number.isFinite(n)) return lo;
-      return Math.max(lo, Math.min(hi, n));
+      if (!Number.isFinite(n)) return null;
+      if (n < lo || n > hi) return null;
+      return n;
     }
-
     function shuffle(arr){
       for (let i = arr.length - 1; i > 0; i--){
         const j = Math.floor(Math.random() * (i + 1));
@@ -669,11 +684,26 @@
       }
       return arr;
     }
-
     function escapeSpaces(s){
       return (s || "").replace(/\s+/g, " ").trim();
     }
+    function hardenIntegerInput(el){
+      const normalize = () => {
+        const min = Number(el.min) || 1;
+        const max = Number(el.max) || 100;
+        const raw = el.value;
+        if (raw === "") return;
+        const n = Math.trunc(Number(raw));
+        if (!Number.isFinite(n)) { el.value = ""; return; }
+        el.value = String(Math.max(min, Math.min(max, n)));
+      };
+      el.addEventListener("blur", normalize);
+      el.addEventListener("keydown", (e) => { if (e.key === "Enter") normalize(); });
+    }
 
+    /********************
+     * Quiz engine (supports "Finish now" at any time)
+     ********************/
     function mkQuizUI(mount){
       mount.innerHTML = "";
       const holder = document.createElement("div");
@@ -683,7 +713,6 @@
     }
 
     function renderQuiz(holder, quizState){
-      // quizState: { title, questions:[{stem, options[], correctIndex, rationale?}], idx, answers[] }
       holder.innerHTML = "";
 
       const q = quizState.questions[quizState.idx];
@@ -716,7 +745,6 @@
 
       const opts = document.createElement("div");
       opts.className = "options";
-
       const selected = quizState.answers[quizState.idx] ?? null;
 
       q.options.forEach((txt, i) => {
@@ -736,8 +764,7 @@
         lab.appendChild(inp);
         lab.appendChild(span);
 
-        lab.addEventListener("click", (e) => {
-          // label default ok
+        lab.addEventListener("click", () => {
           quizState.answers[quizState.idx] = i;
           hint.textContent = "";
         });
@@ -748,9 +775,6 @@
       const actions = document.createElement("div");
       actions.className = "quizActions";
 
-      const hint = document.createElement("div");
-      hint.className = "hintBad";
-
       const back = document.createElement("button");
       back.className = "btn";
       back.textContent = "Back";
@@ -760,6 +784,14 @@
         renderQuiz(holder, quizState);
       });
 
+      const finishNow = document.createElement("button");
+      finishNow.className = "btn";
+      finishNow.textContent = "Finish now";
+      finishNow.addEventListener("click", () => quizState.onFinish?.());
+
+      const hint = document.createElement("div");
+      hint.className = "hintBad";
+
       const next = document.createElement("button");
       next.className = "btn primary";
       const isLast = (quizState.idx === quizState.questions.length - 1);
@@ -767,7 +799,7 @@
       next.addEventListener("click", () => {
         const a = quizState.answers[quizState.idx];
         if (a === undefined || a === null){
-          hint.textContent = "Select an answer to continue.";
+          hint.textContent = "Select an answer to continue (or finish now).";
           return;
         }
         if (isLast){
@@ -779,6 +811,7 @@
       });
 
       actions.appendChild(back);
+      actions.appendChild(finishNow);
       actions.appendChild(hint);
       actions.appendChild(next);
 
@@ -787,13 +820,17 @@
       holder.appendChild(actions);
     }
 
-    function renderSummary(holder, quizState){
+    function renderSummary(holder, quizState, rationaleMode){
       holder.innerHTML = "";
 
       const total = quizState.questions.length;
       let correct = 0;
+      let answered = 0;
+
       for (let i=0;i<total;i++){
-        if (quizState.answers[i] === quizState.questions[i].correctIndex) correct++;
+        const a = quizState.answers[i];
+        if (a !== null && a !== undefined) answered++;
+        if (a === quizState.questions[i].correctIndex) correct++;
       }
       const pct = Math.round((correct / total) * 100);
 
@@ -806,7 +843,7 @@
 
       const meta = document.createElement("div");
       meta.className = "scoreMeta";
-      meta.textContent = `${correct} / ${total} (${pct}%)`;
+      meta.textContent = `${correct} / ${total} (${pct}%) • Answered: ${answered}/${total}`;
 
       const p1 = document.createElement("span");
       p1.className = "pill " + (pct >= 70 ? "ok" : "bad");
@@ -814,7 +851,7 @@
 
       const p2 = document.createElement("span");
       p2.className = "pill";
-      p2.textContent = "Submission complete";
+      p2.textContent = "Summary generated";
 
       head.appendChild(h1);
       head.appendChild(meta);
@@ -828,11 +865,7 @@
       const retry = document.createElement("button");
       retry.className = "btn";
       retry.textContent = "Retry same quiz";
-      retry.addEventListener("click", () => {
-        quizState.idx = 0;
-        quizState.answers = new Array(total).fill(null);
-        quizState.onRetrySame?.();
-      });
+      retry.addEventListener("click", () => quizState.onRetrySame?.());
 
       const newq = document.createElement("button");
       newq.className = "btn primary";
@@ -869,38 +902,26 @@
 
         const your = document.createElement("div");
         your.className = "reviewLine";
-        const yourK = document.createElement("span");
-        yourK.className = "k";
-        yourK.textContent = "Your answer: ";
-        const yourV = document.createElement("span");
-        yourV.className = "v";
-        yourV.textContent = (a === null || a === undefined) ? "—" : qq.options[a];
-        your.appendChild(yourK);
-        your.appendChild(yourV);
+        your.innerHTML = `<span class="k">Your answer: </span><span class="v">${(a === null || a === undefined) ? "—" : qq.options[a]}</span>`;
 
         const cor = document.createElement("div");
         cor.className = "reviewLine";
-        const corK = document.createElement("span");
-        corK.className = "k";
-        corK.textContent = "Correct answer: ";
-        const corV = document.createElement("span");
-        corV.className = "v";
-        corV.textContent = qq.options[qq.correctIndex];
-        cor.appendChild(corK);
-        cor.appendChild(corV);
+        cor.innerHTML = `<span class="k">Correct answer: </span><span class="v">${qq.options[qq.correctIndex]}</span>`;
 
         const rat = document.createElement("div");
         rat.className = "reviewLine";
-        const ratK = document.createElement("span");
-        ratK.className = "k";
-        ratK.textContent = "Rationale: ";
-        const ratV = document.createElement("span");
-        ratV.className = "v";
-        ratV.textContent = ok
-          ? "Matched the correct definition."
-          : "Your selected definition belongs to a different term; use the correct definition as the reference.";
-        rat.appendChild(ratK);
-        rat.appendChild(ratV);
+
+        let rationaleText = "";
+        if (a === null || a === undefined){
+          rationaleText = "No response recorded; use the correct option as your reference definition.";
+        } else if (rationaleMode === "provided" && qq.rationale){
+          rationaleText = qq.rationale;
+        } else if (ok){
+          rationaleText = "Matched the correct definition/claim.";
+        } else {
+          rationaleText = "Selected option is plausible but mismatched; align the term/stem to the correct definition/claim.";
+        }
+        rat.innerHTML = `<span class="k">Rationale: </span><span class="v">${rationaleText}</span>`;
 
         item.appendChild(top);
         item.appendChild(your);
@@ -916,36 +937,36 @@
     }
 
     /********************
-     * ETY/VOCAB bank loading + quiz generation
+     * ETY/VOCAB: load bank, then require N + Generate
      ********************/
     const BANK_TXT_PATH = "ib_bio_clean_index.txt";
     const etyStatus = document.getElementById("etyStatus");
     const bankBar = document.getElementById("bankBar");
     const bankFile = document.getElementById("bankFile");
     const etyN = document.getElementById("etyN");
+    const etyGenerate = document.getElementById("etyGenerate");
     const etyView = document.getElementById("etyView");
 
-    let etyBank = [];      // [{term, def}]
-    let etyQuiz = null;    // current quizState
-    let etyDebounce = null;
+    hardenIntegerInput(etyN);
+
+    let etyBank = [];
+    let etyQuiz = null;
 
     function parseIndexText(text){
       const lines = (text || "").replace(/\r/g,"").split("\n");
       const items = [];
       let last = null;
 
-      const dashRe = /^(.*?)\s*(?:—|–|-|:)\s*(.+)$/; // term — def (or : / - )
+      const dashRe = /^(.*?)\s*(?:—|–|-|:)\s*(.+)$/;
       const tabRe  = /^(.*?)\t+(.+)$/;
 
       for (let raw of lines){
         const line = raw.trimEnd();
         if (!line.trim()) continue;
 
-        // Skip obvious headers
         const h = line.trim().toLowerCase();
         if (h === "glossary" || h.startsWith("words in blue")) continue;
 
-        // Wrapped definition line (indented / no separator)
         if (/^\s+/.test(raw) && last){
           last.def = escapeSpaces(last.def + " " + line.trim());
           continue;
@@ -955,7 +976,6 @@
         if (!m) m = line.match(dashRe);
 
         if (!m){
-          // Try split at 2+ spaces (columns)
           const parts = line.split(/\s{2,}/);
           if (parts.length >= 2){
             const term = escapeSpaces(parts.shift());
@@ -964,11 +984,8 @@
               last = { term, def };
               items.push(last);
             }
-            continue;
-          } else {
-            // If it can't be parsed, ignore quietly
-            continue;
           }
+          continue;
         }
 
         const term = escapeSpaces(m[1]);
@@ -979,7 +996,6 @@
         items.push(last);
       }
 
-      // Deduplicate by term (case-insensitive), keep longest definition
       const map = new Map();
       for (const it of items){
         const k = it.term.toLowerCase();
@@ -1005,27 +1021,29 @@
       }
     }
 
-    function setEtyStatus(){
+    function refreshEtyControls(){
+      const raw = etyN.value;
+      const n = clampInt(raw, 1, 100);
+      const ready = etyBank.length > 0 && n !== null;
+      etyGenerate.disabled = !ready;
+
       if (!etyBank.length){
         etyStatus.textContent = "Question bank not loaded.";
-      }else{
+      } else {
         etyStatus.textContent = `Ready. Bank loaded: ${etyBank.length} terms.`;
       }
     }
 
     function makeEtyQuiz(n){
-      // Clamp to bank size and 1..100
       const maxN = Math.min(100, etyBank.length);
-      n = clampInt(n, 1, maxN);
+      const nn = Math.min(n, maxN);
 
       const pool = etyBank.slice();
       shuffle(pool);
-      const pick = pool.slice(0, n);
+      const pick = pool.slice(0, nn);
 
-      const questions = pick.map((item) => {
-        // Correct definition + 3 distractor definitions
+      return pick.map((item) => {
         const others = [];
-        // sample distractors from different terms
         while (others.length < 3){
           const cand = etyBank[Math.floor(Math.random() * etyBank.length)];
           if (!cand) continue;
@@ -1033,84 +1051,43 @@
           if (others.some(x => x.term === cand.term)) continue;
           others.push(cand);
         }
-
-        const opts = [
-          item.def,
-          others[0].def,
-          others[1].def,
-          others[2].def
-        ];
+        const opts = [ item.def, others[0].def, others[1].def, others[2].def ];
         const idxs = [0,1,2,3];
         shuffle(idxs);
         const options = idxs.map(i => opts[i]);
         const correctIndex = options.indexOf(item.def);
-
-        return {
-          stem: item.term,
-          options,
-          correctIndex
-        };
+        return { stem: item.term, options, correctIndex };
       });
-
-      return questions;
     }
 
-    function startEtyQuiz(n){
-      if (!etyBank.length) return;
+    function startEtyQuiz(){
+      const n = clampInt(etyN.value, 1, 100);
+      if (!etyBank.length || n === null) return;
 
-      const maxN = Math.min(100, etyBank.length);
-      const nn = clampInt(n, 1, maxN);
-      etyN.value = String(nn);
-
+      const questions = makeEtyQuiz(n);
       const holder = mkQuizUI(etyView);
-      const questions = makeEtyQuiz(nn);
 
       etyQuiz = {
-        title: "Etymology & Vocabulary",
         questions,
         idx: 0,
         answers: new Array(questions.length).fill(null),
         onExit: () => { etyView.innerHTML = ""; },
-        onFinish: () => {
-          renderSummary(holder, etyQuiz);
-        },
+        onFinish: () => { renderSummary(holder, etyQuiz, "generic"); },
         onRetrySame: () => {
+          etyQuiz.idx = 0;
+          etyQuiz.answers = new Array(questions.length).fill(null);
           renderQuiz(holder, etyQuiz);
         },
         onNewQuiz: () => {
-          startEtyQuiz(etyN.value);
+          etyView.innerHTML = "";
         }
       };
 
       renderQuiz(holder, etyQuiz);
     }
 
-    function scheduleEtyAutoStart(){
-      if (!etyBank.length) return;
-      clearTimeout(etyDebounce);
-      etyDebounce = setTimeout(() => startEtyQuiz(etyN.value), 450);
-    }
-
-    // Numeric input hardening (all integers 1–100)
-    function hardenNumberInput(el){
-      const fix = () => {
-        const v = el.value;
-        const n = clampInt(v, Number(el.min)||1, Number(el.max)||100);
-        el.value = String(n);
-      };
-      el.addEventListener("blur", fix);
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter"){
-          fix();
-        }
-      });
-    }
-    hardenNumberInput(etyN);
-
-    etyN.addEventListener("input", () => {
-      // Auto-generate after student selects a valid number
-      scheduleEtyAutoStart();
-    });
+    etyN.addEventListener("input", refreshEtyControls);
+    etyGenerate.addEventListener("click", startEtyQuiz);
 
     bankFile.addEventListener("change", async (e) => {
       const f = e.target.files && e.target.files[0];
@@ -1120,10 +1097,10 @@
       if (parsed.length){
         etyBank = parsed;
         bankBar.classList.remove("show");
-        setEtyStatus();
       }else{
-        etyStatus.textContent = "Bank file loaded, but no usable entries were detected.";
+        etyBank = [];
       }
+      refreshEtyControls();
       e.target.value = "";
     });
 
@@ -1132,35 +1109,29 @@
       if (parsed){
         etyBank = parsed;
         bankBar.classList.remove("show");
-        setEtyStatus();
-        // Auto-start with current value
-        startEtyQuiz(etyN.value);
-      }else{
+      } else {
         bankBar.classList.add("show");
-        setEtyStatus();
       }
+      refreshEtyControls();
     })();
 
     /********************
-     * CUSTOM JSON MCQ tab
+     * CUSTOM JSON: require JSON load, then require N + Generate
      ********************/
     const customJson = document.getElementById("customJson");
     const customFile = document.getElementById("customFile");
     const customLoad = document.getElementById("customLoad");
     const customStatus = document.getElementById("customStatus");
     const customN = document.getElementById("customN");
+    const customGenerate = document.getElementById("customGenerate");
     const customView = document.getElementById("customView");
 
-    hardenNumberInput(customN);
+    hardenIntegerInput(customN);
 
-    let customBank = []; // normalized questions
+    let customBank = [];
     let customQuiz = null;
-    let customDebounce = null;
 
     function normalizeCustomJSON(obj){
-      // Accept common forms:
-      // 1) [{stem/question, options:[...], answer/correct:"A"/0, rationale/explanation}]
-      // 2) {questions:[...]} or {items:[...]} etc.
       let arr = null;
       if (Array.isArray(obj)) arr = obj;
       else if (obj && Array.isArray(obj.questions)) arr = obj.questions;
@@ -1175,40 +1146,36 @@
 
         let options = q.options || q.choices || q.answers || null;
         if (options && !Array.isArray(options) && typeof options === "object"){
-          // {A:"..",B:"..",C:"..",D:".."}
           const keys = ["A","B","C","D"];
           const as = keys.map(k => options[k]).filter(Boolean);
-          if (as.length >= 4) options = as.slice(0,4);
-          else options = Object.values(options);
+          options = (as.length >= 4) ? as.slice(0,4) : Object.values(options);
         }
         if (!Array.isArray(options) || options.length < 4) continue;
-
         options = options.slice(0,4).map(x => escapeSpaces(String(x)));
 
         let ans = q.answer ?? q.correct ?? q.key ?? q.correctAnswer ?? null;
         let correctIndex = null;
-        if (typeof ans === "number"){
-          correctIndex = ans;
-        }else if (typeof ans === "string"){
+        if (typeof ans === "number") correctIndex = ans;
+        else if (typeof ans === "string"){
           const s = ans.trim().toUpperCase();
-          if (["A","B","C","D"].includes(s)){
-            correctIndex = ["A","B","C","D"].indexOf(s);
-          }else{
-            // maybe exact option text
+          if (["A","B","C","D"].includes(s)) correctIndex = ["A","B","C","D"].indexOf(s);
+          else {
             const idx = options.indexOf(escapeSpaces(ans));
             if (idx >= 0) correctIndex = idx;
           }
         }
-
-        if (correctIndex === null || correctIndex < 0 || correctIndex > 3){
-          // If missing/invalid: skip (no silent “guessing”)
-          continue;
-        }
+        if (correctIndex === null || correctIndex < 0 || correctIndex > 3) continue;
 
         const rationale = escapeSpaces(q.rationale || q.explanation || q.reason || "");
         out.push({ stem, options, correctIndex, rationale });
       }
       return out;
+    }
+
+    function refreshCustomControls(){
+      const n = clampInt(customN.value, 1, 100);
+      const ready = customBank.length > 0 && n !== null;
+      customGenerate.disabled = !ready;
     }
 
     function loadCustomFromText(text){
@@ -1218,53 +1185,12 @@
       return norm.length ? norm : null;
     }
 
-    function scheduleCustomAutoStart(){
-      if (!customBank.length) return;
-      clearTimeout(customDebounce);
-      customDebounce = setTimeout(() => startCustomQuiz(customN.value), 450);
-    }
-
-    customN.addEventListener("input", () => scheduleCustomAutoStart());
-
-    customFile.addEventListener("change", async (e) => {
-      const f = e.target.files && e.target.files[0];
-      if (!f) return;
-      const t = await f.text();
-      const norm = loadCustomFromText(t);
-      if (norm){
-        customBank = norm;
-        customStatus.textContent = `Loaded ${customBank.length} questions.`;
-        customView.innerHTML = "";
-        startCustomQuiz(customN.value);
-      }else{
-        customStatus.textContent = "Invalid JSON or unsupported structure.";
-      }
-      e.target.value = "";
-    });
-
-    customLoad.addEventListener("click", () => {
-      const t = (customJson.value || "").trim();
-      if (!t){
-        customStatus.textContent = "Awaiting JSON…";
-        return;
-      }
-      const norm = loadCustomFromText(t);
-      if (norm){
-        customBank = norm;
-        customStatus.textContent = `Loaded ${customBank.length} questions.`;
-        customView.innerHTML = "";
-        startCustomQuiz(customN.value);
-      }else{
-        customStatus.textContent = "Invalid JSON or unsupported structure.";
-      }
-    });
-
-    function startCustomQuiz(n){
-      if (!customBank.length) return;
+    function startCustomQuiz(){
+      const n = clampInt(customN.value, 1, 100);
+      if (!customBank.length || n === null) return;
 
       const maxN = Math.min(100, customBank.length);
-      const nn = clampInt(n, 1, maxN);
-      customN.value = String(nn);
+      const nn = Math.min(n, maxN);
 
       const pool = customBank.slice();
       shuffle(pool);
@@ -1278,157 +1204,66 @@
       const holder = mkQuizUI(customView);
 
       customQuiz = {
-        title: "MCQ Content",
         questions,
         idx: 0,
         answers: new Array(questions.length).fill(null),
         onExit: () => { customView.innerHTML = ""; },
-        onFinish: () => {
-          // Override summary rationale to use provided rationale if available
-          renderCustomSummary(holder, customQuiz);
-        },
+        onFinish: () => { renderSummary(holder, customQuiz, "provided"); },
         onRetrySame: () => {
+          customQuiz.idx = 0;
+          customQuiz.answers = new Array(questions.length).fill(null);
           renderQuiz(holder, customQuiz);
         },
         onNewQuiz: () => {
-          startCustomQuiz(customN.value);
+          customView.innerHTML = "";
         }
       };
 
       renderQuiz(holder, customQuiz);
     }
 
-    function renderCustomSummary(holder, quizState){
-      holder.innerHTML = "";
+    customN.addEventListener("input", refreshCustomControls);
+    customGenerate.addEventListener("click", startCustomQuiz);
 
-      const total = quizState.questions.length;
-      let correct = 0;
-      for (let i=0;i<total;i++){
-        if (quizState.answers[i] === quizState.questions[i].correctIndex) correct++;
+    customFile.addEventListener("change", async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const t = await f.text();
+      const norm = loadCustomFromText(t);
+      if (norm){
+        customBank = norm;
+        customStatus.textContent = `Loaded ${customBank.length} questions.`;
+      }else{
+        customBank = [];
+        customStatus.textContent = "Invalid JSON or unsupported structure.";
       }
-      const pct = Math.round((correct / total) * 100);
+      customView.innerHTML = "";
+      refreshCustomControls();
+      e.target.value = "";
+    });
 
-      const head = document.createElement("div");
-      head.className = "summaryHeader";
-
-      const h1 = document.createElement("p");
-      h1.className = "scoreBig";
-      h1.textContent = "Results";
-
-      const meta = document.createElement("div");
-      meta.className = "scoreMeta";
-      meta.textContent = `${correct} / ${total} (${pct}%)`;
-
-      const p1 = document.createElement("span");
-      p1.className = "pill " + (pct >= 70 ? "ok" : "bad");
-      p1.textContent = (pct >= 70 ? "Strong" : "Needs work");
-
-      const p2 = document.createElement("span");
-      p2.className = "pill";
-      p2.textContent = "Submission complete";
-
-      head.appendChild(h1);
-      head.appendChild(meta);
-      head.appendChild(p1);
-      head.appendChild(p2);
-
-      const actions = document.createElement("div");
-      actions.className = "row";
-      actions.style.marginTop = "8px";
-
-      const retry = document.createElement("button");
-      retry.className = "btn";
-      retry.textContent = "Retry same quiz";
-      retry.addEventListener("click", () => {
-        quizState.idx = 0;
-        quizState.answers = new Array(total).fill(null);
-        renderQuiz(holder, quizState);
-      });
-
-      const newq = document.createElement("button");
-      newq.className = "btn primary";
-      newq.textContent = "Generate new quiz";
-      newq.addEventListener("click", () => startCustomQuiz(customN.value));
-
-      actions.appendChild(retry);
-      actions.appendChild(newq);
-
-      const list = document.createElement("div");
-      list.className = "reviewList";
-
-      for (let i=0;i<total;i++){
-        const qq = quizState.questions[i];
-        const a = quizState.answers[i];
-        const ok = (a === qq.correctIndex);
-
-        const item = document.createElement("div");
-        item.className = "reviewItem " + (ok ? "ok" : "bad");
-
-        const top = document.createElement("div");
-        top.className = "reviewTop";
-
-        const qlbl = document.createElement("div");
-        qlbl.className = "reviewQ";
-        qlbl.textContent = `Q${i+1}: ${qq.stem}`;
-
-        const mark = document.createElement("div");
-        mark.className = "mark " + (ok ? "ok" : "bad");
-        mark.textContent = ok ? "Correct" : "Incorrect";
-
-        top.appendChild(qlbl);
-        top.appendChild(mark);
-
-        const your = document.createElement("div");
-        your.className = "reviewLine";
-        const yourK = document.createElement("span");
-        yourK.className = "k";
-        yourK.textContent = "Your answer: ";
-        const yourV = document.createElement("span");
-        yourV.className = "v";
-        yourV.textContent = (a === null || a === undefined) ? "—" : qq.options[a];
-        your.appendChild(yourK);
-        your.appendChild(yourV);
-
-        const cor = document.createElement("div");
-        cor.className = "reviewLine";
-        const corK = document.createElement("span");
-        corK.className = "k";
-        corK.textContent = "Correct answer: ";
-        const corV = document.createElement("span");
-        corV.className = "v";
-        corV.textContent = qq.options[qq.correctIndex];
-        cor.appendChild(corK);
-        cor.appendChild(corV);
-
-        const rat = document.createElement("div");
-        rat.className = "reviewLine";
-        const ratK = document.createElement("span");
-        ratK.className = "k";
-        ratK.textContent = "Rationale: ";
-        const ratV = document.createElement("span");
-        ratV.className = "v";
-        if (qq.rationale){
-          ratV.textContent = qq.rationale;
-        }else{
-          ratV.textContent = ok
-            ? "Selected the best-supported option."
-            : "Incorrect selection; use the correct option as the reference answer.";
-        }
-        rat.appendChild(ratK);
-        rat.appendChild(ratV);
-
-        item.appendChild(top);
-        item.appendChild(your);
-        item.appendChild(cor);
-        item.appendChild(rat);
-
-        list.appendChild(item);
+    customLoad.addEventListener("click", () => {
+      const t = (customJson.value || "").trim();
+      if (!t){
+        customStatus.textContent = "Awaiting JSON…";
+        customBank = [];
+        customView.innerHTML = "";
+        refreshCustomControls();
+        return;
       }
+      const norm = loadCustomFromText(t);
+      if (norm){
+        customBank = norm;
+        customStatus.textContent = `Loaded ${customBank.length} questions.`;
+      }else{
+        customBank = [];
+        customStatus.textContent = "Invalid JSON or unsupported structure.";
+      }
+      customView.innerHTML = "";
+      refreshCustomControls();
+    });
 
-      holder.appendChild(head);
-      holder.appendChild(actions);
-      holder.appendChild(list);
-    }
+    refreshCustomControls();
   </script>
 </body>
 </html>
