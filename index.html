@@ -2,1380 +2,1433 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Berthel's Biology</title>
-
   <style>
     :root{
-      --bg0:#ffffff;
-      --bg1:#f6f6f6;
-      --bg2:#ececec;
-      --ink:#0b0b0b;
-      --muted:#5a5a5a;
-      --line:#d7d7d7;
-      --card:#ffffff;
-      --shadow: 0 10px 28px rgba(0,0,0,.08);
-      --ok:#14853b;
-      --bad:#b00020;
-      --accent:#111111;
-      --focus: 0 0 0 3px rgba(0,0,0,.18);
-      --radius: 16px;
+      --bg:#ffffff;
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --panel:#ffffff;
+      --soft:#f9fafb;
+      --ok:#15803d;      /* green */
+      --bad:#b91c1c;     /* red */
+      --accent:#111827;  /* keep monochrome */
+      --radius:14px;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
+    /* Latin Modern (if installed); otherwise clean serif fallback */
+    html,body{
+      height:100%;
+      background:var(--bg);
       color:var(--ink);
-      background:
-        radial-gradient(900px 520px at 10% -10%, var(--bg2) 10%, transparent 55%),
-        radial-gradient(900px 520px at 90% -10%, var(--bg2) 10%, transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      font: 16px/1.55 "Latin Modern Roman","Latin Modern","LMRoman10","Computer Modern Serif","CMU Serif","Times New Roman",serif;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family:"Latin Modern Roman","LatinModernRoman","Computer Modern Serif","Times New Roman",serif;
+      font-size:16px;
+      line-height:1.35;
     }
+    *{ box-sizing:border-box; }
+    a{ color:inherit; text-decoration:none; }
+    button,input,textarea{ font:inherit; }
 
-    a{color:inherit}
-    .container{max-width:1100px;margin:0 auto;padding:18px 18px 28px}
+    .wrap{
+      max-width: 1020px;
+      margin: 0 auto;
+      padding: 18px 14px 40px;
+    }
 
     header{
-      position:sticky; top:0; z-index:20;
-      background: rgba(255,255,255,.85);
-      backdrop-filter: blur(10px);
-      border-bottom:1px solid var(--line);
-    }
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:16px; padding:14px 18px;
-      max-width:1100px; margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding: 14px 14px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
     }
     .brand{
-      display:flex; align-items:center; gap:12px;
+      display:flex;
+      align-items:center;
+      gap:12px;
       min-width: 0;
     }
     .avatar{
-      width:44px;height:44px;border-radius:999px;
+      width:44px;
+      height:44px;
+      border-radius:12px;
       border:1px solid var(--line);
-      background:#fff;
+      background:var(--soft);
       object-fit:cover;
       flex:0 0 auto;
     }
-    .brandText{min-width:0}
+    .titlebox{
+      min-width: 0;
+    }
     .title{
-      font-size:18px; font-weight:700; margin:0;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      letter-spacing:.2px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      margin:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
     .subtitle{
       margin:2px 0 0;
-      font-size:13px; color:var(--muted);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-
-    .versionPill{
-      display:flex; align-items:center; gap:10px;
-      padding:8px 12px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background: #fff;
-      font-size:12px;
       color:var(--muted);
-      user-select:none;
-      cursor:default;
+      font-size: 13.5px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .versionCode{
-      color:var(--ink);
-      font-variant-numeric: tabular-nums;
+    .version{
+      color:var(--muted);
+      font-size: 13px;
+      white-space:nowrap;
+      padding-left:10px;
+      border-left:1px solid var(--line);
     }
 
-    .tabs{
-      display:flex; gap:10px; padding:0 18px 14px;
-      max-width:1100px; margin:0 auto;
+    nav{
+      margin-top: 12px;
+      display:flex;
+      gap:8px;
       flex-wrap:wrap;
-    }
-    .tabBtn{
-      appearance:none;
+      padding: 10px 10px;
       border:1px solid var(--line);
-      background: #fff;
-      border-radius:999px;
-      padding:10px 14px;
-      cursor:pointer;
-      font-size:14px;
-      color:var(--ink);
-      box-shadow: none;
-      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      border-radius: var(--radius);
+      background: var(--panel);
     }
-    .tabBtn:hover{background:#fafafa}
-    .tabBtn:active{transform: translateY(1px)}
-    .tabBtn[aria-selected="true"]{
-      border-color:#bcbcbc;
-      background: #f4f4f4;
-      font-weight:700;
+    .tabbtn{
+      border:1px solid var(--line);
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight:600;
+      color: var(--ink);
+    }
+    .tabbtn[aria-selected="true"]{
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    main{
+      margin-top: 12px;
+    }
+    section{
+      display:none;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      padding: 14px;
+    }
+    section.active{ display:block; }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
     }
 
     .card{
-      background:var(--card);
       border:1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .sectionPad{padding:18px}
-    .sectionTitle{
-      margin:0 0 10px;
-      font-size:16px; font-weight:700;
-    }
-    .hint{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:13px;
+      background: var(--bg);
+      padding: 12px;
     }
 
-    .row{
-      display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap;
-    }
-    .field{
-      min-width:220px; flex:0 0 auto;
-    }
-    label{
+    .label{
       display:block;
-      font-size:12px;
       color:var(--muted);
-      margin:0 0 6px;
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight:600;
     }
-    input[type="number"], input[type="password"], textarea, input[type="file"]{
-      width:100%;
+
+    .num{
+      width: 140px;
+      padding: 10px 10px;
       border:1px solid var(--line);
       border-radius: 12px;
-      padding:12px 12px;
-      font: inherit;
-      background:#fff;
-      color:var(--ink);
+      background: var(--bg);
       outline:none;
     }
-    input[type="number"]:focus, input[type="password"]:focus, textarea:focus{
-      box-shadow: var(--focus);
-      border-color:#bcbcbc;
-    }
-    textarea{min-height:110px; resize:vertical}
+    .num:focus{ border-color:#cbd5e1; }
 
     .btn{
-      appearance:none;
+      border:1px solid var(--line);
+      background: var(--bg);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    .btn.primary{
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--bg);
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+
+    .quiet{
+      color:var(--muted);
+      font-size: 13px;
+      margin: 8px 0 0;
+    }
+
+    /* Quiz */
+    .quizTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      margin-bottom: 10px;
+    }
+    .progress{
+      color:var(--muted);
+      font-size: 13px;
+      font-weight:600;
+    }
+    .qstem{
+      font-size: 18px;
+      font-weight: 800;
+      margin: 8px 0 12px;
+    }
+    .options{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .opt{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
       border:1px solid var(--line);
       border-radius: 12px;
-      padding:12px 14px;
-      background:#111;
-      color:#fff;
+      padding: 10px 10px;
+      background: var(--bg);
       cursor:pointer;
-      font-weight:700;
-      transition: transform .06s ease, filter .15s ease, opacity .15s ease;
     }
-    .btn:hover{filter:brightness(1.05)}
-    .btn:active{transform: translateY(1px)}
-    .btn:disabled{opacity:.45; cursor:not-allowed}
-    .btn.secondary{
-      background:#fff; color:var(--ink);
+    .opt input{ margin-top:3px; }
+    .opt .otxt{
+      flex:1;
+      color: var(--ink);
+      font-size: 15px;
+    }
+    .quizActions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-top: 12px;
+      flex-wrap:wrap;
+    }
+    .hintBad{
+      color: var(--bad);
+      font-size: 13px;
       font-weight:700;
     }
-    .btn.secondary:hover{background:#fafafa}
 
-    .divider{height:1px;background:var(--line);margin:14px 0}
-
-    .quizShell{display:none}
-    .quizTop{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; flex-wrap:wrap;
-      margin-bottom:12px;
+    /* Summary */
+    .summaryHeader{
+      display:flex;
+      gap:12px;
+      align-items:baseline;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .scoreBig{
+      font-size: 20px;
+      font-weight: 900;
+      margin:0;
+    }
+    .scoreMeta{
+      color:var(--muted);
+      font-size: 13px;
+      font-weight:700;
     }
     .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:7px 10px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       border:1px solid var(--line);
       border-radius:999px;
-      background:#fff;
-      font-size:12px;
-      color:var(--muted);
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight:800;
+      background: var(--soft);
     }
-    .pill strong{color:var(--ink)}
-    .progressWrap{
-      flex:1 1 240px;
-      height:10px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      overflow:hidden;
-      background:#fff;
-    }
-    .progressBar{height:100%; width:0%; background:#111}
+    .pill.ok{ color: var(--ok); border-color: rgba(21,128,61,.25); background: rgba(21,128,61,.06); }
+    .pill.bad{ color: var(--bad); border-color: rgba(185,28,28,.25); background: rgba(185,28,28,.06); }
 
-    .prompt{
-      margin:0 0 12px;
-      font-size:20px;
-      letter-spacing:.1px;
-    }
-    .termBadge{
-      display:inline-block;
-      margin:0 6px;
-      padding:2px 10px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:#fff;
-      font-size:18px;
-      font-weight:700;
-      vertical-align:baseline;
-    }
-
-    .options{display:grid; gap:12px}
-    .optBtn{
-      width:100%;
-      text-align:left;
-      border:1px solid var(--line);
-      background:#fff;
-      border-radius: 14px;
-      padding:14px 14px;
-      cursor:pointer;
-      transition: background .12s ease, border-color .12s ease, transform .06s ease;
-      display:flex; gap:10px; align-items:flex-start;
-    }
-    .optBtn:hover{background:#fafafa}
-    .optBtn:active{transform: translateY(1px)}
-    .optBtn:disabled{cursor:not-allowed}
-    .optKey{
-      flex:0 0 auto;
-      width:26px;height:26px;
-      border-radius:8px;
-      border:1px solid var(--line);
-      display:inline-flex;align-items:center;justify-content:center;
-      font-size:12px;
-      color:var(--muted);
-      font-weight:700;
-      margin-top:1px;
-    }
-    .optText{flex:1 1 auto}
-    .optBtn.correct{border-color: rgba(20,133,59,.55)}
-    .optBtn.wrong{border-color: rgba(176,0,32,.55)}
-    .feedback{
-      margin-top:12px;
-      font-size:14px;
-      color:var(--muted);
-      min-height:22px;
-    }
-    .feedback strong{color:var(--ink)}
-    .actionsRow{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; flex-wrap:wrap;
-      margin-top:14px;
-    }
-
-    .resultsShell{display:none}
-    .resultsHeader{
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:12px; flex-wrap:wrap;
-    }
-    .metricRow{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin:10px 0 0;
-    }
-    .metric{
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:#fff;
-      padding:8px 10px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .metric strong{color:var(--ink)}
-    .review{
-      margin:12px 0 0;
-      padding:0;
-      list-style:none;
-      display:grid;
+    .reviewList{
+      display:flex;
+      flex-direction:column;
       gap:10px;
+      margin-top: 10px;
     }
     .reviewItem{
       border:1px solid var(--line);
-      border-radius: 14px;
-      background:#fff;
-      padding:12px 14px;
+      border-radius: var(--radius);
+      padding: 10px;
+      background: var(--bg);
     }
+    .reviewItem.ok{ border-color: rgba(21,128,61,.25); background: rgba(21,128,61,.04); }
+    .reviewItem.bad{ border-color: rgba(185,28,28,.25); background: rgba(185,28,28,.04); }
     .reviewTop{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; flex-wrap:wrap;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom: 6px;
     }
-    .statusTag{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
+    .reviewQ{
+      font-weight:900;
+      font-size: 14px;
+    }
+    .mark{
+      font-weight:900;
+      font-size: 13px;
+      white-space:nowrap;
+    }
+    .mark.ok{ color: var(--ok); }
+    .mark.bad{ color: var(--bad); }
+    .reviewLine{
+      color: var(--ink);
+      font-size: 13.5px;
+      margin: 4px 0;
+    }
+    .reviewLine .k{ color: var(--muted); font-weight:800; }
+    .reviewLine .v{ color: var(--ink); }
+
+    /* Home updates */
+    .updates{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .update{
       border:1px solid var(--line);
-      font-size:12px;
-      color:var(--muted);
+      border-radius: var(--radius);
+      padding: 10px;
+      background: var(--bg);
     }
-    .statusTag.ok{border-color: rgba(20,133,59,.35); color: var(--ok)}
-    .statusTag.bad{border-color: rgba(176,0,32,.35); color: var(--bad)}
-    .rationale{
-      margin:8px 0 0;
+    .updateTime{
       color:var(--muted);
-      font-size:13px;
+      font-size: 12.5px;
+      font-weight:800;
+      margin-bottom: 6px;
     }
-    .rationale strong{color:var(--ink)}
-    .rationale .ok{color:var(--ok); font-weight:700}
-    .rationale .bad{color:var(--bad); font-weight:700}
+    .updateMsg{
+      margin:0;
+      font-size: 14px;
+    }
 
-    /* Home updates feed */
-    .updatesList{
-      display:grid; gap:10px;
-      margin-top:10px;
+    /* Admin panel (hidden by default; unlock via Ctrl+Shift+U) */
+    .admin{
+      display:none;
+      margin-top: 12px;
     }
-    .updateItem{
+    .admin.show{ display:block; }
+    textarea{
+      width:100%;
+      min-height:110px;
+      padding:10px;
       border:1px solid var(--line);
-      border-radius: 14px;
-      background:#fff;
-      padding:12px 14px;
-    }
-    .updateMeta{
-      font-size:12px;
-      color:var(--muted);
-      font-variant-numeric: tabular-nums;
-      margin-bottom:6px;
+      border-radius: 12px;
+      outline:none;
+      resize:vertical;
+      background: var(--bg);
     }
 
-    /* Hidden admin */
-    .adminShell{display:none}
-    .adminShell.show{display:block}
-    .miniNote{
-      font-size:12px;color:var(--muted);margin-top:8px
+    /* “Bank missing” bar only shows if needed */
+    .bar{
+      display:none;
+      margin-top: 10px;
+      padding: 10px;
+      border:1px solid rgba(185,28,28,.25);
+      background: rgba(185,28,28,.06);
+      border-radius: var(--radius);
+      color: var(--bad);
+      font-weight:800;
+      font-size: 13px;
     }
+    .bar.show{ display:block; }
+    .bar .row{ margin-top: 8px; }
 
-    /* Sections */
-    section[data-view]{display:none}
-    section[data-view].show{display:block}
-
-    /* Reduce clutter on small screens */
-    @media (max-width:560px){
-      .prompt{font-size:18px}
-      .field{min-width:180px}
+    /* Small screens */
+    @media (max-width:520px){
+      .version{ border-left:none; padding-left:0; }
+      header{ align-items:flex-start; }
     }
   </style>
 </head>
 
 <body>
-<header>
-  <div class="topbar">
-    <div class="brand">
-      <img id="avatarImg" class="avatar" alt="Chinstrap penguin avatar" />
-      <div class="brandText">
-        <h1 class="title">Berthel's Biology</h1>
-        <p class="subtitle">Professional student testing and review workspace.</p>
-      </div>
-    </div>
-
-    <div class="versionPill" id="versionPill" title="Site version (latest update timestamp, UTC+8)">
-      <span>Version</span>
-      <span class="versionCode" id="versionTag">—</span>
-    </div>
-  </div>
-
-  <div class="tabs" role="tablist" aria-label="Workspace tabs">
-    <button class="tabBtn" role="tab" id="tabHome" aria-selected="true" aria-controls="viewHome">Home</button>
-    <button class="tabBtn" role="tab" id="tabCore" aria-selected="false" aria-controls="viewCore">Etymology + Vocabulary</button>
-    <button class="tabBtn" role="tab" id="tabCustom" aria-selected="false" aria-controls="viewCustom">MCQ Content</button>
-  </div>
-</header>
-
-<div class="container">
-
-  <!-- HOME -->
-  <section class="card show" data-view="home" id="viewHome" aria-labelledby="tabHome">
-    <div class="sectionPad">
-      <h2 class="sectionTitle">Updates</h2>
-      <div id="updatesList" class="updatesList"></div>
-
-      <!-- Admin (hidden by default; unlock by Ctrl+Shift+U or 5 clicks on Version pill) -->
-      <div class="divider"></div>
-      <div id="adminShell" class="adminShell">
-        <h3 class="sectionTitle" style="margin-top:0">Admin: Add Update</h3>
-        <div class="row">
-          <div class="field" style="flex:1 1 520px; min-width:280px">
-            <label for="adminMsg">Update message (visible to all users)</label>
-            <textarea id="adminMsg" placeholder="Enter update text…"></textarea>
-            <div class="miniNote">Timestamp is automatically generated in Beijing time (UTC+8) at the moment you post.</div>
-          </div>
-          <div class="field" style="min-width:240px">
-            <label for="adminPass">Admin passcode</label>
-            <input id="adminPass" type="password" placeholder="Required" autocomplete="off" />
-            <div style="height:10px"></div>
-            <button class="btn" id="postUpdateBtn">Post update</button>
-            <div style="height:10px"></div>
-            <button class="btn secondary" id="downloadUpdatesBtn" disabled>Download updated updates.json</button>
-            <div class="miniNote">After download, replace the site’s <strong>updates.json</strong> file to publish globally.</div>
-          </div>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <img id="avatar" class="avatar" src="Chinstrap_LOgo.jfif" alt="Avatar" />
+        <div class="titlebox">
+          <p class="title">Berthel's Biology</p>
+          <p class="subtitle">Professional student testing and review workspace.</p>
         </div>
       </div>
-    </div>
-  </section>
+      <div class="version" id="version"></div>
+    </header>
 
-  <!-- CORE (ETY + VOCAB) -->
-  <section class="card" data-view="core" id="viewCore" aria-labelledby="tabCore">
-    <div class="sectionPad">
-      <h2 class="sectionTitle">Etymology + Vocabulary Review</h2>
+    <nav role="tablist" aria-label="Sections">
+      <button class="tabbtn" id="tab-home" role="tab" aria-selected="true" aria-controls="home">Home</button>
+      <button class="tabbtn" id="tab-ety" role="tab" aria-selected="false" aria-controls="ety">Etymology & Vocabulary</button>
+      <button class="tabbtn" id="tab-custom" role="tab" aria-selected="false" aria-controls="custom">MCQ Content</button>
+    </nav>
 
-      <!-- Setup -->
-      <div id="coreSetup">
-        <div class="row">
-          <div class="field">
-            <label for="coreCount">Practice questions (1–100)</label>
-            <input id="coreCount" type="number" inputmode="numeric" min="1" max="100" step="1" value="40" />
-            <div class="hint" id="coreLoadHint">Loading bank…</div>
+    <main>
+      <!-- HOME -->
+      <section id="home" class="active" role="tabpanel" aria-labelledby="tab-home">
+        <div class="card">
+          <div class="label">Update notes</div>
+          <div id="updates" class="updates"></div>
+
+          <div id="adminPanel" class="admin">
+            <div style="height:10px"></div>
+            <div class="label">Add update (admin)</div>
+            <textarea id="adminMsg" placeholder="Write an update note."></textarea>
+            <div class="row" style="margin-top:10px">
+              <button class="btn primary" id="postUpdate">Post update</button>
+              <button class="btn" id="downloadUpdates">Download updates.json</button>
+              <input type="file" id="importUpdatesFile" accept="application/json" style="display:none" />
+              <button class="btn" id="importUpdates">Import updates.json</button>
+            </div>
+            <p class="quiet">Posted updates are timestamped (UTC+8) at the moment of posting.</p>
           </div>
-          <button id="coreStartBtn" class="btn" disabled>Start</button>
         </div>
+      </section>
 
-        <div class="divider"></div>
-
-        <!-- If ib_bio_clean_index.txt fails to fetch, allow manual upload (minimal) -->
-        <div id="coreFallback" style="display:none">
+      <!-- ETY/VOCAB -->
+      <section id="ety" role="tabpanel" aria-labelledby="tab-ety">
+        <div class="card">
           <div class="row">
-            <div class="field" style="flex:1 1 520px; min-width:280px">
-              <label for="coreBankFile">Bank file (fallback)</label>
-              <input id="coreBankFile" type="file" accept=".txt,text/plain" />
-              <div class="hint">Expected file name on the site: <strong>ib_bio_clean_index.txt</strong></div>
+            <div>
+              <span class="label">Number of questions (1–100)</span>
+              <input id="etyN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" value="20" />
             </div>
-            <button id="coreLoadBtn" class="btn secondary">Load</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quiz -->
-      <div id="coreQuiz" class="quizShell">
-        <div class="quizTop">
-          <div class="pill">Q <strong id="coreQi">0</strong>/<strong id="coreQt">0</strong></div>
-          <div class="pill">Score <strong id="coreScore">0</strong></div>
-          <div class="progressWrap" aria-label="progress"><div id="corePbar" class="progressBar"></div></div>
-        </div>
-
-        <p class="prompt" id="corePrompt"></p>
-        <div class="options" id="coreOptions" role="group" aria-label="answer choices"></div>
-
-        <div class="feedback" id="coreFeedback"></div>
-
-        <div class="actionsRow">
-          <div class="hint">Keys: A–D or 1–4. Enter = Next.</div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap">
-            <button id="coreNextBtn" class="btn" disabled>Next</button>
-            <button id="coreFinishBtn" class="btn secondary">Finish</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Results -->
-      <div id="coreResults" class="resultsShell">
-        <div class="resultsHeader">
-          <div>
-            <h3 class="sectionTitle" style="margin:0">Performance Summary</h3>
-            <div class="metricRow">
-              <div class="metric">Score: <strong id="coreFinalScore">0</strong></div>
-              <div class="metric">Questions: <strong id="coreFinalTotal">0</strong></div>
-              <div class="metric">Accuracy: <strong id="coreFinalPct">0%</strong></div>
+            <div style="flex:1; min-width:240px">
+              <div class="label">Status</div>
+              <div id="etyStatus" class="quiet">Loading question bank…</div>
             </div>
           </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start">
-            <button id="coreRetrySameBtn" class="btn">Retry same set</button>
-            <button id="coreNewSetBtn" class="btn secondary">New set</button>
+
+          <div id="bankBar" class="bar">
+            The question bank could not be auto-loaded. If you are opening this as a local file, use a local web server, or select the bank file once below.
+            <div class="row">
+              <input type="file" id="bankFile" accept=".txt,text/plain" />
+            </div>
           </div>
+
+          <div style="height:12px"></div>
+          <div id="etyView"></div>
         </div>
+      </section>
 
-        <ul class="review" id="coreReview"></ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- CUSTOM MCQ CONTENT -->
-  <section class="card" data-view="custom" id="viewCustom" aria-labelledby="tabCustom">
-    <div class="sectionPad">
-      <h2 class="sectionTitle">MCQ Content</h2>
-
-      <!-- Setup -->
-      <div id="customSetup">
-        <div class="row">
-          <div class="field" style="flex:1 1 520px; min-width:280px">
-            <label for="customFile">Upload content (text)</label>
-            <input id="customFile" type="file" accept=".txt,text/plain" />
+      <!-- CUSTOM MCQ -->
+      <section id="custom" role="tabpanel" aria-labelledby="tab-custom">
+        <div class="card">
+          <div class="row">
+            <div style="flex:1; min-width:260px">
+              <span class="label">Paste MCQ JSON</span>
+              <textarea id="customJson" placeholder=""></textarea>
+            </div>
+            <div style="min-width:220px">
+              <span class="label">Or upload JSON file</span>
+              <input type="file" id="customFile" accept="application/json,.json" />
+              <div style="height:12px"></div>
+              <span class="label">Number of questions (1–100)</span>
+              <input id="customN" class="num" type="number" inputmode="numeric" min="1" max="100" step="1" value="20" />
+            </div>
           </div>
 
-          <div class="field">
-            <label for="customCount">Practice questions (1–100)</label>
-            <input id="customCount" type="number" inputmode="numeric" min="1" max="100" step="1" value="20" />
-          </div>
-
-          <button id="customStartBtn" class="btn" disabled>Start</button>
-        </div>
-
-        <div class="hint" id="customHint">Upload a text file. If it contains term–definition pairs, the quiz builds automatically.</div>
-
-        <!-- JSON paste fallback (kept minimalist; only appears if needed) -->
-        <div id="customJsonPane" style="display:none; margin-top:14px">
-          <div class="divider"></div>
-          <label for="customJson">Paste MCQ JSON (fallback)</label>
-          <textarea id="customJson" placeholder="Paste JSON here…"></textarea>
           <div class="row" style="margin-top:10px">
-            <button id="customJsonLoadBtn" class="btn secondary">Load JSON</button>
-            <div class="hint" id="customJsonHint"></div>
+            <button class="btn primary" id="customLoad">Load JSON</button>
+            <div id="customStatus" class="quiet">Awaiting JSON…</div>
           </div>
+
+          <div style="height:12px"></div>
+          <div id="customView"></div>
         </div>
-      </div>
+      </section>
+    </main>
+  </div>
 
-      <!-- Quiz -->
-      <div id="customQuiz" class="quizShell">
-        <div class="quizTop">
-          <div class="pill">Q <strong id="customQi">0</strong>/<strong id="customQt">0</strong></div>
-          <div class="pill">Score <strong id="customScore">0</strong></div>
-          <div class="progressWrap" aria-label="progress"><div id="customPbar" class="progressBar"></div></div>
-        </div>
+  <script>
+    /********************
+     * Build/version
+     ********************/
+    const BUILD_VERSION = "2026-02-10 15:06:41 (UTC+8)"; // build timestamp (Beijing time)
+    document.getElementById("version").textContent = "v" + BUILD_VERSION;
 
-        <p class="prompt" id="customPrompt"></p>
-        <div class="options" id="customOptions" role="group" aria-label="answer choices"></div>
+    /********************
+     * Avatar fallback
+     ********************/
+    const AVATAR_FALLBACK_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE%0ABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME%0ADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU%0AFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA%0AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB%0ABhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/%0AxAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A%0A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o%0Alq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI%0A3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5%0Ap+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU%0AqVKlSpUqVKlSpUqVKlf/2Q==";
 
-        <div class="feedback" id="customFeedback"></div>
+    const avatar = document.getElementById("avatar");
+    avatar.addEventListener("error", () => {
+      avatar.src = AVATAR_FALLBACK_DATA_URL;
+    }, { once:true });
 
-        <div class="actionsRow">
-          <div class="hint">Keys: A–D or 1–4. Enter = Next.</div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap">
-            <button id="customNextBtn" class="btn" disabled>Next</button>
-            <button id="customFinishBtn" class="btn secondary">Finish</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Results -->
-      <div id="customResults" class="resultsShell">
-        <div class="resultsHeader">
-          <div>
-            <h3 class="sectionTitle" style="margin:0">Performance Summary</h3>
-            <div class="metricRow">
-              <div class="metric">Score: <strong id="customFinalScore">0</strong></div>
-              <div class="metric">Questions: <strong id="customFinalTotal">0</strong></div>
-              <div class="metric">Accuracy: <strong id="customFinalPct">0%</strong></div>
-            </div>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start">
-            <button id="customRetrySameBtn" class="btn">Retry same set</button>
-            <button id="customNewSetBtn" class="btn secondary">New set</button>
-          </div>
-        </div>
-
-        <ul class="review" id="customReview"></ul>
-      </div>
-    </div>
-  </section>
-
-</div>
-
-<script>
-/* =========================
-   Core constraints
-   ========================= */
-const ADMIN_PASSCODE = "CHANGE_ME"; // replace with your passcode
-const BANK_TXT_PATH = "ib_bio_clean_index.txt";
-const AVATAR_PATH = "Chinstrap_LOgo.jfif";
-const UPDATES_PATH = "updates.json";
-const TZ = "Asia/Shanghai";
-
-/* fallback avatar (provided base64) */
-const AVATAR_FALLBACK_DATAURL =
-"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwMEADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFBBhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8olq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5p+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlf/2Q==";
-
-/* =========================
-   Helpers
-   ========================= */
-const $ = (id) => document.getElementById(id);
-
-function clampInt(n, min, max){
-  const x = Number.parseInt(String(n), 10);
-  if (!Number.isFinite(x)) return min;
-  return Math.min(Math.max(x, min), max);
-}
-
-function shanghaiTimestampISO(d = new Date()){
-  // "sv-SE" yields ISO-like "YYYY-MM-DD HH:mm:ss"
-  const s = new Intl.DateTimeFormat("sv-SE", {
-    timeZone: TZ, year:"numeric", month:"2-digit", day:"2-digit",
-    hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false
-  }).format(d);
-  return s.replace(" ", "T") + "+08:00";
-}
-
-function shanghaiDisplay(tsISO){
-  // expects ISO with +08:00, display "YYYY-MM-DD HH:mm (UTC+8)"
-  try{
-    const d = new Date(tsISO);
-    const s = new Intl.DateTimeFormat("sv-SE", {
-      timeZone: TZ, year:"numeric", month:"2-digit", day:"2-digit",
-      hour:"2-digit", minute:"2-digit", hour12:false
-    }).format(d);
-    return s + " (UTC+8)";
-  }catch{
-    return tsISO;
-  }
-}
-
-function cryptoRandInt(max){
-  if (max <= 0) return 0;
-  const c = window.crypto || window.msCrypto;
-  if (c && c.getRandomValues){
-    const buf = new Uint32Array(1);
-    const range = 0xFFFFFFFF;
-    const limit = range - (range % max);
-    let x = 0;
-    do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
-    return x % max;
-  }
-  return Math.floor(Math.random() * max);
-}
-
-function shuffleInPlace(arr){
-  for (let i = arr.length - 1; i > 0; i--){
-    const j = cryptoRandInt(i + 1);
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
-
-function pickUnique(arr, k){
-  const idx = Array.from({length: arr.length}, (_, i) => i);
-  shuffleInPlace(idx);
-  return idx.slice(0, Math.min(k, idx.length)).map(i => arr[i]);
-}
-
-function safeText(s){
-  return String(s ?? "").replace(/\s+/g, " ").trim();
-}
-
-/* =========================
-   Tabs
-   ========================= */
-function setTab(which){
-  const map = {
-    home: {btn:"tabHome", view:"viewHome"},
-    core: {btn:"tabCore", view:"viewCore"},
-    custom: {btn:"tabCustom", view:"viewCustom"},
-  };
-
-  for (const k of Object.keys(map)){
-    const isOn = k === which;
-    $(map[k].btn).setAttribute("aria-selected", String(isOn));
-    $(map[k].view).classList.toggle("show", isOn);
-  }
-}
-$("tabHome").addEventListener("click", () => setTab("home"));
-$("tabCore").addEventListener("click", () => setTab("core"));
-$("tabCustom").addEventListener("click", () => setTab("custom"));
-
-/* =========================
-   Avatar load (JFIF-safe via blob URL)
-   ========================= */
-(async function loadAvatar(){
-  const img = $("avatarImg");
-  img.src = AVATAR_FALLBACK_DATAURL;
-  try{
-    const res = await fetch(AVATAR_PATH, {cache:"no-store"});
-    if (!res.ok) throw new Error("avatar fetch failed");
-    const blob = await res.blob();
-    const url = URL.createObjectURL(blob);
-    img.src = url;
-  }catch{
-    // keep fallback
-  }
-})();
-
-/* =========================
-   Updates feed + version
-   ========================= */
-let updates = [];
-
-function renderUpdates(){
-  const box = $("updatesList");
-  box.innerHTML = "";
-
-  if (!Array.isArray(updates) || updates.length === 0){
-    const div = document.createElement("div");
-    div.className = "updateItem";
-    div.innerHTML = `
-      <div class="updateMeta">${shanghaiDisplay(shanghaiTimestampISO())}</div>
-      <div>Update pending: input validation and post-quiz diagnostic summary improvements for the generators.</div>
-    `;
-    box.appendChild(div);
-    $("versionTag").textContent = shanghaiTimestampISO();
-    return;
-  }
-
-  // newest first
-  const sorted = [...updates].sort((a,b) => String(b.ts).localeCompare(String(a.ts)));
-  $("versionTag").textContent = String(sorted[0].ts || shanghaiTimestampISO());
-
-  for (const u of sorted){
-    const div = document.createElement("div");
-    div.className = "updateItem";
-    div.innerHTML = `
-      <div class="updateMeta">${shanghaiDisplay(u.ts)}</div>
-      <div>${escapeHtml(u.msg)}</div>
-    `;
-    box.appendChild(div);
-  }
-}
-
-function escapeHtml(s){
-  const t = String(s ?? "");
-  return t.replace(/[&<>"']/g, (c) => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-}
-
-async function loadUpdates(){
-  // server file first
-  try{
-    const res = await fetch(UPDATES_PATH, {cache:"no-store"});
-    if (!res.ok) throw new Error("updates fetch failed");
-    const json = await res.json();
-    if (!Array.isArray(json)) throw new Error("updates not array");
-    updates = json.map(x => ({ts: String(x.ts||""), msg: String(x.msg||"")})).filter(x => x.ts && x.msg);
-  }catch{
-    // fallback to localStorage (admin preview)
-    try{
-      const raw = localStorage.getItem("updates_local");
-      const parsed = JSON.parse(raw || "[]");
-      if (Array.isArray(parsed)) updates = parsed;
-    }catch{}
-  }
-  renderUpdates();
-}
-loadUpdates();
-
-/* Admin unlock (minimal, hidden) */
-let versionClicks = 0;
-$("versionPill").addEventListener("click", () => {
-  versionClicks++;
-  if (versionClicks >= 5){
-    $("adminShell").classList.add("show");
-  }
-  setTimeout(() => (versionClicks = 0), 900);
-});
-window.addEventListener("keydown", (e) => {
-  if (e.ctrlKey && e.shiftKey && (e.key === "U" || e.key === "u")){
-    $("adminShell").classList.toggle("show");
-  }
-});
-
-$("postUpdateBtn").addEventListener("click", () => {
-  const pass = $("adminPass").value || "";
-  if (pass !== ADMIN_PASSCODE) return;
-
-  const msg = safeText($("adminMsg").value);
-  if (!msg) return;
-
-  const entry = { ts: shanghaiTimestampISO(), msg };
-  updates = Array.isArray(updates) ? updates : [];
-  updates.push(entry);
-
-  localStorage.setItem("updates_local", JSON.stringify(updates, null, 2));
-  $("adminMsg").value = "";
-  $("downloadUpdatesBtn").disabled = false;
-
-  renderUpdates();
-});
-
-$("downloadUpdatesBtn").addEventListener("click", () => {
-  const blob = new Blob([JSON.stringify(updates, null, 2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "updates.json";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-});
-
-/* =========================
-   Parse ib_bio_clean_index.txt into banks
-   ========================= */
-function parseGlossaryTextToPairs(txt){
-  const lines = String(txt || "").replace(/\r\n/g,"\n").replace(/\r/g,"\n").split("\n");
-  const pairs = [];
-  let last = null;
-
-  const splitLine = (line) => {
-    const s = line.trim();
-    if (!s) return null;
-
-    // Prefer strong delimiters first
-    const tab = s.indexOf("\t");
-    if (tab > 0) return [s.slice(0, tab).trim(), s.slice(tab + 1).trim()];
-
-    const em = s.indexOf(" — ");
-    if (em > 0) return [s.slice(0, em).trim(), s.slice(em + 3).trim()];
-
-    const en = s.indexOf(" – ");
-    if (en > 0) return [s.slice(0, en).trim(), s.slice(en + 3).trim()];
-
-    // Colon only if early enough to look like "Term: definition"
-    const colon = s.indexOf(":");
-    if (colon > 0 && colon < 45) return [s.slice(0, colon).trim(), s.slice(colon + 1).trim()];
-
-    // Two+ spaces as separator (common in pasted glossaries)
-    const m = s.match(/^(.+?)\s{2,}(.+)$/);
-    if (m) return [m[1].trim(), m[2].trim()];
-
-    return null;
-  };
-
-  for (const raw of lines){
-    const line = raw.trim();
-    if (!line) continue;
-
-    const parts = splitLine(line);
-    if (parts){
-      const term = safeText(parts[0]);
-      const meaning = safeText(parts[1]);
-      if (!term || !meaning) continue;
-
-      last = {term, meaning};
-      pairs.push(last);
-    }else if (last){
-      // continuation line
-      const extra = safeText(line);
-      if (extra){
-        last.meaning = safeText(last.meaning + " " + extra);
+    /********************
+     * Tabs
+     ********************/
+    const tabs = [
+      {btn:"tab-home", panel:"home"},
+      {btn:"tab-ety", panel:"ety"},
+      {btn:"tab-custom", panel:"custom"},
+    ];
+    function setTab(panelId){
+      for (const t of tabs){
+        const b = document.getElementById(t.btn);
+        const p = document.getElementById(t.panel);
+        const on = (t.panel === panelId);
+        b.setAttribute("aria-selected", on ? "true" : "false");
+        p.classList.toggle("active", on);
       }
     }
-  }
-
-  // dedupe by term (keep longest meaning)
-  const map = new Map();
-  for (const p of pairs){
-    const key = p.term.toLowerCase();
-    if (!map.has(key) || map.get(key).meaning.length < p.meaning.length){
-      map.set(key, {term: p.term, meaning: p.meaning});
-    }
-  }
-  return Array.from(map.values());
-}
-
-function classifyKind(term){
-  const t = String(term || "").trim();
-
-  // etymology heuristics: explicit affix hyphens
-  if (/^-/.test(t) || /-$/.test(t)) return "ETY";
-  if (t.includes("-") && (t.includes(",") || t.endsWith("-") || t.startsWith("-"))) return "ETY";
-  if (/^[a-z]{1,8}-$/i.test(t)) return "ETY";
-  if (/^-[a-z]{2,14}$/i.test(t)) return "ETY";
-  return "VOCAB";
-}
-
-let coreBank = {ety: [], vocab: [], combined: []};
-
-async function loadCoreBankFromSite(){
-  const res = await fetch(BANK_TXT_PATH, {cache:"no-store"});
-  if (!res.ok) throw new Error("bank fetch failed");
-  const txt = await res.text();
-  return parseGlossaryTextToPairs(txt);
-}
-
-function buildCoreBanks(pairs){
-  const items = [];
-  const ety = [];
-  const vocab = [];
-  for (const p of pairs){
-    const kind = classifyKind(p.term);
-    const item = {kind, term: p.term, meaning: p.meaning};
-    items.push(item);
-    if (kind === "ETY") ety.push(item);
-    else vocab.push(item);
-  }
-  coreBank = {ety, vocab, combined: items};
-}
-
-/* =========================
-   Generic quiz engine
-   ========================= */
-function makeQuizEngine(cfg){
-  const els = cfg.els;
-
-  const state = {
-    bank: [],
-    poolByKind: {ETY: [], VOCAB: [], ANY: []},
-    planIdx: [],
-    qPos: 0,
-    score: 0,
-    answered: false,
-    history: [],
-    frozenPlan: null, // for retry-same-set
-  };
-
-  function setVisible(view){
-    // views: setup, quiz, results
-    els.setup.style.display = (view === "setup") ? "" : "none";
-    els.quiz.style.display = (view === "quiz") ? "" : "none";
-    els.results.style.display = (view === "results") ? "" : "none";
-  }
-
-  function resetSession(total){
-    state.qPos = 0;
-    state.score = 0;
-    state.answered = false;
-    state.history = [];
-    els.qi.textContent = "0";
-    els.qt.textContent = String(total);
-    els.score.textContent = "0";
-    els.pbar.style.width = "0%";
-    els.feedback.innerHTML = "";
-    els.nextBtn.disabled = true;
-  }
-
-  function promptText(item){
-    const kind = item.kind;
-    const intro = (kind === "ETY")
-      ? "What is the meaning of"
-      : "Which definition best matches";
-    return `${intro} <span class="termBadge">${escapeHtml(item.term)}</span>?`;
-  }
-
-  function buildChoices(correctMeaning, pool){
-    const picks = [correctMeaning];
-    let tries = 0;
-    while (picks.length < 4 && tries < 2000){
-      const cand = pool[cryptoRandInt(pool.length)];
-      if (cand && !picks.includes(cand)) picks.push(cand);
-      tries++;
-    }
-    while (picks.length < 4) picks.push("—");
-    return shuffleInPlace(picks);
-  }
-
-  function renderChoices(choices, correctMeaning, record){
-    els.options.innerHTML = "";
-    const keys = ["A","B","C","D"];
-    choices.forEach((choice, i) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "optBtn";
-      btn.dataset.correct = (choice === correctMeaning) ? "1" : "0";
-
-      const k = document.createElement("span");
-      k.className = "optKey";
-      k.textContent = keys[i];
-
-      const t = document.createElement("div");
-      t.className = "optText";
-      t.textContent = choice;
-
-      btn.appendChild(k);
-      btn.appendChild(t);
-
-      btn.addEventListener("click", () => grade(btn, correctMeaning, {...record, picked: choice, ok: choice === correctMeaning}));
-      els.options.appendChild(btn);
-    });
-  }
-
-  function nextQuestion(){
-    if (state.qPos >= state.planIdx.length) return finish();
-
-    state.answered = false;
-    els.nextBtn.disabled = true;
-    els.feedback.innerHTML = "";
-
-    const idx = state.planIdx[state.qPos];
-    const item = state.bank[idx];
-    if (!item){
-      state.qPos++;
-      return nextQuestion();
+    for (const t of tabs){
+      document.getElementById(t.btn).addEventListener("click", () => setTab(t.panel));
     }
 
-    els.qi.textContent = String(state.qPos + 1);
-    els.prompt.innerHTML = promptText(item);
-
-    const correct = item.meaning;
-    const record = { kind: item.kind, term: item.term, correct, picked: "", ok: false, explanation: item.explanation || "" };
-
-    const pool = (item.kind === "ETY")
-      ? state.poolByKind.ETY
-      : (item.kind === "VOCAB")
-        ? state.poolByKind.VOCAB
-        : state.poolByKind.ANY;
-
-    const choices = buildChoices(correct, pool.length ? pool : state.poolByKind.ANY);
-    renderChoices(choices, correct, record);
-  }
-
-  function grade(btn, correct, record){
-    if (state.answered) return;
-    state.answered = true;
-
-    const all = Array.from(els.options.querySelectorAll(".optBtn"));
-    all.forEach(b => b.disabled = true);
-
-    if (btn.dataset.correct === "1"){
-      btn.classList.add("correct");
-      state.score++;
-      els.feedback.innerHTML = `<span class="ok"><strong>Correct.</strong></span>`;
-    }else{
-      btn.classList.add("wrong");
-      const target = all.find(b => b.dataset.correct === "1");
-      if (target) target.classList.add("correct");
-      els.feedback.innerHTML = `<span class="bad"><strong>Incorrect.</strong></span> <span>Correct answer: <strong>${escapeHtml(correct)}</strong></span>`;
+    /********************
+     * Time helpers (UTC+8)
+     ********************/
+    function beijingStamp(){
+      const d = new Date();
+      const s = d.toLocaleString("sv-SE", {
+        timeZone: "Asia/Shanghai",
+        year:"numeric", month:"2-digit", day:"2-digit",
+        hour:"2-digit", minute:"2-digit", second:"2-digit",
+        hour12:false
+      });
+      // sv-SE gives "YYYY-MM-DD HH:MM:SS"
+      return s.replace(",", "");
     }
 
-    els.score.textContent = String(state.score);
+    /********************
+     * Home updates (site-wide requires updates.json on server; localStorage for authoring)
+     ********************/
+    const UPDATES_KEY = "bertBio_updates_v2";
+    const UPDATES_JSON_PATH = "updates.json";
+    const DEFAULT_UPDATES = [
+      {
+        ts: "2026-02-10 15:06:41",
+        msg: "Next update: repaired numeric input handling (all integers 1–100), improved submission flow, and a clearer results summary with red/green indicators plus retry/new-quiz options."
+      }
+    ];
 
-    state.history.push(record);
-
-    state.qPos++;
-    els.pbar.style.width = Math.round((state.qPos / state.planIdx.length) * 100) + "%";
-    els.nextBtn.disabled = false;
-  }
-
-  function buildRationale(h, bankTermMap){
-    // “Professional rationale” without inventing facts:
-    // 1) state correct definition; 2) if wrong, identify which term(s) match chosen definition; 3) show any provided explanation if present.
-    if (h.ok){
-      return `<div class="rationale"><span class="ok">Correct.</span> Definition: <strong>${escapeHtml(h.correct)}</strong></div>`;
-    }
-    const chosen = h.picked || "";
-    const owners = bankTermMap.get(chosen) || [];
-    const ownersTxt = owners.length ? owners.map(escapeHtml).slice(0,4).join(", ") : "";
-    const ownerLine = ownersTxt ? `Your selected definition corresponds to: <strong>${ownersTxt}</strong>.` : `Your selected definition does not match the displayed term.`;
-    const extra = h.explanation ? `<div class="rationale"><strong>Explanation:</strong> ${escapeHtml(h.explanation)}</div>` : "";
-    return `
-      <div class="rationale">
-        <span class="bad">Incorrect.</span>
-        Correct definition: <strong>${escapeHtml(h.correct)}</strong>.
-        ${ownerLine}
-      </div>
-      ${extra}
-    `;
-  }
-
-  function finish(){
-    setVisible("results");
-
-    els.finalScore.textContent = String(state.score);
-    els.finalTotal.textContent = String(state.planIdx.length);
-    els.finalPct.textContent = state.planIdx.length
-      ? (Math.round((state.score / state.planIdx.length) * 100) + "%")
-      : "0%";
-
-    // Map meaning -> [terms] for rationale
-    const meaningToTerms = new Map();
-    for (const it of state.bank){
-      const m = it.meaning;
-      if (!meaningToTerms.has(m)) meaningToTerms.set(m, []);
-      meaningToTerms.get(m).push(it.term);
+    function renderUpdates(list){
+      const box = document.getElementById("updates");
+      box.innerHTML = "";
+      if (!list.length){
+        const empty = document.createElement("div");
+        empty.className = "quiet";
+        empty.textContent = "No updates posted.";
+        box.appendChild(empty);
+        return;
+      }
+      for (const u of list.slice().sort((a,b)=> (a.ts < b.ts ? 1 : -1))){
+        const el = document.createElement("div");
+        el.className = "update";
+        const t = document.createElement("div");
+        t.className = "updateTime";
+        t.textContent = u.ts + " (UTC+8)";
+        const p = document.createElement("p");
+        p.className = "updateMsg";
+        p.textContent = u.msg;
+        el.appendChild(t);
+        el.appendChild(p);
+        box.appendChild(el);
+      }
     }
 
-    els.review.innerHTML = "";
-    state.history.forEach((h, i) => {
-      const li = document.createElement("li");
-      li.className = "reviewItem";
-      const status = h.ok ? "ok" : "bad";
+    async function loadUpdates(){
+      // Prefer server updates.json if present; otherwise localStorage; otherwise default.
+      let fromServer = null;
+      try{
+        const r = await fetch(UPDATES_JSON_PATH, { cache:"no-store" });
+        if (r.ok){
+          const j = await r.json();
+          if (Array.isArray(j)) fromServer = j;
+          else if (j && Array.isArray(j.updates)) fromServer = j.updates;
+        }
+      }catch(_){}
 
-      li.innerHTML = `
-        <div class="reviewTop">
-          <div><strong>${i+1}.</strong> ${escapeHtml(h.term)}</div>
-          <div class="statusTag ${status}">${h.ok ? "Correct" : "Incorrect"}</div>
-        </div>
-        ${buildRationale(h, meaningToTerms)}
-      `;
-      els.review.appendChild(li);
-    });
-  }
+      if (fromServer && fromServer.length){
+        renderUpdates(fromServer);
+        return fromServer;
+      }
 
-  function startFromBank(bankItems, requestedN, freezePlan){
-    // Build pools
-    state.bank = Array.isArray(bankItems) ? bankItems : [];
-    state.poolByKind = {
-      ETY: state.bank.filter(x => x.kind === "ETY").map(x => x.meaning),
-      VOCAB: state.bank.filter(x => x.kind === "VOCAB").map(x => x.meaning),
-      ANY: state.bank.map(x => x.meaning),
-    };
-
-    const maxN = Math.min(100, state.bank.length);
-    const n = clampInt(requestedN, 1, maxN);
-
-    // Plan
-    if (freezePlan && Array.isArray(state.frozenPlan) && state.frozenPlan.length){
-      state.planIdx = [...state.frozenPlan].slice(0, n);
-    }else{
-      const idx = Array.from({length: state.bank.length}, (_, i) => i);
-      shuffleInPlace(idx);
-      state.planIdx = idx.slice(0, n);
-      state.frozenPlan = [...state.planIdx];
+      const raw = localStorage.getItem(UPDATES_KEY);
+      if (raw){
+        try{
+          const list = JSON.parse(raw);
+          if (Array.isArray(list)){
+            renderUpdates(list);
+            return list;
+          }
+        }catch(_){}
+      }
+      renderUpdates(DEFAULT_UPDATES);
+      return DEFAULT_UPDATES.slice();
     }
 
-    resetSession(state.planIdx.length);
-    setVisible("quiz");
-    nextQuestion();
-  }
+    let updatesState = [];
+    loadUpdates().then(list => updatesState = list);
 
-  function retrySameSet(){
-    if (!state.frozenPlan || !state.frozenPlan.length) return;
-    const n = clampInt(cfg.getCount(), 1, Math.min(100, state.frozenPlan.length));
-    startFromBank(state.bank, n, true);
-  }
+    // Admin unlock (client-side; intended for authoring convenience)
+    const ADMIN_PANEL = document.getElementById("adminPanel");
+    const ADMIN_KEY = "BERTHEL_ADMIN"; // change if you want
+    let adminUnlocked = false;
 
-  function newSet(){
-    setVisible("setup");
-  }
-
-  // Bind
-  els.nextBtn.addEventListener("click", nextQuestion);
-  els.finishBtn.addEventListener("click", finish);
-  els.retrySameBtn.addEventListener("click", retrySameSet);
-  els.newSetBtn.addEventListener("click", newSet);
-
-  // Keyboard
-  window.addEventListener("keydown", (e) => {
-    if (els.quiz.style.display === "none") return;
-
-    const key = e.key;
-    const map = { "1":0, "2":1, "3":2, "4":3, "a":0, "b":1, "c":2, "d":3, "A":0, "B":1, "C":2, "D":3 };
-    if (key in map){
-      const i = map[key];
-      const btn = els.options.querySelectorAll(".optBtn")[i];
-      if (btn) btn.click();
-      return;
-    }
-    if (key === "Enter" && !els.nextBtn.disabled){
-      els.nextBtn.click();
-    }
-  });
-
-  return { setVisible, startFromBank, newSet, retrySameSet };
-}
-
-/* =========================
-   CORE engine wiring
-   ========================= */
-const coreEngine = makeQuizEngine({
-  els: {
-    setup: $("coreSetup"),
-    quiz: $("coreQuiz"),
-    results: $("coreResults"),
-    qi: $("coreQi"),
-    qt: $("coreQt"),
-    score: $("coreScore"),
-    pbar: $("corePbar"),
-    prompt: $("corePrompt"),
-    options: $("coreOptions"),
-    feedback: $("coreFeedback"),
-    nextBtn: $("coreNextBtn"),
-    finishBtn: $("coreFinishBtn"),
-    finalScore: $("coreFinalScore"),
-    finalTotal: $("coreFinalTotal"),
-    finalPct: $("coreFinalPct"),
-    review: $("coreReview"),
-    retrySameBtn: $("coreRetrySameBtn"),
-    newSetBtn: $("coreNewSetBtn"),
-  },
-  getCount: () => clampInt($("coreCount").value, 1, 100),
-});
-
-async function initCoreBank(){
-  $("coreLoadHint").textContent = "Loading bank…";
-  $("coreStartBtn").disabled = true;
-
-  try{
-    const pairs = await loadCoreBankFromSite();
-    buildCoreBanks(pairs);
-    const total = coreBank.combined.length;
-    if (total < 4) throw new Error("bank too small");
-
-    $("coreLoadHint").textContent = "Ready.";
-    $("coreStartBtn").disabled = false;
-    $("coreFallback").style.display = "none";
-  }catch{
-    $("coreLoadHint").textContent = "Bank file not loaded from site.";
-    $("coreFallback").style.display = "";
-  }
-}
-
-initCoreBank();
-
-$("coreLoadBtn").addEventListener("click", async () => {
-  const f = $("coreBankFile").files?.[0];
-  if (!f) return;
-  const txt = await f.text();
-  const pairs = parseGlossaryTextToPairs(txt);
-  buildCoreBanks(pairs);
-  const total = coreBank.combined.length;
-
-  if (total >= 4){
-    $("coreLoadHint").textContent = "Ready.";
-    $("coreStartBtn").disabled = false;
-    $("coreFallback").style.display = "none";
-  }
-});
-
-$("coreStartBtn").addEventListener("click", () => {
-  const n = clampInt($("coreCount").value, 1, 100);
-  const bank = coreBank.combined;
-
-  // enforce 1–100 and also cap at available items
-  const maxN = Math.min(100, bank.length);
-  const useN = clampInt(n, 1, maxN);
-
-  $("coreCount").value = String(useN);
-  coreEngine.startFromBank(bank, useN, false);
-});
-
-$("coreCount").addEventListener("change", () => {
-  $("coreCount").value = String(clampInt($("coreCount").value, 1, 100));
-});
-$("coreCount").addEventListener("keydown", (e) => {
-  if (e.key === "Enter" && !$("coreStartBtn").disabled) $("coreStartBtn").click();
-});
-
-/* =========================
-   CUSTOM engine wiring
-   ========================= */
-let customBankItems = [];
-let customEngine = makeQuizEngine({
-  els: {
-    setup: $("customSetup"),
-    quiz: $("customQuiz"),
-    results: $("customResults"),
-    qi: $("customQi"),
-    qt: $("customQt"),
-    score: $("customScore"),
-    pbar: $("customPbar"),
-    prompt: $("customPrompt"),
-    options: $("customOptions"),
-    feedback: $("customFeedback"),
-    nextBtn: $("customNextBtn"),
-    finishBtn: $("customFinishBtn"),
-    finalScore: $("customFinalScore"),
-    finalTotal: $("customFinalTotal"),
-    finalPct: $("customFinalPct"),
-    review: $("customReview"),
-    retrySameBtn: $("customRetrySameBtn"),
-    newSetBtn: $("customNewSetBtn"),
-  },
-  getCount: () => clampInt($("customCount").value, 1, 100),
-});
-
-function setCustomHint(msg){
-  $("customHint").textContent = msg;
-}
-
-$("customFile").addEventListener("change", async () => {
-  const f = $("customFile").files?.[0];
-  if (!f){
-    $("customStartBtn").disabled = true;
-    setCustomHint("Upload a text file. If it contains term–definition pairs, the quiz builds automatically.");
-    return;
-  }
-
-  const txt = await f.text();
-  const pairs = parseGlossaryTextToPairs(txt);
-
-  if (pairs.length >= 8){
-    const items = pairs.map(p => ({kind: classifyKind(p.term), term: p.term, meaning: p.meaning}));
-    customBankItems = items;
-    $("customStartBtn").disabled = false;
-    $("customJsonPane").style.display = "none";
-    setCustomHint("Ready.");
-  }else{
-    // Not enough structured pairs; require JSON
-    customBankItems = [];
-    $("customStartBtn").disabled = true;
-    $("customJsonPane").style.display = "";
-    setCustomHint("This file does not contain enough term–definition pairs. Paste MCQ JSON below.");
-  }
-});
-
-$("customStartBtn").addEventListener("click", () => {
-  const n = clampInt($("customCount").value, 1, 100);
-  const maxN = Math.min(100, customBankItems.length);
-  const useN = clampInt(n, 1, maxN);
-  $("customCount").value = String(useN);
-  customEngine.startFromBank(customBankItems, useN, false);
-});
-
-$("customCount").addEventListener("change", () => {
-  $("customCount").value = String(clampInt($("customCount").value, 1, 100));
-});
-
-/* JSON fallback for custom tab */
-function normalizeJsonToItems(json){
-  // Accept:
-  // 1) { questions:[ { stem|question, options:[..], answer:'A'|'B'|'C'|'D' or answerIndex, explanation } ] }
-  // 2) [ { question, options:[..], answerIndex, explanation } ]
-  const qArr = Array.isArray(json) ? json : (Array.isArray(json?.questions) ? json.questions : null);
-  if (!qArr) return [];
-
-  const items = [];
-  for (const q of qArr){
-    const stem = safeText(q.stem ?? q.question ?? "");
-    const options = Array.isArray(q.options) ? q.options.map(safeText) : [];
-    if (!stem || options.length < 4) continue;
-
-    let ansIdx = -1;
-    if (typeof q.answerIndex === "number") ansIdx = q.answerIndex;
-    else if (typeof q.answer === "string"){
-      const a = q.answer.trim().toUpperCase();
-      const map = {A:0,B:1,C:2,D:3};
-      if (a in map) ansIdx = map[a];
-    }
-    if (ansIdx < 0 || ansIdx > 3) continue;
-
-    // Convert to term/meaning style to reuse the same engine:
-    // term = stem, meaning = correct option; distractors handled via pool
-    items.push({
-      kind: "VOCAB",
-      term: stem,
-      meaning: options[ansIdx],
-      explanation: safeText(q.explanation ?? q.rationale ?? "")
+    window.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.shiftKey && e.code === "KeyU"){
+        const k = prompt("Admin key:");
+        if (k === ADMIN_KEY){
+          adminUnlocked = true;
+          ADMIN_PANEL.classList.add("show");
+        }
+      }
     });
 
-    // Also ensure the distractor pool exists: we add additional “bank items” mapping each distractor
-    // to itself by adding pseudo-items (keeps pool rich). Keep minimal; only if needed.
-    for (let i = 0; i < options.length; i++){
-      if (i === ansIdx) continue;
-      items.push({
-        kind: "VOCAB",
-        term: "(distractor)",
-        meaning: options[i],
-        explanation: ""
+    document.getElementById("postUpdate").addEventListener("click", () => {
+      if (!adminUnlocked) return;
+      const ta = document.getElementById("adminMsg");
+      const msg = (ta.value || "").trim();
+      if (!msg) return;
+
+      const entry = { ts: beijingStamp(), msg };
+      updatesState = [entry, ...updatesState];
+      localStorage.setItem(UPDATES_KEY, JSON.stringify(updatesState));
+      ta.value = "";
+      renderUpdates(updatesState);
+    });
+
+    document.getElementById("downloadUpdates").addEventListener("click", () => {
+      if (!adminUnlocked) return;
+      const blob = new Blob([JSON.stringify(updatesState, null, 2)], { type:"application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "updates.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+    });
+
+    document.getElementById("importUpdates").addEventListener("click", () => {
+      if (!adminUnlocked) return;
+      document.getElementById("importUpdatesFile").click();
+    });
+    document.getElementById("importUpdatesFile").addEventListener("change", async (e) => {
+      if (!adminUnlocked) return;
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      try{
+        const text = await f.text();
+        const j = JSON.parse(text);
+        const list = Array.isArray(j) ? j : (j && Array.isArray(j.updates) ? j.updates : null);
+        if (list){
+          updatesState = list;
+          localStorage.setItem(UPDATES_KEY, JSON.stringify(updatesState));
+          renderUpdates(updatesState);
+        }
+      }catch(_){}
+      e.target.value = "";
+    });
+
+    /********************
+     * Shared quiz renderer (minimal, student-facing)
+     ********************/
+    function clampInt(v, lo, hi){
+      const n = Math.trunc(Number(v));
+      if (!Number.isFinite(n)) return lo;
+      return Math.max(lo, Math.min(hi, n));
+    }
+
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function escapeSpaces(s){
+      return (s || "").replace(/\s+/g, " ").trim();
+    }
+
+    function mkQuizUI(mount){
+      mount.innerHTML = "";
+      const holder = document.createElement("div");
+      holder.className = "card";
+      mount.appendChild(holder);
+      return holder;
+    }
+
+    function renderQuiz(holder, quizState){
+      // quizState: { title, questions:[{stem, options[], correctIndex, rationale?}], idx, answers[] }
+      holder.innerHTML = "";
+
+      const q = quizState.questions[quizState.idx];
+
+      const top = document.createElement("div");
+      top.className = "quizTop";
+
+      const left = document.createElement("div");
+      const prog = document.createElement("div");
+      prog.className = "progress";
+      prog.textContent = `Question ${quizState.idx + 1} of ${quizState.questions.length}`;
+      const stem = document.createElement("div");
+      stem.className = "qstem";
+      stem.textContent = q.stem;
+      left.appendChild(prog);
+      left.appendChild(stem);
+
+      const right = document.createElement("div");
+      right.className = "row";
+      right.style.justifyContent = "flex-end";
+
+      const changeN = document.createElement("button");
+      changeN.className = "btn";
+      changeN.textContent = "Change number";
+      changeN.addEventListener("click", () => quizState.onExit?.());
+      right.appendChild(changeN);
+
+      top.appendChild(left);
+      top.appendChild(right);
+
+      const opts = document.createElement("div");
+      opts.className = "options";
+
+      const selected = quizState.answers[quizState.idx] ?? null;
+
+      q.options.forEach((txt, i) => {
+        const lab = document.createElement("label");
+        lab.className = "opt";
+
+        const inp = document.createElement("input");
+        inp.type = "radio";
+        inp.name = "opt";
+        inp.value = String(i);
+        if (selected === i) inp.checked = true;
+
+        const span = document.createElement("div");
+        span.className = "otxt";
+        span.textContent = txt;
+
+        lab.appendChild(inp);
+        lab.appendChild(span);
+
+        lab.addEventListener("click", (e) => {
+          // label default ok
+          quizState.answers[quizState.idx] = i;
+          hint.textContent = "";
+        });
+
+        opts.appendChild(lab);
+      });
+
+      const actions = document.createElement("div");
+      actions.className = "quizActions";
+
+      const hint = document.createElement("div");
+      hint.className = "hintBad";
+
+      const back = document.createElement("button");
+      back.className = "btn";
+      back.textContent = "Back";
+      back.disabled = (quizState.idx === 0);
+      back.addEventListener("click", () => {
+        quizState.idx -= 1;
+        renderQuiz(holder, quizState);
+      });
+
+      const next = document.createElement("button");
+      next.className = "btn primary";
+      const isLast = (quizState.idx === quizState.questions.length - 1);
+      next.textContent = isLast ? "Finish" : "Next";
+      next.addEventListener("click", () => {
+        const a = quizState.answers[quizState.idx];
+        if (a === undefined || a === null){
+          hint.textContent = "Select an answer to continue.";
+          return;
+        }
+        if (isLast){
+          quizState.onFinish?.();
+        }else{
+          quizState.idx += 1;
+          renderQuiz(holder, quizState);
+        }
+      });
+
+      actions.appendChild(back);
+      actions.appendChild(hint);
+      actions.appendChild(next);
+
+      holder.appendChild(top);
+      holder.appendChild(opts);
+      holder.appendChild(actions);
+    }
+
+    function renderSummary(holder, quizState){
+      holder.innerHTML = "";
+
+      const total = quizState.questions.length;
+      let correct = 0;
+      for (let i=0;i<total;i++){
+        if (quizState.answers[i] === quizState.questions[i].correctIndex) correct++;
+      }
+      const pct = Math.round((correct / total) * 100);
+
+      const head = document.createElement("div");
+      head.className = "summaryHeader";
+
+      const h1 = document.createElement("p");
+      h1.className = "scoreBig";
+      h1.textContent = "Results";
+
+      const meta = document.createElement("div");
+      meta.className = "scoreMeta";
+      meta.textContent = `${correct} / ${total} (${pct}%)`;
+
+      const p1 = document.createElement("span");
+      p1.className = "pill " + (pct >= 70 ? "ok" : "bad");
+      p1.textContent = (pct >= 70 ? "Strong" : "Needs work");
+
+      const p2 = document.createElement("span");
+      p2.className = "pill";
+      p2.textContent = "Submission complete";
+
+      head.appendChild(h1);
+      head.appendChild(meta);
+      head.appendChild(p1);
+      head.appendChild(p2);
+
+      const actions = document.createElement("div");
+      actions.className = "row";
+      actions.style.marginTop = "8px";
+
+      const retry = document.createElement("button");
+      retry.className = "btn";
+      retry.textContent = "Retry same quiz";
+      retry.addEventListener("click", () => {
+        quizState.idx = 0;
+        quizState.answers = new Array(total).fill(null);
+        quizState.onRetrySame?.();
+      });
+
+      const newq = document.createElement("button");
+      newq.className = "btn primary";
+      newq.textContent = "Generate new quiz";
+      newq.addEventListener("click", () => quizState.onNewQuiz?.());
+
+      actions.appendChild(retry);
+      actions.appendChild(newq);
+
+      const list = document.createElement("div");
+      list.className = "reviewList";
+
+      for (let i=0;i<total;i++){
+        const qq = quizState.questions[i];
+        const a = quizState.answers[i];
+        const ok = (a === qq.correctIndex);
+
+        const item = document.createElement("div");
+        item.className = "reviewItem " + (ok ? "ok" : "bad");
+
+        const top = document.createElement("div");
+        top.className = "reviewTop";
+
+        const qlbl = document.createElement("div");
+        qlbl.className = "reviewQ";
+        qlbl.textContent = `Q${i+1}: ${qq.stem}`;
+
+        const mark = document.createElement("div");
+        mark.className = "mark " + (ok ? "ok" : "bad");
+        mark.textContent = ok ? "Correct" : "Incorrect";
+
+        top.appendChild(qlbl);
+        top.appendChild(mark);
+
+        const your = document.createElement("div");
+        your.className = "reviewLine";
+        const yourK = document.createElement("span");
+        yourK.className = "k";
+        yourK.textContent = "Your answer: ";
+        const yourV = document.createElement("span");
+        yourV.className = "v";
+        yourV.textContent = (a === null || a === undefined) ? "—" : qq.options[a];
+        your.appendChild(yourK);
+        your.appendChild(yourV);
+
+        const cor = document.createElement("div");
+        cor.className = "reviewLine";
+        const corK = document.createElement("span");
+        corK.className = "k";
+        corK.textContent = "Correct answer: ";
+        const corV = document.createElement("span");
+        corV.className = "v";
+        corV.textContent = qq.options[qq.correctIndex];
+        cor.appendChild(corK);
+        cor.appendChild(corV);
+
+        const rat = document.createElement("div");
+        rat.className = "reviewLine";
+        const ratK = document.createElement("span");
+        ratK.className = "k";
+        ratK.textContent = "Rationale: ";
+        const ratV = document.createElement("span");
+        ratV.className = "v";
+        ratV.textContent = ok
+          ? "Matched the correct definition."
+          : "Your selected definition belongs to a different term; use the correct definition as the reference.";
+        rat.appendChild(ratK);
+        rat.appendChild(ratV);
+
+        item.appendChild(top);
+        item.appendChild(your);
+        item.appendChild(cor);
+        item.appendChild(rat);
+
+        list.appendChild(item);
+      }
+
+      holder.appendChild(head);
+      holder.appendChild(actions);
+      holder.appendChild(list);
+    }
+
+    /********************
+     * ETY/VOCAB bank loading + quiz generation
+     ********************/
+    const BANK_TXT_PATH = "ib_bio_clean_index.txt";
+    const etyStatus = document.getElementById("etyStatus");
+    const bankBar = document.getElementById("bankBar");
+    const bankFile = document.getElementById("bankFile");
+    const etyN = document.getElementById("etyN");
+    const etyView = document.getElementById("etyView");
+
+    let etyBank = [];      // [{term, def}]
+    let etyQuiz = null;    // current quizState
+    let etyDebounce = null;
+
+    function parseIndexText(text){
+      const lines = (text || "").replace(/\r/g,"").split("\n");
+      const items = [];
+      let last = null;
+
+      const dashRe = /^(.*?)\s*(?:—|–|-|:)\s*(.+)$/; // term — def (or : / - )
+      const tabRe  = /^(.*?)\t+(.+)$/;
+
+      for (let raw of lines){
+        const line = raw.trimEnd();
+        if (!line.trim()) continue;
+
+        // Skip obvious headers
+        const h = line.trim().toLowerCase();
+        if (h === "glossary" || h.startsWith("words in blue")) continue;
+
+        // Wrapped definition line (indented / no separator)
+        if (/^\s+/.test(raw) && last){
+          last.def = escapeSpaces(last.def + " " + line.trim());
+          continue;
+        }
+
+        let m = line.match(tabRe);
+        if (!m) m = line.match(dashRe);
+
+        if (!m){
+          // Try split at 2+ spaces (columns)
+          const parts = line.split(/\s{2,}/);
+          if (parts.length >= 2){
+            const term = escapeSpaces(parts.shift());
+            const def = escapeSpaces(parts.join(" "));
+            if (term && def){
+              last = { term, def };
+              items.push(last);
+            }
+            continue;
+          } else {
+            // If it can't be parsed, ignore quietly
+            continue;
+          }
+        }
+
+        const term = escapeSpaces(m[1]);
+        const def  = escapeSpaces(m[2]);
+        if (!term || !def) continue;
+
+        last = { term, def };
+        items.push(last);
+      }
+
+      // Deduplicate by term (case-insensitive), keep longest definition
+      const map = new Map();
+      for (const it of items){
+        const k = it.term.toLowerCase();
+        if (!map.has(k) || (map.get(k).def.length < it.def.length)){
+          map.set(k, it);
+        }
+      }
+      const out = Array.from(map.values()).filter(x => x.term.length >= 2 && x.def.length >= 6);
+      out.sort((a,b)=> a.term.localeCompare(b.term));
+      return out;
+    }
+
+    async function tryLoadBankViaFetch(){
+      try{
+        const r = await fetch(BANK_TXT_PATH, { cache:"no-store" });
+        if (!r.ok) throw new Error("fetch not ok");
+        const t = await r.text();
+        const parsed = parseIndexText(t);
+        if (!parsed.length) throw new Error("empty parse");
+        return parsed;
+      }catch(_){
+        return null;
+      }
+    }
+
+    function setEtyStatus(){
+      if (!etyBank.length){
+        etyStatus.textContent = "Question bank not loaded.";
+      }else{
+        etyStatus.textContent = `Ready. Bank loaded: ${etyBank.length} terms.`;
+      }
+    }
+
+    function makeEtyQuiz(n){
+      // Clamp to bank size and 1..100
+      const maxN = Math.min(100, etyBank.length);
+      n = clampInt(n, 1, maxN);
+
+      const pool = etyBank.slice();
+      shuffle(pool);
+      const pick = pool.slice(0, n);
+
+      const questions = pick.map((item) => {
+        // Correct definition + 3 distractor definitions
+        const others = [];
+        // sample distractors from different terms
+        while (others.length < 3){
+          const cand = etyBank[Math.floor(Math.random() * etyBank.length)];
+          if (!cand) continue;
+          if (cand.term === item.term) continue;
+          if (others.some(x => x.term === cand.term)) continue;
+          others.push(cand);
+        }
+
+        const opts = [
+          item.def,
+          others[0].def,
+          others[1].def,
+          others[2].def
+        ];
+        const idxs = [0,1,2,3];
+        shuffle(idxs);
+        const options = idxs.map(i => opts[i]);
+        const correctIndex = options.indexOf(item.def);
+
+        return {
+          stem: item.term,
+          options,
+          correctIndex
+        };
+      });
+
+      return questions;
+    }
+
+    function startEtyQuiz(n){
+      if (!etyBank.length) return;
+
+      const maxN = Math.min(100, etyBank.length);
+      const nn = clampInt(n, 1, maxN);
+      etyN.value = String(nn);
+
+      const holder = mkQuizUI(etyView);
+      const questions = makeEtyQuiz(nn);
+
+      etyQuiz = {
+        title: "Etymology & Vocabulary",
+        questions,
+        idx: 0,
+        answers: new Array(questions.length).fill(null),
+        onExit: () => { etyView.innerHTML = ""; },
+        onFinish: () => {
+          renderSummary(holder, etyQuiz);
+        },
+        onRetrySame: () => {
+          renderQuiz(holder, etyQuiz);
+        },
+        onNewQuiz: () => {
+          startEtyQuiz(etyN.value);
+        }
+      };
+
+      renderQuiz(holder, etyQuiz);
+    }
+
+    function scheduleEtyAutoStart(){
+      if (!etyBank.length) return;
+      clearTimeout(etyDebounce);
+      etyDebounce = setTimeout(() => startEtyQuiz(etyN.value), 450);
+    }
+
+    // Numeric input hardening (all integers 1–100)
+    function hardenNumberInput(el){
+      const fix = () => {
+        const v = el.value;
+        const n = clampInt(v, Number(el.min)||1, Number(el.max)||100);
+        el.value = String(n);
+      };
+      el.addEventListener("blur", fix);
+      el.addEventListener("keydown", (e) => {
+        if (e.key === "Enter"){
+          fix();
+        }
       });
     }
-  }
+    hardenNumberInput(etyN);
 
-  // De-dupe by meaning (keep first), but retain enough for pools
-  return items.filter(x => x.term !== "");
-}
+    etyN.addEventListener("input", () => {
+      // Auto-generate after student selects a valid number
+      scheduleEtyAutoStart();
+    });
 
-$("customJsonLoadBtn").addEventListener("click", () => {
-  const raw = $("customJson").value || "";
-  $("customJsonHint").textContent = "";
+    bankFile.addEventListener("change", async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const t = await f.text();
+      const parsed = parseIndexText(t);
+      if (parsed.length){
+        etyBank = parsed;
+        bankBar.classList.remove("show");
+        setEtyStatus();
+      }else{
+        etyStatus.textContent = "Bank file loaded, but no usable entries were detected.";
+      }
+      e.target.value = "";
+    });
 
-  try{
-    const parsed = JSON.parse(raw);
-    const items = normalizeJsonToItems(parsed);
+    (async function initBank(){
+      const parsed = await tryLoadBankViaFetch();
+      if (parsed){
+        etyBank = parsed;
+        bankBar.classList.remove("show");
+        setEtyStatus();
+        // Auto-start with current value
+        startEtyQuiz(etyN.value);
+      }else{
+        bankBar.classList.add("show");
+        setEtyStatus();
+      }
+    })();
 
-    // Need enough items with unique meanings to build choices reliably
-    const uniques = new Set(items.map(x => x.meaning)).size;
+    /********************
+     * CUSTOM JSON MCQ tab
+     ********************/
+    const customJson = document.getElementById("customJson");
+    const customFile = document.getElementById("customFile");
+    const customLoad = document.getElementById("customLoad");
+    const customStatus = document.getElementById("customStatus");
+    const customN = document.getElementById("customN");
+    const customView = document.getElementById("customView");
 
-    if (items.length < 8 || uniques < 8){
-      $("customJsonHint").textContent = "JSON loaded, but not enough usable questions/options to build a quiz.";
-      return;
+    hardenNumberInput(customN);
+
+    let customBank = []; // normalized questions
+    let customQuiz = null;
+    let customDebounce = null;
+
+    function normalizeCustomJSON(obj){
+      // Accept common forms:
+      // 1) [{stem/question, options:[...], answer/correct:"A"/0, rationale/explanation}]
+      // 2) {questions:[...]} or {items:[...]} etc.
+      let arr = null;
+      if (Array.isArray(obj)) arr = obj;
+      else if (obj && Array.isArray(obj.questions)) arr = obj.questions;
+      else if (obj && Array.isArray(obj.items)) arr = obj.items;
+      if (!arr) return [];
+
+      const out = [];
+      for (const q of arr){
+        if (!q) continue;
+        const stem = escapeSpaces(q.stem || q.question || q.q || q.prompt || "");
+        if (!stem) continue;
+
+        let options = q.options || q.choices || q.answers || null;
+        if (options && !Array.isArray(options) && typeof options === "object"){
+          // {A:"..",B:"..",C:"..",D:".."}
+          const keys = ["A","B","C","D"];
+          const as = keys.map(k => options[k]).filter(Boolean);
+          if (as.length >= 4) options = as.slice(0,4);
+          else options = Object.values(options);
+        }
+        if (!Array.isArray(options) || options.length < 4) continue;
+
+        options = options.slice(0,4).map(x => escapeSpaces(String(x)));
+
+        let ans = q.answer ?? q.correct ?? q.key ?? q.correctAnswer ?? null;
+        let correctIndex = null;
+        if (typeof ans === "number"){
+          correctIndex = ans;
+        }else if (typeof ans === "string"){
+          const s = ans.trim().toUpperCase();
+          if (["A","B","C","D"].includes(s)){
+            correctIndex = ["A","B","C","D"].indexOf(s);
+          }else{
+            // maybe exact option text
+            const idx = options.indexOf(escapeSpaces(ans));
+            if (idx >= 0) correctIndex = idx;
+          }
+        }
+
+        if (correctIndex === null || correctIndex < 0 || correctIndex > 3){
+          // If missing/invalid: skip (no silent “guessing”)
+          continue;
+        }
+
+        const rationale = escapeSpaces(q.rationale || q.explanation || q.reason || "");
+        out.push({ stem, options, correctIndex, rationale });
+      }
+      return out;
     }
 
-    customBankItems = items;
-    $("customStartBtn").disabled = false;
-    $("customJsonPane").style.display = "none";
-    setCustomHint("Ready.");
-  }catch{
-    $("customJsonHint").textContent = "Invalid JSON.";
-  }
-});
-</script>
+    function loadCustomFromText(text){
+      let obj = null;
+      try{ obj = JSON.parse(text); }catch(_){ return null; }
+      const norm = normalizeCustomJSON(obj);
+      return norm.length ? norm : null;
+    }
 
+    function scheduleCustomAutoStart(){
+      if (!customBank.length) return;
+      clearTimeout(customDebounce);
+      customDebounce = setTimeout(() => startCustomQuiz(customN.value), 450);
+    }
+
+    customN.addEventListener("input", () => scheduleCustomAutoStart());
+
+    customFile.addEventListener("change", async (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const t = await f.text();
+      const norm = loadCustomFromText(t);
+      if (norm){
+        customBank = norm;
+        customStatus.textContent = `Loaded ${customBank.length} questions.`;
+        customView.innerHTML = "";
+        startCustomQuiz(customN.value);
+      }else{
+        customStatus.textContent = "Invalid JSON or unsupported structure.";
+      }
+      e.target.value = "";
+    });
+
+    customLoad.addEventListener("click", () => {
+      const t = (customJson.value || "").trim();
+      if (!t){
+        customStatus.textContent = "Awaiting JSON…";
+        return;
+      }
+      const norm = loadCustomFromText(t);
+      if (norm){
+        customBank = norm;
+        customStatus.textContent = `Loaded ${customBank.length} questions.`;
+        customView.innerHTML = "";
+        startCustomQuiz(customN.value);
+      }else{
+        customStatus.textContent = "Invalid JSON or unsupported structure.";
+      }
+    });
+
+    function startCustomQuiz(n){
+      if (!customBank.length) return;
+
+      const maxN = Math.min(100, customBank.length);
+      const nn = clampInt(n, 1, maxN);
+      customN.value = String(nn);
+
+      const pool = customBank.slice();
+      shuffle(pool);
+      const questions = pool.slice(0, nn).map(q => ({
+        stem: q.stem,
+        options: q.options.slice(),
+        correctIndex: q.correctIndex,
+        rationale: q.rationale || ""
+      }));
+
+      const holder = mkQuizUI(customView);
+
+      customQuiz = {
+        title: "MCQ Content",
+        questions,
+        idx: 0,
+        answers: new Array(questions.length).fill(null),
+        onExit: () => { customView.innerHTML = ""; },
+        onFinish: () => {
+          // Override summary rationale to use provided rationale if available
+          renderCustomSummary(holder, customQuiz);
+        },
+        onRetrySame: () => {
+          renderQuiz(holder, customQuiz);
+        },
+        onNewQuiz: () => {
+          startCustomQuiz(customN.value);
+        }
+      };
+
+      renderQuiz(holder, customQuiz);
+    }
+
+    function renderCustomSummary(holder, quizState){
+      holder.innerHTML = "";
+
+      const total = quizState.questions.length;
+      let correct = 0;
+      for (let i=0;i<total;i++){
+        if (quizState.answers[i] === quizState.questions[i].correctIndex) correct++;
+      }
+      const pct = Math.round((correct / total) * 100);
+
+      const head = document.createElement("div");
+      head.className = "summaryHeader";
+
+      const h1 = document.createElement("p");
+      h1.className = "scoreBig";
+      h1.textContent = "Results";
+
+      const meta = document.createElement("div");
+      meta.className = "scoreMeta";
+      meta.textContent = `${correct} / ${total} (${pct}%)`;
+
+      const p1 = document.createElement("span");
+      p1.className = "pill " + (pct >= 70 ? "ok" : "bad");
+      p1.textContent = (pct >= 70 ? "Strong" : "Needs work");
+
+      const p2 = document.createElement("span");
+      p2.className = "pill";
+      p2.textContent = "Submission complete";
+
+      head.appendChild(h1);
+      head.appendChild(meta);
+      head.appendChild(p1);
+      head.appendChild(p2);
+
+      const actions = document.createElement("div");
+      actions.className = "row";
+      actions.style.marginTop = "8px";
+
+      const retry = document.createElement("button");
+      retry.className = "btn";
+      retry.textContent = "Retry same quiz";
+      retry.addEventListener("click", () => {
+        quizState.idx = 0;
+        quizState.answers = new Array(total).fill(null);
+        renderQuiz(holder, quizState);
+      });
+
+      const newq = document.createElement("button");
+      newq.className = "btn primary";
+      newq.textContent = "Generate new quiz";
+      newq.addEventListener("click", () => startCustomQuiz(customN.value));
+
+      actions.appendChild(retry);
+      actions.appendChild(newq);
+
+      const list = document.createElement("div");
+      list.className = "reviewList";
+
+      for (let i=0;i<total;i++){
+        const qq = quizState.questions[i];
+        const a = quizState.answers[i];
+        const ok = (a === qq.correctIndex);
+
+        const item = document.createElement("div");
+        item.className = "reviewItem " + (ok ? "ok" : "bad");
+
+        const top = document.createElement("div");
+        top.className = "reviewTop";
+
+        const qlbl = document.createElement("div");
+        qlbl.className = "reviewQ";
+        qlbl.textContent = `Q${i+1}: ${qq.stem}`;
+
+        const mark = document.createElement("div");
+        mark.className = "mark " + (ok ? "ok" : "bad");
+        mark.textContent = ok ? "Correct" : "Incorrect";
+
+        top.appendChild(qlbl);
+        top.appendChild(mark);
+
+        const your = document.createElement("div");
+        your.className = "reviewLine";
+        const yourK = document.createElement("span");
+        yourK.className = "k";
+        yourK.textContent = "Your answer: ";
+        const yourV = document.createElement("span");
+        yourV.className = "v";
+        yourV.textContent = (a === null || a === undefined) ? "—" : qq.options[a];
+        your.appendChild(yourK);
+        your.appendChild(yourV);
+
+        const cor = document.createElement("div");
+        cor.className = "reviewLine";
+        const corK = document.createElement("span");
+        corK.className = "k";
+        corK.textContent = "Correct answer: ";
+        const corV = document.createElement("span");
+        corV.className = "v";
+        corV.textContent = qq.options[qq.correctIndex];
+        cor.appendChild(corK);
+        cor.appendChild(corV);
+
+        const rat = document.createElement("div");
+        rat.className = "reviewLine";
+        const ratK = document.createElement("span");
+        ratK.className = "k";
+        ratK.textContent = "Rationale: ";
+        const ratV = document.createElement("span");
+        ratV.className = "v";
+        if (qq.rationale){
+          ratV.textContent = qq.rationale;
+        }else{
+          ratV.textContent = ok
+            ? "Selected the best-supported option."
+            : "Incorrect selection; use the correct option as the reference answer.";
+        }
+        rat.appendChild(ratK);
+        rat.appendChild(ratV);
+
+        item.appendChild(top);
+        item.appendChild(your);
+        item.appendChild(cor);
+        item.appendChild(rat);
+
+        list.appendChild(item);
+      }
+
+      holder.appendChild(head);
+      holder.appendChild(actions);
+      holder.appendChild(list);
+    }
+  </script>
 </body>
 </html>
