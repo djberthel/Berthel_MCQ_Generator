@@ -4,125 +4,191 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Berthel's Biology — unified MCQ testing, logging, etymology/vocab practice, and IB text search." />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Berthel's Biology · Unified Workspace v2026.02.09</title>
 
   <style>
     :root{
       --bg:#f2f2f2;
       --surface:#ffffff;
+      --surface-2:#fafafa;
       --ink:#111111;
       --muted:#4c4c4c;
       --line:#d4d4d4;
       --line-strong:#9e9e9e;
+
+      --accent:#1d1d1d;
+      --accent-2:#2f2f2f;
+
       --ok:#245f2f;
       --bad:#9a1f1f;
-      --shadow:0 6px 18px rgba(0,0,0,.06);
+
+      --shadow: 0 10px 26px rgba(0,0,0,.08);
+      --shadow-soft: 0 6px 18px rgba(0,0,0,.06);
+
+      --radius:14px;
+      --radius-sm:10px;
+
+      --focus: 3px solid rgba(0,0,0,.25);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
-
     body{
       margin:0;
-      background:var(--bg);
+      background: linear-gradient(180deg, #efefef, var(--bg));
       color:var(--ink);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
       line-height:1.5;
     }
 
     .wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
 
+    /* Header */
     header{
       color:#fff;
-      background:linear-gradient(180deg,#171717,#303030);
+      background: radial-gradient(1200px 400px at 20% 0%, #3a3a3a 0%, #1b1b1b 45%, #111 100%);
       border-bottom:1px solid #5e5e5e;
     }
-
-    .hero{
-      padding:26px 0;
-      display:grid;
-      grid-template-columns: 1fr auto;
-      gap:18px;
+    .hero{ padding:22px 0; }
+    .brand{
+      display:flex;
       align-items:center;
+      gap:16px;
+      min-height:110px;
     }
-
-    h1{ margin:0; font-size:34px; letter-spacing:.2px; }
-    .subtitle{ margin:8px 0 0; color:#dddddd; max-width:900px; }
-    .build-chip{
-      margin-top:10px;
-      display:inline-block;
-      padding:5px 10px;
-      border:1px solid #8d8d8d;
-      border-radius:999px;
-      background:#262626;
-      color:#f0f0f0;
-      font-size:12px;
-      letter-spacing:.3px;
-      user-select:none;
-    }
-
     .penguin{
-      width:95px; height:95px;
-      border-radius:12px;
-      border:1px solid #777;
-      background:#fff;
+      flex: 0 0 auto;
+      width:92px; height:92px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.35);
+      background: rgba(255,255,255,.92);
       display:grid;
       place-items:center;
-      padding:6px;
+      padding:8px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+    }
+    .brand-text{ min-width:0; }
+    h1{
+      margin:0;
+      font-size:34px;
+      letter-spacing:.2px;
+      line-height:1.1;
+    }
+    .subtitle{
+      margin:10px 0 0;
+      color:#dddddd;
+      max-width:900px;
+    }
+    .build-chip{
+      margin-top:10px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 12px;
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:999px;
+      background: rgba(0,0,0,.25);
+      color:#f0f0f0;
+      font-size:12px;
+      letter-spacing:.25px;
+      user-select:none;
+      backdrop-filter: blur(6px);
+    }
+    .build-dot{
+      width:8px; height:8px;
+      border-radius:50%;
+      background:#9fe29f;
+      box-shadow: 0 0 0 3px rgba(159,226,159,.18);
     }
 
+    /* Sticky nav */
     nav{
-      position:sticky; top:0; z-index:10;
-      background:#fff;
+      position:sticky; top:0; z-index:20;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(8px);
       border-bottom:1px solid var(--line);
     }
-    .tabs{ display:flex; flex-wrap:wrap; gap:10px; padding:12px 0; }
+    .tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      padding:12px 0;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .tab-row{ display:flex; flex-wrap:wrap; gap:10px; }
     .tab-btn{
       border:1px solid var(--line-strong);
       border-radius:999px;
       background:#fff;
       color:#222;
-      padding:8px 14px;
-      font-weight:800;
+      padding:9px 14px;
+      font-weight:900;
       cursor:pointer;
+      transition: transform .08s ease, background .15s ease, color .15s ease, border-color .15s ease;
     }
+    .tab-btn:hover{ transform: translateY(-1px); }
     .tab-btn[aria-selected="true"]{
-      background:#1d1d1d;
+      background:var(--accent);
       color:#fff;
-      border-color:#1d1d1d;
+      border-color:var(--accent);
+    }
+    .nav-status{
+      font-size:13px;
+      color:var(--muted);
+      white-space:nowrap;
+      padding-left:10px;
     }
 
-    main{ padding:22px 0 40px; }
-
+    /* Main / panels */
+    main{ padding:22px 0 46px; }
     .panel{ display:none; }
     .panel.active{ display:block; }
 
     .card{
       border:1px solid var(--line);
-      border-radius:14px;
+      border-radius:var(--radius);
       background:var(--surface);
       padding:18px;
       margin-bottom:16px;
-      box-shadow:var(--shadow);
+      box-shadow:var(--shadow-soft);
     }
-    .card h2,.card h3{ margin:0 0 10px; }
+    .card h2,.card h3{
+      margin:0 0 10px;
+      line-height:1.2;
+      letter-spacing:.1px;
+    }
+    .card p{ margin: 8px 0; }
 
     .grid{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
     .subgrid{ display:grid; gap:14px; grid-template-columns: 2fr 1fr; }
     @media (max-width:920px){ .subgrid{ grid-template-columns:1fr; } }
 
+    .status{
+      color:var(--muted);
+      font-size:14px;
+      margin:8px 0 0;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:13px;
+      margin:6px 0 0;
+    }
+
     label{
       display:block;
       margin:10px 0 6px;
-      font-weight:800;
+      font-weight:900;
       font-size:14px;
       color:var(--muted);
     }
-
     input[type="number"], input[type="search"], textarea{
       width:100%;
       border:1px solid #b9b9b9;
-      border-radius:10px;
+      border-radius:var(--radius-sm);
       padding:10px 12px;
       font-size:15px;
       font-family:inherit;
@@ -131,14 +197,20 @@
     }
     textarea{ min-height:170px; resize:vertical; }
 
-    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+      align-items:center;
+    }
 
-    .btn, button{
+    button{
       border:1px solid #222;
-      border-radius:10px;
+      border-radius:var(--radius-sm);
       padding:9px 14px;
       font:inherit;
-      font-weight:800;
+      font-weight:900;
       background:#fff;
       color:#1f1f1f;
       cursor:pointer;
@@ -148,56 +220,114 @@
       justify-content:center;
       gap:8px;
       user-select:none;
+      transition: transform .08s ease, background .15s ease, color .15s ease, border-color .15s ease;
     }
-    .btn.primary, button.primary{ background:#1f1f1f; color:#fff; }
-    .btn:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
-      outline:3px solid rgba(0,0,0,.25);
+    button:hover{ transform: translateY(-1px); }
+    button.primary{
+      background:var(--accent);
+      color:#fff;
+      border-color:var(--accent);
+    }
+    button.ghost{
+      background:#fff;
+      border-color:#c5c5c5;
+      color:#222;
+    }
+    button.danger{
+      background:#fff;
+      border-color:#c5c5c5;
+      color:#7a1313;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+    }
+    .row > *{ flex:1 1 220px; }
+
+    /* Focus */
+    button:focus-visible, .tab-btn:focus-visible,
+    input:focus-visible, textarea:focus-visible{
+      outline: var(--focus);
       outline-offset:2px;
     }
 
-    .status{ color:var(--muted); font-size:14px; margin:8px 0 0; }
-
+    /* Quiz */
     .hidden{ display:none !important; }
 
     .question{
       border:1px solid var(--line);
-      border-radius:10px;
-      background:#fafafa;
+      border-radius:var(--radius-sm);
+      background:var(--surface-2);
       padding:12px;
       margin:12px 0;
     }
-    .question-head{ font-weight:900; margin-bottom:6px; }
-
+    .question-head{
+      font-weight:1000;
+      margin-bottom:6px;
+    }
     .option{
       display:grid;
       grid-template-columns:28px 1fr;
       gap:10px;
       margin:8px 0;
       border:1px solid #cecece;
-      border-radius:8px;
-      background:#fff;
-      padding:8px;
-      cursor:pointer;
-    }
-    .option input{ margin-top:3px; }
-
-    .score{ font-size:22px; font-weight:900; margin:0 0 10px; }
-    .correct{ color:var(--ok); font-weight:900; }
-    .incorrect{ color:var(--bad); font-weight:900; }
-
-    iframe{
-      width:100%;
-      min-height:680px;
-      border:1px solid var(--line);
       border-radius:10px;
       background:#fff;
+      padding:9px 10px;
+      cursor:pointer;
+      transition: background .12s ease, border-color .12s ease;
+    }
+    .option:hover{ background:#fbfbfb; border-color:#bfbfbf; }
+    .option input{ margin-top:3px; }
+
+    .score{ font-size:22px; font-weight:1000; margin:0 0 10px; }
+    .correct{ color:var(--ok); font-weight:1000; }
+    .incorrect{ color:var(--bad); font-weight:1000; }
+
+    .callout{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:var(--radius-sm);
+      padding:12px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+    }
+    .callout b{ display:block; margin-bottom:2px; }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:#222;
+      font-size:12px;
+      font-weight:900;
+      white-space:nowrap;
     }
 
+    /* Iframe */
+    iframe{
+      width:100%;
+      min-height:720px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:#fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    /* Search results */
     .search-results{
       max-height:520px;
       overflow:auto;
       border:1px solid var(--line);
-      border-radius:10px;
+      border-radius:var(--radius);
       background:#fff;
       margin-top:10px;
     }
@@ -209,71 +339,131 @@
     }
     .result-item:last-child{ border-bottom:none; }
 
+    /* Table */
     table{
       width:100%;
       border-collapse:collapse;
       font-size:14px;
       background:#fff;
       border:1px solid var(--line);
-      border-radius:10px;
+      border-radius:var(--radius);
       overflow:hidden;
       margin-top:10px;
     }
     th,td{ border-bottom:1px solid #ececec; padding:8px 10px; text-align:left; }
     th{ background:#f7f7f7; }
 
+    /* Toast */
+    .toast-wrap{
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 999;
+      display: grid;
+      gap: 10px;
+      width: min(420px, calc(100vw - 32px));
+    }
+    .toast{
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.96);
+      box-shadow: var(--shadow);
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .toast .dot{
+      width:10px;height:10px;border-radius:50%;
+      margin-top:5px; flex:0 0 auto;
+    }
+    .toast .t-title{ font-weight:1000; margin:0; }
+    .toast .t-msg{ margin:2px 0 0; color:var(--muted); font-size:13px; }
+    .toast.ok .dot{ background: var(--ok); }
+    .toast.bad .dot{ background: var(--bad); }
+    .toast.info .dot{ background: #2a5aa0; }
+
     footer{
       text-align:center;
       color:var(--muted);
       font-size:13px;
-      padding:16px;
+      padding:18px 0 26px;
     }
-    code{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.95em; }
+    code{
+      font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-size:.95em;
+    }
   </style>
 </head>
 
 <body>
 <header>
   <div class="wrap hero">
-    <div>
-      <h1>Berthel's Biology</h1>
-      <p class="subtitle">
-        Professional student testing and review workspace. Answer MCQs, log attempts, review explanations, practice etymology/vocabulary, and search the full IB Biology text file.
-      </p>
-      <div class="build-chip">LIVE BUILD: Unified Workspace v2026.02.09</div>
-    </div>
+    <div class="brand">
+      <div class="penguin" aria-label="Silhouetted chinstrap penguin avatar">
+        <svg viewBox="0 0 100 100" width="74" height="74" role="img" aria-label="Chinstrap penguin silhouette">
+          <path d="M70 14c-12-6-27-3-37 7-7 7-11 16-12 27 0 16 8 31 23 40 8 5 18 7 28 5 5-1 10-3 14-6-6 0-13-3-18-8-7-7-11-16-11-26 0-9 3-18 9-25 1-1 2-2 4-3z" fill="#171717"/>
+          <path d="M67 22c-8 6-13 16-13 26 0 9 4 17 10 23 4 4 9 6 14 7-3 3-7 5-11 6-9 2-18 0-25-4-12-8-19-20-19-34 1-9 4-17 10-23 8-8 20-11 31-8 1 2 2 5 3 7z" fill="#fff"/>
+          <path d="M63 46l25 8-23 8z" fill="#404040"/>
+          <circle cx="62" cy="37" r="2.8" fill="#111"/>
+          <path d="M35 64c8 5 20 7 31 4" stroke="#222" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
 
-    <div class="penguin" aria-label="Silhouetted chinstrap penguin avatar">
-      <svg viewBox="0 0 100 100" width="80" height="80" role="img" aria-label="Chinstrap penguin silhouette">
-        <path d="M70 14c-12-6-27-3-37 7-7 7-11 16-12 27 0 16 8 31 23 40 8 5 18 7 28 5 5-1 10-3 14-6-6 0-13-3-18-8-7-7-11-16-11-26 0-9 3-18 9-25 1-1 2-2 4-3z" fill="#171717"/>
-        <path d="M67 22c-8 6-13 16-13 26 0 9 4 17 10 23 4 4 9 6 14 7-3 3-7 5-11 6-9 2-18 0-25-4-12-8-19-20-19-34 1-9 4-17 10-23 8-8 20-11 31-8 1 2 2 5 3 7z" fill="#fff"/>
-        <path d="M63 46l25 8-23 8z" fill="#404040"/>
-        <circle cx="62" cy="37" r="2.8" fill="#111"/>
-        <path d="M35 64c8 5 20 7 31 4" stroke="#222" stroke-width="2" fill="none"/>
-      </svg>
+      <div class="brand-text">
+        <h1>Berthel's Biology</h1>
+        <p class="subtitle">
+          Professional student testing and review workspace. Answer MCQs, log attempts, review explanations, practice etymology/vocabulary, and search the full IB Biology text file.
+        </p>
+        <div class="build-chip"><span class="build-dot" aria-hidden="true"></span>LIVE BUILD: Unified Workspace v2026.02.09</div>
+      </div>
     </div>
   </div>
 </header>
 
 <nav>
   <div class="wrap tabs" role="tablist" aria-label="Workspace modules">
-    <button class="tab-btn" role="tab" aria-selected="true" data-panel="dashboard" type="button">Dashboard</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-panel="mcq" type="button">MCQ Test + Review</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-panel="etymo" type="button">Etymology &amp; Vocab</button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-panel="glossary" type="button">IB Text Search</button>
+    <div class="tab-row">
+      <button class="tab-btn" role="tab" aria-selected="true" data-panel="dashboard" type="button">Dashboard</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-panel="mcq" type="button">MCQ Test + Review</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-panel="etymo" type="button">Etymology &amp; Vocab</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-panel="glossary" type="button">IB Text Search</button>
+    </div>
+    <div class="nav-status" id="navStatus">Ready.</div>
   </div>
 </nav>
 
 <main class="wrap">
   <section class="panel active" id="dashboard">
     <div class="card">
-      <h2>All Modules Ready</h2>
+      <h2>Dashboard</h2>
       <div class="grid">
-        <div><strong>MCQ Generator:</strong><br/>Create randomized MCQs from your own term–definition list.</div>
-        <div><strong>MCQ Test + Log:</strong><br/>Students answer once, then receive graded review. Guesses are logged.</div>
-        <div><strong>Etymology + Vocab:</strong><br/>Embedded engine available on-page.</div>
-        <div><strong>IB Text Search:</strong><br/>Search every line from <code>ib_bio_clean_index.txt</code>.</div>
+        <div class="callout">
+          <div class="pill">MCQ</div>
+          <div>
+            <b>Generate → test → grade</b>
+            <div class="t-msg">Build quizzes from your term–definition list, run a student attempt, log guesses, and review explanations.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <div class="pill">Vocab</div>
+          <div>
+            <b>Etymology engine embedded</b>
+            <div class="t-msg">Runs inside this page (no external link button). Theme is forced to match.</div>
+          </div>
+        </div>
+        <div class="callout">
+          <div class="pill">Search</div>
+          <div>
+            <b>IB text line search</b>
+            <div class="t-msg">Search every line of <code>ib_bio_clean_index.txt</code>. Displays the first 400 results.</div>
+          </div>
+        </div>
       </div>
+
+      <p class="status">
+        Tip: if GitHub Pages caches aggressively, append <code>?v=YYYYMMDD</code> to the URL to force-refresh.
+      </p>
     </div>
   </section>
 
@@ -287,20 +477,28 @@
         <textarea id="pairInput" spellcheck="false"
           placeholder="mitochondrion | site of aerobic respiration and ATP production&#10;ribosome | site of protein synthesis"></textarea>
 
-        <div class="grid">
+        <div class="row">
           <div>
             <label for="qCount">Number of questions</label>
             <input id="qCount" type="number" min="1" value="8" />
+            <p class="hint">Capped to number of valid input pairs.</p>
           </div>
-        </div>
-
-        <div class="actions">
-          <button class="primary" id="generateBtn" type="button">Generate MCQ JSON</button>
-          <button id="useSamplePairsBtn" type="button">Load sample pairs</button>
+          <div>
+            <label>Actions</label>
+            <div class="actions" style="margin-top:0">
+              <button class="ghost" id="useSamplePairsBtn" type="button">Load sample pairs</button>
+              <button class="primary" id="generateBtn" type="button">Generate</button>
+            </div>
+          </div>
         </div>
 
         <label for="generatedJson">Generated JSON</label>
         <textarea id="generatedJson" spellcheck="false" placeholder="Generated quiz JSON will appear here"></textarea>
+
+        <div class="actions">
+          <button class="ghost" id="copyGeneratedBtn" type="button">Copy JSON</button>
+          <button class="ghost" id="loadGeneratedBtn" type="button">Load into Reviewer</button>
+        </div>
       </div>
 
       <div class="card">
@@ -312,16 +510,20 @@
 
         <div class="actions">
           <button class="primary" id="loadBtn" type="button">Load Quiz</button>
-          <button id="sampleBtn" type="button">Load sample quiz</button>
-          <button id="resetBtn" type="button">Clear</button>
+          <button class="ghost" id="sampleBtn" type="button">Load sample quiz</button>
+          <button class="ghost" id="resetBtn" type="button">Clear</button>
         </div>
 
-        <p class="status">Workflow: answer all questions → submit once → full graded review.</p>
+        <p class="status">Workflow: answer all questions → submit once → full graded review + attempt log.</p>
       </div>
     </div>
 
     <div class="card hidden" id="quizCard">
       <h3>Student Test</h3>
+      <div class="actions" style="margin-top:0; margin-bottom:10px;">
+        <span class="pill" id="quizMetaPill">Quiz: 0 questions</span>
+        <span class="pill" id="unansweredPill">Unanswered: 0</span>
+      </div>
       <div id="quiz"></div>
       <div class="actions">
         <button class="primary" id="submitBtn" type="button">Submit Answers</button>
@@ -337,7 +539,8 @@
       <h3>Attempt Log (Guesses Recorded)</h3>
       <p class="status">Logged per submission: chosen answer, correct answer, correctness, timestamp.</p>
       <div class="actions">
-        <button id="clearLogBtn" type="button">Clear Log</button>
+        <button class="ghost" id="exportLogCsvBtn" type="button">Export CSV</button>
+        <button class="danger" id="clearLogBtn" type="button">Clear Log</button>
       </div>
       <div id="attemptLogWrap"></div>
     </div>
@@ -346,19 +549,17 @@
   <section class="panel" id="etymo">
     <div class="card">
       <h2>Etymology + Vocabulary Review</h2>
-      <p class="status">Embedded below. If your browser blocks iframe interactions, use “Open in New Tab”.</p>
+      <p class="status">Runs inside this page. Theme is normalized to match the workspace.</p>
 
-      <div class="actions" style="margin-bottom:10px">
-        <a class="btn" href="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html" target="_blank" rel="noopener">
-          Open in New Tab
-        </a>
-      </div>
-
-      <!-- cache-bust query to reduce stale loads on Pages/CDN -->
       <iframe
-        src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html?v=20260209"
+        id="etymoFrame"
+        src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html?v=20260210a"
         title="Etymology and Vocabulary Engine"
-        loading="lazy"></iframe>
+        loading="eager"></iframe>
+
+      <p class="hint">
+        If the embedded engine contains its own persistent theme, it will be overridden where possible; otherwise, it will still run fully.
+      </p>
     </div>
   </section>
 
@@ -377,6 +578,8 @@
 
 <footer>Berthel's Biology · Built for smooth classroom testing and revision.</footer>
 
+<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
 <script>
 (() => {
   const state = {
@@ -387,7 +590,29 @@
 
   const $ = (id) => document.getElementById(id);
 
-  // Tabs / Panels
+  function setNavStatus(text){ $('navStatus').textContent = text; }
+
+  function toast(msg, type='info', title='Status'){
+    const wrap = $('toastWrap');
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    t.innerHTML = `
+      <div class="dot" aria-hidden="true"></div>
+      <div>
+        <p class="t-title">${title}</p>
+        <p class="t-msg">${msg}</p>
+      </div>
+    `;
+    wrap.appendChild(t);
+    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(4px)'; t.style.transition = 'all .18s ease'; }, 2800);
+    setTimeout(() => { t.remove(); }, 3300);
+  }
+
+  function sanitizeText(s){
+    return (s ?? '').toString().replace(/\s+/g,' ').trim();
+  }
+
+  // Tabs / Panels (with basic keyboard support)
   const tabs = [...document.querySelectorAll('.tab-btn')];
   const panels = [...document.querySelectorAll('.panel')];
 
@@ -395,10 +620,22 @@
     tabs.forEach(btn => {
       const active = (btn.dataset.panel === panelId);
       btn.setAttribute('aria-selected', active ? 'true' : 'false');
+      if (active) btn.focus({ preventScroll:true });
     });
     panels.forEach(panel => panel.classList.toggle('active', panel.id === panelId));
+    setNavStatus(`Module: ${panelId}`);
   }
-  tabs.forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
+
+  tabs.forEach((btn, idx) => {
+    btn.addEventListener('click', () => switchPanel(btn.dataset.panel));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      e.preventDefault();
+      const dir = (e.key === 'ArrowRight') ? 1 : -1;
+      const next = (idx + dir + tabs.length) % tabs.length;
+      tabs[next].click();
+    });
+  });
 
   // Sample data
   const samplePairs = [
@@ -445,6 +682,7 @@
       .map(s => s.trim())
       .filter(Boolean)
       .map(line => {
+        // Accept: term | def  (strict) ; ignore malformed lines
         const parts = line.split('|').map(x => x.trim());
         if (parts.length < 2 || !parts[0] || !parts[1]) return null;
         return { term: parts[0], definition: parts.slice(1).join(' | ') };
@@ -452,13 +690,20 @@
       .filter(Boolean);
   }
 
-  $('useSamplePairsBtn').addEventListener('click', () => { $('pairInput').value = samplePairs; });
-  $('sampleBtn').addEventListener('click', () => { $('jsonInput').value = JSON.stringify(sampleQuiz, null, 2); });
+  $('useSamplePairsBtn').addEventListener('click', () => {
+    $('pairInput').value = samplePairs;
+    toast('Loaded sample term-definition pairs.', 'info', 'Generator');
+  });
+
+  $('sampleBtn').addEventListener('click', () => {
+    $('jsonInput').value = JSON.stringify(sampleQuiz, null, 2);
+    toast('Loaded sample quiz JSON.', 'info', 'Reviewer');
+  });
 
   $('generateBtn').addEventListener('click', () => {
     const pairs = parsePairs($('pairInput').value);
     if (pairs.length < 4) {
-      alert('Provide at least 4 valid "term | definition" pairs.');
+      toast('Provide at least 4 valid "term | definition" pairs.', 'bad', 'Generator');
       return;
     }
 
@@ -494,22 +739,39 @@
 
     const payload = { questions };
     $('generatedJson').value = JSON.stringify(payload, null, 2);
-    $('jsonInput').value = $('generatedJson').value;
-    switchPanel('mcq');
-    alert(`Generated ${questions.length} question(s) and loaded into reviewer.`);
+    toast(`Generated ${questions.length} question(s).`, 'ok', 'Generator');
   });
 
-  // Reviewer
+  $('copyGeneratedBtn').addEventListener('click', async () => {
+    const txt = $('generatedJson').value.trim();
+    if (!txt) { toast('Nothing to copy yet. Generate first.', 'bad', 'Generator'); return; }
+    try {
+      await navigator.clipboard.writeText(txt);
+      toast('Copied generated JSON to clipboard.', 'ok', 'Generator');
+    } catch {
+      toast('Clipboard blocked by browser. Select and copy manually.', 'bad', 'Generator');
+    }
+  });
+
+  $('loadGeneratedBtn').addEventListener('click', () => {
+    const txt = $('generatedJson').value.trim();
+    if (!txt) { toast('Nothing to load yet. Generate first.', 'bad', 'Generator'); return; }
+    $('jsonInput').value = txt;
+    switchPanel('mcq');
+    toast('Loaded generated JSON into the reviewer.', 'ok', 'Reviewer');
+  });
+
+  // Reviewer helpers
   function parseQuizData() {
     try {
       const data = JSON.parse($('jsonInput').value);
       if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
-        alert('JSON must include a non-empty "questions" array.');
+        toast('JSON must include a non-empty "questions" array.', 'bad', 'Reviewer');
         return null;
       }
       return data;
     } catch (err) {
-      alert(`Invalid JSON: ${err.message}`);
+      toast(`Invalid JSON: ${err.message}`, 'bad', 'Reviewer');
       return null;
     }
   }
@@ -518,11 +780,23 @@
     while (node.firstChild) node.removeChild(node.firstChild);
   }
 
+  function updateUnanswered() {
+    if (!state.currentQuiz) return;
+    let unanswered = 0;
+    state.currentQuiz.questions.forEach((q, i) => {
+      const qId = (q.id ?? (i + 1));
+      const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
+      if (!chosen) unanswered++;
+    });
+    $('unansweredPill').textContent = `Unanswered: ${unanswered}`;
+  }
+
   $('loadBtn').addEventListener('click', () => {
     const data = parseQuizData();
     if (!data) return;
 
     state.currentQuiz = data;
+
     const quizEl = $('quiz');
     clearNode(quizEl);
     clearNode($('results'));
@@ -552,6 +826,7 @@
         input.type = 'radio';
         input.name = `q${qId}`;
         input.value = letter;
+        input.addEventListener('change', updateUnanswered);
 
         const text = document.createElement('div');
         const strong = document.createElement('b');
@@ -567,7 +842,11 @@
       quizEl.appendChild(qWrap);
     });
 
+    $('quizMetaPill').textContent = `Quiz: ${data.questions.length} question(s)`;
     $('quizCard').classList.remove('hidden');
+    updateUnanswered();
+
+    toast('Quiz loaded. Students can answer now.', 'ok', 'Reviewer');
   });
 
   $('resetBtn').addEventListener('click', () => {
@@ -577,6 +856,7 @@
     $('quizCard').classList.add('hidden');
     $('resultsCard').classList.add('hidden');
     state.currentQuiz = null;
+    toast('Cleared quiz + results.', 'info', 'Reviewer');
   });
 
   // Attempt log
@@ -602,24 +882,47 @@
   $('clearLogBtn').addEventListener('click', () => {
     state.attemptLog = [];
     saveAttemptLog();
+    toast('Attempt log cleared.', 'info', 'Log');
+  });
+
+  $('exportLogCsvBtn').addEventListener('click', () => {
+    if (!state.attemptLog.length) { toast('No log entries to export.', 'bad', 'Log'); return; }
+    const header = ['time','question','guess','correct','result'];
+    const rows = state.attemptLog.map(e => header.map(k => `"${String(e[k] ?? '').replaceAll('"','""')}"`).join(','));
+    const csv = [header.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'berthel_attempt_log.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast('Exported CSV.', 'ok', 'Log');
   });
 
   $('submitBtn').addEventListener('click', () => {
     if (!state.currentQuiz) {
-      alert('Load a quiz first.');
+      toast('Load a quiz first.', 'bad', 'Reviewer');
       return;
     }
 
+    // Allow submission with unanswered, but clearly report it.
     const resultsEl = $('results');
     clearNode(resultsEl);
 
     let score = 0;
+    let unanswered = 0;
+
     state.currentQuiz.questions.forEach((q, i) => {
       const qId = (q.id ?? (i + 1));
       const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
       const guess = chosen?.value || 'No answer';
       const correct = q.correct || '?';
       const isCorrect = (guess === correct);
+
+      if (!chosen) unanswered++;
       if (isCorrect) score++;
 
       state.attemptLog.push({
@@ -658,15 +961,20 @@
 
     const scoreLine = document.createElement('p');
     scoreLine.className = 'score';
-    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}`;
+    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}` +
+      (unanswered ? ` (Unanswered: ${unanswered})` : '');
     resultsEl.prepend(scoreLine);
 
     $('resultsCard').classList.remove('hidden');
+    updateUnanswered();
+
+    toast(unanswered ? `Submitted with ${unanswered} unanswered.` : 'Submitted. Full review generated.', 'ok', 'Reviewer');
   });
 
   // Glossary search
   const glossaryResults = $('glossaryResults');
-  function renderGlossary(lines) {
+
+  function renderGlossary(lines, term='') {
     glossaryResults.innerHTML = '';
     if (!lines.length) {
       glossaryResults.innerHTML = '<div class="result-item">No matches found.</div>';
@@ -678,33 +986,86 @@
       div.textContent = line;
       glossaryResults.appendChild(div);
     });
+    const total = lines.length;
+    $('glossaryStatus').textContent =
+      term
+        ? `Matches: ${total} (showing first 400).`
+        : `Loaded: ${state.glossaryLines.length} lines (showing first 400).`;
   }
 
-  // cache-bust reduces "stale file" on CDNs
-  const txtUrl = `ib_bio_clean_index.txt?v=20260209`;
-
+  const txtUrl = `ib_bio_clean_index.txt?v=20260210a`;
   fetch(txtUrl, { cache: 'no-store' })
     .then(resp => {
-      if (!resp.ok) throw new Error(`HTTP ${resp.status} loading ${txtUrl}`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       return resp.text();
     })
     .then(text => {
       state.glossaryLines = text.split('\n');
-      $('glossaryStatus').textContent = `Loaded: ${state.glossaryLines.length} lines (showing first 400 when unfiltered).`;
-      renderGlossary(state.glossaryLines);
+      renderGlossary(state.glossaryLines, '');
+      toast('IB text index loaded.', 'ok', 'Search');
     })
     .catch(err => {
       $('glossaryStatus').textContent =
-        `Could not load ib_bio_clean_index.txt. Ensure the file exists beside index.html. (${err.message})`;
+        `Could not load ib_bio_clean_index.txt beside index.html. (${err.message})`;
+      toast('IB text index failed to load. Check file placement.', 'bad', 'Search');
     });
 
   $('glossarySearch').addEventListener('input', () => {
     const term = $('glossarySearch').value.trim().toLowerCase();
-    if (!term) { renderGlossary(state.glossaryLines); return; }
-    renderGlossary(state.glossaryLines.filter(line => line.toLowerCase().includes(term)));
+    if (!term) { renderGlossary(state.glossaryLines, ''); return; }
+    const matches = state.glossaryLines.filter(line => line.toLowerCase().includes(term));
+    renderGlossary(matches, term);
   });
 
+  // Embed theme normalization (same-origin iframe)
+  const etymoFrame = $('etymoFrame');
+  if (etymoFrame) {
+    etymoFrame.addEventListener('load', () => {
+      try {
+        const doc = etymoFrame.contentDocument;
+        if (!doc || !doc.head) return;
+
+        const style = doc.createElement('style');
+        style.textContent = `
+          :root{
+            --bg:#ffffff;
+            --surface:#ffffff;
+            --ink:#111111;
+            --muted:#4c4c4c;
+            --line:#d4d4d4;
+            --accent:#1d1d1d;
+          }
+          html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); }
+          body{ font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.5; }
+          a{ color: var(--accent); }
+          button, input, textarea, select{
+            font-family: inherit;
+            border-radius: 10px;
+          }
+          /* Prevent embedded page from feeling "boxed" inside another page */
+          body > * { max-width: none !important; }
+        `;
+        doc.head.appendChild(style);
+
+        // Optional: if the embedded engine has its own page chrome, this softens it.
+        // Harmless if selectors don't exist.
+        const soft = doc.createElement('style');
+        soft.textContent = `
+          header, nav, footer { display:none !important; }
+          .container, .wrap, .page { max-width: none !important; }
+        `;
+        doc.head.appendChild(soft);
+
+        toast('Embedded engine loaded.', 'ok', 'Vocab');
+      } catch {
+        // Cross-origin or blocked; still functional, just not theme-normalized.
+        toast('Embedded engine loaded (theme override blocked).', 'info', 'Vocab');
+      }
+    });
+  }
+
   renderAttemptLog();
+  setNavStatus('Ready.');
 })();
 </script>
 </body>
