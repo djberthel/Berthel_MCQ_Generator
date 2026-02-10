@@ -7,41 +7,48 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Berthel's Biology · Unified Workspace v2026.02.09</title>
+  <title>Berthel's Biology · Unified Workspace v2026.02.10</title>
 
   <style>
     :root{
+      color-scheme: light;
+
       --bg:#f2f2f2;
       --surface:#ffffff;
-      --surface-2:#fafafa;
-      --ink:#111111;
-      --muted:#4c4c4c;
-      --line:#d4d4d4;
-      --line-strong:#9e9e9e;
+      --ink:#101010;
+      --muted:#4a4a4a;
 
-      --accent:#1d1d1d;
-      --accent-2:#2f2f2f;
+      --line:#d6d6d6;
+      --line-strong:#a6a6a6;
 
-      --ok:#245f2f;
+      --ok:#1f6a2f;
       --bad:#9a1f1f;
 
-      --shadow: 0 10px 26px rgba(0,0,0,.08);
-      --shadow-soft: 0 6px 18px rgba(0,0,0,.06);
+      --shadow: 0 10px 22px rgba(0,0,0,.06);
 
-      --radius:14px;
-      --radius-sm:10px;
+      --header0:#121212;
+      --header1:#2b2b2b;
 
-      --focus: 3px solid rgba(0,0,0,.25);
+      --radius: 14px;
+      --radius-sm: 10px;
+      --radius-pill: 999px;
+
+      --focus: rgba(255,255,255,.22);
+      --focus-dark: rgba(0,0,0,.28);
+
+      --tap: rgba(0,0,0,.04);
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+
     body{
       margin:0;
-      background: linear-gradient(180deg, #efefef, var(--bg));
+      background:var(--bg);
       color:var(--ink);
-      font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
       line-height:1.5;
+      text-rendering: optimizeLegibility;
     }
 
     .wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
@@ -49,153 +56,178 @@
     /* Header */
     header{
       color:#fff;
-      background: radial-gradient(1200px 400px at 20% 0%, #3a3a3a 0%, #1b1b1b 45%, #111 100%);
-      border-bottom:1px solid #5e5e5e;
+      background: radial-gradient(1200px 500px at 20% 0%, #3a3a3a 0%, transparent 60%),
+                  linear-gradient(180deg, var(--header0), var(--header1));
+      border-bottom:1px solid #5f5f5f;
     }
-    .hero{ padding:22px 0; }
+
+    .hero{
+      padding:22px 0;
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .avatar{
+      width:86px;
+      height:70px;               /* oval */
+      border-radius: var(--radius-pill);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.35);
+      background:#fff;
+      flex: 0 0 auto;
+      box-shadow: 0 10px 18px rgba(0,0,0,.22);
+    }
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      object-position: 55% 30%;
+      display:block;
+    }
+
     .brand{
       display:flex;
       align-items:center;
       gap:16px;
-      min-height:110px;
-    }
-    .penguin{
-      flex: 0 0 auto;
-      width:92px; height:92px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.35);
-      background: rgba(255,255,255,.92);
-      display:grid;
-      place-items:center;
-      padding:8px;
-      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      min-width: 0;
     }
     .brand-text{ min-width:0; }
+
     h1{
       margin:0;
       font-size:34px;
       letter-spacing:.2px;
-      line-height:1.1;
+      line-height: 1.1;
     }
     .subtitle{
-      margin:10px 0 0;
-      color:#dddddd;
-      max-width:900px;
+      margin:8px 0 0;
+      color:#e2e2e2;
+      max-width: 920px;
+      font-size: 15px;
     }
+
     .build-chip{
       margin-top:10px;
       display:inline-flex;
       align-items:center;
       gap:8px;
-      padding:6px 12px;
-      border:1px solid rgba(255,255,255,.35);
-      border-radius:999px;
-      background: rgba(0,0,0,.25);
-      color:#f0f0f0;
+      padding:6px 10px;
+      border:1px solid rgba(255,255,255,.38);
+      border-radius: var(--radius-pill);
+      background: rgba(0,0,0,.26);
+      color:#f4f4f4;
       font-size:12px;
-      letter-spacing:.25px;
+      letter-spacing:.35px;
       user-select:none;
-      backdrop-filter: blur(6px);
     }
-    .build-dot{
-      width:8px; height:8px;
-      border-radius:50%;
-      background:#9fe29f;
-      box-shadow: 0 0 0 3px rgba(159,226,159,.18);
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#fff;
+      opacity:.85;
     }
 
-    /* Sticky nav */
+    /* Tabs */
     nav{
-      position:sticky; top:0; z-index:20;
+      position:sticky;
+      top:0;
+      z-index:10;
       background: rgba(255,255,255,.92);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       border-bottom:1px solid var(--line);
     }
+
     .tabs{
       display:flex;
       flex-wrap:wrap;
       gap:10px;
       padding:12px 0;
-      align-items:center;
-      justify-content:space-between;
     }
-    .tab-row{ display:flex; flex-wrap:wrap; gap:10px; }
+
     .tab-btn{
       border:1px solid var(--line-strong);
-      border-radius:999px;
+      border-radius: var(--radius-pill);
       background:#fff;
-      color:#222;
+      color:#1f1f1f;
       padding:9px 14px;
       font-weight:900;
       cursor:pointer;
-      transition: transform .08s ease, background .15s ease, color .15s ease, border-color .15s ease;
+      transition: transform .05s ease, background .18s ease, border-color .18s ease, color .18s ease;
     }
-    .tab-btn:hover{ transform: translateY(-1px); }
+    .tab-btn:hover{ background: #f6f6f6; }
+    .tab-btn:active{ transform: translateY(1px); }
+
     .tab-btn[aria-selected="true"]{
-      background:var(--accent);
+      background:#161616;
       color:#fff;
-      border-color:var(--accent);
+      border-color:#161616;
     }
-    .nav-status{
-      font-size:13px;
-      color:var(--muted);
-      white-space:nowrap;
-      padding-left:10px;
+    .tab-btn:focus-visible{
+      outline:3px solid var(--focus-dark);
+      outline-offset:2px;
     }
 
-    /* Main / panels */
-    main{ padding:22px 0 46px; }
+    /* Layout */
+    main{ padding:18px 0 44px; }
+
     .panel{ display:none; }
     .panel.active{ display:block; }
 
     .card{
       border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:var(--surface);
+      border-radius: var(--radius);
+      background: var(--surface);
       padding:18px;
       margin-bottom:16px;
-      box-shadow:var(--shadow-soft);
+      box-shadow: var(--shadow);
     }
-    .card h2,.card h3{
-      margin:0 0 10px;
-      line-height:1.2;
-      letter-spacing:.1px;
-    }
-    .card p{ margin: 8px 0; }
+    .card h2,.card h3{ margin:0 0 10px; }
+    .card p{ margin: 10px 0 0; }
 
     .grid{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
     .subgrid{ display:grid; gap:14px; grid-template-columns: 2fr 1fr; }
     @media (max-width:920px){ .subgrid{ grid-template-columns:1fr; } }
 
-    .status{
-      color:var(--muted);
-      font-size:14px;
-      margin:8px 0 0;
-    }
-    .hint{
-      color:var(--muted);
-      font-size:13px;
-      margin:6px 0 0;
-    }
-
+    /* Forms */
     label{
       display:block;
       margin:10px 0 6px;
       font-weight:900;
-      font-size:14px;
+      font-size:13px;
       color:var(--muted);
+      letter-spacing:.2px;
     }
+
     input[type="number"], input[type="search"], textarea{
       width:100%;
-      border:1px solid #b9b9b9;
-      border-radius:var(--radius-sm);
-      padding:10px 12px;
+      border:1px solid #b8b8b8;
+      border-radius: var(--radius-sm);
+      padding:11px 12px;
       font-size:15px;
       font-family:inherit;
-      color:var(--ink);
+      color: var(--ink);
       background:#fff;
+      box-shadow: 0 1px 0 rgba(0,0,0,.03);
     }
+    /* Force number input text visibility across odd UA styles */
+    input[type="number"]{
+      font-weight:900;
+      letter-spacing:.2px;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button{
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
     textarea{ min-height:170px; resize:vertical; }
+
+    input:focus-visible, textarea:focus-visible{
+      outline:3px solid var(--focus-dark);
+      outline-offset:2px;
+    }
 
     .actions{
       display:flex;
@@ -205,9 +237,9 @@
       align-items:center;
     }
 
-    button{
-      border:1px solid #222;
-      border-radius:var(--radius-sm);
+    button, .btn{
+      border:1px solid #1f1f1f;
+      border-radius: var(--radius-sm);
       padding:9px 14px;
       font:inherit;
       font-weight:900;
@@ -220,106 +252,103 @@
       justify-content:center;
       gap:8px;
       user-select:none;
-      transition: transform .08s ease, background .15s ease, color .15s ease, border-color .15s ease;
+      transition: transform .05s ease, background .18s ease, color .18s ease, border-color .18s ease;
     }
-    button:hover{ transform: translateY(-1px); }
-    button.primary{
-      background:var(--accent);
+    button:hover, .btn:hover{ background:#f6f6f6; }
+    button:active, .btn:active{ transform: translateY(1px); }
+    button.primary, .btn.primary{
+      background:#1a1a1a;
       color:#fff;
-      border-color:var(--accent);
+      border-color:#1a1a1a;
     }
-    button.ghost{
-      background:#fff;
-      border-color:#c5c5c5;
-      color:#222;
-    }
-    button.danger{
-      background:#fff;
-      border-color:#c5c5c5;
-      color:#7a1313;
-    }
+    button.primary:hover, .btn.primary:hover{ background:#0f0f0f; }
 
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:flex-end;
-      flex-wrap:wrap;
-    }
-    .row > *{ flex:1 1 220px; }
-
-    /* Focus */
-    button:focus-visible, .tab-btn:focus-visible,
-    input:focus-visible, textarea:focus-visible{
-      outline: var(--focus);
+    button:focus-visible, .btn:focus-visible{
+      outline:3px solid var(--focus-dark);
       outline-offset:2px;
     }
 
-    /* Quiz */
+    .status{
+      color:var(--muted);
+      font-size:13px;
+      margin:8px 0 0;
+    }
+    .status.good{ color: var(--ok); font-weight:800; }
+    .status.bad{ color: var(--bad); font-weight:800; }
+
     .hidden{ display:none !important; }
 
+    /* MCQ blocks */
     .question{
       border:1px solid var(--line);
-      border-radius:var(--radius-sm);
-      background:var(--surface-2);
+      border-radius: var(--radius-sm);
+      background:#fafafa;
       padding:12px;
       margin:12px 0;
     }
     .question-head{
       font-weight:1000;
       margin-bottom:6px;
+      letter-spacing:.2px;
     }
+
     .option{
       display:grid;
       grid-template-columns:28px 1fr;
       gap:10px;
       margin:8px 0;
-      border:1px solid #cecece;
-      border-radius:10px;
+      border:1px solid #cfcfcf;
+      border-radius: 10px;
       background:#fff;
-      padding:9px 10px;
+      padding:10px;
       cursor:pointer;
       transition: background .12s ease, border-color .12s ease;
     }
-    .option:hover{ background:#fbfbfb; border-color:#bfbfbf; }
+    .option:hover{ background: #fbfbfb; }
+    .option:active{ background: #f4f4f4; }
     .option input{ margin-top:3px; }
 
     .score{ font-size:22px; font-weight:1000; margin:0 0 10px; }
     .correct{ color:var(--ok); font-weight:1000; }
     .incorrect{ color:var(--bad); font-weight:1000; }
 
-    .callout{
+    /* Details (JSON output) */
+    details{
+      margin-top:10px;
       border:1px solid var(--line);
-      background:#fff;
-      border-radius:var(--radius-sm);
-      padding:12px;
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      box-shadow: 0 8px 18px rgba(0,0,0,.05);
+      border-radius: var(--radius-sm);
+      background: #fbfbfb;
+      padding: 10px 12px;
     }
-    .callout b{ display:block; margin-bottom:2px; }
-    .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
+    summary{
+      cursor:pointer;
+      font-weight:1000;
+      list-style:none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    details[open] summary{ margin-bottom:8px; }
+
+    /* Etymology panel: match header palette */
+    .card.dark{
+      border-color: rgba(255,255,255,.18);
+      background: radial-gradient(1000px 420px at 18% 0%, #3a3a3a 0%, transparent 60%),
+                  linear-gradient(180deg, #111, #2a2a2a);
+      color: #f2f2f2;
+      box-shadow: 0 16px 28px rgba(0,0,0,.14);
+    }
+    .card.dark .status{ color: #d6d6d6; }
+    .card.dark h2{ color:#fff; }
+    .card.dark iframe{
+      border-color: rgba(255,255,255,.20);
       background:#fff;
-      color:#222;
-      font-size:12px;
-      font-weight:900;
-      white-space:nowrap;
     }
 
-    /* Iframe */
     iframe{
       width:100%;
       min-height:720px;
       border:1px solid var(--line);
-      border-radius:var(--radius);
+      border-radius: var(--radius-sm);
       background:#fff;
-      box-shadow: var(--shadow-soft);
     }
 
     /* Search results */
@@ -327,7 +356,7 @@
       max-height:520px;
       overflow:auto;
       border:1px solid var(--line);
-      border-radius:var(--radius);
+      border-radius: var(--radius-sm);
       background:#fff;
       margin-top:10px;
     }
@@ -339,58 +368,34 @@
     }
     .result-item:last-child{ border-bottom:none; }
 
-    /* Table */
+    /* Tables */
     table{
       width:100%;
       border-collapse:collapse;
       font-size:14px;
       background:#fff;
       border:1px solid var(--line);
-      border-radius:var(--radius);
+      border-radius: var(--radius-sm);
       overflow:hidden;
       margin-top:10px;
     }
+    thead th{
+      position: sticky;
+      top: 0;
+      background:#f6f6f6;
+      z-index: 1;
+    }
     th,td{ border-bottom:1px solid #ececec; padding:8px 10px; text-align:left; }
-    th{ background:#f7f7f7; }
-
-    /* Toast */
-    .toast-wrap{
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      z-index: 999;
-      display: grid;
-      gap: 10px;
-      width: min(420px, calc(100vw - 32px));
-    }
-    .toast{
-      border-radius: 14px;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.96);
-      box-shadow: var(--shadow);
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-    }
-    .toast .dot{
-      width:10px;height:10px;border-radius:50%;
-      margin-top:5px; flex:0 0 auto;
-    }
-    .toast .t-title{ font-weight:1000; margin:0; }
-    .toast .t-msg{ margin:2px 0 0; color:var(--muted); font-size:13px; }
-    .toast.ok .dot{ background: var(--ok); }
-    .toast.bad .dot{ background: var(--bad); }
-    .toast.info .dot{ background: #2a5aa0; }
 
     footer{
       text-align:center;
       color:var(--muted);
       font-size:13px;
-      padding:18px 0 26px;
+      padding:16px;
     }
+
     code{
-      font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       font-size:.95em;
     }
   </style>
@@ -400,22 +405,23 @@
 <header>
   <div class="wrap hero">
     <div class="brand">
-      <div class="penguin" aria-label="Silhouetted chinstrap penguin avatar">
-        <svg viewBox="0 0 100 100" width="74" height="74" role="img" aria-label="Chinstrap penguin silhouette">
-          <path d="M70 14c-12-6-27-3-37 7-7 7-11 16-12 27 0 16 8 31 23 40 8 5 18 7 28 5 5-1 10-3 14-6-6 0-13-3-18-8-7-7-11-16-11-26 0-9 3-18 9-25 1-1 2-2 4-3z" fill="#171717"/>
-          <path d="M67 22c-8 6-13 16-13 26 0 9 4 17 10 23 4 4 9 6 14 7-3 3-7 5-11 6-9 2-18 0-25-4-12-8-19-20-19-34 1-9 4-17 10-23 8-8 20-11 31-8 1 2 2 5 3 7z" fill="#fff"/>
-          <path d="M63 46l25 8-23 8z" fill="#404040"/>
-          <circle cx="62" cy="37" r="2.8" fill="#111"/>
-          <path d="M35 64c8 5 20 7 31 4" stroke="#222" stroke-width="2" fill="none"/>
-        </svg>
+      <!-- Avatar: photoreal chinstrap penguin, oval crop -->
+      <div class="avatar" aria-label="Chinstrap penguin avatar">
+        <picture>
+          <source type="image/webp" srcset="chinstrap_avatar_256.webp?v=20260210">
+          <source type="image/jpeg" srcset="chinstrap_avatar_256.jpg?v=20260210">
+          <!-- Last-resort fallback to your original JFIF, if present -->
+          <img src="Chinstrap_LOgo.jfif" alt="Chinstrap penguin portrait" loading="eager" decoding="async">
+        </picture>
       </div>
 
       <div class="brand-text">
         <h1>Berthel's Biology</h1>
         <p class="subtitle">
-          Professional student testing and review workspace. Answer MCQs, log attempts, review explanations, practice etymology/vocabulary, and search the full IB Biology text file.
+          Professional student testing and review workspace. Answer MCQs, log attempts, review explanations,
+          practice etymology/vocabulary, and search the full IB Biology text file.
         </p>
-        <div class="build-chip"><span class="build-dot" aria-hidden="true"></span>LIVE BUILD: Unified Workspace v2026.02.09</div>
+        <div class="build-chip"><span class="dot"></span>LIVE BUILD: Unified Workspace v2026.02.10</div>
       </div>
     </div>
   </div>
@@ -423,47 +429,24 @@
 
 <nav>
   <div class="wrap tabs" role="tablist" aria-label="Workspace modules">
-    <div class="tab-row">
-      <button class="tab-btn" role="tab" aria-selected="true" data-panel="dashboard" type="button">Dashboard</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-panel="mcq" type="button">MCQ Test + Review</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-panel="etymo" type="button">Etymology &amp; Vocab</button>
-      <button class="tab-btn" role="tab" aria-selected="false" data-panel="glossary" type="button">IB Text Search</button>
-    </div>
-    <div class="nav-status" id="navStatus">Ready.</div>
+    <button class="tab-btn" role="tab" aria-selected="true" data-panel="dashboard" type="button">Dashboard</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-panel="mcq" type="button">MCQ Test + Review</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-panel="etymo" type="button">Etymology &amp; Vocab</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-panel="glossary" type="button">IB Text Search</button>
   </div>
 </nav>
 
 <main class="wrap">
   <section class="panel active" id="dashboard">
     <div class="card">
-      <h2>Dashboard</h2>
+      <h2>All Modules Ready</h2>
       <div class="grid">
-        <div class="callout">
-          <div class="pill">MCQ</div>
-          <div>
-            <b>Generate → test → grade</b>
-            <div class="t-msg">Build quizzes from your term–definition list, run a student attempt, log guesses, and review explanations.</div>
-          </div>
-        </div>
-        <div class="callout">
-          <div class="pill">Vocab</div>
-          <div>
-            <b>Etymology engine embedded</b>
-            <div class="t-msg">Runs inside this page (no external link button). Theme is forced to match.</div>
-          </div>
-        </div>
-        <div class="callout">
-          <div class="pill">Search</div>
-          <div>
-            <b>IB text line search</b>
-            <div class="t-msg">Search every line of <code>ib_bio_clean_index.txt</code>. Displays the first 400 results.</div>
-          </div>
-        </div>
+        <div><strong>MCQ Generator:</strong><br/>Build randomized MCQs from term–definition pairs (no external tooling).</div>
+        <div><strong>MCQ Test + Log:</strong><br/>Students answer once → graded review. Guesses are logged in-browser.</div>
+        <div><strong>Etymology + Vocab:</strong><br/>Runs embedded on this page (no separate navigation, no theme clash UI elements).</div>
+        <div><strong>IB Text Search:</strong><br/>Search every line from <code>ib_bio_clean_index.txt</code>.</div>
       </div>
-
-      <p class="status">
-        Tip: if GitHub Pages caches aggressively, append <code>?v=YYYYMMDD</code> to the URL to force-refresh.
-      </p>
+      <p class="status">Tip: This site is static; if you change files, hard-refresh (Ctrl+F5). Query-string cache-busting is already applied where it matters.</p>
     </div>
   </section>
 
@@ -471,34 +454,31 @@
     <div class="subgrid">
       <div class="card">
         <h2>MCQ Generator</h2>
-        <p class="status">Input format: one pair per line as <code>term | definition</code>.</p>
+        <p class="status">Input format: one pair per line as <code>term | definition</code>. The generator auto-loads its output into the reviewer.</p>
 
         <label for="pairInput">Source terms</label>
         <textarea id="pairInput" spellcheck="false"
           placeholder="mitochondrion | site of aerobic respiration and ATP production&#10;ribosome | site of protein synthesis"></textarea>
 
-        <div class="row">
+        <div class="grid">
           <div>
             <label for="qCount">Number of questions</label>
-            <input id="qCount" type="number" min="1" value="8" />
-            <p class="hint">Capped to number of valid input pairs.</p>
-          </div>
-          <div>
-            <label>Actions</label>
-            <div class="actions" style="margin-top:0">
-              <button class="ghost" id="useSamplePairsBtn" type="button">Load sample pairs</button>
-              <button class="primary" id="generateBtn" type="button">Generate</button>
-            </div>
+            <input id="qCount" type="number" min="1" step="1" inputmode="numeric" value="8" aria-label="Number of questions to generate" />
+            <p class="status" id="qCountHelp">Type a number (e.g., 10). It will clamp to the number of available pairs.</p>
           </div>
         </div>
-
-        <label for="generatedJson">Generated JSON</label>
-        <textarea id="generatedJson" spellcheck="false" placeholder="Generated quiz JSON will appear here"></textarea>
 
         <div class="actions">
-          <button class="ghost" id="copyGeneratedBtn" type="button">Copy JSON</button>
-          <button class="ghost" id="loadGeneratedBtn" type="button">Load into Reviewer</button>
+          <button class="primary" id="generateBtn" type="button">Generate + Load into Reviewer</button>
+          <button id="useSamplePairsBtn" type="button">Load sample pairs</button>
         </div>
+
+        <p class="status" id="genStatus"></p>
+
+        <details id="jsonDetails">
+          <summary>Show generated MCQ JSON</summary>
+          <textarea id="generatedJson" spellcheck="false" readonly></textarea>
+        </details>
       </div>
 
       <div class="card">
@@ -510,20 +490,16 @@
 
         <div class="actions">
           <button class="primary" id="loadBtn" type="button">Load Quiz</button>
-          <button class="ghost" id="sampleBtn" type="button">Load sample quiz</button>
-          <button class="ghost" id="resetBtn" type="button">Clear</button>
+          <button id="sampleBtn" type="button">Load sample quiz</button>
+          <button id="resetBtn" type="button">Clear</button>
         </div>
 
-        <p class="status">Workflow: answer all questions → submit once → full graded review + attempt log.</p>
+        <p class="status" id="revStatus">Workflow: answer all questions → submit once → full graded review.</p>
       </div>
     </div>
 
     <div class="card hidden" id="quizCard">
       <h3>Student Test</h3>
-      <div class="actions" style="margin-top:0; margin-bottom:10px;">
-        <span class="pill" id="quizMetaPill">Quiz: 0 questions</span>
-        <span class="pill" id="unansweredPill">Unanswered: 0</span>
-      </div>
       <div id="quiz"></div>
       <div class="actions">
         <button class="primary" id="submitBtn" type="button">Submit Answers</button>
@@ -537,29 +513,23 @@
 
     <div class="card" id="attemptLogCard">
       <h3>Attempt Log (Guesses Recorded)</h3>
-      <p class="status">Logged per submission: chosen answer, correct answer, correctness, timestamp.</p>
+      <p class="status">Logged per submission: chosen answer, correct answer, correctness, timestamp. Stored in this browser’s localStorage.</p>
       <div class="actions">
-        <button class="ghost" id="exportLogCsvBtn" type="button">Export CSV</button>
-        <button class="danger" id="clearLogBtn" type="button">Clear Log</button>
+        <button id="clearLogBtn" type="button">Clear Log</button>
       </div>
       <div id="attemptLogWrap"></div>
     </div>
   </section>
 
   <section class="panel" id="etymo">
-    <div class="card">
+    <div class="card dark">
       <h2>Etymology + Vocabulary Review</h2>
-      <p class="status">Runs inside this page. Theme is normalized to match the workspace.</p>
+      <p class="status">Embedded below with the site’s header palette. If the embedded page changes, keep it in the same folder as <code>index.html</code>.</p>
 
       <iframe
-        id="etymoFrame"
-        src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html?v=20260210a"
+        src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html?v=20260210"
         title="Etymology and Vocabulary Engine"
-        loading="eager"></iframe>
-
-      <p class="hint">
-        If the embedded engine contains its own persistent theme, it will be overridden where possible; otherwise, it will still run fully.
-      </p>
+        loading="lazy"></iframe>
     </div>
   </section>
 
@@ -578,8 +548,6 @@
 
 <footer>Berthel's Biology · Built for smooth classroom testing and revision.</footer>
 
-<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
-
 <script>
 (() => {
   const state = {
@@ -589,30 +557,14 @@
   };
 
   const $ = (id) => document.getElementById(id);
+  const setStatus = (el, msg, tone) => {
+    el.textContent = msg || '';
+    el.classList.remove('good','bad');
+    if (tone === 'good') el.classList.add('good');
+    if (tone === 'bad') el.classList.add('bad');
+  };
 
-  function setNavStatus(text){ $('navStatus').textContent = text; }
-
-  function toast(msg, type='info', title='Status'){
-    const wrap = $('toastWrap');
-    const t = document.createElement('div');
-    t.className = `toast ${type}`;
-    t.innerHTML = `
-      <div class="dot" aria-hidden="true"></div>
-      <div>
-        <p class="t-title">${title}</p>
-        <p class="t-msg">${msg}</p>
-      </div>
-    `;
-    wrap.appendChild(t);
-    setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(4px)'; t.style.transition = 'all .18s ease'; }, 2800);
-    setTimeout(() => { t.remove(); }, 3300);
-  }
-
-  function sanitizeText(s){
-    return (s ?? '').toString().replace(/\s+/g,' ').trim();
-  }
-
-  // Tabs / Panels (with basic keyboard support)
+  // Tabs / Panels
   const tabs = [...document.querySelectorAll('.tab-btn')];
   const panels = [...document.querySelectorAll('.panel')];
 
@@ -620,22 +572,16 @@
     tabs.forEach(btn => {
       const active = (btn.dataset.panel === panelId);
       btn.setAttribute('aria-selected', active ? 'true' : 'false');
-      if (active) btn.focus({ preventScroll:true });
     });
     panels.forEach(panel => panel.classList.toggle('active', panel.id === panelId));
-    setNavStatus(`Module: ${panelId}`);
+    localStorage.setItem('bb_active_panel', panelId);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   }
+  tabs.forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
 
-  tabs.forEach((btn, idx) => {
-    btn.addEventListener('click', () => switchPanel(btn.dataset.panel));
-    btn.addEventListener('keydown', (e) => {
-      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      e.preventDefault();
-      const dir = (e.key === 'ArrowRight') ? 1 : -1;
-      const next = (idx + dir + tabs.length) % tabs.length;
-      tabs[next].click();
-    });
-  });
+  // Restore last panel
+  const savedPanel = localStorage.getItem('bb_active_panel');
+  if (savedPanel && document.getElementById(savedPanel)) switchPanel(savedPanel);
 
   // Sample data
   const samplePairs = [
@@ -682,7 +628,6 @@
       .map(s => s.trim())
       .filter(Boolean)
       .map(line => {
-        // Accept: term | def  (strict) ; ignore malformed lines
         const parts = line.split('|').map(x => x.trim());
         if (parts.length < 2 || !parts[0] || !parts[1]) return null;
         return { term: parts[0], definition: parts.slice(1).join(' | ') };
@@ -692,22 +637,26 @@
 
   $('useSamplePairsBtn').addEventListener('click', () => {
     $('pairInput').value = samplePairs;
-    toast('Loaded sample term-definition pairs.', 'info', 'Generator');
+    setStatus($('genStatus'), 'Loaded sample pairs.', 'good');
   });
 
   $('sampleBtn').addEventListener('click', () => {
     $('jsonInput').value = JSON.stringify(sampleQuiz, null, 2);
-    toast('Loaded sample quiz JSON.', 'info', 'Reviewer');
+    setStatus($('revStatus'), 'Sample quiz loaded. Click “Load Quiz”.', 'good');
   });
 
   $('generateBtn').addEventListener('click', () => {
     const pairs = parsePairs($('pairInput').value);
+    const genStatus = $('genStatus');
     if (pairs.length < 4) {
-      toast('Provide at least 4 valid "term | definition" pairs.', 'bad', 'Generator');
+      setStatus(genStatus, 'Provide at least 4 valid "term | definition" pairs.', 'bad');
       return;
     }
 
-    const count = Math.max(1, Math.min(Number($('qCount').value) || 1, pairs.length));
+    const rawCount = Number($('qCount').value);
+    const count = Math.max(1, Math.min(Number.isFinite(rawCount) ? rawCount : 1, pairs.length));
+    $('qCount').value = String(count);
+
     const selected = shuffle(pairs).slice(0, count);
 
     const questions = selected.map((item, index) => {
@@ -722,56 +671,44 @@
         if (options[letter] === item.definition) correct = letter;
       });
 
+      const wrong = {};
+      letters.forEach(letter => {
+        wrong[letter] = (options[letter] === item.definition) ? 'Correct option.' : 'This choice does not match the target term.';
+      });
+
       return {
         id: index + 1,
         stem: `What is the best definition of "${item.term}"?`,
         options,
         correct,
         rationale_correct: `The correct definition for "${item.term}" is: ${item.definition}.`,
-        rationale_wrong: {
-          A: options.A === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
-          B: options.B === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
-          C: options.C === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
-          D: options.D === item.definition ? 'Correct option.' : 'This choice does not match the target term.'
-        }
+        rationale_wrong: wrong
       };
     });
 
     const payload = { questions };
     $('generatedJson').value = JSON.stringify(payload, null, 2);
-    toast(`Generated ${questions.length} question(s).`, 'ok', 'Generator');
-  });
+    $('jsonDetails').open = true;
 
-  $('copyGeneratedBtn').addEventListener('click', async () => {
-    const txt = $('generatedJson').value.trim();
-    if (!txt) { toast('Nothing to copy yet. Generate first.', 'bad', 'Generator'); return; }
-    try {
-      await navigator.clipboard.writeText(txt);
-      toast('Copied generated JSON to clipboard.', 'ok', 'Generator');
-    } catch {
-      toast('Clipboard blocked by browser. Select and copy manually.', 'bad', 'Generator');
-    }
-  });
+    $('jsonInput').value = $('generatedJson').value;
+    setStatus($('revStatus'), `Generated ${questions.length} question(s). Click “Load Quiz” to start.`, 'good');
+    setStatus(genStatus, `Generated ${questions.length} question(s) and loaded JSON into the reviewer.`, 'good');
 
-  $('loadGeneratedBtn').addEventListener('click', () => {
-    const txt = $('generatedJson').value.trim();
-    if (!txt) { toast('Nothing to load yet. Generate first.', 'bad', 'Generator'); return; }
-    $('jsonInput').value = txt;
     switchPanel('mcq');
-    toast('Loaded generated JSON into the reviewer.', 'ok', 'Reviewer');
   });
 
-  // Reviewer helpers
+  // Reviewer
   function parseQuizData() {
     try {
       const data = JSON.parse($('jsonInput').value);
       if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
-        toast('JSON must include a non-empty "questions" array.', 'bad', 'Reviewer');
+        setStatus($('revStatus'), 'JSON must include a non-empty "questions" array.', 'bad');
         return null;
       }
+      setStatus($('revStatus'), `Quiz detected: ${data.questions.length} question(s).`, 'good');
       return data;
     } catch (err) {
-      toast(`Invalid JSON: ${err.message}`, 'bad', 'Reviewer');
+      setStatus($('revStatus'), `Invalid JSON: ${err.message}`, 'bad');
       return null;
     }
   }
@@ -780,24 +717,13 @@
     while (node.firstChild) node.removeChild(node.firstChild);
   }
 
-  function updateUnanswered() {
-    if (!state.currentQuiz) return;
-    let unanswered = 0;
-    state.currentQuiz.questions.forEach((q, i) => {
-      const qId = (q.id ?? (i + 1));
-      const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
-      if (!chosen) unanswered++;
-    });
-    $('unansweredPill').textContent = `Unanswered: ${unanswered}`;
-  }
-
   $('loadBtn').addEventListener('click', () => {
     const data = parseQuizData();
     if (!data) return;
 
     state.currentQuiz = data;
-
     const quizEl = $('quiz');
+
     clearNode(quizEl);
     clearNode($('results'));
     $('resultsCard').classList.add('hidden');
@@ -826,7 +752,6 @@
         input.type = 'radio';
         input.name = `q${qId}`;
         input.value = letter;
-        input.addEventListener('change', updateUnanswered);
 
         const text = document.createElement('div');
         const strong = document.createElement('b');
@@ -842,11 +767,7 @@
       quizEl.appendChild(qWrap);
     });
 
-    $('quizMetaPill').textContent = `Quiz: ${data.questions.length} question(s)`;
     $('quizCard').classList.remove('hidden');
-    updateUnanswered();
-
-    toast('Quiz loaded. Students can answer now.', 'ok', 'Reviewer');
   });
 
   $('resetBtn').addEventListener('click', () => {
@@ -856,7 +777,7 @@
     $('quizCard').classList.add('hidden');
     $('resultsCard').classList.add('hidden');
     state.currentQuiz = null;
-    toast('Cleared quiz + results.', 'info', 'Reviewer');
+    setStatus($('revStatus'), 'Cleared.', null);
   });
 
   // Attempt log
@@ -882,47 +803,24 @@
   $('clearLogBtn').addEventListener('click', () => {
     state.attemptLog = [];
     saveAttemptLog();
-    toast('Attempt log cleared.', 'info', 'Log');
-  });
-
-  $('exportLogCsvBtn').addEventListener('click', () => {
-    if (!state.attemptLog.length) { toast('No log entries to export.', 'bad', 'Log'); return; }
-    const header = ['time','question','guess','correct','result'];
-    const rows = state.attemptLog.map(e => header.map(k => `"${String(e[k] ?? '').replaceAll('"','""')}"`).join(','));
-    const csv = [header.join(','), ...rows].join('\n');
-    const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'berthel_attempt_log.csv';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    toast('Exported CSV.', 'ok', 'Log');
   });
 
   $('submitBtn').addEventListener('click', () => {
     if (!state.currentQuiz) {
-      toast('Load a quiz first.', 'bad', 'Reviewer');
+      setStatus($('revStatus'), 'Load a quiz first.', 'bad');
       return;
     }
 
-    // Allow submission with unanswered, but clearly report it.
     const resultsEl = $('results');
     clearNode(resultsEl);
 
     let score = 0;
-    let unanswered = 0;
-
     state.currentQuiz.questions.forEach((q, i) => {
       const qId = (q.id ?? (i + 1));
       const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
       const guess = chosen?.value || 'No answer';
       const correct = q.correct || '?';
       const isCorrect = (guess === correct);
-
-      if (!chosen) unanswered++;
       if (isCorrect) score++;
 
       state.attemptLog.push({
@@ -961,20 +859,16 @@
 
     const scoreLine = document.createElement('p');
     scoreLine.className = 'score';
-    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}` +
-      (unanswered ? ` (Unanswered: ${unanswered})` : '');
+    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}`;
     resultsEl.prepend(scoreLine);
 
     $('resultsCard').classList.remove('hidden');
-    updateUnanswered();
-
-    toast(unanswered ? `Submitted with ${unanswered} unanswered.` : 'Submitted. Full review generated.', 'ok', 'Reviewer');
+    setStatus($('revStatus'), 'Submitted and graded. Review below.', 'good');
   });
 
   // Glossary search
   const glossaryResults = $('glossaryResults');
-
-  function renderGlossary(lines, term='') {
+  function renderGlossary(lines) {
     glossaryResults.innerHTML = '';
     if (!lines.length) {
       glossaryResults.innerHTML = '<div class="result-item">No matches found.</div>';
@@ -986,86 +880,31 @@
       div.textContent = line;
       glossaryResults.appendChild(div);
     });
-    const total = lines.length;
-    $('glossaryStatus').textContent =
-      term
-        ? `Matches: ${total} (showing first 400).`
-        : `Loaded: ${state.glossaryLines.length} lines (showing first 400).`;
   }
 
-  const txtUrl = `ib_bio_clean_index.txt?v=20260210a`;
+  const txtUrl = `ib_bio_clean_index.txt?v=20260210`;
   fetch(txtUrl, { cache: 'no-store' })
     .then(resp => {
-      if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      if (!resp.ok) throw new Error(`HTTP ${resp.status} loading ${txtUrl}`);
       return resp.text();
     })
     .then(text => {
       state.glossaryLines = text.split('\n');
-      renderGlossary(state.glossaryLines, '');
-      toast('IB text index loaded.', 'ok', 'Search');
+      $('glossaryStatus').textContent = `Loaded: ${state.glossaryLines.length} lines (showing first 400 when unfiltered).`;
+      renderGlossary(state.glossaryLines);
     })
     .catch(err => {
       $('glossaryStatus').textContent =
-        `Could not load ib_bio_clean_index.txt beside index.html. (${err.message})`;
-      toast('IB text index failed to load. Check file placement.', 'bad', 'Search');
+        `Could not load ib_bio_clean_index.txt. Ensure it exists beside index.html. (${err.message})`;
     });
 
   $('glossarySearch').addEventListener('input', () => {
     const term = $('glossarySearch').value.trim().toLowerCase();
-    if (!term) { renderGlossary(state.glossaryLines, ''); return; }
-    const matches = state.glossaryLines.filter(line => line.toLowerCase().includes(term));
-    renderGlossary(matches, term);
+    if (!term) { renderGlossary(state.glossaryLines); return; }
+    renderGlossary(state.glossaryLines.filter(line => line.toLowerCase().includes(term)));
   });
 
-  // Embed theme normalization (same-origin iframe)
-  const etymoFrame = $('etymoFrame');
-  if (etymoFrame) {
-    etymoFrame.addEventListener('load', () => {
-      try {
-        const doc = etymoFrame.contentDocument;
-        if (!doc || !doc.head) return;
-
-        const style = doc.createElement('style');
-        style.textContent = `
-          :root{
-            --bg:#ffffff;
-            --surface:#ffffff;
-            --ink:#111111;
-            --muted:#4c4c4c;
-            --line:#d4d4d4;
-            --accent:#1d1d1d;
-          }
-          html,body{ margin:0; padding:0; background:var(--bg); color:var(--ink); }
-          body{ font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; line-height:1.5; }
-          a{ color: var(--accent); }
-          button, input, textarea, select{
-            font-family: inherit;
-            border-radius: 10px;
-          }
-          /* Prevent embedded page from feeling "boxed" inside another page */
-          body > * { max-width: none !important; }
-        `;
-        doc.head.appendChild(style);
-
-        // Optional: if the embedded engine has its own page chrome, this softens it.
-        // Harmless if selectors don't exist.
-        const soft = doc.createElement('style');
-        soft.textContent = `
-          header, nav, footer { display:none !important; }
-          .container, .wrap, .page { max-width: none !important; }
-        `;
-        doc.head.appendChild(soft);
-
-        toast('Embedded engine loaded.', 'ok', 'Vocab');
-      } catch {
-        // Cross-origin or blocked; still functional, just not theme-normalized.
-        toast('Embedded engine loaded (theme override blocked).', 'info', 'Vocab');
-      }
-    });
-  }
-
   renderAttemptLog();
-  setNavStatus('Ready.');
 })();
 </script>
 </body>
