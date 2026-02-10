@@ -46,7 +46,6 @@
         linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
     }
 
-    a{color:inherit}
     .container{max-width:1150px;margin:0 auto;padding:18px}
     .topbar{
       position:sticky; top:0; z-index:50;
@@ -145,7 +144,7 @@
     }
 
     .card{
-      background: linear-gradient(180deg, var(--card), var(--card2));
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.04));
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
@@ -160,10 +159,7 @@
     .subtle{color:var(--muted); font-size: 13px}
     .hr{height:1px;background:var(--border); margin:14px 0}
 
-    .row{
-      display:flex; gap:12px; flex-wrap:wrap;
-      align-items:center;
-    }
+    .row{display:flex; gap:12px; flex-wrap:wrap; align-items:center;}
     .row.between{justify-content:space-between}
     .grow{flex:1}
     .min220{min-width:220px}
@@ -175,7 +171,7 @@
     input[type="text"], input[type="number"], textarea, select{
       width:100%;
       color: var(--fg);
-      background: var(--input);
+      background: rgba(0,0,0,.30);
       border:1px solid var(--border);
       border-radius: 12px;
       padding: 11px 12px;
@@ -187,17 +183,11 @@
     input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus{
       border-color: rgba(255,255,255,.22);
       box-shadow: var(--ring);
-      background: var(--input2);
+      background: rgba(0,0,0,.18);
     }
-    input[type="number"]{
-      appearance: textfield;
-    }
-    input[type="file"]{
-      width:100%;
-      color: var(--muted);
-    }
-
+    input[type="number"]{appearance: textfield;}
     textarea{min-height: 140px; font-family: var(--mono); font-size: 13px; line-height: 1.55}
+
     .btn{
       border:1px solid var(--border);
       background: var(--btn);
@@ -211,7 +201,6 @@
     .btn:hover{ background: var(--btnHover); border-color: var(--border2); }
     .btn:active{ transform: translateY(1px); background: var(--btnActive); }
     .btn:disabled{ opacity:.55; cursor:not-allowed; }
-
     .btn.ghost{ background: transparent; }
     .btn.danger{ border-color: rgba(255,154,165,.38); background: rgba(255,154,165,.08); }
     .btn.ok{ border-color: rgba(159,243,194,.35); background: rgba(159,243,194,.08); }
@@ -315,27 +304,6 @@
       color: rgba(255,255,255,.80);
       font-weight: 780;
     }
-
-    /* Search results */
-    .resultItem{
-      border:1px solid var(--border);
-      background: rgba(0,0,0,.16);
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin-top:10px;
-    }
-    .resultItem .hit{
-      font: 12px var(--mono);
-      color: rgba(255,255,255,.78);
-      margin-bottom:6px;
-    }
-    .resultItem .ctx{
-      color: rgba(255,255,255,.84);
-      font-size: 14px;
-      white-space: pre-wrap;
-    }
-
-    footer{color:var(--muted2); font-size: 12px; padding: 14px 0}
   </style>
 </head>
 <body>
@@ -354,15 +322,13 @@
 
         <div class="tagRow">
           <span class="pill"><span class="dot"></span>LIVE BUILD: <b>Unified Workspace</b> <small>v2026.02.10</small></span>
-          <span class="pill"><small>Theme:</small> Black/White Gradient</span>
         </div>
       </div>
 
       <div class="nav" role="tablist" aria-label="Workspace tabs">
         <button class="tabBtn" id="tab-home" aria-selected="true" aria-controls="panel-home" role="tab">Home</button>
-        <button class="tabBtn" id="tab-ety" aria-selected="false" aria-controls="panel-ety" role="tab">Etymology + Vocabulary Engine</button>
-        <button class="tabBtn" id="tab-mcq" aria-selected="false" aria-controls="panel-mcq" role="tab">MCQ (JSON-Driven)</button>
-        <button class="tabBtn" id="tab-search" aria-selected="false" aria-controls="panel-search" role="tab">IB Text Search</button>
+        <button class="tabBtn" id="tab-ety" aria-selected="false" aria-controls="panel-ety" role="tab">Etymology + Vocabulary</button>
+        <button class="tabBtn" id="tab-mcq" aria-selected="false" aria-controls="panel-mcq" role="tab">MCQ</button>
         <button class="tabBtn" id="tab-settings" aria-selected="false" aria-controls="panel-settings" role="tab">Settings</button>
       </div>
     </div>
@@ -377,14 +343,12 @@
           <div class="right">
             <span class="badge">Offline-friendly</span>
             <span class="badge">No external deps</span>
-            <span class="badge">File upload first</span>
           </div>
         </div>
 
         <div class="notice warn">
-          <b>Important:</b> If you open this via <span class="mono">file://</span>, browsers typically block <span class="mono">fetch()</span>.
-          Avatar loads fine from a local image file, but the bank auto-loader may be blocked.
-          Use the <b>Upload</b> controls (banks + text) for guaranteed loading, or serve the folder with a local web server.
+          <b>Note:</b> Some browsers block <span class="mono">fetch()</span> when opened as <span class="mono">file://</span>.
+          If the preset bank doesn’t auto-load from <span class="mono">ib_bio_clean_index.txt</span>, run a local server or use the upload fallback in Settings.
         </div>
 
         <div class="hr"></div>
@@ -392,13 +356,15 @@
         <div class="grid">
           <div class="card">
             <div class="pad">
-              <h2>Quick start</h2>
+              <h2>Student workflow</h2>
               <ol style="margin:8px 0 0; padding-left: 18px; color: rgba(255,255,255,.86)">
-                <li>Open <b>Etymology + Vocabulary Engine</b>. It will try to auto-load <span class="mono">ib_bio_clean_index.txt</span>.</li>
-                <li>If auto-load fails, upload the same file manually with <b>Upload combined glossary</b>.</li>
-                <li>Go to <b>MCQ (JSON-Driven)</b> and paste the JSON returned by your “MCQ JSON Machine”.</li>
-                <li>(Optional) Upload the full IB Biology text under <b>IB Text Search</b>.</li>
+                <li>Open <b>Etymology + Vocabulary</b> or <b>MCQ</b>.</li>
+                <li>Select the number of practice questions.</li>
+                <li>The quiz auto-generates immediately.</li>
               </ol>
+              <div class="tiny" style="margin-top:10px">
+                Keyboard: <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next.
+              </div>
             </div>
           </div>
 
@@ -407,17 +373,15 @@
               <h2>Status</h2>
               <div class="notice" id="statusBox">
                 <div><b>Avatar:</b> <span id="statusAvatar" class="muted">loading…</span></div>
-                <div style="margin-top:6px"><b>Term bank:</b> <span id="statusBank" class="muted">not loaded</span></div>
-                <div style="margin-top:6px"><b>MCQ JSON:</b> <span id="statusMcq" class="muted">not loaded</span></div>
-                <div style="margin-top:6px"><b>IB text:</b> <span id="statusText" class="muted">not loaded</span></div>
+                <div style="margin-top:6px"><b>Term bank:</b> <span id="statusBank" class="muted">loading…</span></div>
+                <div style="margin-top:6px"><b>MCQ JSON:</b> <span id="statusMcq" class="muted">loading…</span></div>
               </div>
 
               <div class="hr"></div>
 
               <div class="row">
-                <button class="btn" id="jumpEty">Open Etymology Engine</button>
+                <button class="btn" id="jumpEty">Open Etymology + Vocabulary</button>
                 <button class="btn" id="jumpMcq">Open MCQ</button>
-                <button class="btn ghost" id="jumpSearch">Open Search</button>
               </div>
             </div>
           </div>
@@ -425,105 +389,65 @@
       </div>
     </section>
 
-    <!-- ETYMOLOGY + VOCAB ENGINE -->
+    <!-- ETYMOLOGY + VOCAB -->
     <section class="card hide" id="panel-ety" role="tabpanel" aria-labelledby="tab-ety">
       <div class="pad">
         <div class="sectionTitle">
           <h2>Etymology + Vocabulary Review Engine</h2>
           <div class="right">
-            <span class="badge">Auto-load</span>
-            <span class="badge">TXT/JSON upload</span>
-            <span class="badge">Auto-dedupe</span>
-            <span class="badge">Keyboard</span>
+            <span class="badge">Preset bank</span>
+            <span class="badge">Auto-generate</span>
+            <span class="badge">Review</span>
           </div>
         </div>
 
         <div class="grid" style="margin-top:12px">
-          <!-- Loader -->
           <div class="card">
             <div class="pad">
-              <h2>Load banks</h2>
-              <div class="subtle">Default bank file: <span class="mono">ib_bio_clean_index.txt</span> in the same directory as this HTML.</div>
+              <h2>Practice settings</h2>
+              <div class="subtle">Preset bank: <span class="mono">ib_bio_clean_index.txt</span> (same directory as this HTML).</div>
 
               <div class="hr"></div>
-
-              <div class="row">
-                <div class="min260 grow">
-                  <label>Upload combined glossary (TXT or JSON)</label>
-                  <input id="bankCombinedFile" type="file" accept=".txt,.json" />
-                  <div class="tiny">Recommended if auto-load is blocked.</div>
-                </div>
-                <div class="min260 grow">
-                  <label>Upload etymology-only bank (optional)</label>
-                  <input id="bankEtyFile" type="file" accept=".txt,.json" />
-                </div>
-                <div class="min260 grow">
-                  <label>Upload vocabulary-only bank (optional)</label>
-                  <input id="bankVocabFile" type="file" accept=".txt,.json" />
-                </div>
-              </div>
-
-              <div style="height:10px"></div>
-
-              <div class="row">
-                <div class="min320 grow">
-                  <label>Auto-load URL (default set)</label>
-                  <input id="bankUrl" type="text" />
-                  <div class="tiny">Works reliably when served via a local server or hosted site.</div>
-                </div>
-                <button class="btn" id="btnAutoLoadBank">Auto-load from URL</button>
-                <button class="btn ghost" id="btnClearBank">Clear banks</button>
-              </div>
-
-              <div class="hr"></div>
-
-              <div class="notice" id="bankSummary">
-                <b>Bank status:</b> <span class="muted" id="bankSummaryText">No banks loaded yet.</span>
-              </div>
-
-              <div style="height:12px"></div>
 
               <div class="row between">
                 <div class="min220">
-                  <label>Questions</label>
+                  <label>Number of questions</label>
                   <input id="etyQCount" type="number" min="1" value="40" />
-                  <div class="tiny" id="etyMaxHint">Max questions: —</div>
+                  <div class="tiny" id="etyMaxHint">Max: —</div>
                 </div>
-                <span class="pill"><small>Mode:</small> Mixed ETY + VOCAB · 4 choices · Review at end</span>
+
                 <div class="grow"></div>
-                <button id="etyStartBtn" class="btn" disabled>Start</button>
+
+                <button id="etyStartBtn" class="btn" disabled>Generate quiz</button>
+              </div>
+
+              <div class="notice" style="margin-top:12px" id="etyRunState">
+                <div><b>Bank:</b> <span class="muted" id="etyBankState">loading…</span></div>
+                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="etySessionState">not running</span></div>
               </div>
 
               <div class="tiny" style="margin-top:10px">
-                Keyboard: <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next.
+                Auto-generate: changing the number of questions will regenerate (once loaded).
               </div>
             </div>
           </div>
 
-          <!-- Run state -->
           <div class="card">
             <div class="pad">
-              <h2>Run state</h2>
-              <div class="notice" id="etyRunState">
-                <div><b>Loaded items:</b> <span class="muted" id="etyLoadedCount">0</span></div>
-                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="etySessionState">not running</span></div>
-                <div style="margin-top:6px"><b>Last parse:</b> <span class="muted" id="etyParseState">—</span></div>
+              <h2>Controls</h2>
+              <div class="notice">
+                <div><b>Keyboard:</b> <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next</div>
+                <div class="tiny" style="margin-top:8px">
+                  If the bank fails to auto-load (browser blocking <span class="mono">fetch()</span> on <span class="mono">file://</span>), go to Settings and upload the TXT once.
+                </div>
               </div>
 
               <div class="hr"></div>
 
               <details>
-                <summary>Parsing notes (what the TXT loader expects)</summary>
+                <summary>What counts as “etymology” vs “vocabulary”</summary>
                 <div class="tiny" style="margin-top:8px">
-                  Supported examples:
-                  <ul>
-                    <li><span class="mono">Abiotic[TAB]Non-living components of an ecosystem.</span></li>
-                    <li><span class="mono">Abiotic — Non-living components of an ecosystem.</span></li>
-                    <li><span class="mono">Abiotic - Non-living components of an ecosystem.</span></li>
-                    <li><span class="mono">Abiotic: Non-living components of an ecosystem.</span></li>
-                    <li>Two-column lines split by large spacing; parsed as term/definition pairs.</li>
-                  </ul>
-                  If a line can’t be parsed as a new term, it is appended to the previous definition as continuation.
+                  The parser uses a heuristic: word parts with leading/trailing hyphens (e.g., <span class="mono">-lysis</span>, <span class="mono">bio-</span>) are treated as etymology; others as vocabulary. You can override later if you want explicit tags.
                 </div>
               </details>
             </div>
@@ -585,94 +509,63 @@
 
             <div class="row">
               <button class="btn ok" id="etyRetryBtn">Try again</button>
-              <button class="btn ghost" id="etyExitBtn">Exit to loader</button>
+              <button class="btn ghost" id="etyExitBtn">Exit to settings</button>
             </div>
           </div>
         </section>
       </div>
     </section>
 
-    <!-- MCQ JSON -->
+    <!-- MCQ -->
     <section class="card hide" id="panel-mcq" role="tabpanel" aria-labelledby="tab-mcq">
       <div class="pad">
         <div class="sectionTitle">
-          <h2>MCQ generator (JSON-driven)</h2>
+          <h2>MCQ (JSON-driven)</h2>
           <div class="right">
-            <span class="badge">Paste JSON</span>
-            <span class="badge">Upload .json</span>
-            <span class="badge">Attempts log</span>
+            <span class="badge">Preset JSON</span>
+            <span class="badge">Auto-generate</span>
+            <span class="badge">Review</span>
           </div>
         </div>
 
         <div class="grid" style="margin-top:12px">
-          <!-- JSON input -->
           <div class="card">
             <div class="pad">
-              <h2>Load JSON from “MCQ JSON Machine”</h2>
-              <div class="subtle">Paste the JSON here (or upload). This runner normalizes common field variants.</div>
-
-              <div style="height:10px"></div>
-
-              <label>Paste MCQ JSON</label>
-              <textarea id="mcqJsonInput" placeholder='{
-  "title": "Inheritance — Mixed",
-  "questions": [
-    {"prompt":"…","choices":["…","…","…","…"],"answer_index":2,"explanation":"…","tags":["IB","HL"]}
-  ]
-}'></textarea>
-
-              <div style="height:10px"></div>
-
-              <div class="row">
-                <div class="grow min260">
-                  <label>Upload MCQ JSON file</label>
-                  <input id="mcqJsonFile" type="file" accept=".json" />
-                </div>
-                <button class="btn" id="mcqLoadBtn">Load JSON</button>
-                <button class="btn ghost" id="mcqClearBtn">Clear</button>
+              <h2>Practice settings</h2>
+              <div class="subtle">
+                This MCQ tab expects a preset JSON file in the same directory (default):
+                <span class="mono">mcq_bank.json</span>.
               </div>
 
               <div class="hr"></div>
 
-              <details>
-                <summary>Schema your other GPT should emit</summary>
-                <div class="tiny mono" style="margin-top:10px; white-space: pre-wrap">
-{
-  "title": "Optional",
-  "description": "Optional",
-  "questions": [
-    {
-      "prompt": "Question stem (string)",
-      "choices": ["A", "B", "C", "D"],
-      "answer_index": 0,
-      "explanation": "Optional",
-      "tags": ["Optional", "Optional"]
-    }
-  ]
-}
-                </div>
-              </details>
-
-              <div style="height:12px"></div>
-
-              <div class="notice" id="mcqSummary">
-                <b>Status:</b> <span class="muted" id="mcqSummaryText">No MCQ JSON loaded yet.</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Settings + run -->
-          <div class="card">
-            <div class="pad">
-              <h2>Run settings</h2>
-
-              <div class="row">
-                <div class="grow min220">
-                  <label>Questions to run</label>
+              <div class="row between">
+                <div class="min220">
+                  <label>Number of questions</label>
                   <input id="mcqRunCount" type="number" min="1" value="20" />
                   <div class="tiny" id="mcqRunMax">Max: —</div>
                 </div>
 
+                <div class="grow"></div>
+
+                <button class="btn" id="mcqStartBtn" disabled>Generate quiz</button>
+              </div>
+
+              <div class="notice" style="margin-top:12px" id="mcqRunState">
+                <div><b>Bank:</b> <span class="muted" id="mcqBankState">loading…</span></div>
+                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="mcqSession">not running</span></div>
+              </div>
+
+              <div class="tiny" style="margin-top:10px">
+                Auto-generate: changing the number of questions will regenerate (once loaded).
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="pad">
+              <h2>Options</h2>
+              <div class="row">
                 <div class="grow min220">
                   <label>Shuffle questions</label>
                   <select id="mcqShuffle">
@@ -690,19 +583,19 @@
                 </div>
               </div>
 
-              <div style="height:10px"></div>
-
-              <div class="row">
-                <button class="btn" id="mcqStartBtn" disabled>Start</button>
-                <button class="btn ghost" id="mcqFinishBtn" disabled>Finish</button>
-                <button class="btn ghost" id="mcqExportAttemptsBtn" disabled>Export attempt log (JSON)</button>
-              </div>
-
               <div class="hr"></div>
 
-              <div class="notice" id="mcqRunState">
-                <div><b>Loaded:</b> <span class="muted" id="mcqLoaded">0</span></div>
-                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="mcqSession">not running</span></div>
+              <div class="notice">
+                <div class="tiny">
+                  If you are not using a preset file, go to Settings and upload a JSON once. This is kept in local storage for that browser.
+                </div>
+              </div>
+
+              <div style="height:12px"></div>
+
+              <div class="row">
+                <button class="btn ghost" id="mcqFinishBtn" disabled>Finish</button>
+                <button class="btn ghost" id="mcqExportAttemptsBtn" disabled>Export attempt log (JSON)</button>
               </div>
             </div>
           </div>
@@ -757,68 +650,8 @@
 
             <div class="row">
               <button class="btn ok" id="mcqRetryBtn">Try again</button>
-              <button class="btn ghost" id="mcqExitBtn">Exit</button>
+              <button class="btn ghost" id="mcqExitBtn">Exit to settings</button>
             </div>
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <!-- IB TEXT SEARCH -->
-    <section class="card hide" id="panel-search" role="tabpanel" aria-labelledby="tab-search">
-      <div class="pad">
-        <div class="sectionTitle">
-          <h2>IB Biology text search</h2>
-          <div class="right">
-            <span class="badge">Upload TXT</span>
-            <span class="badge">Client-side search</span>
-          </div>
-        </div>
-
-        <div class="grid" style="margin-top:12px">
-          <div class="card">
-            <div class="pad">
-              <h2>Load the full text</h2>
-              <div class="subtle">Upload the IB Biology text file. This stays local in the browser.</div>
-
-              <div style="height:10px"></div>
-              <label>Upload text (TXT)</label>
-              <input id="ibTextFile" type="file" accept=".txt" />
-
-              <div style="height:10px"></div>
-              <div class="notice" id="ibTextStatus">
-                <b>Status:</b> <span class="muted" id="ibTextStatusText">No text loaded.</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="pad">
-              <h2>Search</h2>
-              <label>Query</label>
-              <input id="ibSearchInput" type="text" placeholder="e.g., chemiosmosis, Hardy-Weinberg, action potential…" />
-
-              <div style="height:10px"></div>
-              <div class="row">
-                <button class="btn" id="ibSearchBtn" disabled>Search</button>
-                <button class="btn ghost" id="ibClearBtn">Clear</button>
-              </div>
-
-              <div class="hr"></div>
-              <div class="notice" id="ibSearchMeta">
-                <b>Hits:</b> <span class="muted" id="ibHits">0</span>
-                <div class="tiny" style="margin-top:6px">Shows short context windows around matches. (Deliberately simple.)</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="height:16px"></div>
-
-        <section class="card">
-          <div class="pad">
-            <h2>Results</h2>
-            <div id="ibResults" class="tiny muted">No results.</div>
           </div>
         </section>
       </div>
@@ -828,10 +661,11 @@
     <section class="card hide" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings">
       <div class="pad">
         <div class="sectionTitle">
-          <h2>Settings</h2>
+          <h2>Settings (fallback upload only)</h2>
           <div class="right">
             <span class="badge">Avatar</span>
-            <span class="badge">Persistence</span>
+            <span class="badge">Bank upload</span>
+            <span class="badge">MCQ upload</span>
           </div>
         </div>
 
@@ -839,28 +673,12 @@
           <div class="card">
             <div class="pad">
               <h2>Avatar</h2>
-              <div class="subtle">Default avatar file: <span class="mono">Chinstrap_LOgo.jfif</span> in the same directory as this HTML.</div>
+              <div class="subtle">Default avatar: <span class="mono">Chinstrap_LOgo.jfif</span> (same directory as this HTML).</div>
 
               <div style="height:10px"></div>
 
-              <label>Avatar path (relative/absolute URL)</label>
-              <input id="avatarPath" type="text" />
-
-              <div style="height:10px"></div>
-
-              <label>Or avatar data URL (base64)</label>
-              <input id="avatarDataUrl" type="text" placeholder='data:image/jpeg;base64,...' />
-
-              <div style="height:10px"></div>
-
-              <div class="row">
-                <div class="grow min260">
-                  <label>Or upload an image file (JPG/PNG/WebP/JFIF)</label>
-                  <input id="avatarFile" type="file" accept="image/*" />
-                </div>
-                <button class="btn" id="applyAvatarBtn">Apply avatar</button>
-                <button class="btn ghost" id="resetAvatarBtn">Reset</button>
-              </div>
+              <label>Upload avatar (JPG/PNG/WebP/JFIF)</label>
+              <input id="avatarFile" type="file" accept="image/*" />
 
               <div style="height:12px"></div>
 
@@ -872,15 +690,30 @@
 
           <div class="card">
             <div class="pad">
-              <h2>Local persistence</h2>
-              <div class="subtle">Stores avatar and banks in <span class="mono">localStorage</span> when possible.</div>
+              <h2>Fallback uploads (if preset fetch is blocked)</h2>
+              <div class="subtle">
+                Upload once; saved to this browser (localStorage).
+              </div>
 
               <div class="hr"></div>
 
               <div class="row">
-                <button class="btn" id="saveStateBtn">Save state</button>
-                <button class="btn ghost" id="loadStateBtn">Load saved state</button>
-                <button class="btn danger" id="wipeStateBtn">Wipe saved state</button>
+                <div class="grow min260">
+                  <label>Upload term bank TXT/JSON (ib_bio_clean_index.txt)</label>
+                  <input id="bankCombinedFile" type="file" accept=".txt,.json" />
+                </div>
+                <div class="grow min260">
+                  <label>Upload MCQ JSON (mcq_bank.json)</label>
+                  <input id="mcqJsonFile" type="file" accept=".json" />
+                </div>
+              </div>
+
+              <div style="height:12px"></div>
+
+              <div class="row">
+                <button class="btn" id="saveStateBtn">Save now</button>
+                <button class="btn ghost" id="loadStateBtn">Load saved</button>
+                <button class="btn danger" id="wipeStateBtn">Wipe saved</button>
               </div>
 
               <div style="height:12px"></div>
@@ -892,20 +725,18 @@
         </div>
       </div>
     </section>
-
-    <footer>
-      <div class="tiny">
-        If the bank doesn’t auto-load: open via a local server or use Upload. The site does not “scan” directories; it loads a specific file path.
-      </div>
-    </footer>
   </main>
 
   <script>
     /***********************
-     * DEFAULT FILES (same directory as this HTML)
+     * PRESETS (same directory as this HTML)
      ***********************/
-    const DEFAULT_BANK_URL = './ib_bio_clean_index.txt';
-    const DEFAULT_AVATAR_PATH = './Chinstrap_LOgo.jfif';
+    const PRESET_TERM_BANK_URL = './ib_bio_clean_index.txt';
+    const PRESET_AVATAR_PATH = './Chinstrap_LOgo.jfif';
+
+    // MCQ: default preset JSON filename. Put it in the same folder.
+    // If you use a different name, change this constant.
+    const PRESET_MCQ_JSON_URL = './mcq_bank.json';
 
     /***********************
      * TAB NAV
@@ -914,80 +745,45 @@
       {btn:'tab-home', panel:'panel-home'},
       {btn:'tab-ety', panel:'panel-ety'},
       {btn:'tab-mcq', panel:'panel-mcq'},
-      {btn:'tab-search', panel:'panel-search'},
       {btn:'tab-settings', panel:'panel-settings'},
     ];
+    const $ = (id)=>document.getElementById(id);
 
     function showPanel(panelId){
       for (const t of tabs){
-        const b = document.getElementById(t.btn);
-        const p = document.getElementById(t.panel);
+        const b = $(t.btn);
+        const p = $(t.panel);
         const on = (t.panel === panelId);
         b.setAttribute('aria-selected', on ? 'true' : 'false');
         p.classList.toggle('hide', !on);
       }
-      const map = {
-        'panel-home':'home',
-        'panel-ety':'ety',
-        'panel-mcq':'mcq',
-        'panel-search':'search',
-        'panel-settings':'settings'
-      };
+      const map = {'panel-home':'home','panel-ety':'ety','panel-mcq':'mcq','panel-settings':'settings'};
       history.replaceState(null, '', '#' + (map[panelId] || 'home'));
     }
-
-    for (const t of tabs){
-      document.getElementById(t.btn).addEventListener('click', () => showPanel(t.panel));
-    }
-
-    document.getElementById('jumpEty').addEventListener('click', ()=>showPanel('panel-ety'));
-    document.getElementById('jumpMcq').addEventListener('click', ()=>showPanel('panel-mcq'));
-    document.getElementById('jumpSearch').addEventListener('click', ()=>showPanel('panel-search'));
+    for (const t of tabs){ $(t.btn).addEventListener('click', () => showPanel(t.panel)); }
+    $('jumpEty').addEventListener('click', ()=>showPanel('panel-ety'));
+    $('jumpMcq').addEventListener('click', ()=>showPanel('panel-mcq'));
 
     (function initHash(){
       const h = (location.hash || '').replace('#','').toLowerCase();
-      const map = {home:'panel-home', ety:'panel-ety', mcq:'panel-mcq', search:'panel-search', settings:'panel-settings'};
+      const map = {home:'panel-home', ety:'panel-ety', mcq:'panel-mcq', settings:'panel-settings'};
       showPanel(map[h] || 'panel-home');
     })();
 
     /***********************
-     * UTIL
+     * STATUS
      ***********************/
-    const $ = (id)=>document.getElementById(id);
     function setStatus(){
       $('statusAvatar').textContent = window.__avatarOk ? 'loaded' : 'not loaded';
       $('statusBank').textContent = window.__bankTotal ? `${window.__bankTotal} items` : 'not loaded';
       $('statusMcq').textContent = window.__mcqLoaded ? `${window.__mcqLoaded} questions` : 'not loaded';
-      $('statusText').textContent = window.__ibTextLoaded ? 'loaded' : 'not loaded';
     }
-    function safeJsonParse(s){
-      try { return JSON.parse(s); } catch { return null; }
-    }
+
+    /***********************
+     * UTIL
+     ***********************/
+    function safeJsonParse(s){ try { return JSON.parse(s); } catch { return null; } }
     function clamp(n, lo, hi){ return Math.min(Math.max(n, lo), hi); }
-
-    function normalizeDataUrl(raw){
-      if (!raw) return '';
-      let t = String(raw).trim();
-
-      // Only decode percent-encoding for data: URLs (paths may legitimately contain %20)
-      if (t.startsWith('data:') && /%[0-9A-Fa-f]{2}/.test(t)) {
-        try { t = decodeURIComponent(t); } catch {}
-      }
-
-      // For data URLs: remove whitespace/newlines from payload
-      if (t.startsWith('data:')){
-        const m = t.match(/^(data:[^,]+,)([\s\S]*)$/);
-        if (m){
-          const head = m[1];
-          const payload = m[2].replace(/\s+/g,'');
-          return head + payload;
-        }
-        return t.replace(/\s+/g,'');
-      }
-
-      // For file paths / URLs: keep as-is
-      return t;
-    }
 
     async function readFileAsText(file){
       return new Promise((resolve, reject) => {
@@ -1006,88 +802,67 @@
       });
     }
 
-    /***********************
-     * AVATAR
-     ***********************/
-    const FALLBACK_AVATAR_DATA_URL =
-`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE
-BQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME
-DgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU
-FBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA
-AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB
-BhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/
-xAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A
-9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o
-lq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI
-3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5
-p+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU
-qVKlSpUqVKlSpUqVKlf/2Q==`;
+    function randomInt(max){
+      if (max <= 0) return 0;
+      const c = window.crypto || window.msCrypto;
+      if (c && c.getRandomValues){
+        const buf = new Uint32Array(1);
+        const range = 0xFFFFFFFF;
+        const limit = range - (range % max);
+        let x = 0;
+        do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+        return x % max;
+      }
+      return Math.floor(Math.random() * max);
+    }
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = randomInt(i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
 
-    async function applyAvatar(src, persist=true){
-      const img = $('avatar');
-      const normalized = normalizeDataUrl(src);
+    /***********************
+     * AVATAR (preset first)
+     ***********************/
+    async function applyAvatarFromPath(path){
       return new Promise((resolve) => {
+        const img = $('avatar');
         let done = false;
         const finish = (ok, msg) => {
           if (done) return;
           done = true;
           window.__avatarOk = ok;
           $('avatarMsgText').textContent = msg;
-          $('statusAvatar').textContent = ok ? 'loaded' : 'not loaded';
-          if (persist && ok) {
-            try { localStorage.setItem('bb.avatar', normalized); } catch {}
-            try { localStorage.setItem('bb.avatarKind', normalized.startsWith('data:') ? 'data' : 'path'); } catch {}
-          }
           setStatus();
           resolve(ok);
         };
-
         img.onload = () => finish(true, 'Loaded.');
-        img.onerror = () => finish(false, 'Failed to load. Check file name/path, or use Upload.');
-        img.src = normalized;
+        img.onerror = () => finish(false, 'Failed to load preset. Upload in Settings.');
+        img.src = path;
       });
     }
-
-    $('applyAvatarBtn').addEventListener('click', async () => {
-      const path = $('avatarPath').value.trim();
-      const durl = $('avatarDataUrl').value.trim();
-
-      if (path){
-        await applyAvatar(path, true);
-        return;
-      }
-      if (durl){
-        await applyAvatar(durl, true);
-        return;
-      }
-      $('avatarMsgText').textContent = 'No avatar input provided.';
-    });
 
     $('avatarFile').addEventListener('change', async (e) => {
       const f = e.target.files?.[0];
       if (!f) return;
       const durl = await readFileAsDataUrl(f);
-      $('avatarDataUrl').value = durl;
-      $('avatarPath').value = '';
-      await applyAvatar(durl, true);
-    });
-
-    $('resetAvatarBtn').addEventListener('click', async () => {
-      $('avatarDataUrl').value = '';
-      $('avatarPath').value = DEFAULT_AVATAR_PATH;
-      try { localStorage.removeItem('bb.avatar'); } catch {}
-      try { localStorage.removeItem('bb.avatarKind'); } catch {}
-      const ok = await applyAvatar(DEFAULT_AVATAR_PATH, false);
-      if (!ok) await applyAvatar(FALLBACK_AVATAR_DATA_URL, false);
+      const img = $('avatar');
+      img.src = durl;
+      window.__avatarOk = true;
+      try { localStorage.setItem('bb.avatar.data', durl); } catch {}
+      $('avatarMsgText').textContent = 'Uploaded + applied.';
+      setStatus();
     });
 
     /***********************
-     * BANK PARSING (TXT/JSON)
+     * TERM BANK (preset TXT auto-load)
      ***********************/
     function classifyKind(term){
       const t = (term || '').trim();
       const looksEty =
-        /^-?[a-z]{1,12}-?$/.test(t) && (t.startsWith('-') || t.endsWith('-')) ||
+        (/^-?[a-z]{1,12}-?$/.test(t) && (t.startsWith('-') || t.endsWith('-'))) ||
         /,\s*-\w+/.test(t) ||
         /-\w+$/.test(t) || /^\w+-/.test(t);
       return looksEty ? 'ETY' : 'VOCAB';
@@ -1175,72 +950,15 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       return dedupe(entries);
     }
 
-    function normalizeBankJson(obj){
-      let arr = null;
-      if (Array.isArray(obj)) arr = obj;
-      else if (obj && Array.isArray(obj.items)) arr = obj.items;
-      else if (obj && Array.isArray(obj.bank)) arr = obj.bank;
-      else if (obj && Array.isArray(obj.entries)) arr = obj.entries;
-
-      if (!arr) return [];
-
-      const entries = [];
-      for (const it of arr){
-        if (!it) continue;
-        const term = String(it.term ?? it.word ?? it.key ?? '').trim();
-        const meaning = String(it.meaning ?? it.definition ?? it.value ?? '').trim();
-        if (!term || !meaning) continue;
-        const kind = String(it.kind ?? it.type ?? '').toUpperCase().trim();
-        entries.push({term, meaning, kind: (kind === 'ETY' || kind === 'VOCAB') ? kind : classifyKind(term)});
-      }
-      return dedupe(entries);
-    }
-
-    function parseBankAny(textOrJson){
-      if (typeof textOrJson === 'string'){
-        const maybeJson = safeJsonParse(textOrJson);
-        if (maybeJson) return normalizeBankJson(maybeJson);
-        return parseGlossaryText(textOrJson);
-      }
-      return normalizeBankJson(textOrJson);
-    }
-
-    /***********************
-     * ETY QUIZ ENGINE
-     ***********************/
-    const CHOICES = 4;
-
-    function randomInt(max){
-      if (max <= 0) return 0;
-      const c = window.crypto || window.msCrypto;
-      if (c && c.getRandomValues){
-        const buf = new Uint32Array(1);
-        const range = 0xFFFFFFFF;
-        const limit = range - (range % max);
-        let x = 0;
-        do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
-        return x % max;
-      }
-      return Math.floor(Math.random() * max);
-    }
-
-    function shuffle(arr){
-      for (let i = arr.length - 1; i > 0; i--){
-        const j = randomInt(i + 1);
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-      }
-      return arr;
+    async function fetchText(url){
+      const res = await fetch(url, {cache:'no-store'});
+      if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+      return await res.text();
     }
 
     let bankAll = [];
     let bankEty = [];
     let bankVocab = [];
-
-    let etyPlan = [];
-    let etyIndex = 0;
-    let etyScore = 0;
-    let etyAnswered = false;
-    let etyHistory = [];
 
     function updateBankUI(){
       bankEty = bankAll.filter(x=>x.kind === 'ETY');
@@ -1248,20 +966,24 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
 
       const total = bankAll.length;
       window.__bankTotal = total;
-      $('etyLoadedCount').textContent = String(total);
 
-      $('etyMaxHint').textContent = 'Max questions: ' + (total ? total : '—');
+      $('etyMaxHint').textContent = 'Max: ' + (total ? total : '—');
       $('etyQCount').max = String(Math.max(total, 1));
       $('etyStartBtn').disabled = total === 0;
-      $('bankSummaryText').textContent =
-        total
-          ? `Loaded ${bankEty.length} etymologies + ${bankVocab.length} vocabulary terms = ${total} total.`
-          : 'No banks loaded yet.';
-      $('bankSummary').classList.toggle('ok', total > 0);
-
-      $('statusBank').textContent = total ? `${total} items` : 'not loaded';
+      $('etyBankState').textContent = total ? `${total} items loaded.` : 'not loaded';
       setStatus();
     }
+
+    /***********************
+     * ETY QUIZ ENGINE (auto-generate)
+     ***********************/
+    const CHOICES = 4;
+    let etyPlan = [];
+    let etyIndex = 0;
+    let etyScore = 0;
+    let etyAnswered = false;
+    let etyHistory = [];
+    let etyAutoReady = false;
 
     function setEtyPrompt(kind, term){
       const p = $('etyPrompt');
@@ -1317,6 +1039,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       etyScore = 0;
       etyAnswered = false;
       etyHistory = [];
+
       $('etyQi').textContent = '0';
       $('etyQt').textContent = String(total);
       $('etyScore').textContent = '0';
@@ -1394,10 +1117,8 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     }
 
     function startEty(){
-      if (!bankAll.length){
-        $('etyParseState').textContent = 'No banks loaded.';
-        return;
-      }
+      if (!bankAll.length) return;
+
       const requested = clamp(parseInt($('etyQCount').value || 40, 10), 1, bankAll.length);
       const indices = Array.from({length: bankAll.length}, (_, i) => i);
       shuffle(indices);
@@ -1411,6 +1132,12 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       nextEtyQuestion();
     }
 
+    // Auto-generate when Q count changes (once bank is loaded)
+    $('etyQCount').addEventListener('input', () => {
+      if (!etyAutoReady) return;
+      startEty();
+    });
+
     $('etyStartBtn').addEventListener('click', startEty);
     $('etyNextBtn').addEventListener('click', nextEtyQuestion);
     $('etyFinishNowBtn').addEventListener('click', finishEty);
@@ -1420,18 +1147,14 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       $('etyResultCard').classList.add('hide');
       $('etySessionState').textContent = 'aborted';
     });
-
     $('etyRetryBtn').addEventListener('click', () => {
       $('etyResultCard').classList.add('hide');
       startEty();
     });
-    $('etyExitBtn').addEventListener('click', () => {
-      $('etyResultCard').classList.add('hide');
-      $('etyQuizCard').classList.add('hide');
-    });
+    $('etyExitBtn').addEventListener('click', () => showPanel('panel-settings'));
 
     window.addEventListener('keydown', (e) => {
-      if (!$('panel-ety') || $('panel-ety').classList.contains('hide')) return;
+      if ($('panel-ety').classList.contains('hide')) return;
       if ($('etyQuizCard').classList.contains('hide')) return;
 
       if (/^[1-4]$/.test(e.key)){
@@ -1443,87 +1166,7 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     });
 
     /***********************
-     * BANK LOADING
-     ***********************/
-    async function loadBankFromFileInput(inputEl){
-      const f = inputEl.files?.[0];
-      if (!f) return null;
-      const txt = await readFileAsText(f);
-      return {name: f.name, content: txt};
-    }
-
-    async function loadBankFromUrl(url){
-      const res = await fetch(url, {cache:'no-store'});
-      if (!res.ok) throw new Error('Fetch failed: ' + res.status);
-      const txt = await res.text();
-      return {name: url, content: txt};
-    }
-
-    async function ingestBanks({combined, etyOnly, vocabOnly}){
-      let entries = [];
-      if (combined) entries = entries.concat(parseBankAny(combined.content));
-      if (etyOnly){
-        const e = parseBankAny(etyOnly.content).map(x => ({...x, kind:'ETY'}));
-        entries = entries.concat(e);
-      }
-      if (vocabOnly){
-        const v = parseBankAny(vocabOnly.content).map(x => ({...x, kind:'VOCAB'}));
-        entries = entries.concat(v);
-      }
-
-      bankAll = dedupe(entries);
-      updateBankUI();
-
-      try { localStorage.setItem('bb.bankAll', JSON.stringify(bankAll)); } catch {}
-
-      $('etyParseState').textContent =
-        `${bankAll.length} items loaded` +
-        (combined ? ` · ${combined.name}` : '') +
-        (etyOnly ? ` · ety: ${etyOnly.name}` : '') +
-        (vocabOnly ? ` · vocab: ${vocabOnly.name}` : '');
-    }
-
-    async function tryLoadBankFromUploads(){
-      const combined = await loadBankFromFileInput($('bankCombinedFile'));
-      const etyOnly = await loadBankFromFileInput($('bankEtyFile'));
-      const vocabOnly = await loadBankFromFileInput($('bankVocabFile'));
-
-      if (!combined && !etyOnly && !vocabOnly){
-        $('etyParseState').textContent = 'No file selected.';
-        return;
-      }
-      await ingestBanks({combined, etyOnly, vocabOnly});
-    }
-
-    $('bankCombinedFile').addEventListener('change', tryLoadBankFromUploads);
-    $('bankEtyFile').addEventListener('change', tryLoadBankFromUploads);
-    $('bankVocabFile').addEventListener('change', tryLoadBankFromUploads);
-
-    $('btnAutoLoadBank').addEventListener('click', async () => {
-      const url = $('bankUrl').value.trim();
-      if (!url){
-        $('etyParseState').textContent = 'No URL provided.';
-        return;
-      }
-      try{
-        const combined = await loadBankFromUrl(url);
-        await ingestBanks({combined, etyOnly:null, vocabOnly:null});
-      } catch (err){
-        $('etyParseState').textContent = String(err?.message || err || 'Load failed');
-      }
-    });
-
-    $('btnClearBank').addEventListener('click', () => {
-      bankAll = []; bankEty = []; bankVocab = [];
-      try { localStorage.removeItem('bb.bankAll'); } catch {}
-      updateBankUI();
-      $('etyParseState').textContent = 'Cleared.';
-      $('etyQuizCard').classList.add('hide');
-      $('etyResultCard').classList.add('hide');
-    });
-
-    /***********************
-     * MCQ JSON RUNNER
+     * MCQ JSON RUNNER (preset JSON + auto-generate)
      ***********************/
     let mcqBank = null;
     let mcqPlan = [];
@@ -1531,14 +1174,11 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     let mcqScore = 0;
     let mcqAnswered = false;
     let mcqAttempts = [];
+    let mcqAutoReady = false;
 
-    function normalizeMcqJson(raw){
-      const obj = raw;
+    function normalizeMcqJson(obj){
       if (!obj) return null;
-
       const title = String(obj.title ?? obj.name ?? 'MCQ Set').trim();
-      const description = String(obj.description ?? obj.meta ?? '').trim();
-
       const qArr = Array.isArray(obj.questions) ? obj.questions
                 : Array.isArray(obj.items) ? obj.items
                 : Array.isArray(obj.mcqs) ? obj.mcqs
@@ -1558,80 +1198,56 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
         if (Number.isInteger(q.answer_index)) ai = q.answer_index;
         else if (Number.isInteger(q.answer)) ai = q.answer;
         else if (typeof q.answer_letter === 'string'){
-          const L = q.answer_letter.trim().toUpperCase();
-          ai = 'ABCD'.indexOf(L);
+          ai = 'ABCD'.indexOf(q.answer_letter.trim().toUpperCase());
         } else if (typeof q.correct === 'string'){
-          const L = q.correct.trim().toUpperCase();
-          ai = 'ABCD'.indexOf(L);
+          ai = 'ABCD'.indexOf(q.correct.trim().toUpperCase());
         }
         if (ai == null || ai < 0 || ai >= ch.length) continue;
 
-        const explanation = String(q.explanation ?? q.rationale ?? '').trim();
-        const tags = Array.isArray(q.tags) ? q.tags.map(x => String(x)) : [];
-
-        questions.push({prompt, choices: ch, answer_index: ai, explanation, tags});
+        questions.push({
+          prompt,
+          choices: ch,
+          answer_index: ai,
+          explanation: String(q.explanation ?? q.rationale ?? '').trim(),
+          tags: Array.isArray(q.tags) ? q.tags.map(x => String(x)) : []
+        });
       }
 
       if (!questions.length) return null;
-      return {title, description, questions};
+      return {title, questions};
+    }
+
+    async function loadMcqFromPresetOrSaved(){
+      // Saved (uploaded once) takes precedence
+      try{
+        const saved = localStorage.getItem('bb.mcq.json');
+        if (saved){
+          const raw = safeJsonParse(saved);
+          const normalized = normalizeMcqJson(raw);
+          if (normalized) return normalized;
+        }
+      } catch {}
+
+      // Else preset file
+      const txt = await fetchText(PRESET_MCQ_JSON_URL);
+      const raw = safeJsonParse(txt);
+      if (!raw) throw new Error('Preset MCQ JSON invalid.');
+      const normalized = normalizeMcqJson(raw);
+      if (!normalized) throw new Error('Preset MCQ JSON schema not recognized.');
+      return normalized;
     }
 
     function updateMcqUI(){
       const n = mcqBank?.questions?.length || 0;
       window.__mcqLoaded = n;
-      $('mcqLoaded').textContent = String(n);
+
       $('mcqRunMax').textContent = 'Max: ' + (n ? n : '—');
       $('mcqRunCount').max = String(Math.max(n, 1));
       $('mcqStartBtn').disabled = n === 0;
-      $('mcqSummaryText').textContent = n ? `Loaded “${mcqBank.title}” with ${n} questions.` : 'No MCQ JSON loaded yet.';
-      $('statusMcq').textContent = n ? `${n} questions` : 'not loaded';
+
+      $('mcqBankState').textContent = n ? `${n} questions loaded.` : 'not loaded';
       setStatus();
     }
-
-    async function loadMcqFromTextareaOrFile(){
-      const f = $('mcqJsonFile').files?.[0];
-      let raw = null;
-
-      if (f){
-        const txt = await readFileAsText(f);
-        raw = safeJsonParse(txt);
-        if (!raw) throw new Error('Invalid JSON in file.');
-      } else {
-        const txt = $('mcqJsonInput').value.trim();
-        if (!txt) throw new Error('No JSON provided.');
-        raw = safeJsonParse(txt);
-        if (!raw) throw new Error('Invalid JSON in textarea.');
-      }
-
-      const normalized = normalizeMcqJson(raw);
-      if (!normalized) throw new Error('JSON parsed, but did not match expected MCQ schema.');
-
-      mcqBank = normalized;
-      updateMcqUI();
-      $('mcqSession').textContent = 'not running';
-      $('mcqSummary').classList.add('ok');
-    }
-
-    $('mcqLoadBtn').addEventListener('click', async () => {
-      try{
-        await loadMcqFromTextareaOrFile();
-      } catch (err){
-        $('mcqSummaryText').textContent = String(err?.message || err || 'Load failed');
-        $('mcqSummary').classList.remove('ok');
-      }
-    });
-
-    $('mcqClearBtn').addEventListener('click', () => {
-      mcqBank = null;
-      $('mcqJsonInput').value = '';
-      $('mcqJsonFile').value = '';
-      updateMcqUI();
-      $('mcqSummaryText').textContent = 'No MCQ JSON loaded yet.';
-      $('mcqQuizCard').classList.add('hide');
-      $('mcqResultCard').classList.add('hide');
-      $('mcqExportAttemptsBtn').disabled = true;
-      mcqAttempts = [];
-    });
 
     function resetMcqSession(total){
       mcqPlan = [];
@@ -1748,7 +1364,13 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       renderMcqQuestion();
     }
 
-    function nextMcq(){ renderMcqQuestion(); }
+    $('mcqRunCount').addEventListener('input', () => {
+      if (!mcqAutoReady) return;
+      startMcq();
+    });
+
+    $('mcqStartBtn').addEventListener('click', startMcq);
+    $('mcqNextBtn').addEventListener('click', renderMcqQuestion);
 
     function finishMcq(){
       $('mcqQuizCard').classList.add('hide');
@@ -1780,19 +1402,12 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
       $('mcqSession').textContent = 'completed';
     }
 
-    $('mcqStartBtn').addEventListener('click', startMcq);
-    $('mcqNextBtn').addEventListener('click', nextMcq);
     $('mcqFinishBtn').addEventListener('click', finishMcq);
-
     $('mcqRetryBtn').addEventListener('click', () => {
       $('mcqResultCard').classList.add('hide');
       startMcq();
     });
-    $('mcqExitBtn').addEventListener('click', () => {
-      $('mcqResultCard').classList.add('hide');
-      $('mcqQuizCard').classList.add('hide');
-      $('mcqSession').textContent = 'not running';
-    });
+    $('mcqExitBtn').addEventListener('click', () => showPanel('panel-settings'));
 
     $('mcqExportAttemptsBtn').addEventListener('click', () => {
       const payload = {
@@ -1814,88 +1429,76 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
     });
 
     window.addEventListener('keydown', (e) => {
-      if ($('panel-mcq').classList.contains('hide')) return;
-      if ($('mcqQuizCard').classList.contains('hide')) return;
+      // ETY keys
+      if (!$('panel-ety').classList.contains('hide') && !$('etyQuizCard').classList.contains('hide')){
+        if (/^[1-4]$/.test(e.key)){
+          const i = Number(e.key) - 1;
+          document.querySelectorAll('#etyOpts .opt')[i]?.click();
+          return;
+        }
+        if (e.key === 'Enter' && !$('etyNextBtn').disabled){
+          $('etyNextBtn').click();
+          return;
+        }
+      }
 
-      const key = e.key.toUpperCase();
-      const map = {A:0,B:1,C:2,D:3,'1':0,'2':1,'3':2,'4':3};
-      if (key in map){
-        document.querySelectorAll('#mcqOpts .opt')[map[key]]?.click();
-      } else if (e.key === 'Enter'){
-        if (!$('mcqNextBtn').disabled) $('mcqNextBtn').click();
+      // MCQ keys
+      if (!$('panel-mcq').classList.contains('hide') && !$('mcqQuizCard').classList.contains('hide')){
+        const key = e.key.toUpperCase();
+        const map = {A:0,B:1,C:2,D:3,'1':0,'2':1,'3':2,'4':3};
+        if (key in map){
+          document.querySelectorAll('#mcqOpts .opt')[map[key]]?.click();
+          return;
+        }
+        if (e.key === 'Enter' && !$('mcqNextBtn').disabled){
+          $('mcqNextBtn').click();
+          return;
+        }
       }
     });
 
     /***********************
-     * IB TEXT SEARCH
+     * SETTINGS UPLOADS
      ***********************/
-    let ibText = '';
-    $('ibTextFile').addEventListener('change', async (e) => {
+    $('bankCombinedFile').addEventListener('change', async (e) => {
       const f = e.target.files?.[0];
       if (!f) return;
-      ibText = await readFileAsText(f);
-      window.__ibTextLoaded = ibText.length > 0;
+      const txt = await readFileAsText(f);
+      bankAll = parseGlossaryText(txt);
+      updateBankUI();
+      etyAutoReady = bankAll.length > 0;
+      $('etyStartBtn').disabled = bankAll.length === 0;
+      $('etyBankState').textContent = bankAll.length ? `${bankAll.length} items loaded (uploaded).` : 'not loaded';
 
-      $('ibTextStatusText').textContent = ibText.length ? `Loaded ${f.name} (${ibText.length.toLocaleString()} chars).` : 'Failed to load.';
-      $('ibSearchBtn').disabled = !ibText.length;
-      $('statusText').textContent = ibText.length ? 'loaded' : 'not loaded';
-      setStatus();
+      try { localStorage.setItem('bb.bankAll', JSON.stringify(bankAll)); } catch {}
+      $('stateMsgText').textContent = 'Term bank uploaded + stored.';
     });
 
-    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
-
-    function ibSearch(q){
-      const query = (q || '').trim();
-      if (!query || !ibText) return [];
-      const re = new RegExp(escapeRegExp(query), 'ig');
-
-      const results = [];
-      const ctx = 120;
-
-      let m;
-      let count = 0;
-      while ((m = re.exec(ibText)) && count < 50){
-        const start = Math.max(0, m.index - ctx);
-        const end = Math.min(ibText.length, m.index + query.length + ctx);
-        results.push({ index: m.index, snippet: ibText.slice(start, end) });
-        count++;
+    $('mcqJsonFile').addEventListener('change', async (e) => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      const txt = await readFileAsText(f);
+      const raw = safeJsonParse(txt);
+      const normalized = normalizeMcqJson(raw);
+      if (!normalized){
+        $('stateMsgText').textContent = 'MCQ JSON uploaded but schema not recognized.';
+        return;
       }
-      return results;
-    }
+      mcqBank = normalized;
+      updateMcqUI();
+      mcqAutoReady = (mcqBank.questions.length > 0);
+      $('mcqStartBtn').disabled = mcqBank.questions.length === 0;
+      $('mcqBankState').textContent = mcqBank.questions.length ? `${mcqBank.questions.length} questions loaded (uploaded).` : 'not loaded';
 
-    $('ibSearchBtn').addEventListener('click', () => {
-      const q = $('ibSearchInput').value;
-      const hits = ibSearch(q);
-      $('ibHits').textContent = String(hits.length);
-
-      const box = $('ibResults');
-      box.innerHTML = hits.length ? '' : '<span class="muted">No results.</span>';
-
-      hits.forEach((h, i) => {
-        const div = document.createElement('div');
-        div.className = 'resultItem';
-        div.innerHTML = `
-          <div class="hit">Hit ${i+1} · char ${h.index}</div>
-          <div class="ctx"></div>
-        `;
-        div.querySelector('.ctx').textContent = h.snippet;
-        box.appendChild(div);
-      });
+      try { localStorage.setItem('bb.mcq.json', JSON.stringify(raw)); } catch {}
+      $('stateMsgText').textContent = 'MCQ JSON uploaded + stored.';
     });
 
-    $('ibClearBtn').addEventListener('click', () => {
-      $('ibSearchInput').value = '';
-      $('ibHits').textContent = '0';
-      $('ibResults').textContent = 'No results.';
-    });
-
-    /***********************
-     * SAVE/LOAD STATE
-     ***********************/
     $('saveStateBtn').addEventListener('click', () => {
       try{
         if (bankAll?.length) localStorage.setItem('bb.bankAll', JSON.stringify(bankAll));
-        $('stateMsgText').textContent = 'Saved (localStorage).';
+        if (mcqBank?.questions?.length) localStorage.setItem('bb.mcq.bankNormalized', JSON.stringify(mcqBank));
+        $('stateMsgText').textContent = 'Saved.';
       } catch {
         $('stateMsgText').textContent = 'Save failed (storage blocked).';
       }
@@ -1903,62 +1506,12 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
 
     $('loadStateBtn').addEventListener('click', async () => {
       try{
-        const a = localStorage.getItem('bb.avatar');
-        if (a) await applyAvatar(a, false);
-
-        const b = localStorage.getItem('bb.bankAll');
-        if (b){
-          const arr = safeJsonParse(b);
-          if (Array.isArray(arr)){
-            bankAll = dedupe(arr.map(x => ({
-              term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
-            })));
-            updateBankUI();
-          }
+        const savedAvatar = localStorage.getItem('bb.avatar.data');
+        if (savedAvatar){
+          $('avatar').src = savedAvatar;
+          window.__avatarOk = true;
         }
-        $('stateMsgText').textContent = 'Loaded saved state.';
-      } catch {
-        $('stateMsgText').textContent = 'Load failed.';
-      }
-    });
 
-    $('wipeStateBtn').addEventListener('click', () => {
-      try{
-        localStorage.removeItem('bb.avatar');
-        localStorage.removeItem('bb.avatarKind');
-        localStorage.removeItem('bb.bankAll');
-        $('stateMsgText').textContent = 'Wiped.';
-      } catch {
-        $('stateMsgText').textContent = 'Wipe failed.';
-      }
-    });
-
-    /***********************
-     * INIT (boot)
-     ***********************/
-    (async function boot(){
-      window.__avatarOk = false;
-      window.__bankTotal = 0;
-      window.__mcqLoaded = 0;
-      window.__ibTextLoaded = false;
-
-      // Pre-fill defaults
-      $('bankUrl').value = DEFAULT_BANK_URL;
-      $('avatarPath').value = DEFAULT_AVATAR_PATH;
-
-      // Avatar: prefer saved; else default file; else fallback embedded.
-      const savedAvatar = (() => { try { return localStorage.getItem('bb.avatar'); } catch { return null; } })();
-      let ok = false;
-      if (savedAvatar){
-        ok = await applyAvatar(savedAvatar, false);
-      } else {
-        ok = await applyAvatar(DEFAULT_AVATAR_PATH, false);
-        if (!ok) ok = await applyAvatar(FALLBACK_AVATAR_DATA_URL, false);
-      }
-      $('avatarMsgText').textContent = ok ? 'Loaded.' : 'Failed to load.';
-
-      // Banks: restore from saved; else try auto-load DEFAULT_BANK_URL.
-      try{
         const b = localStorage.getItem('bb.bankAll');
         const arr = b ? safeJsonParse(b) : null;
         if (Array.isArray(arr) && arr.length){
@@ -1966,22 +1519,99 @@ qVKlSpUqVKlSpUqVKlf/2Q==`;
             term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
           })));
           updateBankUI();
-          $('etyParseState').textContent = `Restored ${bankAll.length} items from saved state.`;
+          etyAutoReady = bankAll.length > 0;
+          $('etyBankState').textContent = `${bankAll.length} items loaded (saved).`;
+        }
+
+        const rawSaved = localStorage.getItem('bb.mcq.json');
+        const raw = rawSaved ? safeJsonParse(rawSaved) : null;
+        const normalized = raw ? normalizeMcqJson(raw) : null;
+        if (normalized){
+          mcqBank = normalized;
+          updateMcqUI();
+          mcqAutoReady = mcqBank.questions.length > 0;
+          $('mcqBankState').textContent = `${mcqBank.questions.length} questions loaded (saved).`;
+        }
+
+        $('stateMsgText').textContent = 'Loaded saved state.';
+        setStatus();
+      } catch {
+        $('stateMsgText').textContent = 'Load failed.';
+      }
+    });
+
+    $('wipeStateBtn').addEventListener('click', () => {
+      try{
+        localStorage.removeItem('bb.avatar.data');
+        localStorage.removeItem('bb.bankAll');
+        localStorage.removeItem('bb.mcq.json');
+        $('stateMsgText').textContent = 'Wiped.';
+      } catch {
+        $('stateMsgText').textContent = 'Wipe failed.';
+      }
+    });
+
+    /***********************
+     * BOOT: auto-load preset avatar + preset banks
+     ***********************/
+    (async function boot(){
+      window.__avatarOk = false;
+      window.__bankTotal = 0;
+      window.__mcqLoaded = 0;
+
+      // 1) Avatar: saved upload else preset file
+      try{
+        const savedAvatar = localStorage.getItem('bb.avatar.data');
+        if (savedAvatar){
+          $('avatar').src = savedAvatar;
+          window.__avatarOk = true;
+          $('avatarMsgText').textContent = 'Loaded saved avatar.';
         } else {
-          updateBankUI();
-          try{
-            const combined = await loadBankFromUrl(DEFAULT_BANK_URL);
-            await ingestBanks({combined, etyOnly:null, vocabOnly:null});
-            $('etyParseState').textContent = `Auto-loaded ${bankAll.length} items from ${DEFAULT_BANK_URL}.`;
-          } catch (err){
-            $('etyParseState').textContent =
-              `Auto-load failed for ${DEFAULT_BANK_URL}. Use Upload, or serve the folder via a local server (fetch is often blocked on file://).`;
-          }
+          const ok = await applyAvatarFromPath(PRESET_AVATAR_PATH);
+          window.__avatarOk = ok;
         }
       } catch {
-        updateBankUI();
-        $('etyParseState').textContent = 'Bank restore/load failed. Use Upload.';
+        // ignore
       }
+
+      // 2) Term bank: saved else preset TXT
+      try{
+        const savedBank = localStorage.getItem('bb.bankAll');
+        const arr = savedBank ? safeJsonParse(savedBank) : null;
+        if (Array.isArray(arr) && arr.length){
+          bankAll = dedupe(arr.map(x => ({
+            term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
+          })));
+          updateBankUI();
+          $('etyBankState').textContent = `${bankAll.length} items loaded (saved).`;
+        } else {
+          const txt = await fetchText(PRESET_TERM_BANK_URL);
+          bankAll = parseGlossaryText(txt);
+          updateBankUI();
+          $('etyBankState').textContent = bankAll.length ? `${bankAll.length} items loaded (preset).` : 'not loaded';
+        }
+        etyAutoReady = bankAll.length > 0;
+      } catch {
+        $('etyBankState').textContent = 'preset load blocked; upload in Settings.';
+      }
+
+      // 3) MCQ JSON: saved else preset JSON
+      try{
+        mcqBank = await loadMcqFromPresetOrSaved();
+        updateMcqUI();
+        $('mcqBankState').textContent = `${mcqBank.questions.length} questions loaded (${localStorage.getItem('bb.mcq.json') ? 'saved' : 'preset'}).`;
+        mcqAutoReady = mcqBank.questions.length > 0;
+      } catch {
+        $('mcqBankState').textContent = 'preset load failed; upload in Settings.';
+      }
+
+      // Enable generate buttons if ready
+      $('etyStartBtn').disabled = !etyAutoReady;
+      $('mcqStartBtn').disabled = !mcqAutoReady;
+
+      // Auto-generate *once* when loaded: use current inputs.
+      if (etyAutoReady) startEty();
+      if (mcqAutoReady) startMcq();
 
       setStatus();
     })();
