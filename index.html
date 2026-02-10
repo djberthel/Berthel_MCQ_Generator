@@ -1,502 +1,2022 @@
-<section id="etyEngine" class="etyEngine">
-  <header class="etyEngine__header">
-    <div class="etyEngine__brand">
-      <img
-        class="etyEngine__avatar"
-        src="assets/penguin.webp"
-        alt="Penguin avatar"
-        width="36"
-        height="36"
-        decoding="async"
-        loading="eager"
-        onerror="this.onerror=null; this.src='assets/penguin.png';"
-      />
-      <div class="etyEngine__title">
-        <div class="etyEngine__h1">Berthel’s Etymology + Vocabulary Engine</div>
-        <div class="etyEngine__sub">Black/White build · Auto-loaded banks</div>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berthel’s Biology — Unified Workspace</title>
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{
+      --bg0:#050506;
+      --bg1:#0b0c10;
+      --bg2:#12131a;
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.04);
+      --border:rgba(255,255,255,.12);
+      --border2:rgba(255,255,255,.18);
+      --fg:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.68);
+      --muted2:rgba(255,255,255,.52);
+      --shadow: 0 18px 52px rgba(0,0,0,.55);
+      --ring: 0 0 0 3px rgba(255,255,255,.10);
+      --ok:#9ff3c2;
+      --bad:#ff9aa5;
+      --warn:#ffe3a6;
+      --pill: rgba(255,255,255,.08);
+      --pillBorder: rgba(255,255,255,.14);
+      --btn: rgba(255,255,255,.10);
+      --btnHover: rgba(255,255,255,.14);
+      --btnActive: rgba(255,255,255,.18);
+      --input: rgba(0,0,0,.30);
+      --input2: rgba(0,0,0,.18);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui,-apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --radius: 18px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--fg);
+      font: 16px/1.55 var(--sans);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(255,255,255,.09), transparent 55%),
+        radial-gradient(900px 540px at 90% -20%, rgba(255,255,255,.07), transparent 52%),
+        linear-gradient(180deg, var(--bg0), var(--bg1) 35%, var(--bg2));
+    }
+
+    a{color:inherit}
+    .container{max-width:1150px;margin:0 auto;padding:18px}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px) saturate(130%);
+      background: rgba(5,5,6,.52);
+      border-bottom:1px solid var(--border);
+    }
+
+    .hero{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:16px 0;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:14px; min-width: 280px;
+    }
+
+    .avatarWrap{
+      width:54px; height:54px; border-radius:999px;
+      border:1px solid var(--border2);
+      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      flex: 0 0 auto;
+    }
+    #avatar{
+      width:100%; height:100%;
+      object-fit:cover;
+      object-position: 50% 35%;
+      display:block;
+      filter: contrast(1.03) brightness(1.02);
+    }
+
+    .titles h1{
+      margin:0;
+      font-size: 34px;
+      letter-spacing: .2px;
+      font-weight: 820;
+    }
+    .titles p{margin:6px 0 0; color:var(--muted); max-width: 62ch}
+
+    .tagRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border:1px solid var(--pillBorder);
+      background: var(--pill);
+      border-radius:999px;
+      font-weight: 720;
+      color: rgba(255,255,255,.86);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      white-space: nowrap;
+    }
+    .pill small{color:var(--muted); font-weight:650}
+    .pill .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: rgba(255,255,255,.75);
+      opacity:.9;
+    }
+
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap;
+      padding: 0 0 14px;
+    }
+
+    .tabBtn{
+      border:1px solid var(--border);
+      background: var(--btn);
+      color: var(--fg);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 760;
+      letter-spacing:.1px;
+      transition: transform .06s, background .15s, border-color .15s, opacity .2s;
+    }
+    .tabBtn:hover{ background: var(--btnHover); border-color: var(--border2); }
+    .tabBtn:active{ transform: translateY(1px); background: var(--btnActive); }
+    .tabBtn[aria-selected="true"]{
+      background: rgba(255,255,255,.18);
+      border-color: rgba(255,255,255,.22);
+    }
+
+    main{padding: 18px 0 40px}
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+      .titles h1{font-size: 30px}
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .pad{padding:18px}
+    .card h2{
+      margin:0 0 10px;
+      font-size: 18px;
+      letter-spacing:.2px;
+      font-weight: 820;
+    }
+    .subtle{color:var(--muted); font-size: 13px}
+    .hr{height:1px;background:var(--border); margin:14px 0}
+
+    .row{
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center;
+    }
+    .row.between{justify-content:space-between}
+    .grow{flex:1}
+    .min220{min-width:220px}
+    .min260{min-width:260px}
+    .min320{min-width:320px}
+
+    label{display:block; font-size: 12px; color: var(--muted); margin-bottom:6px; font-weight:700; letter-spacing:.2px}
+
+    input[type="text"], input[type="number"], textarea, select{
+      width:100%;
+      color: var(--fg);
+      background: var(--input);
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 12px;
+      outline:none;
+      box-shadow: none;
+      transition: border-color .15s, box-shadow .15s, background .15s;
+    }
+    input[type="text"]::placeholder, textarea::placeholder{color: rgba(255,255,255,.40)}
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus{
+      border-color: rgba(255,255,255,.22);
+      box-shadow: var(--ring);
+      background: var(--input2);
+    }
+    input[type="number"]{
+      appearance: textfield;
+    }
+    input[type="file"]{
+      width:100%;
+      color: var(--muted);
+    }
+
+    textarea{min-height: 140px; font-family: var(--mono); font-size: 13px; line-height: 1.55}
+    .btn{
+      border:1px solid var(--border);
+      background: var(--btn);
+      color: var(--fg);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-weight: 820;
+      transition: transform .06s, background .15s, border-color .15s, opacity .2s;
+    }
+    .btn:hover{ background: var(--btnHover); border-color: var(--border2); }
+    .btn:active{ transform: translateY(1px); background: var(--btnActive); }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    .btn.ghost{ background: transparent; }
+    .btn.danger{ border-color: rgba(255,154,165,.38); background: rgba(255,154,165,.08); }
+    .btn.ok{ border-color: rgba(159,243,194,.35); background: rgba(159,243,194,.08); }
+
+    .notice{
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.20);
+      padding: 12px 12px;
+      border-radius: 14px;
+      color: rgba(255,255,255,.84);
+    }
+    .notice b{font-weight:900}
+    .notice .muted{color:var(--muted)}
+    .notice.warn{ border-color: rgba(255,227,166,.25); background: rgba(255,227,166,.08); }
+    .notice.bad{ border-color: rgba(255,154,165,.25); background: rgba(255,154,165,.08); }
+    .notice.ok{ border-color: rgba(159,243,194,.22); background: rgba(159,243,194,.07); }
+
+    .kbd{
+      font: 12px var(--mono);
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.25);
+      border-bottom-width: 3px;
+      border-radius: 10px;
+      padding: 2px 8px;
+      color: rgba(255,255,255,.86);
+      white-space: nowrap;
+    }
+
+    /* Quiz UI */
+    .progressBar{
+      height: 10px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.28);
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    .progressBar > div{
+      height:100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(255,255,255,.45), rgba(255,255,255,.20));
+    }
+    .qPrompt{
+      margin: 10px 0 14px;
+      font-size: 21px;
+      font-weight: 860;
+      letter-spacing:.15px;
+    }
+    .termBadge{
+      display:inline-block;
+      font: 16px var(--mono);
+      background: rgba(0,0,0,.22);
+      border:1px solid var(--border);
+      padding: 3px 9px;
+      border-radius: 999px;
+      margin: 0 8px;
+      color: rgba(255,255,255,.92);
+    }
+    .opts{display:grid; gap:10px}
+    .opt{
+      width:100%;
+      display:flex; align-items:flex-start; gap:10px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.90);
+      padding: 12px 12px;
+      border-radius: 14px;
+      cursor:pointer;
+      text-align:left;
+      transition: transform .06s, background .15s, border-color .15s;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .opt:hover{ background: rgba(255,255,255,.06); border-color: var(--border2); transform: translateY(-1px); }
+    .opt:active{ transform: translateY(1px); }
+    .opt.correct{ border-color: rgba(159,243,194,.45); background: rgba(159,243,194,.10); }
+    .opt.wrong{ border-color: rgba(255,154,165,.45); background: rgba(255,154,165,.10); }
+    .opt .k{margin-top:1px}
+    .opt .t{flex:1}
+
+    details{
+      background: rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    summary{cursor:pointer; color: var(--muted); font-weight: 800}
+
+    .mono{font-family: var(--mono)}
+    .hide{display:none !important;}
+    .sectionTitle{
+      display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .sectionTitle .right{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .tiny{font-size:12px;color:var(--muted)}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.80);
+      font-weight: 780;
+    }
+
+    /* Search results */
+    .resultItem{
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.16);
+      border-radius: 14px;
+      padding: 10px 12px;
+      margin-top:10px;
+    }
+    .resultItem .hit{
+      font: 12px var(--mono);
+      color: rgba(255,255,255,.78);
+      margin-bottom:6px;
+    }
+    .resultItem .ctx{
+      color: rgba(255,255,255,.84);
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    footer{color:var(--muted2); font-size: 12px; padding: 14px 0}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <div class="hero">
+        <div class="brand">
+          <div class="avatarWrap">
+            <img id="avatar" alt="Chinstrap penguin avatar" />
+          </div>
+          <div class="titles">
+            <h1>Berthel’s Biology</h1>
+            <p>Professional student testing and review workspace. Load banks, run quizzes, review attempts, and search IB Biology text.</p>
+          </div>
+        </div>
+
+        <div class="tagRow">
+          <span class="pill"><span class="dot"></span>LIVE BUILD: <b>Unified Workspace</b> <small>v2026.02.10</small></span>
+          <span class="pill"><small>Theme:</small> Black/White Gradient</span>
+        </div>
+      </div>
+
+      <div class="nav" role="tablist" aria-label="Workspace tabs">
+        <button class="tabBtn" id="tab-home" aria-selected="true" aria-controls="panel-home" role="tab">Home</button>
+        <button class="tabBtn" id="tab-ety" aria-selected="false" aria-controls="panel-ety" role="tab">Etymology + Vocabulary Engine</button>
+        <button class="tabBtn" id="tab-mcq" aria-selected="false" aria-controls="panel-mcq" role="tab">MCQ (JSON-Driven)</button>
+        <button class="tabBtn" id="tab-search" aria-selected="false" aria-controls="panel-search" role="tab">IB Text Search</button>
+        <button class="tabBtn" id="tab-settings" aria-selected="false" aria-controls="panel-settings" role="tab">Settings</button>
       </div>
     </div>
-  </header>
-
-  <div class="etyEngine__wrap">
-    <!-- Directory -->
-    <section class="etyEngine__card" id="dirCard">
-      <div class="etyEngine__pad">
-        <div class="etyEngine__row">
-          <div>
-            <div class="etyEngine__label">Directory search</div>
-            <input id="dirSearch" class="etyEngine__input" type="text" placeholder="Type to filter terms…" />
-          </div>
-          <div class="etyEngine__pill" id="loadedSummary">Loading…</div>
-        </div>
-
-        <div class="etyEngine__dir">
-          <ol id="dirList" class="etyEngine__dirList"></ol>
-          <div class="etyEngine__def">
-            <div class="etyEngine__label">Selected</div>
-            <div id="dirSelected" class="etyEngine__selected">(click a term)</div>
-            <div id="dirMeaning" class="etyEngine__meaning"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Quiz Loader -->
-    <section class="etyEngine__card" id="loaderCard">
-      <div class="etyEngine__pad">
-        <div class="etyEngine__row">
-          <div style="min-width:220px">
-            <div class="etyEngine__label">Questions</div>
-            <input id="qCount" class="etyEngine__input" type="number" min="1" value="40" />
-            <div class="etyEngine__muted" id="maxHint" style="margin-top:6px"></div>
-          </div>
-          <div class="etyEngine__pill">Mixed · 4 choices · Keyboard 1–4, Enter</div>
-          <div style="flex:1"></div>
-          <button id="startBtn" class="etyEngine__btn">Start</button>
-        </div>
-        <div class="etyEngine__muted" id="loadError" style="margin-top:10px"></div>
-      </div>
-    </section>
-
-    <!-- Quiz -->
-    <section class="etyEngine__card" id="quizCard" style="display:none">
-      <div class="etyEngine__pad">
-        <div class="etyEngine__row" style="margin-bottom:10px">
-          <div class="etyEngine__pill">Q <span id="qi">0</span>/<span id="qt">0</span></div>
-          <div class="etyEngine__pill">Score <span id="score">0</span></div>
-          <div style="flex:1;min-width:40%;margin-left:8px">
-            <div class="etyEngine__bar"><div id="pbar"></div></div>
-          </div>
-        </div>
-
-        <div class="etyEngine__q" id="prompt"></div>
-        <div class="etyEngine__opts" id="opts" role="group" aria-label="options"></div>
-
-        <div class="etyEngine__row" style="margin-top:14px">
-          <div class="etyEngine__muted" id="feedback"></div>
-          <div style="display:flex; gap:10px">
-            <button id="nextBtn" class="etyEngine__btn" disabled>Next</button>
-            <button id="finishNowBtn" class="etyEngine__btn etyEngine__btn--ghost">Finish</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Results -->
-    <section class="etyEngine__card" id="resultCard" style="display:none">
-      <div class="etyEngine__pad">
-        <div class="etyEngine__h2">Results</div>
-        <div class="etyEngine__row" style="margin-top:10px">
-          <div class="etyEngine__pill">Score: <strong id="finalScore">0</strong></div>
-          <div class="etyEngine__pill">Questions: <strong id="finalTotal">0</strong></div>
-          <div class="etyEngine__pill">Accuracy: <strong id="finalPct">0%</strong></div>
-        </div>
-
-        <details open class="etyEngine__details" style="margin-top:14px">
-          <summary class="etyEngine__muted">Review</summary>
-          <ol id="review" class="etyEngine__review"></ol>
-        </details>
-
-        <div class="etyEngine__row" style="margin-top:14px">
-          <button class="etyEngine__btn" id="retryBtn">Try again</button>
-          <button class="etyEngine__btn etyEngine__btn--ghost" id="exitBtn">Exit</button>
-        </div>
-      </div>
-    </section>
   </div>
-</section>
 
-<style>
-  /* Scoped black/white theme */
-  .etyEngine{ color:#111; background:transparent; font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
-  .etyEngine__header{ border-bottom:1px solid #111; background:#fff; }
-  .etyEngine__wrap{ max-width:1100px; margin:0 auto; padding:18px; display:grid; gap:16px; }
-  .etyEngine__brand{ display:flex; align-items:center; gap:12px; padding:12px 18px; max-width:1100px; margin:0 auto; }
-  .etyEngine__avatar{ width:36px; height:36px; object-fit:contain; display:block; }
-  .etyEngine__h1{ font-weight:800; letter-spacing:.2px; }
-  .etyEngine__sub{ color:#555; font-size:13px; margin-top:2px; }
-  .etyEngine__h2{ font-weight:800; font-size:18px; }
+  <main class="container">
+    <!-- HOME -->
+    <section class="card" id="panel-home" role="tabpanel" aria-labelledby="tab-home">
+      <div class="pad">
+        <div class="sectionTitle">
+          <h2>Workspace overview</h2>
+          <div class="right">
+            <span class="badge">Offline-friendly</span>
+            <span class="badge">No external deps</span>
+            <span class="badge">File upload first</span>
+          </div>
+        </div>
 
-  .etyEngine__card{ border:1px solid #111; background:#fff; }
-  .etyEngine__pad{ padding:16px; }
-  .etyEngine__row{ display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-  .etyEngine__label{ font-size:12px; color:#555; margin-bottom:6px; }
-  .etyEngine__muted{ color:#555; font-size:13px; }
+        <div class="notice warn">
+          <b>Important:</b> If you open this via <span class="mono">file://</span>, browsers typically block <span class="mono">fetch()</span>.
+          Use <b>Upload</b> buttons (banks + text) for reliable loading.
+          <div class="tiny" style="margin-top:6px">If you serve it (local server), the auto-load URL fields will work as well.</div>
+        </div>
 
-  .etyEngine__pill{ border:1px solid #111; background:#fff; padding:6px 10px; font-weight:700; font-size:13px; }
-  .etyEngine__input{ width:100%; border:1px solid #111; padding:10px 12px; font-size:15px; background:#fff; color:#111; }
-  .etyEngine__btn{ border:1px solid #111; background:#111; color:#fff; padding:10px 14px; font-weight:800; cursor:pointer; }
-  .etyEngine__btn:disabled{ opacity:.45; cursor:not-allowed; }
-  .etyEngine__btn--ghost{ background:#fff; color:#111; }
+        <div class="hr"></div>
 
-  .etyEngine__bar{ height:10px; border:1px solid #111; background:#fff; }
-  .etyEngine__bar > div{ height:100%; width:0%; background:#111; }
+        <div class="grid">
+          <div class="card">
+            <div class="pad">
+              <h2>Quick start</h2>
+              <ol style="margin:8px 0 0; padding-left: 18px; color: rgba(255,255,255,.86)">
+                <li>Go to <b>Etymology + Vocabulary Engine</b> and upload your glossary/banks (TXT or JSON).</li>
+                <li>Set question count, click <b>Start</b>. Use keys <span class="kbd">1</span>–<span class="kbd">4</span>, <span class="kbd">Enter</span> for Next.</li>
+                <li>Go to <b>MCQ (JSON-Driven)</b> and paste the JSON returned by your “MCQ JSON Machine”.</li>
+                <li>(Optional) Upload the full IB Biology text file under <b>IB Text Search</b>.</li>
+              </ol>
+            </div>
+          </div>
 
-  .etyEngine__q{ font-size:20px; font-weight:800; margin:8px 0 12px; }
-  .etyEngine__opts{ display:grid; gap:10px; }
-  .etyEngine__opt{
-    display:flex; gap:10px; align-items:flex-start;
-    border:1px solid #111; background:#fff; color:#111;
-    padding:12px 12px; cursor:pointer; text-align:left;
-  }
-  .etyEngine__kbd{
-    min-width:28px;
-    border:1px solid #111; padding:2px 6px; font-weight:800; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  }
-  /* “Correct/Wrong” without color: border + glyph */
-  .etyEngine__opt.correct{ outline:2px solid #111; }
-  .etyEngine__opt.correct::after{ content:"✓"; margin-left:auto; font-weight:900; }
-  .etyEngine__opt.wrong{ border-style:dashed; }
-  .etyEngine__opt.wrong::after{ content:"✕"; margin-left:auto; font-weight:900; }
+          <div class="card">
+            <div class="pad">
+              <h2>Status</h2>
+              <div class="notice" id="statusBox">
+                <div><b>Avatar:</b> <span id="statusAvatar" class="muted">loading…</span></div>
+                <div style="margin-top:6px"><b>Term bank:</b> <span id="statusBank" class="muted">not loaded</span></div>
+                <div style="margin-top:6px"><b>MCQ JSON:</b> <span id="statusMcq" class="muted">not loaded</span></div>
+                <div style="margin-top:6px"><b>IB text:</b> <span id="statusText" class="muted">not loaded</span></div>
+              </div>
 
-  .etyEngine__details{ border:1px solid #111; padding:10px; }
-  .etyEngine__review{ margin-top:10px; display:grid; gap:6px; padding-left:18px; }
+              <div class="hr"></div>
 
-  .etyEngine__dir{
-    display:grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap:12px;
-    margin-top:12px;
-  }
-  .etyEngine__dirList{
-    margin:0; padding-left:18px; max-height:320px; overflow:auto;
-    border:1px solid #111; padding:10px 14px;
-  }
-  .etyEngine__dirList li{ margin:0; padding:4px 0; cursor:pointer; }
-  .etyEngine__dirList li:hover{ text-decoration:underline; }
-  .etyEngine__def{ border:1px solid #111; padding:10px 12px; }
-  .etyEngine__selected{ font-weight:800; margin-top:4px; }
-  .etyEngine__meaning{ margin-top:8px; }
-  @media (max-width: 900px){
-    .etyEngine__dir{ grid-template-columns: 1fr; }
-  }
-</style>
+              <div class="row">
+                <button class="btn" id="jumpEty">Open Etymology Engine</button>
+                <button class="btn" id="jumpMcq">Open MCQ</button>
+                <button class="btn ghost" id="jumpSearch">Open Search</button>
+              </div>
+              <div class="tiny" style="margin-top:8px">This page is intentionally strict about theme consistency: no external link-styled widgets, no green palettes.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<script type="module">
-  const CHOICES = 4;
-  const BANK_URL = "data/bank.txt"; // <-- set this to your real text file path
+    <!-- ETYMOLOGY + VOCAB ENGINE -->
+    <section class="card hide" id="panel-ety" role="tabpanel" aria-labelledby="tab-ety">
+      <div class="pad">
+        <div class="sectionTitle">
+          <h2>Etymology + Vocabulary Review Engine</h2>
+          <div class="right">
+            <span class="badge">TXT/JSON upload</span>
+            <span class="badge">Auto-dedupe</span>
+            <span class="badge">Keyboard</span>
+          </div>
+        </div>
 
-  const $ = (id) => document.getElementById(id);
-  const show = (el, on) => el.style.display = on ? "" : "none";
+        <div class="grid" style="margin-top:12px">
+          <!-- Loader -->
+          <div class="card">
+            <div class="pad">
+              <h2>Load banks</h2>
+              <div class="subtle">Upload your bank(s). TXT parsing supports: tab-separated, “Term — Definition”, “Term - Definition”, “Term: Definition”, or two-column lines split by big spacing.</div>
 
-  function randomInt(max){
-    if (max <= 0) return 0;
-    const c = window.crypto;
-    if (c?.getRandomValues){
-      const buf = new Uint32Array(1);
-      const range = 0xFFFFFFFF;
-      const limit = range - (range % max);
-      let x = 0;
-      do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
-      return x % max;
+              <div class="hr"></div>
+
+              <div class="row">
+                <div class="min260 grow">
+                  <label>Upload combined glossary (TXT or JSON)</label>
+                  <input id="bankCombinedFile" type="file" accept=".txt,.json" />
+                  <div class="tiny">If you “already have the text file of everything”, use this.</div>
+                </div>
+                <div class="min260 grow">
+                  <label>Upload etymology-only bank (optional)</label>
+                  <input id="bankEtyFile" type="file" accept=".txt,.json" />
+                </div>
+                <div class="min260 grow">
+                  <label>Upload vocabulary-only bank (optional)</label>
+                  <input id="bankVocabFile" type="file" accept=".txt,.json" />
+                </div>
+              </div>
+
+              <div style="height:10px"></div>
+
+              <div class="row">
+                <div class="min320 grow">
+                  <label>Auto-load URL (optional; needs server, not file://)</label>
+                  <input id="bankUrl" type="text" placeholder="e.g., ./banks/glossary.txt or https://..." />
+                  <div class="tiny">Use only if served from a web server (local or remote).</div>
+                </div>
+                <button class="btn" id="btnAutoLoadBank">Auto-load from URL</button>
+                <button class="btn ghost" id="btnClearBank">Clear banks</button>
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="notice" id="bankSummary">
+                <b>Bank status:</b> <span class="muted" id="bankSummaryText">No banks loaded yet.</span>
+              </div>
+
+              <div style="height:12px"></div>
+
+              <div class="row between">
+                <div class="min220">
+                  <label>Questions</label>
+                  <input id="etyQCount" type="number" min="1" value="40" />
+                  <div class="tiny" id="etyMaxHint">Max questions: —</div>
+                </div>
+                <span class="pill"><small>Mode:</small> Mixed ETY + VOCAB · 4 choices · Review at end</span>
+                <div class="grow"></div>
+                <button id="etyStartBtn" class="btn" disabled>Start</button>
+              </div>
+
+              <div class="tiny" style="margin-top:10px">
+                Keyboard: <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next.
+              </div>
+            </div>
+          </div>
+
+          <!-- Quiz panel -->
+          <div class="card">
+            <div class="pad">
+              <h2>Run state</h2>
+              <div class="notice" id="etyRunState">
+                <div><b>Loaded items:</b> <span class="muted" id="etyLoadedCount">0</span></div>
+                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="etySessionState">not running</span></div>
+                <div style="margin-top:6px"><b>Last parse:</b> <span class="muted" id="etyParseState">—</span></div>
+              </div>
+
+              <div class="hr"></div>
+
+              <details>
+                <summary>Parsing notes (what the TXT loader expects)</summary>
+                <div class="tiny" style="margin-top:8px">
+                  Supported examples:
+                  <ul>
+                    <li><span class="mono">Abiotic[TAB]Non-living components of an ecosystem.</span></li>
+                    <li><span class="mono">Abiotic — Non-living components of an ecosystem.</span></li>
+                    <li><span class="mono">Abiotic - Non-living components of an ecosystem.</span></li>
+                    <li><span class="mono">Abiotic: Non-living components of an ecosystem.</span></li>
+                    <li>Two-column lines (like old glossary tables) split by large spacing; parsed as term/definition pairs.</li>
+                  </ul>
+                  If a line can’t be parsed as a new term, it is appended to the previous definition as a continuation.
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <!-- Active quiz -->
+        <section class="card hide" id="etyQuizCard">
+          <div class="pad">
+            <div class="row between" style="margin-bottom: 10px">
+              <div class="row">
+                <span class="badge">Q <span id="etyQi">0</span>/<span id="etyQt">0</span></span>
+                <span class="badge">Score <span id="etyScore">0</span></span>
+                <span class="badge" id="etyKindBadge">—</span>
+              </div>
+              <div class="grow" style="min-width:240px">
+                <div class="progressBar"><div id="etyPbar"></div></div>
+              </div>
+              <div class="row">
+                <button class="btn ghost" id="etyFinishNowBtn">Finish</button>
+              </div>
+            </div>
+
+            <div class="qPrompt" id="etyPrompt"></div>
+            <div class="opts" id="etyOpts" role="group" aria-label="options"></div>
+
+            <div class="row between" style="margin-top: 12px">
+              <div class="notice" style="padding:10px 12px" id="etyFeedbackBox">
+                <b>Feedback:</b> <span class="muted" id="etyFeedback">—</span>
+              </div>
+              <div class="row">
+                <button class="btn" id="etyNextBtn" disabled>Next</button>
+                <button class="btn danger" id="etyAbortBtn">Abort</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Results -->
+        <section class="card hide" id="etyResultCard">
+          <div class="pad">
+            <h2>Results</h2>
+            <div class="row" style="margin-top:6px">
+              <span class="pill">Score: <b id="etyFinalScore">0</b></span>
+              <span class="pill">Questions: <b id="etyFinalTotal">0</b></span>
+              <span class="pill">Accuracy: <b id="etyFinalPct">0%</b></span>
+            </div>
+
+            <div class="hr"></div>
+
+            <details open>
+              <summary>Review (click to collapse)</summary>
+              <ol id="etyReview" style="margin-top:10px"></ol>
+            </details>
+
+            <div style="height:12px"></div>
+
+            <div class="row">
+              <button class="btn ok" id="etyRetryBtn">Try again</button>
+              <button class="btn ghost" id="etyExitBtn">Exit to loader</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- MCQ JSON -->
+    <section class="card hide" id="panel-mcq" role="tabpanel" aria-labelledby="tab-mcq">
+      <div class="pad">
+        <div class="sectionTitle">
+          <h2>MCQ generator (JSON-driven)</h2>
+          <div class="right">
+            <span class="badge">Paste JSON</span>
+            <span class="badge">Upload .json</span>
+            <span class="badge">Attempts log</span>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+          <!-- JSON input -->
+          <div class="card">
+            <div class="pad">
+              <h2>Load JSON from “MCQ JSON Machine”</h2>
+              <div class="subtle">Paste the JSON here (or upload). This runner normalizes common field variants.</div>
+
+              <div style="height:10px"></div>
+
+              <label>Paste MCQ JSON</label>
+              <textarea id="mcqJsonInput" placeholder='{
+  "title": "Inheritance — Mixed",
+  "questions": [
+    {"prompt":"…","choices":["…","…","…","…"],"answer_index":2,"explanation":"…","tags":["IB","HL"]}
+  ]
+}'></textarea>
+
+              <div style="height:10px"></div>
+
+              <div class="row">
+                <div class="grow min260">
+                  <label>Upload MCQ JSON file</label>
+                  <input id="mcqJsonFile" type="file" accept=".json" />
+                </div>
+                <button class="btn" id="mcqLoadBtn">Load JSON</button>
+                <button class="btn ghost" id="mcqClearBtn">Clear</button>
+              </div>
+
+              <div class="hr"></div>
+
+              <details>
+                <summary>Schema your other GPT should emit (copy/paste)</summary>
+                <div class="tiny mono" style="margin-top:10px; white-space: pre-wrap">
+{
+  "title": "Optional",
+  "description": "Optional",
+  "questions": [
+    {
+      "prompt": "Question stem (string)",
+      "choices": ["A", "B", "C", "D"],
+      "answer_index": 0,
+      "explanation": "Optional",
+      "tags": ["Optional", "Optional"]
     }
-    return Math.floor(Math.random() * max);
-  }
+  ]
+}
+                </div>
+                <div class="tiny" style="margin-top:10px">
+                  Normalization supports: <span class="mono">question</span>/<span class="mono">stem</span> for prompt,
+                  <span class="mono">options</span> for choices, and answers as <span class="mono">answer_index</span>,
+                  <span class="mono">answer</span> (0–3), or <span class="mono">answer_letter</span> (“A”–“D”).
+                </div>
+              </details>
 
-  function shuffle(arr){
-    for (let i = arr.length - 1; i > 0; i--){
-      const j = randomInt(i + 1);
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+              <div style="height:12px"></div>
+
+              <div class="notice" id="mcqSummary">
+                <b>Status:</b> <span class="muted" id="mcqSummaryText">No MCQ JSON loaded yet.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings + run -->
+          <div class="card">
+            <div class="pad">
+              <h2>Run settings</h2>
+
+              <div class="row">
+                <div class="grow min220">
+                  <label>Questions to run</label>
+                  <input id="mcqRunCount" type="number" min="1" value="20" />
+                  <div class="tiny" id="mcqRunMax">Max: —</div>
+                </div>
+
+                <div class="grow min220">
+                  <label>Shuffle questions</label>
+                  <select id="mcqShuffle">
+                    <option value="yes" selected>Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+
+                <div class="grow min220">
+                  <label>Show explanation after answer</label>
+                  <select id="mcqShowExp">
+                    <option value="yes" selected>Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="height:10px"></div>
+
+              <div class="row">
+                <button class="btn" id="mcqStartBtn" disabled>Start</button>
+                <button class="btn ghost" id="mcqFinishBtn" disabled>Finish</button>
+                <button class="btn ghost" id="mcqExportAttemptsBtn" disabled>Export attempt log (JSON)</button>
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="notice" id="mcqRunState">
+                <div><b>Loaded:</b> <span class="muted" id="mcqLoaded">0</span></div>
+                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="mcqSession">not running</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <!-- Active MCQ quiz -->
+        <section class="card hide" id="mcqQuizCard">
+          <div class="pad">
+            <div class="row between" style="margin-bottom:10px">
+              <div class="row">
+                <span class="badge">Q <span id="mcqQi">0</span>/<span id="mcqQt">0</span></span>
+                <span class="badge">Score <span id="mcqScore">0</span></span>
+              </div>
+              <div class="grow" style="min-width:240px">
+                <div class="progressBar"><div id="mcqPbar"></div></div>
+              </div>
+              <div class="row">
+                <button class="btn ghost" id="mcqNextBtn" disabled>Next</button>
+              </div>
+            </div>
+
+            <div class="qPrompt" id="mcqPrompt"></div>
+            <div class="opts" id="mcqOpts"></div>
+
+            <div class="notice" id="mcqFeedbackBox" style="margin-top:12px">
+              <b>Feedback:</b> <span class="muted" id="mcqFeedback">—</span>
+              <div class="tiny" id="mcqExplanation" style="margin-top:6px"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- MCQ Results -->
+        <section class="card hide" id="mcqResultCard">
+          <div class="pad">
+            <h2>MCQ Results</h2>
+            <div class="row" style="margin-top:6px">
+              <span class="pill">Score: <b id="mcqFinalScore">0</b></span>
+              <span class="pill">Questions: <b id="mcqFinalTotal">0</b></span>
+              <span class="pill">Accuracy: <b id="mcqFinalPct">0%</b></span>
+            </div>
+
+            <div class="hr"></div>
+
+            <details open>
+              <summary>Review</summary>
+              <ol id="mcqReview" style="margin-top:10px"></ol>
+            </details>
+
+            <div style="height:12px"></div>
+
+            <div class="row">
+              <button class="btn ok" id="mcqRetryBtn">Try again</button>
+              <button class="btn ghost" id="mcqExitBtn">Exit</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- IB TEXT SEARCH -->
+    <section class="card hide" id="panel-search" role="tabpanel" aria-labelledby="tab-search">
+      <div class="pad">
+        <div class="sectionTitle">
+          <h2>IB Biology text search</h2>
+          <div class="right">
+            <span class="badge">Upload TXT</span>
+            <span class="badge">Client-side search</span>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+          <div class="card">
+            <div class="pad">
+              <h2>Load the full text</h2>
+              <div class="subtle">Upload the IB Biology text file you mentioned. This stays local in the browser.</div>
+
+              <div style="height:10px"></div>
+              <label>Upload text (TXT)</label>
+              <input id="ibTextFile" type="file" accept=".txt" />
+
+              <div style="height:10px"></div>
+              <div class="notice" id="ibTextStatus">
+                <b>Status:</b> <span class="muted" id="ibTextStatusText">No text loaded.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="pad">
+              <h2>Search</h2>
+              <label>Query</label>
+              <input id="ibSearchInput" type="text" placeholder="e.g., chemiosmosis, Hardy-Weinberg, action potential…" />
+
+              <div style="height:10px"></div>
+              <div class="row">
+                <button class="btn" id="ibSearchBtn" disabled>Search</button>
+                <button class="btn ghost" id="ibClearBtn">Clear</button>
+              </div>
+
+              <div class="hr"></div>
+              <div class="notice" id="ibSearchMeta">
+                <b>Hits:</b> <span class="muted" id="ibHits">0</span>
+                <div class="tiny" style="margin-top:6px">Shows short context windows around matches. (Not a full IR engine; deliberately simple.)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <section class="card">
+          <div class="pad">
+            <h2>Results</h2>
+            <div id="ibResults" class="tiny muted">No results.</div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="card hide" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings">
+      <div class="pad">
+        <div class="sectionTitle">
+          <h2>Settings</h2>
+          <div class="right">
+            <span class="badge">Avatar</span>
+            <span class="badge">Persistence</span>
+          </div>
+        </div>
+
+        <div class="grid" style="margin-top:12px">
+          <div class="card">
+            <div class="pad">
+              <h2>Avatar (chinstrap penguin)</h2>
+              <div class="subtle">If a base64 data URL is percent-encoded, this page decodes + strips whitespace before loading.</div>
+
+              <div style="height:10px"></div>
+
+              <label>Avatar data URL (base64)</label>
+              <input id="avatarDataUrl" type="text" placeholder='data:image/jpeg;base64,...' />
+
+              <div style="height:10px"></div>
+
+              <div class="row">
+                <div class="grow min260">
+                  <label>Or upload an image file (JPG/PNG/WebP)</label>
+                  <input id="avatarFile" type="file" accept="image/*" />
+                </div>
+                <button class="btn" id="applyAvatarBtn">Apply avatar</button>
+                <button class="btn ghost" id="resetAvatarBtn">Reset</button>
+              </div>
+
+              <div style="height:12px"></div>
+
+              <div class="notice" id="avatarMsg">
+                <b>Avatar status:</b> <span class="muted" id="avatarMsgText">—</span>
+              </div>
+
+              <div class="hr"></div>
+
+              <details>
+                <summary>Why images sometimes show as “broken”</summary>
+                <div class="tiny" style="margin-top:10px">
+                  Common causes:
+                  <ul>
+                    <li>Percent-encoded base64 (e.g., contains <span class="mono">%0A</span>) → must decode + remove whitespace.</li>
+                    <li>Data URL contains line breaks/spaces in the base64 region.</li>
+                    <li>Wrong MIME prefix (e.g., says PNG but bytes are JPG).</li>
+                    <li>Truncated string during copy/paste.</li>
+                  </ul>
+                </div>
+              </details>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="pad">
+              <h2>Local persistence</h2>
+              <div class="subtle">This page stores avatar + loaded banks in <span class="mono">localStorage</span> when possible.</div>
+
+              <div class="hr"></div>
+
+              <div class="row">
+                <button class="btn" id="saveStateBtn">Save state</button>
+                <button class="btn ghost" id="loadStateBtn">Load saved state</button>
+                <button class="btn danger" id="wipeStateBtn">Wipe saved state</button>
+              </div>
+
+              <div style="height:12px"></div>
+              <div class="notice" id="stateMsg">
+                <b>State:</b> <span class="muted" id="stateMsgText">No action yet.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="tiny">
+        Build discipline: one palette, one UI system, no theme collisions. If something still fails to load, it is almost always input format (TXT/JSON) or a blocked URL fetch.
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    /***********************
+     * TAB NAV
+     ***********************/
+    const tabs = [
+      {btn:'tab-home', panel:'panel-home'},
+      {btn:'tab-ety', panel:'panel-ety'},
+      {btn:'tab-mcq', panel:'panel-mcq'},
+      {btn:'tab-search', panel:'panel-search'},
+      {btn:'tab-settings', panel:'panel-settings'},
+    ];
+
+    function showPanel(panelId){
+      for (const t of tabs){
+        const b = document.getElementById(t.btn);
+        const p = document.getElementById(t.panel);
+        const on = (t.panel === panelId);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        p.classList.toggle('hide', !on);
+      }
+      // update URL hash
+      const map = {
+        'panel-home':'home',
+        'panel-ety':'ety',
+        'panel-mcq':'mcq',
+        'panel-search':'search',
+        'panel-settings':'settings'
+      };
+      history.replaceState(null, '', '#' + (map[panelId] || 'home'));
     }
-    return arr;
-  }
 
-  function dedupe(pairs){
-    const seen = new Map();
-    for (const p of (pairs || [])){
-      const term = (p?.term || "").trim();
-      const meaning = (p?.meaning || "").trim();
-      if (!term || !meaning) continue;
-      // keep the longer meaning if duplicates
-      if (!seen.has(term) || (seen.get(term).length < meaning.length)) seen.set(term, meaning);
+    for (const t of tabs){
+      document.getElementById(t.btn).addEventListener('click', () => showPanel(t.panel));
     }
-    return Array.from(seen, ([term, meaning]) => ({ term, meaning }));
-  }
 
-  function inferKind(term){
-    const t = (term || "").trim();
-    // Heuristic: word-part markers
-    if (/^-|-$/.test(t)) return "ETY";
-    if (/[a-z]-$/.test(t)) return "ETY";
-    if (/^-[a-z]/i.test(t)) return "ETY";
-    if (t.includes("-")) return "ETY";        // e.g., bio-, -itis, a-, an-
-    if (t.includes("/")) return "ETY";        // e.g., hemato-/hemo-
-    return "VOCAB";
-  }
+    document.getElementById('jumpEty').addEventListener('click', ()=>showPanel('panel-ety'));
+    document.getElementById('jumpMcq').addEventListener('click', ()=>showPanel('panel-mcq'));
+    document.getElementById('jumpSearch').addEventListener('click', ()=>showPanel('panel-search'));
 
-  function parseTextBank(raw){
-    const out = [];
-    const lines = raw.replace(/\r\n/g, "\n").split("\n");
+    (function initHash(){
+      const h = (location.hash || '').replace('#','').toLowerCase();
+      const map = {home:'panel-home', ety:'panel-ety', mcq:'panel-mcq', search:'panel-search', settings:'panel-settings'};
+      showPanel(map[h] || 'panel-home');
+    })();
 
-    for (const line0 of lines){
-      const line = line0.trim();
-      if (!line || line.startsWith("#")) continue;
+    /***********************
+     * UTIL
+     ***********************/
+    const $ = (id)=>document.getElementById(id);
+    function setStatus(){
+      $('statusAvatar').textContent = window.__avatarOk ? 'loaded' : 'not loaded';
+      $('statusBank').textContent = window.__bankTotal ? `${window.__bankTotal} items` : 'not loaded';
+      $('statusMcq').textContent = window.__mcqLoaded ? `${window.__mcqLoaded} questions` : 'not loaded';
+      $('statusText').textContent = window.__ibTextLoaded ? 'loaded' : 'not loaded';
+    }
+    function safeJsonParse(s){
+      try { return JSON.parse(s); } catch { return null; }
+    }
+    function clamp(n, lo, hi){ return Math.min(Math.max(n, lo), hi); }
 
-      // TSV: [KIND] \t term \t meaning  OR  term \t meaning
-      if (line.includes("\t")){
-        const parts = line.split("\t").map(s => s.trim()).filter(Boolean);
-        if (parts.length >= 2){
-          let kind = null, term = "", meaning = "";
-          const tag = (parts[0] || "").toUpperCase();
-          if (tag === "ETY" || tag === "VOCAB"){
-            kind = tag;
-            term = parts[1] || "";
-            meaning = parts.slice(2).join(" ").trim();
-          } else {
-            term = parts[0] || "";
-            meaning = parts.slice(1).join(" ").trim();
+    function normalizeDataUrl(raw){
+      if (!raw) return '';
+      let t = String(raw).trim();
+
+      // decode percent-encoded (your string contains %0A etc)
+      if (/%[0-9A-Fa-f]{2}/.test(t)) {
+        try { t = decodeURIComponent(t); } catch {}
+      }
+
+      // strip whitespace/newlines from the data payload portion
+      const m = t.match(/^(data:[^,]+,)([\s\S]*)$/);
+      if (m){
+        const head = m[1];
+        const payload = m[2].replace(/\s+/g,'');
+        return head + payload;
+      }
+      return t.replace(/\s+/g,'');
+    }
+
+    async function readFileAsText(file){
+      return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result || ''));
+        r.onerror = () => reject(new Error('File read failed'));
+        r.readAsText(file);
+      });
+    }
+    async function readFileAsDataUrl(file){
+      return new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result || ''));
+        r.onerror = () => reject(new Error('File read failed'));
+        r.readAsDataURL(file);
+      });
+    }
+
+    /***********************
+     * AVATAR
+     ***********************/
+    const DEFAULT_AVATAR_DATA_URL =
+`data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE
+BQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME
+DgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU
+FBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA
+AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB
+BhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/
+xAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A
+9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o
+lq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI
+3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5
+p+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU
+qVKlSpUqVKlSpUqVKlf/2Q==`;
+
+    async function applyAvatar(src, persist=true){
+      const img = $('avatar');
+      const normalized = normalizeDataUrl(src);
+      return new Promise((resolve) => {
+        let done = false;
+        const finish = (ok, msg) => {
+          if (done) return;
+          done = true;
+          window.__avatarOk = ok;
+          $('avatarMsgText').textContent = msg;
+          $('statusAvatar').textContent = ok ? 'loaded' : 'not loaded';
+          if (persist && ok) {
+            try { localStorage.setItem('bb.avatar', normalized); } catch {}
           }
-          if (term && meaning) out.push({ kind: kind || inferKind(term), term, meaning });
+          setStatus();
+          resolve(ok);
+        };
+
+        img.onload = () => finish(true, 'Loaded.');
+        img.onerror = () => finish(false, 'Failed to load. Check MIME prefix, truncation, or encoding.');
+        img.src = normalized;
+      });
+    }
+
+    $('applyAvatarBtn').addEventListener('click', async () => {
+      const raw = $('avatarDataUrl').value.trim();
+      if (!raw) {
+        $('avatarMsgText').textContent = 'No data URL provided.';
+        return;
+      }
+      await applyAvatar(raw, true);
+    });
+
+    $('avatarFile').addEventListener('change', async (e) => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      const durl = await readFileAsDataUrl(f);
+      $('avatarDataUrl').value = durl;
+      await applyAvatar(durl, true);
+    });
+
+    $('resetAvatarBtn').addEventListener('click', async () => {
+      $('avatarDataUrl').value = '';
+      try { localStorage.removeItem('bb.avatar'); } catch {}
+      await applyAvatar(DEFAULT_AVATAR_DATA_URL, false);
+    });
+
+    /***********************
+     * BANK PARSING (TXT/JSON)
+     ***********************/
+    function classifyKind(term){
+      const t = (term || '').trim();
+      // Heuristic for etymology forms: prefixes/suffixes/combiners
+      const looksEty =
+        /^-?[a-z]{1,12}-?$/.test(t) && (t.startsWith('-') || t.endsWith('-')) ||
+        /,\s*-\w+/.test(t) ||               // a-, an-
+        /-\w+$/.test(t) || /^\w+-/.test(t); // suffix/prefix style
+      return looksEty ? 'ETY' : 'VOCAB';
+    }
+
+    function dedupe(entries){
+      const seen = new Map();
+      for (const e of entries){
+        const term = (e.term || '').trim();
+        const meaning = (e.meaning || '').trim();
+        if (!term || !meaning) continue;
+        const key = term.toLowerCase();
+        if (!seen.has(key) || seen.get(key).meaning.length < meaning.length){
+          seen.set(key, {term, meaning, kind: e.kind || classifyKind(term)});
+        }
+      }
+      return Array.from(seen.values());
+    }
+
+    function parsePairsFromLine(line){
+      const out = [];
+      const s = (line || '').trim();
+      if (!s) return out;
+
+      // Ignore obvious headers
+      const lower = s.toLowerCase();
+      if (lower === 'glossary' || lower.startsWith('words in blue')) return out;
+
+      // Tabs first
+      if (s.includes('\t')){
+        const parts = s.split('\t').map(x => x.trim()).filter(Boolean);
+        if (parts.length >= 2){
+          out.push({term: parts[0], meaning: parts.slice(1).join(' '), kind: classifyKind(parts[0])});
+          return out;
+        }
+      }
+
+      // Two-column lines: split by 2+ spaces
+      const cols = s.split(/\s{2,}/).map(x => x.trim()).filter(Boolean);
+      if (cols.length >= 2){
+        // Pair columns (0,1), (2,3), ...
+        for (let i=0; i<cols.length-1; i+=2){
+          const term = cols[i];
+          const meaning = cols[i+1] ?? '';
+          if (term && meaning) out.push({term, meaning, kind: classifyKind(term)});
+        }
+        return out;
+      }
+
+      // Em dash / en dash / hyphen with spacing
+      const mDash = s.match(/^(.+?)\s*[—–-]\s+(.+)$/);
+      if (mDash){
+        out.push({term: mDash[1].trim(), meaning: mDash[2].trim(), kind: classifyKind(mDash[1])});
+        return out;
+      }
+
+      // Colon
+      const mColon = s.match(/^(.+?)\s*:\s+(.+)$/);
+      if (mColon){
+        out.push({term: mColon[1].trim(), meaning: mColon[2].trim(), kind: classifyKind(mColon[1])});
+        return out;
+      }
+
+      return out;
+    }
+
+    function parseGlossaryText(text){
+      const lines = String(text || '').split(/\r?\n/);
+      const entries = [];
+      let last = null;
+
+      for (const rawLine of lines){
+        const line = rawLine.replace(/\u00A0/g,' ').trim();
+        if (!line) continue;
+
+        const pairs = parsePairsFromLine(line);
+
+        if (pairs.length){
+          for (const p of pairs){
+            entries.push(p);
+            last = p;
+          }
           continue;
         }
-      }
 
-      // Em dash / colon delimiter with surrounding spaces (avoids splitting inside “a-, an-”)
-      const m = line.match(/^(?:\[(ETY|VOCAB)\]\s*)?(.+?)\s+(?:—|–|:)\s+(.+)$/);
-      if (m){
-        const kind = (m[1] || "").toUpperCase() || inferKind(m[2]);
-        out.push({ kind, term: m[2].trim(), meaning: m[3].trim() });
-        continue;
-      }
-
-      // Hyphen delimiter only if surrounded by spaces: "Term - Meaning"
-      const m2 = line.match(/^(?:\[(ETY|VOCAB)\]\s*)?(.+?)\s+-\s+(.+)$/);
-      if (m2){
-        const kind = (m2[1] || "").toUpperCase() || inferKind(m2[2]);
-        out.push({ kind, term: m2[2].trim(), meaning: m2[3].trim() });
-        continue;
-      }
-    }
-
-    return dedupe(out);
-  }
-
-  async function loadBank(){
-    const res = await fetch(BANK_URL, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Bank fetch failed (${res.status}) for ${BANK_URL}`);
-    const raw = await res.text();
-    return parseTextBank(raw);
-  }
-
-  // State
-  let combined = [];
-  let poolEty = [];
-  let poolVocab = [];
-
-  let plan = [];
-  let qIndex = 0, score = 0, answered = false, history = [];
-
-  function buildDirectory(items){
-    const list = $("dirList");
-    const selected = $("dirSelected");
-    const meaning = $("dirMeaning");
-    list.innerHTML = "";
-
-    const render = (arr) => {
-      list.innerHTML = "";
-      for (const it of arr){
-        const li = document.createElement("li");
-        li.textContent = it.term;
-        li.title = it.kind;
-        li.addEventListener("click", () => {
-          selected.textContent = `${it.term} (${it.kind})`;
-          meaning.textContent = it.meaning;
-        });
-        list.appendChild(li);
-      }
-    };
-
-    render(items);
-
-    $("dirSearch").addEventListener("input", (e) => {
-      const q = (e.target.value || "").trim().toLowerCase();
-      if (!q) return render(items);
-      render(items.filter(x => x.term.toLowerCase().includes(q) || x.meaning.toLowerCase().includes(q)));
-    });
-  }
-
-  function setPrompt(kind, term){
-    const p = $("prompt");
-    const prefix = (kind === "ETY")
-      ? "What is the meaning of "
-      : "Which definition best matches ";
-    p.textContent = prefix + term + "?";
-  }
-
-  function buildChoices(correct, pool){
-    const picks = [correct];
-    let tries = 0;
-    while (picks.length < CHOICES && tries < 2000){
-      const c = pool[randomInt(pool.length)];
-      if (c && !picks.includes(c)) picks.push(c);
-      tries++;
-    }
-    while (picks.length < CHOICES) picks.push("—");
-    return shuffle(picks);
-  }
-
-  function renderChoices(choices, correct, record){
-    const box = $("opts");
-    box.innerHTML = "";
-    choices.forEach((choice, i) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "etyEngine__opt";
-      btn.dataset.correct = (choice === correct) ? "1" : "0";
-
-      const k = document.createElement("span");
-      k.className = "etyEngine__kbd";
-      k.textContent = String(i + 1);
-
-      const t = document.createElement("span");
-      t.textContent = choice;
-
-      btn.appendChild(k);
-      btn.appendChild(t);
-
-      btn.addEventListener("click", () => grade(btn, correct, { ...record, picked: choice, ok: choice === correct }));
-      box.appendChild(btn);
-    });
-  }
-
-  function resetSession(total){
-    qIndex = 0; score = 0; answered = false; history = [];
-    $("qi").textContent = "0";
-    $("qt").textContent = String(total);
-    $("score").textContent = "0";
-    $("pbar").style.width = "0%";
-    $("feedback").textContent = "";
-    $("nextBtn").disabled = true;
-  }
-
-  function nextQuestion(){
-    if (qIndex >= plan.length) return finish();
-    answered = false;
-    $("nextBtn").disabled = true;
-    $("feedback").textContent = "";
-
-    const item = combined[plan[qIndex]];
-    if (!item){ qIndex++; return nextQuestion(); }
-
-    $("qi").textContent = String(qIndex + 1);
-    setPrompt(item.kind, item.term);
-
-    const correct = item.meaning;
-    const record = { kind: item.kind, term: item.term, correct, picked: "", ok: false };
-
-    const pool = (item.kind === "ETY") ? poolEty : poolVocab;
-    const choices = buildChoices(correct, pool.length ? pool : combined.map(x => x.meaning));
-    renderChoices(choices, correct, record);
-  }
-
-  function grade(btn, correct, record){
-    if (answered) return;
-    answered = true;
-
-    const all = Array.from(document.querySelectorAll("#etyEngine .etyEngine__opt"));
-    all.forEach(el => el.disabled = true);
-
-    if (btn.dataset.correct === "1"){
-      btn.classList.add("correct");
-      score++;
-      $("feedback").textContent = "Correct";
-    } else {
-      btn.classList.add("wrong");
-      $("feedback").textContent = "Correct: " + correct;
-      const target = all.find(el => el.dataset.correct === "1");
-      if (target) target.classList.add("correct");
-    }
-
-    $("score").textContent = String(score);
-    history.push(record);
-    qIndex++;
-    $("pbar").style.width = Math.round((qIndex / plan.length) * 100) + "%";
-    $("nextBtn").disabled = false;
-  }
-
-  function finish(){
-    show($("quizCard"), false);
-    show($("resultCard"), true);
-
-    $("finalScore").textContent = String(score);
-    $("finalTotal").textContent = String(plan.length);
-    $("finalPct").textContent = plan.length ? (Math.round((score / plan.length) * 100) + "%") : "0%";
-
-    const ol = $("review");
-    ol.innerHTML = "";
-    for (const h of history){
-      const li = document.createElement("li");
-      li.textContent = `${h.kind} · ${h.term} → ${h.correct}` + (h.ok ? "" : ` · you chose: ${h.picked}`);
-      ol.appendChild(li);
-    }
-
-    $("retryBtn").onclick = () => {
-      show($("resultCard"), false);
-      show($("loaderCard"), true);
-    };
-  }
-
-  function start(){
-    if (!combined.length){
-      $("loadError").textContent = "Banks failed to load.";
-      return;
-    }
-    const requested = Math.min(Math.max(parseInt($("qCount").value || 40, 10), 1), combined.length);
-    const indices = Array.from({ length: combined.length }, (_, i) => i);
-    shuffle(indices);
-    plan = indices.slice(0, requested);
-
-    resetSession(plan.length);
-
-    show($("loaderCard"), false);
-    show($("resultCard"), false);
-    show($("quizCard"), true);
-
-    nextQuestion();
-  }
-
-  // Init
-  (async function init(){
-    try{
-      const bank = await loadBank();
-      combined = bank.map(x => ({ kind: x.kind || inferKind(x.term), term: x.term, meaning: x.meaning }));
-
-      poolEty = combined.filter(x => x.kind === "ETY").map(x => x.meaning);
-      poolVocab = combined.filter(x => x.kind === "VOCAB").map(x => x.meaning);
-
-      $("loadedSummary").textContent = `Loaded ${combined.length} items (${poolEty.length} ETY, ${poolVocab.length} VOCAB)`;
-      $("maxHint").textContent = "Max questions this run: " + combined.length;
-      $("qCount").max = String(combined.length);
-
-      buildDirectory(combined);
-
-      $("startBtn").addEventListener("click", start);
-      $("nextBtn").addEventListener("click", nextQuestion);
-      $("finishNowBtn").addEventListener("click", finish);
-      $("exitBtn").addEventListener("click", () => {
-        show($("resultCard"), false);
-        show($("quizCard"), false);
-        show($("loaderCard"), true);
-        // optional: scroll back to top of the component
-        document.getElementById("etyEngine")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-
-      window.addEventListener("keydown", (e) => {
-        if ($("quizCard").style.display === "none") return;
-        if (/^[1-4]$/.test(e.key)){
-          const i = Number(e.key) - 1;
-          document.querySelectorAll("#etyEngine .etyEngine__opt")[i]?.click();
-        } else if (e.key === "Enter"){
-          if (!$("nextBtn").disabled) $("nextBtn").click();
+        // Continuation line: append to last meaning if exists
+        if (last && line.length > 2){
+          last.meaning = (last.meaning + ' ' + line).replace(/\s+/g,' ').trim();
         }
+      }
+
+      return dedupe(entries);
+    }
+
+    function parseBankAny(textOrJson){
+      // Try JSON first
+      if (typeof textOrJson === 'string'){
+        const maybeJson = safeJsonParse(textOrJson);
+        if (maybeJson) return normalizeBankJson(maybeJson);
+        // else parse as glossary TXT
+        return parseGlossaryText(textOrJson);
+      }
+      return normalizeBankJson(textOrJson);
+    }
+
+    function normalizeBankJson(obj){
+      // Accept: [{term, meaning}], or {items:[...]} or {bank:[...]}
+      let arr = null;
+
+      if (Array.isArray(obj)) arr = obj;
+      else if (obj && Array.isArray(obj.items)) arr = obj.items;
+      else if (obj && Array.isArray(obj.bank)) arr = obj.bank;
+      else if (obj && Array.isArray(obj.entries)) arr = obj.entries;
+
+      if (!arr) return [];
+
+      const entries = [];
+      for (const it of arr){
+        if (!it) continue;
+        const term = String(it.term ?? it.word ?? it.key ?? '').trim();
+        const meaning = String(it.meaning ?? it.definition ?? it.value ?? '').trim();
+        if (!term || !meaning) continue;
+        const kind = String(it.kind ?? it.type ?? '').toUpperCase().trim();
+        entries.push({term, meaning, kind: (kind === 'ETY' || kind === 'VOCAB') ? kind : classifyKind(term)});
+      }
+      return dedupe(entries);
+    }
+
+    /***********************
+     * ETY QUIZ ENGINE
+     ***********************/
+    const CHOICES = 4;
+
+    function randomInt(max){
+      if (max <= 0) return 0;
+      const c = window.crypto || window.msCrypto;
+      if (c && c.getRandomValues){
+        const buf = new Uint32Array(1);
+        const range = 0xFFFFFFFF;
+        const limit = range - (range % max);
+        let x = 0;
+        do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+        return x % max;
+      }
+      return Math.floor(Math.random() * max);
+    }
+
+    function shuffle(arr){
+      for (let i = arr.length - 1; i > 0; i--){
+        const j = randomInt(i + 1);
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    let bankAll = [];     // {kind, term, meaning}
+    let bankEty = [];
+    let bankVocab = [];
+
+    let etyPlan = [];
+    let etyIndex = 0;
+    let etyScore = 0;
+    let etyAnswered = false;
+    let etyHistory = [];
+
+    function updateBankUI(){
+      bankEty = bankAll.filter(x=>x.kind === 'ETY');
+      bankVocab = bankAll.filter(x=>x.kind === 'VOCAB');
+
+      const total = bankAll.length;
+      window.__bankTotal = total;
+      $('etyLoadedCount').textContent = String(total);
+
+      $('etyMaxHint').textContent = 'Max questions: ' + (total ? total : '—');
+      $('etyQCount').max = String(Math.max(total, 1));
+      $('etyStartBtn').disabled = total === 0;
+      $('bankSummaryText').textContent =
+        total
+          ? `Loaded ${bankEty.length} etymologies + ${bankVocab.length} vocabulary terms = ${total} total.`
+          : 'No banks loaded yet.';
+      $('bankSummary').classList.toggle('ok', total > 0);
+
+      $('statusBank').textContent = total ? `${total} items` : 'not loaded';
+      setStatus();
+    }
+
+    function setEtyPrompt(kind, term){
+      const p = $('etyPrompt');
+      p.innerHTML = '';
+      const lead = document.createTextNode(kind === 'ETY' ? 'What is the meaning of ' : 'Which definition best matches ');
+      const badge = document.createElement('span');
+      badge.className = 'termBadge';
+      badge.textContent = term;
+      p.appendChild(lead);
+      p.appendChild(badge);
+      p.appendChild(document.createTextNode('?'));
+
+      $('etyKindBadge').textContent = kind;
+    }
+
+    function buildChoices(correct, pool){
+      const picks = [correct];
+      let tries = 0;
+      while (picks.length < CHOICES && tries < 2500){
+        const c = pool[randomInt(pool.length)];
+        if (c && !picks.includes(c)) picks.push(c);
+        tries++;
+      }
+      while (picks.length < CHOICES) picks.push('—');
+      return shuffle(picks);
+    }
+
+    function renderEtyChoices(choices, correct, record){
+      const box = $('etyOpts');
+      box.innerHTML = '';
+      choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt';
+        btn.dataset.correct = (choice === correct) ? '1' : '0';
+
+        const k = document.createElement('span');
+        k.className = 'kbd k';
+        k.textContent = String(i + 1);
+
+        const t = document.createElement('span');
+        t.className = 't';
+        t.textContent = choice;
+
+        btn.appendChild(k); btn.appendChild(t);
+        btn.addEventListener('click', () => gradeEty(btn, correct, {...record, picked: choice, ok: choice === correct}));
+        box.appendChild(btn);
+      });
+    }
+
+    function resetEtySession(total){
+      etyPlan = [];
+      etyIndex = 0;
+      etyScore = 0;
+      etyAnswered = false;
+      etyHistory = [];
+
+      $('etyQi').textContent = '0';
+      $('etyQt').textContent = String(total);
+      $('etyScore').textContent = '0';
+      $('etyPbar').style.width = '0%';
+      $('etyFeedback').textContent = '—';
+      $('etyNextBtn').disabled = true;
+      $('etySessionState').textContent = 'not running';
+    }
+
+    function nextEtyQuestion(){
+      if (etyIndex >= etyPlan.length) return finishEty();
+      etyAnswered = false;
+      $('etyNextBtn').disabled = true;
+      $('etyFeedback').textContent = '—';
+
+      const item = bankAll[etyPlan[etyIndex]];
+      if (!item) { etyIndex++; return nextEtyQuestion(); }
+
+      $('etyQi').textContent = String(etyIndex + 1);
+      setEtyPrompt(item.kind, item.term);
+
+      const correct = item.meaning;
+      const pool = (item.kind === 'ETY' ? bankEty : bankVocab).map(x => x.meaning);
+
+      // If one side is empty (e.g., everything is VOCAB), fall back to all meanings to avoid dead pools.
+      const effectivePool = pool.length >= 4 ? pool : bankAll.map(x => x.meaning);
+
+      const record = {kind: item.kind, term: item.term, correct, picked:'', ok:false};
+      const choices = buildChoices(correct, effectivePool);
+      renderEtyChoices(choices, correct, record);
+    }
+
+    function gradeEty(btn, correct, record){
+      if (etyAnswered) return;
+      etyAnswered = true;
+
+      const all = Array.from(document.querySelectorAll('#etyOpts .opt'));
+      all.forEach(el => el.disabled = true);
+
+      if (btn.dataset.correct === '1'){
+        btn.classList.add('correct');
+        etyScore++;
+        $('etyFeedback').textContent = 'Correct.';
+      } else {
+        btn.classList.add('wrong');
+        $('etyFeedback').textContent = 'Correct: ' + correct;
+        const target = all.find(el => el.dataset.correct === '1');
+        if (target) target.classList.add('correct');
+      }
+
+      $('etyScore').textContent = String(etyScore);
+      etyHistory.push(record);
+
+      etyIndex++;
+      $('etyPbar').style.width = Math.round((etyIndex / etyPlan.length) * 100) + '%';
+      $('etyNextBtn').disabled = false;
+    }
+
+    function finishEty(){
+      $('etyQuizCard').classList.add('hide');
+      $('etyResultCard').classList.remove('hide');
+
+      $('etyFinalScore').textContent = String(etyScore);
+      $('etyFinalTotal').textContent = String(etyPlan.length);
+      $('etyFinalPct').textContent = etyPlan.length ? (Math.round((etyScore / etyPlan.length) * 100) + '%') : '0%';
+
+      const ol = $('etyReview');
+      ol.innerHTML = '';
+      etyHistory.forEach(h => {
+        const li = document.createElement('li');
+        li.style.color = h.ok ? 'var(--ok)' : 'var(--bad)';
+        li.textContent = `${h.kind} · ${h.term} → ${h.correct}` + (h.ok ? '' : ` · you chose: ${h.picked}`);
+        ol.appendChild(li);
       });
 
-    } catch (err){
-      $("loadedSummary").textContent = "Load failed";
-      $("loadError").textContent =
-        String(err?.message || err) +
-        " — If you opened the page by double-clicking (file://), run a local server instead.";
-      console.error(err);
+      $('etySessionState').textContent = 'completed';
     }
-  })();
-</script>
+
+    function startEty(){
+      if (!bankAll.length){
+        $('etyParseState').textContent = 'No banks loaded.';
+        return;
+      }
+
+      const requested = clamp(parseInt($('etyQCount').value || 40, 10), 1, bankAll.length);
+      const indices = Array.from({length: bankAll.length}, (_, i) => i);
+      shuffle(indices);
+      etyPlan = indices.slice(0, requested);
+
+      resetEtySession(etyPlan.length);
+      $('etySessionState').textContent = `running (${etyPlan.length} Q)`;
+
+      $('etyResultCard').classList.add('hide');
+      $('etyQuizCard').classList.remove('hide');
+
+      nextEtyQuestion();
+    }
+
+    $('etyStartBtn').addEventListener('click', startEty);
+    $('etyNextBtn').addEventListener('click', nextEtyQuestion);
+    $('etyFinishNowBtn').addEventListener('click', finishEty);
+    $('etyAbortBtn').addEventListener('click', () => {
+      resetEtySession(0);
+      $('etyQuizCard').classList.add('hide');
+      $('etyResultCard').classList.add('hide');
+      $('etySessionState').textContent = 'aborted';
+    });
+
+    $('etyRetryBtn').addEventListener('click', () => {
+      $('etyResultCard').classList.add('hide');
+      startEty();
+    });
+    $('etyExitBtn').addEventListener('click', () => {
+      $('etyResultCard').classList.add('hide');
+      $('etyQuizCard').classList.add('hide');
+    });
+
+    // keyboard controls
+    window.addEventListener('keydown', (e) => {
+      if (!$('panel-ety') || $('panel-ety').classList.contains('hide')) return;
+
+      const quizVisible = !$('etyQuizCard').classList.contains('hide');
+      if (!quizVisible) return;
+
+      if (/^[1-4]$/.test(e.key)){
+        const i = Number(e.key) - 1;
+        document.querySelectorAll('#etyOpts .opt')[i]?.click();
+      } else if (e.key === 'Enter'){
+        if (!$('etyNextBtn').disabled) $('etyNextBtn').click();
+      }
+    });
+
+    /***********************
+     * BANK LOADING (upload + URL)
+     ***********************/
+    async function loadBankFromFileInput(inputEl){
+      const f = inputEl.files?.[0];
+      if (!f) return null;
+      const txt = await readFileAsText(f);
+      return {name: f.name, content: txt};
+    }
+
+    async function loadBankFromUrl(url){
+      const res = await fetch(url, {cache:'no-store'});
+      if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+      const txt = await res.text();
+      return {name: url, content: txt};
+    }
+
+    async function ingestBanks({combined, etyOnly, vocabOnly}){
+      let entries = [];
+
+      if (combined){
+        entries = entries.concat(parseBankAny(combined.content));
+      }
+      if (etyOnly){
+        const e = parseBankAny(etyOnly.content).map(x => ({...x, kind:'ETY'}));
+        entries = entries.concat(e);
+      }
+      if (vocabOnly){
+        const v = parseBankAny(vocabOnly.content).map(x => ({...x, kind:'VOCAB'}));
+        entries = entries.concat(v);
+      }
+
+      bankAll = dedupe(entries);
+
+      updateBankUI();
+
+      // persist banks
+      try { localStorage.setItem('bb.bankAll', JSON.stringify(bankAll)); } catch {}
+
+      $('etyParseState').textContent =
+        `${bankAll.length} items loaded` +
+        (combined ? ` · combined: ${combined.name}` : '') +
+        (etyOnly ? ` · ety: ${etyOnly.name}` : '') +
+        (vocabOnly ? ` · vocab: ${vocabOnly.name}` : '');
+    }
+
+    async function tryLoadBankFromUploads(){
+      const combined = await loadBankFromFileInput($('bankCombinedFile'));
+      const etyOnly = await loadBankFromFileInput($('bankEtyFile'));
+      const vocabOnly = await loadBankFromFileInput($('bankVocabFile'));
+
+      if (!combined && !etyOnly && !vocabOnly){
+        $('etyParseState').textContent = 'No file selected.';
+        return;
+      }
+      await ingestBanks({combined, etyOnly, vocabOnly});
+    }
+
+    $('bankCombinedFile').addEventListener('change', tryLoadBankFromUploads);
+    $('bankEtyFile').addEventListener('change', tryLoadBankFromUploads);
+    $('bankVocabFile').addEventListener('change', tryLoadBankFromUploads);
+
+    $('btnAutoLoadBank').addEventListener('click', async () => {
+      const url = $('bankUrl').value.trim();
+      if (!url){
+        $('etyParseState').textContent = 'No URL provided.';
+        return;
+      }
+      try{
+        const combined = await loadBankFromUrl(url);
+        await ingestBanks({combined, etyOnly:null, vocabOnly:null});
+      } catch (err){
+        $('etyParseState').textContent = String(err?.message || err || 'Load failed');
+      }
+    });
+
+    $('btnClearBank').addEventListener('click', () => {
+      bankAll = []; bankEty = []; bankVocab = [];
+      try { localStorage.removeItem('bb.bankAll'); } catch {}
+      updateBankUI();
+      $('etyParseState').textContent = 'Cleared.';
+      $('etyQuizCard').classList.add('hide');
+      $('etyResultCard').classList.add('hide');
+    });
+
+    /***********************
+     * MCQ JSON RUNNER
+     ***********************/
+    let mcqBank = null;       // normalized {title, description, questions:[{prompt, choices[], answer_index, explanation, tags[]}]}
+    let mcqPlan = [];
+    let mcqIndex = 0;
+    let mcqScore = 0;
+    let mcqAnswered = false;
+    let mcqAttempts = [];     // record attempts for export
+
+    function normalizeMcqJson(raw){
+      const obj = raw;
+      if (!obj) return null;
+
+      const title = String(obj.title ?? obj.name ?? 'MCQ Set').trim();
+      const description = String(obj.description ?? obj.meta ?? '').trim();
+
+      const qArr = Array.isArray(obj.questions) ? obj.questions
+                : Array.isArray(obj.items) ? obj.items
+                : Array.isArray(obj.mcqs) ? obj.mcqs
+                : null;
+      if (!qArr) return null;
+
+      const questions = [];
+      for (const q of qArr){
+        if (!q) continue;
+
+        const prompt = String(q.prompt ?? q.question ?? q.stem ?? q.text ?? '').trim();
+        const choices = q.choices ?? q.options ?? q.answers ?? null;
+
+        if (!prompt || !Array.isArray(choices) || choices.length < 2) continue;
+        const ch = choices.map(x => String(x).trim());
+
+        // answer normalization
+        let ai = null;
+        if (Number.isInteger(q.answer_index)) ai = q.answer_index;
+        else if (Number.isInteger(q.answer)) ai = q.answer;
+        else if (typeof q.answer_letter === 'string'){
+          const L = q.answer_letter.trim().toUpperCase();
+          ai = 'ABCD'.indexOf(L);
+        } else if (typeof q.correct === 'string'){
+          const L = q.correct.trim().toUpperCase();
+          ai = 'ABCD'.indexOf(L);
+        }
+
+        // fallback: if answer provided as exact string match
+        if (ai == null && typeof q.answer_text === 'string'){
+          const idx = ch.findIndex(x => x === q.answer_text);
+          if (idx >= 0) ai = idx;
+        }
+
+        if (ai == null || ai < 0 || ai >= ch.length) continue;
+
+        const explanation = String(q.explanation ?? q.rationale ?? '').trim();
+        const tags = Array.isArray(q.tags) ? q.tags.map(x => String(x)) : [];
+
+        questions.push({prompt, choices: ch, answer_index: ai, explanation, tags});
+      }
+
+      if (!questions.length) return null;
+      return {title, description, questions};
+    }
+
+    function updateMcqUI(){
+      const n = mcqBank?.questions?.length || 0;
+      window.__mcqLoaded = n;
+      $('mcqLoaded').textContent = String(n);
+      $('mcqRunMax').textContent = 'Max: ' + (n ? n : '—');
+      $('mcqRunCount').max = String(Math.max(n, 1));
+      $('mcqStartBtn').disabled = n === 0;
+      $('mcqSummaryText').textContent = n ? `Loaded “${mcqBank.title}” with ${n} questions.` : 'No MCQ JSON loaded yet.';
+      $('statusMcq').textContent = n ? `${n} questions` : 'not loaded';
+      setStatus();
+    }
+
+    async function loadMcqFromTextareaOrFile(){
+      // file overrides textarea if present
+      const f = $('mcqJsonFile').files?.[0];
+      let raw = null;
+
+      if (f){
+        const txt = await readFileAsText(f);
+        raw = safeJsonParse(txt);
+        if (!raw) throw new Error('Invalid JSON in file.');
+      } else {
+        const txt = $('mcqJsonInput').value.trim();
+        if (!txt) throw new Error('No JSON provided.');
+        raw = safeJsonParse(txt);
+        if (!raw) throw new Error('Invalid JSON in textarea.');
+      }
+
+      const normalized = normalizeMcqJson(raw);
+      if (!normalized) throw new Error('JSON parsed, but did not match expected MCQ schema (or normalization failed).');
+
+      mcqBank = normalized;
+      updateMcqUI();
+      $('mcqSession').textContent = 'not running';
+      $('mcqSummary').classList.add('ok');
+    }
+
+    $('mcqLoadBtn').addEventListener('click', async () => {
+      try{
+        await loadMcqFromTextareaOrFile();
+      } catch (err){
+        $('mcqSummaryText').textContent = String(err?.message || err || 'Load failed');
+        $('mcqSummary').classList.remove('ok');
+      }
+    });
+
+    $('mcqClearBtn').addEventListener('click', () => {
+      mcqBank = null;
+      $('mcqJsonInput').value = '';
+      $('mcqJsonFile').value = '';
+      updateMcqUI();
+      $('mcqSummaryText').textContent = 'No MCQ JSON loaded yet.';
+      $('mcqQuizCard').classList.add('hide');
+      $('mcqResultCard').classList.add('hide');
+      $('mcqExportAttemptsBtn').disabled = true;
+      mcqAttempts = [];
+    });
+
+    function resetMcqSession(total){
+      mcqPlan = [];
+      mcqIndex = 0;
+      mcqScore = 0;
+      mcqAnswered = false;
+      mcqAttempts = [];
+
+      $('mcqQi').textContent = '0';
+      $('mcqQt').textContent = String(total);
+      $('mcqScore').textContent = '0';
+      $('mcqPbar').style.width = '0%';
+      $('mcqFeedback').textContent = '—';
+      $('mcqExplanation').textContent = '';
+      $('mcqNextBtn').disabled = true;
+      $('mcqFinishBtn').disabled = true;
+      $('mcqExportAttemptsBtn').disabled = true;
+    }
+
+    function renderMcqQuestion(){
+      if (!mcqBank) return;
+      if (mcqIndex >= mcqPlan.length) return finishMcq();
+
+      mcqAnswered = false;
+      $('mcqNextBtn').disabled = true;
+      $('mcqFeedback').textContent = '—';
+      $('mcqExplanation').textContent = '';
+
+      const q = mcqBank.questions[mcqPlan[mcqIndex]];
+      $('mcqQi').textContent = String(mcqIndex + 1);
+      $('mcqQt').textContent = String(mcqPlan.length);
+      $('mcqPrompt').textContent = q.prompt;
+
+      const opts = $('mcqOpts');
+      opts.innerHTML = '';
+
+      // choices (optionally shuffle choices? currently no—keeps answer index stable)
+      q.choices.forEach((choice, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'opt';
+        btn.dataset.correct = (i === q.answer_index) ? '1' : '0';
+
+        const k = document.createElement('span');
+        k.className = 'kbd k';
+        k.textContent = 'ABCD'[i] || String(i+1);
+
+        const t = document.createElement('span');
+        t.className = 't';
+        t.textContent = choice;
+
+        btn.appendChild(k); btn.appendChild(t);
+        btn.addEventListener('click', () => gradeMcq(btn, q, i));
+        opts.appendChild(btn);
+      });
+    }
+
+    function gradeMcq(btn, q, pickedIndex){
+      if (mcqAnswered) return;
+      mcqAnswered = true;
+
+      const all = Array.from(document.querySelectorAll('#mcqOpts .opt'));
+      all.forEach(el => el.disabled = true);
+
+      const ok = (pickedIndex === q.answer_index);
+      if (ok){
+        btn.classList.add('correct');
+        mcqScore++;
+        $('mcqFeedback').textContent = 'Correct.';
+      } else {
+        btn.classList.add('wrong');
+        $('mcqFeedback').textContent = 'Correct: ' + (q.choices[q.answer_index] ?? '(missing)');
+        const target = all.find(el => el.dataset.correct === '1');
+        if (target) target.classList.add('correct');
+      }
+
+      $('mcqScore').textContent = String(mcqScore);
+      mcqAttempts.push({
+        ts: new Date().toISOString(),
+        q_index: mcqPlan[mcqIndex],
+        prompt: q.prompt,
+        picked_index: pickedIndex,
+        answer_index: q.answer_index,
+        ok,
+        explanation: q.explanation || '',
+        tags: q.tags || []
+      });
+
+      if ($('mcqShowExp').value === 'yes' && q.explanation){
+        $('mcqExplanation').textContent = q.explanation;
+      }
+
+      mcqIndex++;
+      $('mcqPbar').style.width = Math.round((mcqIndex / mcqPlan.length) * 100) + '%';
+      $('mcqNextBtn').disabled = false;
+      $('mcqFinishBtn').disabled = false;
+      $('mcqExportAttemptsBtn').disabled = false;
+    }
+
+    function startMcq(){
+      if (!mcqBank) return;
+      const total = mcqBank.questions.length;
+      const requested = clamp(parseInt($('mcqRunCount').value || 20, 10), 1, total);
+
+      const indices = Array.from({length: total}, (_, i) => i);
+      if ($('mcqShuffle').value === 'yes') shuffle(indices);
+
+      mcqPlan = indices.slice(0, requested);
+      resetMcqSession(mcqPlan.length);
+
+      $('mcqQuizCard').classList.remove('hide');
+      $('mcqResultCard').classList.add('hide');
+
+      $('mcqSession').textContent = `running (${mcqPlan.length} Q)`;
+      renderMcqQuestion();
+    }
+
+    function nextMcq(){
+      renderMcqQuestion();
+    }
+
+    function finishMcq(){
+      $('mcqQuizCard').classList.add('hide');
+      $('mcqResultCard').classList.remove('hide');
+
+      $('mcqFinalScore').textContent = String(mcqScore);
+      $('mcqFinalTotal').textContent = String(mcqPlan.length);
+      $('mcqFinalPct').textContent = mcqPlan.length ? (Math.round((mcqScore / mcqPlan.length) * 100) + '%') : '0%';
+
+      const ol = $('mcqReview');
+      ol.innerHTML = '';
+      mcqAttempts.forEach(a => {
+        const li = document.createElement('li');
+        li.style.color = a.ok ? 'var(--ok)' : 'var(--bad)';
+        const picked = a.picked_index != null ? ('ABCD'[a.picked_index] || a.picked_index) : '?';
+        const ans = a.answer_index != null ? ('ABCD'[a.answer_index] || a.answer_index) : '?';
+        li.textContent = `${a.ok ? '✓' : '✗'} [${picked} vs ${ans}] ${a.prompt}` + (a.ok ? '' : ` · correct: ${a.answer_index}`);
+        if (a.explanation){
+          const div = document.createElement('div');
+          div.className = 'tiny';
+          div.style.marginTop = '6px';
+          div.style.color = 'rgba(255,255,255,.70)';
+          div.textContent = 'Explanation: ' + a.explanation;
+          li.appendChild(div);
+        }
+        ol.appendChild(li);
+      });
+
+      $('mcqSession').textContent = 'completed';
+    }
+
+    $('mcqStartBtn').addEventListener('click', startMcq);
+    $('mcqNextBtn').addEventListener('click', nextMcq);
+    $('mcqFinishBtn').addEventListener('click', finishMcq);
+
+    $('mcqRetryBtn').addEventListener('click', () => {
+      $('mcqResultCard').classList.add('hide');
+      startMcq();
+    });
+    $('mcqExitBtn').addEventListener('click', () => {
+      $('mcqResultCard').classList.add('hide');
+      $('mcqQuizCard').classList.add('hide');
+      $('mcqSession').textContent = 'not running';
+    });
+
+    $('mcqExportAttemptsBtn').addEventListener('click', () => {
+      const payload = {
+        exported_at: new Date().toISOString(),
+        title: mcqBank?.title || 'MCQ',
+        run_count: mcqPlan.length,
+        score: mcqScore,
+        attempts: mcqAttempts
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mcq_attempt_log.json';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Keyboard for MCQ: A-D or 1-4, Enter for next
+    window.addEventListener('keydown', (e) => {
+      if ($('panel-mcq').classList.contains('hide')) return;
+      if ($('mcqQuizCard').classList.contains('hide')) return;
+
+      const key = e.key.toUpperCase();
+      const map = {A:0,B:1,C:2,D:3,'1':0,'2':1,'3':2,'4':3};
+      if (key in map){
+        document.querySelectorAll('#mcqOpts .opt')[map[key]]?.click();
+      } else if (e.key === 'Enter'){
+        if (!$('mcqNextBtn').disabled) $('mcqNextBtn').click();
+      }
+    });
+
+    /***********************
+     * IB TEXT SEARCH
+     ***********************/
+    let ibText = '';
+    $('ibTextFile').addEventListener('change', async (e) => {
+      const f = e.target.files?.[0];
+      if (!f) return;
+      ibText = await readFileAsText(f);
+      window.__ibTextLoaded = ibText.length > 0;
+
+      $('ibTextStatusText').textContent = ibText.length ? `Loaded ${f.name} (${ibText.length.toLocaleString()} chars).` : 'Failed to load.';
+      $('ibSearchBtn').disabled = !ibText.length;
+      $('statusText').textContent = ibText.length ? 'loaded' : 'not loaded';
+      setStatus();
+    });
+
+    function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function ibSearch(q){
+      const query = (q || '').trim();
+      if (!query || !ibText) return [];
+      const re = new RegExp(escapeRegExp(query), 'ig');
+
+      const results = [];
+      const ctx = 120;
+
+      let m;
+      let count = 0;
+      while ((m = re.exec(ibText)) && count < 50){
+        const start = Math.max(0, m.index - ctx);
+        const end = Math.min(ibText.length, m.index + query.length + ctx);
+        const snippet = ibText.slice(start, end);
+
+        results.push({
+          index: m.index,
+          snippet
+        });
+        count++;
+      }
+      return results;
+    }
+
+    $('ibSearchBtn').addEventListener('click', () => {
+      const q = $('ibSearchInput').value;
+      const hits = ibSearch(q);
+      $('ibHits').textContent = String(hits.length);
+
+      const box = $('ibResults');
+      box.innerHTML = hits.length ? '' : '<span class="muted">No results.</span>';
+
+      hits.forEach((h, i) => {
+        const div = document.createElement('div');
+        div.className = 'resultItem';
+        div.innerHTML = `
+          <div class="hit">Hit ${i+1} · char ${h.index}</div>
+          <div class="ctx"></div>
+        `;
+        div.querySelector('.ctx').textContent = h.snippet;
+        box.appendChild(div);
+      });
+    });
+
+    $('ibClearBtn').addEventListener('click', () => {
+      $('ibSearchInput').value = '';
+      $('ibHits').textContent = '0';
+      $('ibResults').textContent = 'No results.';
+    });
+
+    /***********************
+     * SAVE/LOAD STATE
+     ***********************/
+    $('saveStateBtn').addEventListener('click', () => {
+      try{
+        // bankAll + avatar already persisted as we go; this is just a sanity "force"
+        if (bankAll?.length) localStorage.setItem('bb.bankAll', JSON.stringify(bankAll));
+        $('stateMsgText').textContent = 'Saved (localStorage).';
+      } catch (e){
+        $('stateMsgText').textContent = 'Save failed (storage blocked).';
+      }
+    });
+
+    $('loadStateBtn').addEventListener('click', async () => {
+      try{
+        const a = localStorage.getItem('bb.avatar');
+        if (a) await applyAvatar(a, false);
+
+        const b = localStorage.getItem('bb.bankAll');
+        if (b){
+          const arr = safeJsonParse(b);
+          if (Array.isArray(arr)){
+            bankAll = dedupe(arr.map(x => ({
+              term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
+            })));
+            updateBankUI();
+          }
+        }
+
+        $('stateMsgText').textContent = 'Loaded saved state.';
+      } catch {
+        $('stateMsgText').textContent = 'Load failed.';
+      }
+    });
+
+    $('wipeStateBtn').addEventListener('click', () => {
+      try{
+        localStorage.removeItem('bb.avatar');
+        localStorage.removeItem('bb.bankAll');
+        $('stateMsgText').textContent = 'Wiped.';
+      } catch {
+        $('stateMsgText').textContent = 'Wipe failed.';
+      }
+    });
+
+    /***********************
+     * INIT (boot)
+     ***********************/
+    (async function boot(){
+      window.__avatarOk = false;
+      window.__bankTotal = 0;
+      window.__mcqLoaded = 0;
+      window.__ibTextLoaded = false;
+
+      // avatar: try saved avatar first, else default.
+      const savedAvatar = (() => { try { return localStorage.getItem('bb.avatar'); } catch { return null; } })();
+      const rawAvatar = savedAvatar || DEFAULT_AVATAR_DATA_URL;
+
+      // also prefill settings field with the user-provided problematic format possibility:
+      $('avatarDataUrl').value = savedAvatar || '';
+
+      await applyAvatar(rawAvatar, false);
+      $('statusAvatar').textContent = window.__avatarOk ? 'loaded' : 'not loaded';
+      $('avatarMsgText').textContent = window.__avatarOk ? 'Loaded.' : 'Failed to load (check data URL).';
+
+      // banks: try restore
+      try{
+        const b = localStorage.getItem('bb.bankAll');
+        if (b){
+          const arr = safeJsonParse(b);
+          if (Array.isArray(arr) && arr.length){
+            bankAll = dedupe(arr.map(x => ({
+              term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
+            })));
+            updateBankUI();
+            $('etyParseState').textContent = `Restored ${bankAll.length} items from saved state.`;
+          } else {
+            updateBankUI();
+          }
+        } else {
+          updateBankUI();
+        }
+      } catch {
+        updateBankUI();
+      }
+
+      // set initial status
+      setStatus();
+    })();
+  </script>
+</body>
+</html>
