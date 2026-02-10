@@ -1,825 +1,711 @@
-diff --git a/index.html b/index.html
-index 6a8e433094b038c3b4ec1e22fce04e8d48702104..e32aa1d470c23bad1ae2ab148db8f5378d361a62 100644
---- a/index.html
-+++ b/index.html
-@@ -1,292 +1,598 @@
- <!doctype html>
- <html lang="en">
- <head>
-   <meta charset="utf-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1" />
--  <title>Berthel's MCQ Reviewer</title>
--
--  <!-- Latin Modern Roman -->
--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/400.css">
--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.18/700.css">
--
--  <!-- KaTeX -->
--  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
--  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
--  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
--
-+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-+  <meta http-equiv="Pragma" content="no-cache" />
-+  <meta http-equiv="Expires" content="0" />
-+  <title>Berthel's Biology · Unified Workspace v2026.02.09</title>
-   <style>
-     :root {
--      --hunter: #355E3B;
--      --hunter-dark: #2E5233;
--      --bg: #f5f7f6;
--      --card: #ffffff;
--      --ink: #111418;
--      --muted: #5b6670;
--      --border: #d9dddf;
--      --ok: #0b6b2a;
--      --bad: #b00020;
-+      --bg: #f2f2f2;
-+      --surface: #ffffff;
-+      --ink: #111111;
-+      --muted: #4c4c4c;
-+      --line: #d4d4d4;
-+      --line-strong: #9e9e9e;
-+      --accent: #1e1e1e;
-+      --ok: #245f2f;
-+      --bad: #9a1f1f;
-     }
--
-     * { box-sizing: border-box; }
--
-     body {
-       margin: 0;
--      font-family: "Latin Modern Roman", "Times New Roman", Times, serif;
-       background: var(--bg);
-       color: var(--ink);
--      font-size: 18px;
--      line-height: 1.55;
-+      font-family: "Segoe UI", Arial, sans-serif;
-+      line-height: 1.5;
-     }
--
-+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-     header {
--      background: linear-gradient(0deg, var(--hunter-dark), var(--hunter));
-       color: #fff;
--      padding: 28px 20px;
-+      background: linear-gradient(180deg, #171717, #303030);
-+      border-bottom: 1px solid #5e5e5e;
-     }
--
--    header h1 {
--      margin: 0;
--      font-size: 28px;
--      font-weight: 700;
-+    .hero {
-+      padding: 26px 0;
-+      display: grid;
-+      grid-template-columns: 1fr auto;
-+      align-items: center;
-+      gap: 18px;
-     }
--
--    header p {
--      margin: 6px 0 0;
--      font-size: 15px;
--      opacity: 0.9;
-+    h1 { margin: 0; font-size: 34px; letter-spacing: .3px; }
-+    .subtitle { margin: 8px 0 0; color: #dddddd; max-width: 820px; }
-+    .build-chip {
-+      margin-top: 10px;
-+      display: inline-block;
-+      padding: 5px 10px;
-+      border: 1px solid #8d8d8d;
-+      border-radius: 999px;
-+      background: #262626;
-+      color: #f0f0f0;
-+      font-size: 12px;
-+      letter-spacing: .3px;
-     }
- 
--    main {
--      max-width: 960px;
--      margin: 0 auto;
--      padding: 28px 20px 40px;
-+    .penguin {
-+      width: 95px;
-+      height: 95px;
-+      border-radius: 12px;
-+      border: 1px solid #777;
-+      background: #fff;
-+      display: grid;
-+      place-items: center;
-+      padding: 6px;
-     }
--
--    .card {
--      background: var(--card);
--      border: 1px solid var(--border);
--      border-radius: 18px;
--      padding: 22px;
--      box-shadow: 0 10px 28px rgba(0,0,0,0.06);
--      margin-bottom: 24px;
-+    nav {
-+      position: sticky;
-+      top: 0;
-+      z-index: 10;
-+      background: #fff;
-+      border-bottom: 1px solid var(--line);
-     }
--
--    .card h2 {
--      margin: 0 0 14px;
--      font-size: 20px;
-+    .tabs { display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 0; }
-+    .tab-btn {
-+      border: 1px solid var(--line-strong);
-+      border-radius: 999px;
-+      background: #fff;
-+      color: #222;
-+      padding: 8px 14px;
-+      font-weight: 700;
-+      cursor: pointer;
-     }
-+    .tab-btn.active { background: #1d1d1d; color: #fff; border-color: #1d1d1d; }
- 
--    label {
--      display: block;
--      font-size: 14px;
--      color: var(--muted);
--      margin-bottom: 6px;
--    }
-+    main { padding: 22px 0 40px; }
-+    .panel { display: none; }
-+    .panel.active { display: block; }
- 
--    textarea {
--      width: 100%;
--      min-height: 220px;
--      padding: 14px;
-+    .card {
-+      border: 1px solid var(--line);
-       border-radius: 14px;
--      border: 1px solid var(--border);
--      font-family: inherit;
--      font-size: 16px;
--      resize: vertical;
--    }
--
--    textarea:focus {
--      outline: none;
--      border-color: var(--hunter);
--      box-shadow: 0 0 0 3px rgba(53,94,59,0.15);
-+      background: var(--surface);
-+      padding: 18px;
-+      margin-bottom: 16px;
-+      box-shadow: 0 5px 14px rgba(0,0,0,.05);
-     }
-+    .card h2, .card h3 { margin-top: 0; }
-+    .grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-+    .subgrid { display: grid; gap: 14px; grid-template-columns: 2fr 1fr; }
-+    @media (max-width: 920px) { .subgrid { grid-template-columns: 1fr; } }
- 
--    .actions {
--      display: flex;
--      gap: 12px;
--      margin-top: 14px;
--      flex-wrap: wrap;
-+    label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 14px; color: var(--muted); }
-+    input[type="number"], input[type="search"], textarea {
-+      width: 100%;
-+      border: 1px solid #b9b9b9;
-+      border-radius: 10px;
-+      padding: 10px 12px;
-+      font-size: 15px;
-+      font-family: inherit;
-+      color: var(--ink);
-+      background: #fff;
-     }
-+    textarea { min-height: 170px; resize: vertical; }
- 
-+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
-     button {
--      border: none;
--      border-radius: 14px;
--      padding: 10px 18px;
--      font-family: inherit;
--      font-size: 15px;
-+      border: 1px solid #222;
-+      border-radius: 10px;
-+      padding: 9px 14px;
-+      font: inherit;
-       font-weight: 700;
-+      background: #fff;
-+      color: #1f1f1f;
-       cursor: pointer;
-     }
-+    button.primary { background: #1f1f1f; color: #fff; }
- 
--    .primary {
--      background: var(--hunter);
--      color: #fff;
--    }
--
--    .primary:hover { background: var(--hunter-dark); }
--
--    .secondary {
--      background: transparent;
--      border: 1px solid var(--hunter);
--      color: var(--hunter);
--    }
--
--    .secondary:hover { background: rgba(53,94,59,0.08); }
--
--    .quiz { display: none; }
--
-+    .status { color: var(--muted); font-size: 14px; }
-     .question {
--      border: 1px solid var(--border);
--      border-radius: 16px;
--      padding: 16px;
--      margin-bottom: 16px;
-+      border: 1px solid var(--line);
-+      border-radius: 10px;
-+      background: #fafafa;
-+      padding: 12px;
-+      margin-bottom: 12px;
-     }
--
--    .qnum {
--      font-weight: 700;
--      color: var(--hunter);
--      margin-bottom: 6px;
--    }
--
--    .stem { margin-bottom: 10px; }
--
-+    .question-head { font-weight: 700; margin-bottom: 5px; }
-     .option {
-       display: grid;
-       grid-template-columns: 28px 1fr;
-       gap: 10px;
--      padding: 8px 10px;
--      border-radius: 12px;
--      border: 1px solid var(--border);
-       margin: 8px 0;
-+      border: 1px solid #cecece;
-+      border-radius: 8px;
-+      background: #fff;
-+      padding: 8px;
-     }
-+    .score { font-size: 22px; font-weight: 800; margin: 0 0 10px; }
-+    .correct { color: var(--ok); font-weight: 700; }
-+    .incorrect { color: var(--bad); font-weight: 700; }
-+    .hidden { display: none; }
- 
--    .option:hover { background: rgba(53,94,59,0.05); }
--
--    .results { display: none; margin-top: 24px; }
--
--    .score {
--      font-weight: 700;
--      font-size: 20px;
--      margin-bottom: 16px;
-+    iframe {
-+      width: 100%;
-+      min-height: 680px;
-+      border: 1px solid var(--line);
-+      border-radius: 10px;
-+      background: #fff;
-     }
- 
--    .explanation {
--      border: 1px solid var(--border);
--      border-radius: 14px;
--      padding: 14px;
--      margin-bottom: 14px;
--      background: rgba(0,0,0,0.02);
-+    .search-results {
-+      max-height: 520px;
-+      overflow: auto;
-+      border: 1px solid var(--line);
-+      border-radius: 10px;
-+      background: #fff;
-     }
-+    .result-item {
-+      padding: 10px 12px;
-+      border-bottom: 1px solid #ececec;
-+      font-size: 14px;
-+      white-space: pre-wrap;
-+    }
-+    .result-item:last-child { border-bottom: none; }
- 
--    .correct { color: var(--ok); font-weight: 700; }
--    .incorrect { color: var(--bad); font-weight: 700; }
--
--    footer {
--      text-align: center;
--      font-size: 13px;
--      color: var(--muted);
--      padding: 20px;
-+    table {
-+      width: 100%;
-+      border-collapse: collapse;
-+      font-size: 14px;
-+      background: #fff;
-+      border: 1px solid var(--line);
-+      border-radius: 10px;
-+      overflow: hidden;
-     }
-+    th, td { border-bottom: 1px solid #ececec; padding: 8px 10px; text-align: left; }
-+    th { background: #f7f7f7; }
-+
-+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 16px; }
-   </style>
- </head>
- <body>
--
- <header>
--  <h1>Berthel's MCQ Reviewer</h1>
--  <p>Paste MCQ JSON generated by the MCQ Machine. Answer and review.</p>
-+  <div class="wrap hero">
-+    <div>
-+      <h1>Berthel's Biology</h1>
-+      <p class="subtitle">Professional student testing and review workspace. Answer MCQ-style questions, log attempts, review explanations, practice etymology/vocabulary, and search the full IB Biology text file.</p>
-+      <div class="build-chip">LIVE BUILD: Unified Workspace v2026.02.09</div>
-+    </div>
-+    <div class="penguin" aria-label="Silhouetted chinstrap penguin avatar">
-+      <svg viewBox="0 0 100 100" width="80" height="80" role="img" aria-label="Chinstrap penguin silhouette">
-+        <path d="M70 14c-12-6-27-3-37 7-7 7-11 16-12 27 0 16 8 31 23 40 8 5 18 7 28 5 5-1 10-3 14-6-6 0-13-3-18-8-7-7-11-16-11-26 0-9 3-18 9-25 1-1 2-2 4-3z" fill="#171717"/>
-+        <path d="M67 22c-8 6-13 16-13 26 0 9 4 17 10 23 4 4 9 6 14 7-3 3-7 5-11 6-9 2-18 0-25-4-12-8-19-20-19-34 1-9 4-17 10-23 8-8 20-11 31-8 1 2 2 5 3 7z" fill="#fff"/>
-+        <path d="M63 46l25 8-23 8z" fill="#404040"/>
-+        <circle cx="62" cy="37" r="2.8" fill="#111"/>
-+        <path d="M35 64c8 5 20 7 31 4" stroke="#222" stroke-width="2" fill="none"/>
-+      </svg>
-+    </div>
-+  </div>
- </header>
- 
--<main>
--  <section class="card">
--    <h2>Paste MCQ JSON</h2>
--    <label for="jsonInput">MCQ JSON</label>
--    <textarea id="jsonInput" placeholder="Paste the JSON generated by the MCQ Machine here."></textarea>
--    <div class="actions">
--      <button class="primary" id="loadBtn">Load Quiz</button>
--      <button class="secondary" id="resetBtn">Clear</button>
-+<nav>
-+  <div class="wrap tabs">
-+    <button class="tab-btn active" data-panel="dashboard">Dashboard</button>
-+    <button class="tab-btn" data-panel="mcq">MCQ Test + Review</button>
-+    <button class="tab-btn" data-panel="etymo">Etymology & Vocab</button>
-+    <button class="tab-btn" data-panel="glossary">IB Text Search</button>
-+  </div>
-+</nav>
-+
-+<main class="wrap">
-+  <section class="panel active" id="dashboard">
-+    <div class="card">
-+      <h2>All Modules Ready</h2>
-+      <div class="grid">
-+        <div><strong>MCQ Generator:</strong><br/>Create randomized MCQs from your own term-definition list.</div>
-+        <div><strong>MCQ Test + Log:</strong><br/>Students choose answers, receive grading + explanation, and guesses are logged.</div>
-+        <div><strong>Etymology + Vocab:</strong><br/>Full embedded engine available on-page.</div>
-+        <div><strong>IB Text Search:</strong><br/>Search every line from <code>ib_bio_clean_index.txt</code> (full file included).</div>
-+      </div>
-     </div>
-   </section>
- 
--  <section class="card quiz" id="quiz"></section>
-+  <section class="panel" id="mcq">
-+    <div class="subgrid">
-+      <div class="card">
-+        <h2>MCQ Generator</h2>
-+        <p class="status">Input format: one pair per line as <code>term | definition</code>.</p>
-+        <label for="pairInput">Source terms</label>
-+        <textarea id="pairInput" placeholder="mitochondrion | site of aerobic respiration and ATP production\nribosome | site of protein synthesis"></textarea>
-+        <div class="grid">
-+          <div>
-+            <label for="qCount">Number of questions</label>
-+            <input id="qCount" type="number" min="1" value="8" />
-+          </div>
-+        </div>
-+        <div class="actions">
-+          <button class="primary" id="generateBtn">Generate MCQ JSON</button>
-+          <button id="useSamplePairsBtn">Load sample pairs</button>
-+        </div>
-+        <label for="generatedJson" style="margin-top:10px">Generated JSON</label>
-+        <textarea id="generatedJson" placeholder="Generated quiz JSON will appear here"></textarea>
-+      </div>
-+
-+      <div class="card">
-+        <h2>MCQ Reviewer</h2>
-+        <label for="jsonInput">Paste MCQ JSON</label>
-+        <textarea id="jsonInput" placeholder='{"questions":[{"id":1,"stem":"...","options":{"A":"...","B":"...","C":"...","D":"..."},"correct":"A","rationale_correct":"...","rationale_wrong":{"A":"...","B":"...","C":"...","D":"..."}}]}'></textarea>
-+        <div class="actions">
-+          <button class="primary" id="loadBtn">Load Quiz</button>
-+          <button id="sampleBtn">Load sample quiz</button>
-+          <button id="resetBtn">Clear</button>
-+        </div>
-+        <p class="status">Professional workflow: students answer all questions, submit once, and receive a full graded review.</p>
-+      </div>
-+    </div>
-+
-+    <div class="card hidden" id="quizCard">
-+      <h3>Student Test</h3>
-+      <div id="quiz"></div>
-+      <div class="actions"><button class="primary" id="submitBtn">Submit Answers</button></div>
-+    </div>
- 
--  <section class="results" id="results"></section>
-+    <div class="card hidden" id="resultsCard">
-+      <h3>Graded Review and Explanations</h3>
-+      <div id="results"></div>
-+    </div>
-+
-+    <div class="card" id="attemptLogCard">
-+      <h3>Attempt Log (Guesses Recorded)</h3>
-+      <p class="status">Each submitted question guess is logged with chosen answer, correct answer, correctness, and timestamp.</p>
-+      <div class="actions">
-+        <button id="clearLogBtn">Clear Log</button>
-+      </div>
-+      <div id="attemptLogWrap"></div>
-+    </div>
-+  </section>
-+
-+  <section class="panel" id="etymo">
-+    <div class="card">
-+      <h2>Etymology + Vocabulary Review</h2>
-+      <p class="status">Embedded below. If your browser blocks iframe interactions, use the fallback button.</p>
-+      <div class="actions" style="margin-bottom:10px">
-+        <a href="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html" target="_blank" rel="noopener"><button>Open in New Tab</button></a>
-+      </div>
-+      <iframe src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html" title="Etymology and Vocabulary Engine"></iframe>
-+    </div>
-+  </section>
-+
-+  <section class="panel" id="glossary">
-+    <div class="card">
-+      <h2>IB Biology Full Text Search</h2>
-+      <label for="glossarySearch">Search all lines from ib_bio_clean_index.txt</label>
-+      <input id="glossarySearch" type="search" placeholder="Try: photosynthesis, ATP, evolution" />
-+      <p id="glossaryStatus" class="status">Loading full text file...</p>
-+      <div class="search-results" id="glossaryResults"></div>
-+    </div>
-+  </section>
- </main>
- 
--<footer>
--  Static classroom assessment interface · Generation handled by Berthel’s MCQ Machine
--</footer>
-+<footer>Berthel's Biology · Built for smooth classroom testing and revision.</footer>
- 
- <script>
--const quizEl = document.getElementById('quiz');
--const resultsEl = document.getElementById('results');
--const inputEl = document.getElementById('jsonInput');
--
--function renderMath(el) {
--  if (window.renderMathInElement) {
--    renderMathInElement(el, { delimiters: [
--      {left: '$$', right: '$$', display: true},
--      {left: '$', right: '$', display: false}
--    ]});
-+(() => {
-+  const state = {
-+    currentQuiz: null,
-+    glossaryLines: [],
-+    attemptLog: JSON.parse(localStorage.getItem('berthelAttemptLog') || '[]')
-+  };
-+
-+  const tabs = [...document.querySelectorAll('.tab-btn')];
-+  const panels = [...document.querySelectorAll('.panel')];
-+  function switchPanel(panelId) {
-+    tabs.forEach(btn => btn.classList.toggle('active', btn.dataset.panel === panelId));
-+    panels.forEach(panel => panel.classList.toggle('active', panel.id === panelId));
-   }
--}
--
--function loadQuiz() {
--  quizEl.innerHTML = '';
--  resultsEl.style.display = 'none';
--  let data;
--  try {
--    data = JSON.parse(inputEl.value);
--  } catch {
--    alert('Invalid JSON'); return;
-+  tabs.forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
-+
-+  const samplePairs = [
-+    'mitochondrion | site of aerobic respiration and ATP production',
-+    'ribosome | site of protein synthesis',
-+    'chlorophyll | green pigment that absorbs light for photosynthesis',
-+    'osmosis | movement of water across a selectively permeable membrane',
-+    'enzyme | biological catalyst that lowers activation energy',
-+    'nucleus | organelle containing DNA in eukaryotic cells',
-+    'allele | one version of a gene',
-+    'active transport | movement against concentration gradient using ATP'
-+  ].join('\n');
-+
-+  const sampleQuiz = {
-+    questions: [
-+      {
-+        id: 1,
-+        stem: 'Which organelle is primarily responsible for ATP production in eukaryotic cells?',
-+        options: { A: 'Nucleus', B: 'Mitochondrion', C: 'Ribosome', D: 'Golgi apparatus' },
-+        correct: 'B',
-+        rationale_correct: 'Mitochondria carry out aerobic respiration and produce most ATP in eukaryotic cells.',
-+        rationale_wrong: {
-+          A: 'The nucleus stores genetic information; it is not the main ATP source.',
-+          B: 'Correct.',
-+          C: 'Ribosomes build proteins, not ATP as a primary role.',
-+          D: 'Golgi modifies and packages proteins/lipids.'
-+        }
-+      }
-+    ]
-+  };
-+
-+  const pairInput = document.getElementById('pairInput');
-+  const qCount = document.getElementById('qCount');
-+  const generateBtn = document.getElementById('generateBtn');
-+  const useSamplePairsBtn = document.getElementById('useSamplePairsBtn');
-+  const generatedJson = document.getElementById('generatedJson');
-+  const jsonInput = document.getElementById('jsonInput');
-+
-+  useSamplePairsBtn.onclick = () => { pairInput.value = samplePairs; };
-+  document.getElementById('sampleBtn').onclick = () => { jsonInput.value = JSON.stringify(sampleQuiz, null, 2); };
-+
-+  function parsePairs(text) {
-+    return text.split('\n')
-+      .map(line => line.trim())
-+      .filter(Boolean)
-+      .map(line => {
-+        const parts = line.split('|').map(x => x.trim());
-+        if (parts.length < 2 || !parts[0] || !parts[1]) return null;
-+        return { term: parts[0], definition: parts.slice(1).join(' | ') };
-+      })
-+      .filter(Boolean);
-   }
--  data.questions.forEach(q => {
--    const qDiv = document.createElement('div');
--    qDiv.className = 'question';
--    qDiv.innerHTML = `<div class="qnum">Question ${q.id}</div><div class="stem">${q.stem}</div>`;
--    ['A','B','C','D'].forEach(l => {
--      qDiv.innerHTML += `<label class="option"><input type="radio" name="q${q.id}" value="${l}"><div><b>${l}.</b> ${q.options[l]}</div></label>`;
-+
-+  function shuffle(arr) {
-+    const copy = [...arr];
-+    for (let i = copy.length - 1; i > 0; i--) {
-+      const j = Math.floor(Math.random() * (i + 1));
-+      [copy[i], copy[j]] = [copy[j], copy[i]];
-+    }
-+    return copy;
-+  }
-+
-+  generateBtn.onclick = () => {
-+    const pairs = parsePairs(pairInput.value);
-+    if (pairs.length < 4) {
-+      alert('Please provide at least 4 valid term | definition pairs.');
-+      return;
-+    }
-+
-+    const count = Math.max(1, Math.min(Number(qCount.value) || 1, pairs.length));
-+    const selected = shuffle(pairs).slice(0, count);
-+
-+    const questions = selected.map((item, index) => {
-+      const wrongDefs = shuffle(pairs.filter(p => p.term !== item.term).map(p => p.definition)).slice(0, 3);
-+      const optionsArray = shuffle([item.definition, ...wrongDefs]).slice(0, 4);
-+      const letters = ['A', 'B', 'C', 'D'];
-+      const options = {};
-+      let correct = 'A';
-+
-+      letters.forEach((letter, i) => {
-+        options[letter] = optionsArray[i] || '(missing option)';
-+        if (options[letter] === item.definition) correct = letter;
-+      });
-+
-+      return {
-+        id: index + 1,
-+        stem: `What is the best definition of "${item.term}"?`,
-+        options,
-+        correct,
-+        rationale_correct: `The correct definition for "${item.term}" is: ${item.definition}.`,
-+        rationale_wrong: {
-+          A: options.A === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
-+          B: options.B === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
-+          C: options.C === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
-+          D: options.D === item.definition ? 'Correct option.' : 'This choice does not match the target term.'
-+        }
-+      };
-     });
--    quizEl.appendChild(qDiv);
--    renderMath(qDiv);
--  });
--  quizEl.style.display = 'block';
--}
--
--function gradeQuiz() {
--  resultsEl.innerHTML = '';
--  const data = JSON.parse(inputEl.value);
--  let score = 0;
--  data.questions.forEach(q => {
--    const chosen = document.querySelector(`input[name="q${q.id}"]:checked`);
--    const correct = q.correct;
--    const isCorrect = chosen && chosen.value === correct;
--    if (isCorrect) score++;
--    const div = document.createElement('div');
--    div.className = 'explanation';
--    div.innerHTML = `<div class=\"${isCorrect ? 'correct' : 'incorrect'}\">Question ${q.id}: ${isCorrect ? 'Correct' : 'Incorrect'}<\/div>
--      <div><b>Best answer:<\/b> ${correct}. ${q.options[correct]}<\/div>
--      <div style=\"margin-top:6px;\"><b>Why this is correct:<\/b> ${q.rationale_correct}<\/div>
--      <div style=\"margin-top:10px;\"><b>Why the other options are not correct:<\/b><\/div>
--      <ul style=\"margin-top:6px; padding-left:18px;\">
--        <li><b>A.<\/b> ${q.rationale_wrong.A}<\/li>
--        <li><b>B.<\/b> ${q.rationale_wrong.B}<\/li>
--        <li><b>C.<\/b> ${q.rationale_wrong.C}<\/li>
--        <li><b>D.<\/b> ${q.rationale_wrong.D}<\/li>
--      <\/ul>`;
--    resultsEl.appendChild(div);
--    renderMath(div);
-+
-+    const payload = { questions };
-+    generatedJson.value = JSON.stringify(payload, null, 2);
-+    jsonInput.value = generatedJson.value;
-+    switchPanel('mcq');
-+    alert(`Generated ${questions.length} question(s) and loaded into reviewer.`);
-+  };
-+
-+  const quizEl = document.getElementById('quiz');
-+  const resultsEl = document.getElementById('results');
-+  const quizCard = document.getElementById('quizCard');
-+  const resultsCard = document.getElementById('resultsCard');
-+
-+  function parseQuizData() {
-+    try {
-+      const data = JSON.parse(jsonInput.value);
-+      if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
-+        alert('JSON must include a non-empty questions array.');
-+        return null;
-+      }
-+      return data;
-+    } catch (err) {
-+      alert(`Invalid JSON: ${err.message}`);
-+      return null;
-+    }
-+  }
-+
-+  document.getElementById('loadBtn').onclick = () => {
-+    const data = parseQuizData();
-+    if (!data) return;
-+
-+    state.currentQuiz = data;
-+    quizEl.innerHTML = '';
-+    resultsEl.innerHTML = '';
-+    resultsCard.classList.add('hidden');
-+
-+    data.questions.forEach((q, i) => {
-+      const qId = q.id ?? (i + 1);
-+      const question = document.createElement('div');
-+      question.className = 'question';
-+      question.innerHTML = `<div class="question-head">Question ${qId}</div><div>${q.stem || 'No question text provided.'}</div>`;
-+
-+      ['A', 'B', 'C', 'D'].forEach(letter => {
-+        const optionText = q.options?.[letter] ?? '(missing option)';
-+        question.innerHTML += `<label class="option"><input type="radio" name="q${qId}" value="${letter}"><div><b>${letter}.</b> ${optionText}</div></label>`;
-+      });
-+      quizEl.appendChild(question);
-+    });
-+
-+    quizCard.classList.remove('hidden');
-+  };
-+
-+  document.getElementById('resetBtn').onclick = () => {
-+    jsonInput.value = '';
-+    quizEl.innerHTML = '';
-+    resultsEl.innerHTML = '';
-+    quizCard.classList.add('hidden');
-+    resultsCard.classList.add('hidden');
-+    state.currentQuiz = null;
-+  };
-+
-+  function renderAttemptLog() {
-+    const wrap = document.getElementById('attemptLogWrap');
-+    if (!state.attemptLog.length) {
-+      wrap.innerHTML = '<p class="status">No attempts logged yet.</p>';
-+      return;
-+    }
-+
-+    let html = '<table><thead><tr><th>Time</th><th>Question</th><th>Guess</th><th>Correct</th><th>Result</th></tr></thead><tbody>';
-+    state.attemptLog.slice().reverse().forEach(entry => {
-+      html += `<tr><td>${entry.time}</td><td>${entry.question}</td><td>${entry.guess}</td><td>${entry.correct}</td><td>${entry.result}</td></tr>`;
-+    });
-+    html += '</tbody></table>';
-+    wrap.innerHTML = html;
-+  }
-+
-+  function saveAttemptLog() {
-+    localStorage.setItem('berthelAttemptLog', JSON.stringify(state.attemptLog));
-+    renderAttemptLog();
-+  }
-+
-+  document.getElementById('clearLogBtn').onclick = () => {
-+    state.attemptLog = [];
-+    saveAttemptLog();
-+  };
-+
-+  document.getElementById('submitBtn').onclick = () => {
-+    if (!state.currentQuiz) {
-+      alert('Please load a quiz first.');
-+      return;
-+    }
-+
-+    resultsEl.innerHTML = '';
-+    let score = 0;
-+
-+    state.currentQuiz.questions.forEach((q, i) => {
-+      const qId = q.id ?? (i + 1);
-+      const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
-+      const guess = chosen?.value || 'No answer';
-+      const correct = q.correct || '?';
-+      const isCorrect = guess === correct;
-+      if (isCorrect) score++;
-+
-+      state.attemptLog.push({
-+        time: new Date().toLocaleString(),
-+        question: String(qId),
-+        guess,
-+        correct,
-+        result: isCorrect ? 'Correct' : 'Incorrect'
-+      });
-+
-+      const block = document.createElement('div');
-+      block.className = 'question';
-+      block.innerHTML = `
-+        <div class="${isCorrect ? 'correct' : 'incorrect'}">Question ${qId}: ${isCorrect ? 'Correct' : 'Incorrect'}</div>
-+        <div><b>Your answer:</b> ${guess}</div>
-+        <div><b>Best answer:</b> ${correct} — ${q.options?.[correct] || 'Unavailable'}</div>
-+        <div><b>Explanation:</b> ${q.rationale_correct || 'No explanation provided.'}</div>
-+      `;
-+      resultsEl.appendChild(block);
-+    });
-+
-+    saveAttemptLog();
-+
-+    const scoreLine = document.createElement('p');
-+    scoreLine.className = 'score';
-+    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}`;
-+    resultsEl.prepend(scoreLine);
-+    resultsCard.classList.remove('hidden');
-+  };
-+
-+  const glossarySearch = document.getElementById('glossarySearch');
-+  const glossaryStatus = document.getElementById('glossaryStatus');
-+  const glossaryResults = document.getElementById('glossaryResults');
-+
-+  function renderGlossary(lines) {
-+    glossaryResults.innerHTML = '';
-+    if (!lines.length) {
-+      glossaryResults.innerHTML = '<div class="result-item">No matches found.</div>';
-+      return;
-+    }
-+    lines.slice(0, 400).forEach(line => {
-+      const div = document.createElement('div');
-+      div.className = 'result-item';
-+      div.textContent = line;
-+      glossaryResults.appendChild(div);
-+    });
-+  }
-+
-+  fetch('ib_bio_clean_index.txt')
-+    .then(resp => resp.text())
-+    .then(text => {
-+      state.glossaryLines = text.split('\n'); // full file preserved, including headings/empty lines
-+      glossaryStatus.textContent = `Loaded full file: ${state.glossaryLines.length} lines (displaying first 400 when unfiltered).`;
-+      renderGlossary(state.glossaryLines);
-+    })
-+    .catch(() => {
-+      glossaryStatus.textContent = 'Could not load ib_bio_clean_index.txt. Please run a local server and retry.';
-+    });
-+
-+  glossarySearch.addEventListener('input', () => {
-+    const term = glossarySearch.value.trim().toLowerCase();
-+    if (!term) {
-+      renderGlossary(state.glossaryLines);
-+      return;
-+    }
-+    const matches = state.glossaryLines.filter(line => line.toLowerCase().includes(term));
-+    renderGlossary(matches);
-   });
--  resultsEl.prepend(Object.assign(document.createElement('div'), {className:'score', textContent:`Score: ${score} / ${data.questions.length}`}));
--  resultsEl.style.display = 'block';
--}
--
--loadBtn.onclick = loadQuiz;
--resetBtn.onclick = () => { inputEl.value=''; quizEl.style.display='none'; resultsEl.style.display='none'; };
--
--const submitBtn = document.createElement('button');
--submitBtn.textContent = 'Submit Answers';
--submitBtn.className = 'primary';
--submitBtn.onclick = gradeQuiz;
--quizEl.after(submitBtn);
-+
-+  renderAttemptLog();
-+})();
- </script>
- </body>
- </html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Berthel's Biology — unified MCQ testing, logging, etymology/vocab practice, and IB text search." />
+  <title>Berthel's Biology · Unified Workspace v2026.02.09</title>
+
+  <style>
+    :root{
+      --bg:#f2f2f2;
+      --surface:#ffffff;
+      --ink:#111111;
+      --muted:#4c4c4c;
+      --line:#d4d4d4;
+      --line-strong:#9e9e9e;
+      --ok:#245f2f;
+      --bad:#9a1f1f;
+      --shadow:0 6px 18px rgba(0,0,0,.06);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      line-height:1.5;
+    }
+
+    .wrap{ max-width:1200px; margin:0 auto; padding:0 20px; }
+
+    header{
+      color:#fff;
+      background:linear-gradient(180deg,#171717,#303030);
+      border-bottom:1px solid #5e5e5e;
+    }
+
+    .hero{
+      padding:26px 0;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap:18px;
+      align-items:center;
+    }
+
+    h1{ margin:0; font-size:34px; letter-spacing:.2px; }
+    .subtitle{ margin:8px 0 0; color:#dddddd; max-width:900px; }
+    .build-chip{
+      margin-top:10px;
+      display:inline-block;
+      padding:5px 10px;
+      border:1px solid #8d8d8d;
+      border-radius:999px;
+      background:#262626;
+      color:#f0f0f0;
+      font-size:12px;
+      letter-spacing:.3px;
+      user-select:none;
+    }
+
+    .penguin{
+      width:95px; height:95px;
+      border-radius:12px;
+      border:1px solid #777;
+      background:#fff;
+      display:grid;
+      place-items:center;
+      padding:6px;
+    }
+
+    nav{
+      position:sticky; top:0; z-index:10;
+      background:#fff;
+      border-bottom:1px solid var(--line);
+    }
+    .tabs{ display:flex; flex-wrap:wrap; gap:10px; padding:12px 0; }
+    .tab-btn{
+      border:1px solid var(--line-strong);
+      border-radius:999px;
+      background:#fff;
+      color:#222;
+      padding:8px 14px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .tab-btn[aria-selected="true"]{
+      background:#1d1d1d;
+      color:#fff;
+      border-color:#1d1d1d;
+    }
+
+    main{ padding:22px 0 40px; }
+
+    .panel{ display:none; }
+    .panel.active{ display:block; }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--surface);
+      padding:18px;
+      margin-bottom:16px;
+      box-shadow:var(--shadow);
+    }
+    .card h2,.card h3{ margin:0 0 10px; }
+
+    .grid{ display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+    .subgrid{ display:grid; gap:14px; grid-template-columns: 2fr 1fr; }
+    @media (max-width:920px){ .subgrid{ grid-template-columns:1fr; } }
+
+    label{
+      display:block;
+      margin:10px 0 6px;
+      font-weight:800;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    input[type="number"], input[type="search"], textarea{
+      width:100%;
+      border:1px solid #b9b9b9;
+      border-radius:10px;
+      padding:10px 12px;
+      font-size:15px;
+      font-family:inherit;
+      color:var(--ink);
+      background:#fff;
+    }
+    textarea{ min-height:170px; resize:vertical; }
+
+    .actions{ display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+
+    .btn, button{
+      border:1px solid #222;
+      border-radius:10px;
+      padding:9px 14px;
+      font:inherit;
+      font-weight:800;
+      background:#fff;
+      color:#1f1f1f;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      user-select:none;
+    }
+    .btn.primary, button.primary{ background:#1f1f1f; color:#fff; }
+    .btn:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+      outline:3px solid rgba(0,0,0,.25);
+      outline-offset:2px;
+    }
+
+    .status{ color:var(--muted); font-size:14px; margin:8px 0 0; }
+
+    .hidden{ display:none !important; }
+
+    .question{
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fafafa;
+      padding:12px;
+      margin:12px 0;
+    }
+    .question-head{ font-weight:900; margin-bottom:6px; }
+
+    .option{
+      display:grid;
+      grid-template-columns:28px 1fr;
+      gap:10px;
+      margin:8px 0;
+      border:1px solid #cecece;
+      border-radius:8px;
+      background:#fff;
+      padding:8px;
+      cursor:pointer;
+    }
+    .option input{ margin-top:3px; }
+
+    .score{ font-size:22px; font-weight:900; margin:0 0 10px; }
+    .correct{ color:var(--ok); font-weight:900; }
+    .incorrect{ color:var(--bad); font-weight:900; }
+
+    iframe{
+      width:100%;
+      min-height:680px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+    }
+
+    .search-results{
+      max-height:520px;
+      overflow:auto;
+      border:1px solid var(--line);
+      border-radius:10px;
+      background:#fff;
+      margin-top:10px;
+    }
+    .result-item{
+      padding:10px 12px;
+      border-bottom:1px solid #ececec;
+      font-size:14px;
+      white-space:pre-wrap;
+    }
+    .result-item:last-child{ border-bottom:none; }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:10px;
+      overflow:hidden;
+      margin-top:10px;
+    }
+    th,td{ border-bottom:1px solid #ececec; padding:8px 10px; text-align:left; }
+    th{ background:#f7f7f7; }
+
+    footer{
+      text-align:center;
+      color:var(--muted);
+      font-size:13px;
+      padding:16px;
+    }
+    code{ font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:.95em; }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap hero">
+    <div>
+      <h1>Berthel's Biology</h1>
+      <p class="subtitle">
+        Professional student testing and review workspace. Answer MCQs, log attempts, review explanations, practice etymology/vocabulary, and search the full IB Biology text file.
+      </p>
+      <div class="build-chip">LIVE BUILD: Unified Workspace v2026.02.09</div>
+    </div>
+
+    <div class="penguin" aria-label="Silhouetted chinstrap penguin avatar">
+      <svg viewBox="0 0 100 100" width="80" height="80" role="img" aria-label="Chinstrap penguin silhouette">
+        <path d="M70 14c-12-6-27-3-37 7-7 7-11 16-12 27 0 16 8 31 23 40 8 5 18 7 28 5 5-1 10-3 14-6-6 0-13-3-18-8-7-7-11-16-11-26 0-9 3-18 9-25 1-1 2-2 4-3z" fill="#171717"/>
+        <path d="M67 22c-8 6-13 16-13 26 0 9 4 17 10 23 4 4 9 6 14 7-3 3-7 5-11 6-9 2-18 0-25-4-12-8-19-20-19-34 1-9 4-17 10-23 8-8 20-11 31-8 1 2 2 5 3 7z" fill="#fff"/>
+        <path d="M63 46l25 8-23 8z" fill="#404040"/>
+        <circle cx="62" cy="37" r="2.8" fill="#111"/>
+        <path d="M35 64c8 5 20 7 31 4" stroke="#222" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap tabs" role="tablist" aria-label="Workspace modules">
+    <button class="tab-btn" role="tab" aria-selected="true" data-panel="dashboard" type="button">Dashboard</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-panel="mcq" type="button">MCQ Test + Review</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-panel="etymo" type="button">Etymology &amp; Vocab</button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-panel="glossary" type="button">IB Text Search</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="panel active" id="dashboard">
+    <div class="card">
+      <h2>All Modules Ready</h2>
+      <div class="grid">
+        <div><strong>MCQ Generator:</strong><br/>Create randomized MCQs from your own term–definition list.</div>
+        <div><strong>MCQ Test + Log:</strong><br/>Students answer once, then receive graded review. Guesses are logged.</div>
+        <div><strong>Etymology + Vocab:</strong><br/>Embedded engine available on-page.</div>
+        <div><strong>IB Text Search:</strong><br/>Search every line from <code>ib_bio_clean_index.txt</code>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="mcq">
+    <div class="subgrid">
+      <div class="card">
+        <h2>MCQ Generator</h2>
+        <p class="status">Input format: one pair per line as <code>term | definition</code>.</p>
+
+        <label for="pairInput">Source terms</label>
+        <textarea id="pairInput" spellcheck="false"
+          placeholder="mitochondrion | site of aerobic respiration and ATP production&#10;ribosome | site of protein synthesis"></textarea>
+
+        <div class="grid">
+          <div>
+            <label for="qCount">Number of questions</label>
+            <input id="qCount" type="number" min="1" value="8" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" id="generateBtn" type="button">Generate MCQ JSON</button>
+          <button id="useSamplePairsBtn" type="button">Load sample pairs</button>
+        </div>
+
+        <label for="generatedJson">Generated JSON</label>
+        <textarea id="generatedJson" spellcheck="false" placeholder="Generated quiz JSON will appear here"></textarea>
+      </div>
+
+      <div class="card">
+        <h2>MCQ Reviewer</h2>
+
+        <label for="jsonInput">Paste MCQ JSON</label>
+        <textarea id="jsonInput" spellcheck="false"
+          placeholder='{"questions":[{"id":1,"stem":"...","options":{"A":"...","B":"...","C":"...","D":"..."},"correct":"A","rationale_correct":"...","rationale_wrong":{"A":"...","B":"...","C":"...","D":"..."}}]}'></textarea>
+
+        <div class="actions">
+          <button class="primary" id="loadBtn" type="button">Load Quiz</button>
+          <button id="sampleBtn" type="button">Load sample quiz</button>
+          <button id="resetBtn" type="button">Clear</button>
+        </div>
+
+        <p class="status">Workflow: answer all questions → submit once → full graded review.</p>
+      </div>
+    </div>
+
+    <div class="card hidden" id="quizCard">
+      <h3>Student Test</h3>
+      <div id="quiz"></div>
+      <div class="actions">
+        <button class="primary" id="submitBtn" type="button">Submit Answers</button>
+      </div>
+    </div>
+
+    <div class="card hidden" id="resultsCard">
+      <h3>Graded Review and Explanations</h3>
+      <div id="results"></div>
+    </div>
+
+    <div class="card" id="attemptLogCard">
+      <h3>Attempt Log (Guesses Recorded)</h3>
+      <p class="status">Logged per submission: chosen answer, correct answer, correctness, timestamp.</p>
+      <div class="actions">
+        <button id="clearLogBtn" type="button">Clear Log</button>
+      </div>
+      <div id="attemptLogWrap"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="etymo">
+    <div class="card">
+      <h2>Etymology + Vocabulary Review</h2>
+      <p class="status">Embedded below. If your browser blocks iframe interactions, use “Open in New Tab”.</p>
+
+      <div class="actions" style="margin-bottom:10px">
+        <a class="btn" href="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html" target="_blank" rel="noopener">
+          Open in New Tab
+        </a>
+      </div>
+
+      <!-- cache-bust query to reduce stale loads on Pages/CDN -->
+      <iframe
+        src="Berthel_Etymology_Vocab_Engine_Embedded_v10_2_FULL_DEFAULT_v11_GLOSSARY_ROOTS.html?v=20260209"
+        title="Etymology and Vocabulary Engine"
+        loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section class="panel" id="glossary">
+    <div class="card">
+      <h2>IB Biology Full Text Search</h2>
+
+      <label for="glossarySearch">Search all lines from ib_bio_clean_index.txt</label>
+      <input id="glossarySearch" type="search" placeholder="Try: photosynthesis, ATP, evolution" />
+
+      <p id="glossaryStatus" class="status">Loading full text file…</p>
+      <div class="search-results" id="glossaryResults"></div>
+    </div>
+  </section>
+</main>
+
+<footer>Berthel's Biology · Built for smooth classroom testing and revision.</footer>
+
+<script>
+(() => {
+  const state = {
+    currentQuiz: null,
+    glossaryLines: [],
+    attemptLog: JSON.parse(localStorage.getItem('berthelAttemptLog') || '[]')
+  };
+
+  const $ = (id) => document.getElementById(id);
+
+  // Tabs / Panels
+  const tabs = [...document.querySelectorAll('.tab-btn')];
+  const panels = [...document.querySelectorAll('.panel')];
+
+  function switchPanel(panelId) {
+    tabs.forEach(btn => {
+      const active = (btn.dataset.panel === panelId);
+      btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    panels.forEach(panel => panel.classList.toggle('active', panel.id === panelId));
+  }
+  tabs.forEach(btn => btn.addEventListener('click', () => switchPanel(btn.dataset.panel)));
+
+  // Sample data
+  const samplePairs = [
+    'mitochondrion | site of aerobic respiration and ATP production',
+    'ribosome | site of protein synthesis',
+    'chlorophyll | green pigment that absorbs light for photosynthesis',
+    'osmosis | movement of water across a selectively permeable membrane',
+    'enzyme | biological catalyst that lowers activation energy',
+    'nucleus | organelle containing DNA in eukaryotic cells',
+    'allele | one version of a gene',
+    'active transport | movement against concentration gradient using ATP'
+  ].join('\n');
+
+  const sampleQuiz = {
+    questions: [
+      {
+        id: 1,
+        stem: 'Which organelle is primarily responsible for ATP production in eukaryotic cells?',
+        options: { A: 'Nucleus', B: 'Mitochondrion', C: 'Ribosome', D: 'Golgi apparatus' },
+        correct: 'B',
+        rationale_correct: 'Mitochondria carry out aerobic respiration and produce most ATP in eukaryotic cells.',
+        rationale_wrong: {
+          A: 'The nucleus stores genetic information; it is not the main ATP source.',
+          B: 'Correct.',
+          C: 'Ribosomes build proteins, not ATP as a primary role.',
+          D: 'Golgi modifies and packages proteins/lipids.'
+        }
+      }
+    ]
+  };
+
+  // Generator helpers
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function parsePairs(text) {
+    return text.split('\n')
+      .map(s => s.trim())
+      .filter(Boolean)
+      .map(line => {
+        const parts = line.split('|').map(x => x.trim());
+        if (parts.length < 2 || !parts[0] || !parts[1]) return null;
+        return { term: parts[0], definition: parts.slice(1).join(' | ') };
+      })
+      .filter(Boolean);
+  }
+
+  $('useSamplePairsBtn').addEventListener('click', () => { $('pairInput').value = samplePairs; });
+  $('sampleBtn').addEventListener('click', () => { $('jsonInput').value = JSON.stringify(sampleQuiz, null, 2); });
+
+  $('generateBtn').addEventListener('click', () => {
+    const pairs = parsePairs($('pairInput').value);
+    if (pairs.length < 4) {
+      alert('Provide at least 4 valid "term | definition" pairs.');
+      return;
+    }
+
+    const count = Math.max(1, Math.min(Number($('qCount').value) || 1, pairs.length));
+    const selected = shuffle(pairs).slice(0, count);
+
+    const questions = selected.map((item, index) => {
+      const wrongDefs = shuffle(pairs.filter(p => p.term !== item.term).map(p => p.definition)).slice(0, 3);
+      const optionsArray = shuffle([item.definition, ...wrongDefs]).slice(0, 4);
+      const letters = ['A','B','C','D'];
+
+      const options = {};
+      let correct = 'A';
+      letters.forEach((letter, i) => {
+        options[letter] = optionsArray[i] || '(missing option)';
+        if (options[letter] === item.definition) correct = letter;
+      });
+
+      return {
+        id: index + 1,
+        stem: `What is the best definition of "${item.term}"?`,
+        options,
+        correct,
+        rationale_correct: `The correct definition for "${item.term}" is: ${item.definition}.`,
+        rationale_wrong: {
+          A: options.A === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
+          B: options.B === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
+          C: options.C === item.definition ? 'Correct option.' : 'This choice does not match the target term.',
+          D: options.D === item.definition ? 'Correct option.' : 'This choice does not match the target term.'
+        }
+      };
+    });
+
+    const payload = { questions };
+    $('generatedJson').value = JSON.stringify(payload, null, 2);
+    $('jsonInput').value = $('generatedJson').value;
+    switchPanel('mcq');
+    alert(`Generated ${questions.length} question(s) and loaded into reviewer.`);
+  });
+
+  // Reviewer
+  function parseQuizData() {
+    try {
+      const data = JSON.parse($('jsonInput').value);
+      if (!data || !Array.isArray(data.questions) || data.questions.length === 0) {
+        alert('JSON must include a non-empty "questions" array.');
+        return null;
+      }
+      return data;
+    } catch (err) {
+      alert(`Invalid JSON: ${err.message}`);
+      return null;
+    }
+  }
+
+  function clearNode(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
+  $('loadBtn').addEventListener('click', () => {
+    const data = parseQuizData();
+    if (!data) return;
+
+    state.currentQuiz = data;
+    const quizEl = $('quiz');
+    clearNode(quizEl);
+    clearNode($('results'));
+    $('resultsCard').classList.add('hidden');
+
+    data.questions.forEach((q, i) => {
+      const qId = (q.id ?? (i + 1));
+      const qWrap = document.createElement('div');
+      qWrap.className = 'question';
+
+      const head = document.createElement('div');
+      head.className = 'question-head';
+      head.textContent = `Question ${qId}`;
+      qWrap.appendChild(head);
+
+      const stem = document.createElement('div');
+      stem.textContent = q.stem || 'No question text provided.';
+      qWrap.appendChild(stem);
+
+      ['A','B','C','D'].forEach(letter => {
+        const optText = (q.options && q.options[letter]) ? q.options[letter] : '(missing option)';
+
+        const label = document.createElement('label');
+        label.className = 'option';
+
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = `q${qId}`;
+        input.value = letter;
+
+        const text = document.createElement('div');
+        const strong = document.createElement('b');
+        strong.textContent = `${letter}. `;
+        text.appendChild(strong);
+        text.appendChild(document.createTextNode(optText));
+
+        label.appendChild(input);
+        label.appendChild(text);
+        qWrap.appendChild(label);
+      });
+
+      quizEl.appendChild(qWrap);
+    });
+
+    $('quizCard').classList.remove('hidden');
+  });
+
+  $('resetBtn').addEventListener('click', () => {
+    $('jsonInput').value = '';
+    clearNode($('quiz'));
+    clearNode($('results'));
+    $('quizCard').classList.add('hidden');
+    $('resultsCard').classList.add('hidden');
+    state.currentQuiz = null;
+  });
+
+  // Attempt log
+  function renderAttemptLog() {
+    const wrap = $('attemptLogWrap');
+    if (!state.attemptLog.length) {
+      wrap.innerHTML = '<p class="status">No attempts logged yet.</p>';
+      return;
+    }
+    let html = '<table><thead><tr><th>Time</th><th>Question</th><th>Guess</th><th>Correct</th><th>Result</th></tr></thead><tbody>';
+    state.attemptLog.slice().reverse().forEach(entry => {
+      html += `<tr><td>${entry.time}</td><td>${entry.question}</td><td>${entry.guess}</td><td>${entry.correct}</td><td>${entry.result}</td></tr>`;
+    });
+    html += '</tbody></table>';
+    wrap.innerHTML = html;
+  }
+
+  function saveAttemptLog() {
+    localStorage.setItem('berthelAttemptLog', JSON.stringify(state.attemptLog));
+    renderAttemptLog();
+  }
+
+  $('clearLogBtn').addEventListener('click', () => {
+    state.attemptLog = [];
+    saveAttemptLog();
+  });
+
+  $('submitBtn').addEventListener('click', () => {
+    if (!state.currentQuiz) {
+      alert('Load a quiz first.');
+      return;
+    }
+
+    const resultsEl = $('results');
+    clearNode(resultsEl);
+
+    let score = 0;
+    state.currentQuiz.questions.forEach((q, i) => {
+      const qId = (q.id ?? (i + 1));
+      const chosen = document.querySelector(`input[name="q${qId}"]:checked`);
+      const guess = chosen?.value || 'No answer';
+      const correct = q.correct || '?';
+      const isCorrect = (guess === correct);
+      if (isCorrect) score++;
+
+      state.attemptLog.push({
+        time: new Date().toLocaleString(),
+        question: String(qId),
+        guess,
+        correct,
+        result: isCorrect ? 'Correct' : 'Incorrect'
+      });
+
+      const block = document.createElement('div');
+      block.className = 'question';
+
+      const verdict = document.createElement('div');
+      verdict.className = isCorrect ? 'correct' : 'incorrect';
+      verdict.textContent = `Question ${qId}: ${isCorrect ? 'Correct' : 'Incorrect'}`;
+      block.appendChild(verdict);
+
+      const yourAns = document.createElement('div');
+      yourAns.innerHTML = `<b>Your answer:</b> ${guess}`;
+      block.appendChild(yourAns);
+
+      const best = document.createElement('div');
+      const bestText = (q.options && q.options[correct]) ? q.options[correct] : 'Unavailable';
+      best.innerHTML = `<b>Best answer:</b> ${correct} — ${bestText}`;
+      block.appendChild(best);
+
+      const expl = document.createElement('div');
+      expl.innerHTML = `<b>Explanation:</b> ${q.rationale_correct || 'No explanation provided.'}`;
+      block.appendChild(expl);
+
+      resultsEl.appendChild(block);
+    });
+
+    saveAttemptLog();
+
+    const scoreLine = document.createElement('p');
+    scoreLine.className = 'score';
+    scoreLine.textContent = `Score: ${score} / ${state.currentQuiz.questions.length}`;
+    resultsEl.prepend(scoreLine);
+
+    $('resultsCard').classList.remove('hidden');
+  });
+
+  // Glossary search
+  const glossaryResults = $('glossaryResults');
+  function renderGlossary(lines) {
+    glossaryResults.innerHTML = '';
+    if (!lines.length) {
+      glossaryResults.innerHTML = '<div class="result-item">No matches found.</div>';
+      return;
+    }
+    lines.slice(0, 400).forEach(line => {
+      const div = document.createElement('div');
+      div.className = 'result-item';
+      div.textContent = line;
+      glossaryResults.appendChild(div);
+    });
+  }
+
+  // cache-bust reduces "stale file" on CDNs
+  const txtUrl = `ib_bio_clean_index.txt?v=20260209`;
+
+  fetch(txtUrl, { cache: 'no-store' })
+    .then(resp => {
+      if (!resp.ok) throw new Error(`HTTP ${resp.status} loading ${txtUrl}`);
+      return resp.text();
+    })
+    .then(text => {
+      state.glossaryLines = text.split('\n');
+      $('glossaryStatus').textContent = `Loaded: ${state.glossaryLines.length} lines (showing first 400 when unfiltered).`;
+      renderGlossary(state.glossaryLines);
+    })
+    .catch(err => {
+      $('glossaryStatus').textContent =
+        `Could not load ib_bio_clean_index.txt. Ensure the file exists beside index.html. (${err.message})`;
+    });
+
+  $('glossarySearch').addEventListener('input', () => {
+    const term = $('glossarySearch').value.trim().toLowerCase();
+    if (!term) { renderGlossary(state.glossaryLines); return; }
+    renderGlossary(state.glossaryLines.filter(line => line.toLowerCase().includes(term)));
+  });
+
+  renderAttemptLog();
+})();
+</script>
+</body>
+</html>
