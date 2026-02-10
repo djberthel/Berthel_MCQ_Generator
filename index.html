@@ -3,6 +3,1387 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Berthel's Biology</title>
+
+  <style>
+    :root{
+      --bg0:#ffffff;
+      --bg1:#f6f6f6;
+      --bg2:#ececec;
+      --ink:#0b0b0b;
+      --muted:#5a5a5a;
+      --line:#d7d7d7;
+      --card:#ffffff;
+      --shadow: 0 10px 28px rgba(0,0,0,.08);
+      --ok:#14853b;
+      --bad:#b00020;
+      --accent:#111111;
+      --focus: 0 0 0 3px rgba(0,0,0,.18);
+      --radius: 16px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 520px at 10% -10%, var(--bg2) 10%, transparent 55%),
+        radial-gradient(900px 520px at 90% -10%, var(--bg2) 10%, transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      font: 16px/1.55 "Latin Modern Roman","Latin Modern","LMRoman10","Computer Modern Serif","CMU Serif","Times New Roman",serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:18px 18px 28px}
+
+    header{
+      position:sticky; top:0; z-index:20;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:14px 18px;
+      max-width:1100px; margin:0 auto;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      min-width: 0;
+    }
+    .avatar{
+      width:44px;height:44px;border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      object-fit:cover;
+      flex:0 0 auto;
+    }
+    .brandText{min-width:0}
+    .title{
+      font-size:18px; font-weight:700; margin:0;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      letter-spacing:.2px;
+    }
+    .subtitle{
+      margin:2px 0 0;
+      font-size:13px; color:var(--muted);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+
+    .versionPill{
+      display:flex; align-items:center; gap:10px;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: #fff;
+      font-size:12px;
+      color:var(--muted);
+      user-select:none;
+      cursor:default;
+    }
+    .versionCode{
+      color:var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .tabs{
+      display:flex; gap:10px; padding:0 18px 14px;
+      max-width:1100px; margin:0 auto;
+      flex-wrap:wrap;
+    }
+    .tabBtn{
+      appearance:none;
+      border:1px solid var(--line);
+      background: #fff;
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-size:14px;
+      color:var(--ink);
+      box-shadow: none;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+    }
+    .tabBtn:hover{background:#fafafa}
+    .tabBtn:active{transform: translateY(1px)}
+    .tabBtn[aria-selected="true"]{
+      border-color:#bcbcbc;
+      background: #f4f4f4;
+      font-weight:700;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .sectionPad{padding:18px}
+    .sectionTitle{
+      margin:0 0 10px;
+      font-size:16px; font-weight:700;
+    }
+    .hint{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .row{
+      display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap;
+    }
+    .field{
+      min-width:220px; flex:0 0 auto;
+    }
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin:0 0 6px;
+    }
+    input[type="number"], input[type="password"], textarea, input[type="file"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 12px;
+      padding:12px 12px;
+      font: inherit;
+      background:#fff;
+      color:var(--ink);
+      outline:none;
+    }
+    input[type="number"]:focus, input[type="password"]:focus, textarea:focus{
+      box-shadow: var(--focus);
+      border-color:#bcbcbc;
+    }
+    textarea{min-height:110px; resize:vertical}
+
+    .btn{
+      appearance:none;
+      border:1px solid var(--line);
+      border-radius: 12px;
+      padding:12px 14px;
+      background:#111;
+      color:#fff;
+      cursor:pointer;
+      font-weight:700;
+      transition: transform .06s ease, filter .15s ease, opacity .15s ease;
+    }
+    .btn:hover{filter:brightness(1.05)}
+    .btn:active{transform: translateY(1px)}
+    .btn:disabled{opacity:.45; cursor:not-allowed}
+    .btn.secondary{
+      background:#fff; color:var(--ink);
+      font-weight:700;
+    }
+    .btn.secondary:hover{background:#fafafa}
+
+    .divider{height:1px;background:var(--line);margin:14px 0}
+
+    .quizShell{display:none}
+    .quizTop{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fff;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .pill strong{color:var(--ink)}
+    .progressWrap{
+      flex:1 1 240px;
+      height:10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      overflow:hidden;
+      background:#fff;
+    }
+    .progressBar{height:100%; width:0%; background:#111}
+
+    .prompt{
+      margin:0 0 12px;
+      font-size:20px;
+      letter-spacing:.1px;
+    }
+    .termBadge{
+      display:inline-block;
+      margin:0 6px;
+      padding:2px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fff;
+      font-size:18px;
+      font-weight:700;
+      vertical-align:baseline;
+    }
+
+    .options{display:grid; gap:12px}
+    .optBtn{
+      width:100%;
+      text-align:left;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius: 14px;
+      padding:14px 14px;
+      cursor:pointer;
+      transition: background .12s ease, border-color .12s ease, transform .06s ease;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .optBtn:hover{background:#fafafa}
+    .optBtn:active{transform: translateY(1px)}
+    .optBtn:disabled{cursor:not-allowed}
+    .optKey{
+      flex:0 0 auto;
+      width:26px;height:26px;
+      border-radius:8px;
+      border:1px solid var(--line);
+      display:inline-flex;align-items:center;justify-content:center;
+      font-size:12px;
+      color:var(--muted);
+      font-weight:700;
+      margin-top:1px;
+    }
+    .optText{flex:1 1 auto}
+    .optBtn.correct{border-color: rgba(20,133,59,.55)}
+    .optBtn.wrong{border-color: rgba(176,0,32,.55)}
+    .feedback{
+      margin-top:12px;
+      font-size:14px;
+      color:var(--muted);
+      min-height:22px;
+    }
+    .feedback strong{color:var(--ink)}
+    .actionsRow{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; flex-wrap:wrap;
+      margin-top:14px;
+    }
+
+    .resultsShell{display:none}
+    .resultsHeader{
+      display:flex; align-items:flex-start; justify-content:space-between;
+      gap:12px; flex-wrap:wrap;
+    }
+    .metricRow{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin:10px 0 0;
+    }
+    .metric{
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:#fff;
+      padding:8px 10px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .metric strong{color:var(--ink)}
+    .review{
+      margin:12px 0 0;
+      padding:0;
+      list-style:none;
+      display:grid;
+      gap:10px;
+    }
+    .reviewItem{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background:#fff;
+      padding:12px 14px;
+    }
+    .reviewTop{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; flex-wrap:wrap;
+    }
+    .statusTag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      color:var(--muted);
+    }
+    .statusTag.ok{border-color: rgba(20,133,59,.35); color: var(--ok)}
+    .statusTag.bad{border-color: rgba(176,0,32,.35); color: var(--bad)}
+    .rationale{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .rationale strong{color:var(--ink)}
+    .rationale .ok{color:var(--ok); font-weight:700}
+    .rationale .bad{color:var(--bad); font-weight:700}
+
+    /* Home updates feed */
+    .updatesList{
+      display:grid; gap:10px;
+      margin-top:10px;
+    }
+    .updateItem{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background:#fff;
+      padding:12px 14px;
+    }
+    .updateMeta{
+      font-size:12px;
+      color:var(--muted);
+      font-variant-numeric: tabular-nums;
+      margin-bottom:6px;
+    }
+
+    /* Hidden admin */
+    .adminShell{display:none}
+    .adminShell.show{display:block}
+    .miniNote{
+      font-size:12px;color:var(--muted);margin-top:8px
+    }
+
+    /* Sections */
+    section[data-view]{display:none}
+    section[data-view].show{display:block}
+
+    /* Reduce clutter on small screens */
+    @media (max-width:560px){
+      .prompt{font-size:18px}
+      .field{min-width:180px}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <img id="avatarImg" class="avatar" alt="Chinstrap penguin avatar" />
+      <div class="brandText">
+        <h1 class="title">Berthel's Biology</h1>
+        <p class="subtitle">Professional student testing and review workspace.</p>
+      </div>
+    </div>
+
+    <div class="versionPill" id="versionPill" title="Site version (latest update timestamp, UTC+8)">
+      <span>Version</span>
+      <span class="versionCode" id="versionTag">—</span>
+    </div>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Workspace tabs">
+    <button class="tabBtn" role="tab" id="tabHome" aria-selected="true" aria-controls="viewHome">Home</button>
+    <button class="tabBtn" role="tab" id="tabCore" aria-selected="false" aria-controls="viewCore">Etymology + Vocabulary</button>
+    <button class="tabBtn" role="tab" id="tabCustom" aria-selected="false" aria-controls="viewCustom">MCQ Content</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- HOME -->
+  <section class="card show" data-view="home" id="viewHome" aria-labelledby="tabHome">
+    <div class="sectionPad">
+      <h2 class="sectionTitle">Updates</h2>
+      <div id="updatesList" class="updatesList"></div>
+
+      <!-- Admin (hidden by default; unlock by Ctrl+Shift+U or 5 clicks on Version pill) -->
+      <div class="divider"></div>
+      <div id="adminShell" class="adminShell">
+        <h3 class="sectionTitle" style="margin-top:0">Admin: Add Update</h3>
+        <div class="row">
+          <div class="field" style="flex:1 1 520px; min-width:280px">
+            <label for="adminMsg">Update message (visible to all users)</label>
+            <textarea id="adminMsg" placeholder="Enter update text…"></textarea>
+            <div class="miniNote">Timestamp is automatically generated in Beijing time (UTC+8) at the moment you post.</div>
+          </div>
+          <div class="field" style="min-width:240px">
+            <label for="adminPass">Admin passcode</label>
+            <input id="adminPass" type="password" placeholder="Required" autocomplete="off" />
+            <div style="height:10px"></div>
+            <button class="btn" id="postUpdateBtn">Post update</button>
+            <div style="height:10px"></div>
+            <button class="btn secondary" id="downloadUpdatesBtn" disabled>Download updated updates.json</button>
+            <div class="miniNote">After download, replace the site’s <strong>updates.json</strong> file to publish globally.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE (ETY + VOCAB) -->
+  <section class="card" data-view="core" id="viewCore" aria-labelledby="tabCore">
+    <div class="sectionPad">
+      <h2 class="sectionTitle">Etymology + Vocabulary Review</h2>
+
+      <!-- Setup -->
+      <div id="coreSetup">
+        <div class="row">
+          <div class="field">
+            <label for="coreCount">Practice questions (1–100)</label>
+            <input id="coreCount" type="number" inputmode="numeric" min="1" max="100" step="1" value="40" />
+            <div class="hint" id="coreLoadHint">Loading bank…</div>
+          </div>
+          <button id="coreStartBtn" class="btn" disabled>Start</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- If ib_bio_clean_index.txt fails to fetch, allow manual upload (minimal) -->
+        <div id="coreFallback" style="display:none">
+          <div class="row">
+            <div class="field" style="flex:1 1 520px; min-width:280px">
+              <label for="coreBankFile">Bank file (fallback)</label>
+              <input id="coreBankFile" type="file" accept=".txt,text/plain" />
+              <div class="hint">Expected file name on the site: <strong>ib_bio_clean_index.txt</strong></div>
+            </div>
+            <button id="coreLoadBtn" class="btn secondary">Load</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz -->
+      <div id="coreQuiz" class="quizShell">
+        <div class="quizTop">
+          <div class="pill">Q <strong id="coreQi">0</strong>/<strong id="coreQt">0</strong></div>
+          <div class="pill">Score <strong id="coreScore">0</strong></div>
+          <div class="progressWrap" aria-label="progress"><div id="corePbar" class="progressBar"></div></div>
+        </div>
+
+        <p class="prompt" id="corePrompt"></p>
+        <div class="options" id="coreOptions" role="group" aria-label="answer choices"></div>
+
+        <div class="feedback" id="coreFeedback"></div>
+
+        <div class="actionsRow">
+          <div class="hint">Keys: A–D or 1–4. Enter = Next.</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button id="coreNextBtn" class="btn" disabled>Next</button>
+            <button id="coreFinishBtn" class="btn secondary">Finish</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="coreResults" class="resultsShell">
+        <div class="resultsHeader">
+          <div>
+            <h3 class="sectionTitle" style="margin:0">Performance Summary</h3>
+            <div class="metricRow">
+              <div class="metric">Score: <strong id="coreFinalScore">0</strong></div>
+              <div class="metric">Questions: <strong id="coreFinalTotal">0</strong></div>
+              <div class="metric">Accuracy: <strong id="coreFinalPct">0%</strong></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start">
+            <button id="coreRetrySameBtn" class="btn">Retry same set</button>
+            <button id="coreNewSetBtn" class="btn secondary">New set</button>
+          </div>
+        </div>
+
+        <ul class="review" id="coreReview"></ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CUSTOM MCQ CONTENT -->
+  <section class="card" data-view="custom" id="viewCustom" aria-labelledby="tabCustom">
+    <div class="sectionPad">
+      <h2 class="sectionTitle">MCQ Content</h2>
+
+      <!-- Setup -->
+      <div id="customSetup">
+        <div class="row">
+          <div class="field" style="flex:1 1 520px; min-width:280px">
+            <label for="customFile">Upload content (text)</label>
+            <input id="customFile" type="file" accept=".txt,text/plain" />
+          </div>
+
+          <div class="field">
+            <label for="customCount">Practice questions (1–100)</label>
+            <input id="customCount" type="number" inputmode="numeric" min="1" max="100" step="1" value="20" />
+          </div>
+
+          <button id="customStartBtn" class="btn" disabled>Start</button>
+        </div>
+
+        <div class="hint" id="customHint">Upload a text file. If it contains term–definition pairs, the quiz builds automatically.</div>
+
+        <!-- JSON paste fallback (kept minimalist; only appears if needed) -->
+        <div id="customJsonPane" style="display:none; margin-top:14px">
+          <div class="divider"></div>
+          <label for="customJson">Paste MCQ JSON (fallback)</label>
+          <textarea id="customJson" placeholder="Paste JSON here…"></textarea>
+          <div class="row" style="margin-top:10px">
+            <button id="customJsonLoadBtn" class="btn secondary">Load JSON</button>
+            <div class="hint" id="customJsonHint"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quiz -->
+      <div id="customQuiz" class="quizShell">
+        <div class="quizTop">
+          <div class="pill">Q <strong id="customQi">0</strong>/<strong id="customQt">0</strong></div>
+          <div class="pill">Score <strong id="customScore">0</strong></div>
+          <div class="progressWrap" aria-label="progress"><div id="customPbar" class="progressBar"></div></div>
+        </div>
+
+        <p class="prompt" id="customPrompt"></p>
+        <div class="options" id="customOptions" role="group" aria-label="answer choices"></div>
+
+        <div class="feedback" id="customFeedback"></div>
+
+        <div class="actionsRow">
+          <div class="hint">Keys: A–D or 1–4. Enter = Next.</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap">
+            <button id="customNextBtn" class="btn" disabled>Next</button>
+            <button id="customFinishBtn" class="btn secondary">Finish</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div id="customResults" class="resultsShell">
+        <div class="resultsHeader">
+          <div>
+            <h3 class="sectionTitle" style="margin:0">Performance Summary</h3>
+            <div class="metricRow">
+              <div class="metric">Score: <strong id="customFinalScore">0</strong></div>
+              <div class="metric">Questions: <strong id="customFinalTotal">0</strong></div>
+              <div class="metric">Accuracy: <strong id="customFinalPct">0%</strong></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-start">
+            <button id="customRetrySameBtn" class="btn">Retry same set</button>
+            <button id="customNewSetBtn" class="btn secondary">New set</button>
+          </div>
+        </div>
+
+        <ul class="review" id="customReview"></ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================
+   Core constraints
+   ========================= */
+const ADMIN_PASSCODE = "CHANGE_ME"; // replace with your passcode
+const BANK_TXT_PATH = "ib_bio_clean_index.txt";
+const AVATAR_PATH = "Chinstrap_LOgo.jfif";
+const UPDATES_PATH = "updates.json";
+const TZ = "Asia/Shanghai";
+
+/* fallback avatar (provided base64) */
+const AVATAR_FALLBACK_DATAURL =
+"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwMEADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFBBhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/xAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8olq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5p+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlf/2Q==";
+
+/* =========================
+   Helpers
+   ========================= */
+const $ = (id) => document.getElementById(id);
+
+function clampInt(n, min, max){
+  const x = Number.parseInt(String(n), 10);
+  if (!Number.isFinite(x)) return min;
+  return Math.min(Math.max(x, min), max);
+}
+
+function shanghaiTimestampISO(d = new Date()){
+  // "sv-SE" yields ISO-like "YYYY-MM-DD HH:mm:ss"
+  const s = new Intl.DateTimeFormat("sv-SE", {
+    timeZone: TZ, year:"numeric", month:"2-digit", day:"2-digit",
+    hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false
+  }).format(d);
+  return s.replace(" ", "T") + "+08:00";
+}
+
+function shanghaiDisplay(tsISO){
+  // expects ISO with +08:00, display "YYYY-MM-DD HH:mm (UTC+8)"
+  try{
+    const d = new Date(tsISO);
+    const s = new Intl.DateTimeFormat("sv-SE", {
+      timeZone: TZ, year:"numeric", month:"2-digit", day:"2-digit",
+      hour:"2-digit", minute:"2-digit", hour12:false
+    }).format(d);
+    return s + " (UTC+8)";
+  }catch{
+    return tsISO;
+  }
+}
+
+function cryptoRandInt(max){
+  if (max <= 0) return 0;
+  const c = window.crypto || window.msCrypto;
+  if (c && c.getRandomValues){
+    const buf = new Uint32Array(1);
+    const range = 0xFFFFFFFF;
+    const limit = range - (range % max);
+    let x = 0;
+    do { c.getRandomValues(buf); x = buf[0]; } while (x >= limit);
+    return x % max;
+  }
+  return Math.floor(Math.random() * max);
+}
+
+function shuffleInPlace(arr){
+  for (let i = arr.length - 1; i > 0; i--){
+    const j = cryptoRandInt(i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function pickUnique(arr, k){
+  const idx = Array.from({length: arr.length}, (_, i) => i);
+  shuffleInPlace(idx);
+  return idx.slice(0, Math.min(k, idx.length)).map(i => arr[i]);
+}
+
+function safeText(s){
+  return String(s ?? "").replace(/\s+/g, " ").trim();
+}
+
+/* =========================
+   Tabs
+   ========================= */
+function setTab(which){
+  const map = {
+    home: {btn:"tabHome", view:"viewHome"},
+    core: {btn:"tabCore", view:"viewCore"},
+    custom: {btn:"tabCustom", view:"viewCustom"},
+  };
+
+  for (const k of Object.keys(map)){
+    const isOn = k === which;
+    $(map[k].btn).setAttribute("aria-selected", String(isOn));
+    $(map[k].view).classList.toggle("show", isOn);
+  }
+}
+$("tabHome").addEventListener("click", () => setTab("home"));
+$("tabCore").addEventListener("click", () => setTab("core"));
+$("tabCustom").addEventListener("click", () => setTab("custom"));
+
+/* =========================
+   Avatar load (JFIF-safe via blob URL)
+   ========================= */
+(async function loadAvatar(){
+  const img = $("avatarImg");
+  img.src = AVATAR_FALLBACK_DATAURL;
+  try{
+    const res = await fetch(AVATAR_PATH, {cache:"no-store"});
+    if (!res.ok) throw new Error("avatar fetch failed");
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    img.src = url;
+  }catch{
+    // keep fallback
+  }
+})();
+
+/* =========================
+   Updates feed + version
+   ========================= */
+let updates = [];
+
+function renderUpdates(){
+  const box = $("updatesList");
+  box.innerHTML = "";
+
+  if (!Array.isArray(updates) || updates.length === 0){
+    const div = document.createElement("div");
+    div.className = "updateItem";
+    div.innerHTML = `
+      <div class="updateMeta">${shanghaiDisplay(shanghaiTimestampISO())}</div>
+      <div>Update pending: input validation and post-quiz diagnostic summary improvements for the generators.</div>
+    `;
+    box.appendChild(div);
+    $("versionTag").textContent = shanghaiTimestampISO();
+    return;
+  }
+
+  // newest first
+  const sorted = [...updates].sort((a,b) => String(b.ts).localeCompare(String(a.ts)));
+  $("versionTag").textContent = String(sorted[0].ts || shanghaiTimestampISO());
+
+  for (const u of sorted){
+    const div = document.createElement("div");
+    div.className = "updateItem";
+    div.innerHTML = `
+      <div class="updateMeta">${shanghaiDisplay(u.ts)}</div>
+      <div>${escapeHtml(u.msg)}</div>
+    `;
+    box.appendChild(div);
+  }
+}
+
+function escapeHtml(s){
+  const t = String(s ?? "");
+  return t.replace(/[&<>"']/g, (c) => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+async function loadUpdates(){
+  // server file first
+  try{
+    const res = await fetch(UPDATES_PATH, {cache:"no-store"});
+    if (!res.ok) throw new Error("updates fetch failed");
+    const json = await res.json();
+    if (!Array.isArray(json)) throw new Error("updates not array");
+    updates = json.map(x => ({ts: String(x.ts||""), msg: String(x.msg||"")})).filter(x => x.ts && x.msg);
+  }catch{
+    // fallback to localStorage (admin preview)
+    try{
+      const raw = localStorage.getItem("updates_local");
+      const parsed = JSON.parse(raw || "[]");
+      if (Array.isArray(parsed)) updates = parsed;
+    }catch{}
+  }
+  renderUpdates();
+}
+loadUpdates();
+
+/* Admin unlock (minimal, hidden) */
+let versionClicks = 0;
+$("versionPill").addEventListener("click", () => {
+  versionClicks++;
+  if (versionClicks >= 5){
+    $("adminShell").classList.add("show");
+  }
+  setTimeout(() => (versionClicks = 0), 900);
+});
+window.addEventListener("keydown", (e) => {
+  if (e.ctrlKey && e.shiftKey && (e.key === "U" || e.key === "u")){
+    $("adminShell").classList.toggle("show");
+  }
+});
+
+$("postUpdateBtn").addEventListener("click", () => {
+  const pass = $("adminPass").value || "";
+  if (pass !== ADMIN_PASSCODE) return;
+
+  const msg = safeText($("adminMsg").value);
+  if (!msg) return;
+
+  const entry = { ts: shanghaiTimestampISO(), msg };
+  updates = Array.isArray(updates) ? updates : [];
+  updates.push(entry);
+
+  localStorage.setItem("updates_local", JSON.stringify(updates, null, 2));
+  $("adminMsg").value = "";
+  $("downloadUpdatesBtn").disabled = false;
+
+  renderUpdates();
+});
+
+$("downloadUpdatesBtn").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify(updates, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "updates.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+/* =========================
+   Parse ib_bio_clean_index.txt into banks
+   ========================= */
+function parseGlossaryTextToPairs(txt){
+  const lines = String(txt || "").replace(/\r\n/g,"\n").replace(/\r/g,"\n").split("\n");
+  const pairs = [];
+  let last = null;
+
+  const splitLine = (line) => {
+    const s = line.trim();
+    if (!s) return null;
+
+    // Prefer strong delimiters first
+    const tab = s.indexOf("\t");
+    if (tab > 0) return [s.slice(0, tab).trim(), s.slice(tab + 1).trim()];
+
+    const em = s.indexOf(" — ");
+    if (em > 0) return [s.slice(0, em).trim(), s.slice(em + 3).trim()];
+
+    const en = s.indexOf(" – ");
+    if (en > 0) return [s.slice(0, en).trim(), s.slice(en + 3).trim()];
+
+    // Colon only if early enough to look like "Term: definition"
+    const colon = s.indexOf(":");
+    if (colon > 0 && colon < 45) return [s.slice(0, colon).trim(), s.slice(colon + 1).trim()];
+
+    // Two+ spaces as separator (common in pasted glossaries)
+    const m = s.match(/^(.+?)\s{2,}(.+)$/);
+    if (m) return [m[1].trim(), m[2].trim()];
+
+    return null;
+  };
+
+  for (const raw of lines){
+    const line = raw.trim();
+    if (!line) continue;
+
+    const parts = splitLine(line);
+    if (parts){
+      const term = safeText(parts[0]);
+      const meaning = safeText(parts[1]);
+      if (!term || !meaning) continue;
+
+      last = {term, meaning};
+      pairs.push(last);
+    }else if (last){
+      // continuation line
+      const extra = safeText(line);
+      if (extra){
+        last.meaning = safeText(last.meaning + " " + extra);
+      }
+    }
+  }
+
+  // dedupe by term (keep longest meaning)
+  const map = new Map();
+  for (const p of pairs){
+    const key = p.term.toLowerCase();
+    if (!map.has(key) || map.get(key).meaning.length < p.meaning.length){
+      map.set(key, {term: p.term, meaning: p.meaning});
+    }
+  }
+  return Array.from(map.values());
+}
+
+function classifyKind(term){
+  const t = String(term || "").trim();
+
+  // etymology heuristics: explicit affix hyphens
+  if (/^-/.test(t) || /-$/.test(t)) return "ETY";
+  if (t.includes("-") && (t.includes(",") || t.endsWith("-") || t.startsWith("-"))) return "ETY";
+  if (/^[a-z]{1,8}-$/i.test(t)) return "ETY";
+  if (/^-[a-z]{2,14}$/i.test(t)) return "ETY";
+  return "VOCAB";
+}
+
+let coreBank = {ety: [], vocab: [], combined: []};
+
+async function loadCoreBankFromSite(){
+  const res = await fetch(BANK_TXT_PATH, {cache:"no-store"});
+  if (!res.ok) throw new Error("bank fetch failed");
+  const txt = await res.text();
+  return parseGlossaryTextToPairs(txt);
+}
+
+function buildCoreBanks(pairs){
+  const items = [];
+  const ety = [];
+  const vocab = [];
+  for (const p of pairs){
+    const kind = classifyKind(p.term);
+    const item = {kind, term: p.term, meaning: p.meaning};
+    items.push(item);
+    if (kind === "ETY") ety.push(item);
+    else vocab.push(item);
+  }
+  coreBank = {ety, vocab, combined: items};
+}
+
+/* =========================
+   Generic quiz engine
+   ========================= */
+function makeQuizEngine(cfg){
+  const els = cfg.els;
+
+  const state = {
+    bank: [],
+    poolByKind: {ETY: [], VOCAB: [], ANY: []},
+    planIdx: [],
+    qPos: 0,
+    score: 0,
+    answered: false,
+    history: [],
+    frozenPlan: null, // for retry-same-set
+  };
+
+  function setVisible(view){
+    // views: setup, quiz, results
+    els.setup.style.display = (view === "setup") ? "" : "none";
+    els.quiz.style.display = (view === "quiz") ? "" : "none";
+    els.results.style.display = (view === "results") ? "" : "none";
+  }
+
+  function resetSession(total){
+    state.qPos = 0;
+    state.score = 0;
+    state.answered = false;
+    state.history = [];
+    els.qi.textContent = "0";
+    els.qt.textContent = String(total);
+    els.score.textContent = "0";
+    els.pbar.style.width = "0%";
+    els.feedback.innerHTML = "";
+    els.nextBtn.disabled = true;
+  }
+
+  function promptText(item){
+    const kind = item.kind;
+    const intro = (kind === "ETY")
+      ? "What is the meaning of"
+      : "Which definition best matches";
+    return `${intro} <span class="termBadge">${escapeHtml(item.term)}</span>?`;
+  }
+
+  function buildChoices(correctMeaning, pool){
+    const picks = [correctMeaning];
+    let tries = 0;
+    while (picks.length < 4 && tries < 2000){
+      const cand = pool[cryptoRandInt(pool.length)];
+      if (cand && !picks.includes(cand)) picks.push(cand);
+      tries++;
+    }
+    while (picks.length < 4) picks.push("—");
+    return shuffleInPlace(picks);
+  }
+
+  function renderChoices(choices, correctMeaning, record){
+    els.options.innerHTML = "";
+    const keys = ["A","B","C","D"];
+    choices.forEach((choice, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "optBtn";
+      btn.dataset.correct = (choice === correctMeaning) ? "1" : "0";
+
+      const k = document.createElement("span");
+      k.className = "optKey";
+      k.textContent = keys[i];
+
+      const t = document.createElement("div");
+      t.className = "optText";
+      t.textContent = choice;
+
+      btn.appendChild(k);
+      btn.appendChild(t);
+
+      btn.addEventListener("click", () => grade(btn, correctMeaning, {...record, picked: choice, ok: choice === correctMeaning}));
+      els.options.appendChild(btn);
+    });
+  }
+
+  function nextQuestion(){
+    if (state.qPos >= state.planIdx.length) return finish();
+
+    state.answered = false;
+    els.nextBtn.disabled = true;
+    els.feedback.innerHTML = "";
+
+    const idx = state.planIdx[state.qPos];
+    const item = state.bank[idx];
+    if (!item){
+      state.qPos++;
+      return nextQuestion();
+    }
+
+    els.qi.textContent = String(state.qPos + 1);
+    els.prompt.innerHTML = promptText(item);
+
+    const correct = item.meaning;
+    const record = { kind: item.kind, term: item.term, correct, picked: "", ok: false, explanation: item.explanation || "" };
+
+    const pool = (item.kind === "ETY")
+      ? state.poolByKind.ETY
+      : (item.kind === "VOCAB")
+        ? state.poolByKind.VOCAB
+        : state.poolByKind.ANY;
+
+    const choices = buildChoices(correct, pool.length ? pool : state.poolByKind.ANY);
+    renderChoices(choices, correct, record);
+  }
+
+  function grade(btn, correct, record){
+    if (state.answered) return;
+    state.answered = true;
+
+    const all = Array.from(els.options.querySelectorAll(".optBtn"));
+    all.forEach(b => b.disabled = true);
+
+    if (btn.dataset.correct === "1"){
+      btn.classList.add("correct");
+      state.score++;
+      els.feedback.innerHTML = `<span class="ok"><strong>Correct.</strong></span>`;
+    }else{
+      btn.classList.add("wrong");
+      const target = all.find(b => b.dataset.correct === "1");
+      if (target) target.classList.add("correct");
+      els.feedback.innerHTML = `<span class="bad"><strong>Incorrect.</strong></span> <span>Correct answer: <strong>${escapeHtml(correct)}</strong></span>`;
+    }
+
+    els.score.textContent = String(state.score);
+
+    state.history.push(record);
+
+    state.qPos++;
+    els.pbar.style.width = Math.round((state.qPos / state.planIdx.length) * 100) + "%";
+    els.nextBtn.disabled = false;
+  }
+
+  function buildRationale(h, bankTermMap){
+    // “Professional rationale” without inventing facts:
+    // 1) state correct definition; 2) if wrong, identify which term(s) match chosen definition; 3) show any provided explanation if present.
+    if (h.ok){
+      return `<div class="rationale"><span class="ok">Correct.</span> Definition: <strong>${escapeHtml(h.correct)}</strong></div>`;
+    }
+    const chosen = h.picked || "";
+    const owners = bankTermMap.get(chosen) || [];
+    const ownersTxt = owners.length ? owners.map(escapeHtml).slice(0,4).join(", ") : "";
+    const ownerLine = ownersTxt ? `Your selected definition corresponds to: <strong>${ownersTxt}</strong>.` : `Your selected definition does not match the displayed term.`;
+    const extra = h.explanation ? `<div class="rationale"><strong>Explanation:</strong> ${escapeHtml(h.explanation)}</div>` : "";
+    return `
+      <div class="rationale">
+        <span class="bad">Incorrect.</span>
+        Correct definition: <strong>${escapeHtml(h.correct)}</strong>.
+        ${ownerLine}
+      </div>
+      ${extra}
+    `;
+  }
+
+  function finish(){
+    setVisible("results");
+
+    els.finalScore.textContent = String(state.score);
+    els.finalTotal.textContent = String(state.planIdx.length);
+    els.finalPct.textContent = state.planIdx.length
+      ? (Math.round((state.score / state.planIdx.length) * 100) + "%")
+      : "0%";
+
+    // Map meaning -> [terms] for rationale
+    const meaningToTerms = new Map();
+    for (const it of state.bank){
+      const m = it.meaning;
+      if (!meaningToTerms.has(m)) meaningToTerms.set(m, []);
+      meaningToTerms.get(m).push(it.term);
+    }
+
+    els.review.innerHTML = "";
+    state.history.forEach((h, i) => {
+      const li = document.createElement("li");
+      li.className = "reviewItem";
+      const status = h.ok ? "ok" : "bad";
+
+      li.innerHTML = `
+        <div class="reviewTop">
+          <div><strong>${i+1}.</strong> ${escapeHtml(h.term)}</div>
+          <div class="statusTag ${status}">${h.ok ? "Correct" : "Incorrect"}</div>
+        </div>
+        ${buildRationale(h, meaningToTerms)}
+      `;
+      els.review.appendChild(li);
+    });
+  }
+
+  function startFromBank(bankItems, requestedN, freezePlan){
+    // Build pools
+    state.bank = Array.isArray(bankItems) ? bankItems : [];
+    state.poolByKind = {
+      ETY: state.bank.filter(x => x.kind === "ETY").map(x => x.meaning),
+      VOCAB: state.bank.filter(x => x.kind === "VOCAB").map(x => x.meaning),
+      ANY: state.bank.map(x => x.meaning),
+    };
+
+    const maxN = Math.min(100, state.bank.length);
+    const n = clampInt(requestedN, 1, maxN);
+
+    // Plan
+    if (freezePlan && Array.isArray(state.frozenPlan) && state.frozenPlan.length){
+      state.planIdx = [...state.frozenPlan].slice(0, n);
+    }else{
+      const idx = Array.from({length: state.bank.length}, (_, i) => i);
+      shuffleInPlace(idx);
+      state.planIdx = idx.slice(0, n);
+      state.frozenPlan = [...state.planIdx];
+    }
+
+    resetSession(state.planIdx.length);
+    setVisible("quiz");
+    nextQuestion();
+  }
+
+  function retrySameSet(){
+    if (!state.frozenPlan || !state.frozenPlan.length) return;
+    const n = clampInt(cfg.getCount(), 1, Math.min(100, state.frozenPlan.length));
+    startFromBank(state.bank, n, true);
+  }
+
+  function newSet(){
+    setVisible("setup");
+  }
+
+  // Bind
+  els.nextBtn.addEventListener("click", nextQuestion);
+  els.finishBtn.addEventListener("click", finish);
+  els.retrySameBtn.addEventListener("click", retrySameSet);
+  els.newSetBtn.addEventListener("click", newSet);
+
+  // Keyboard
+  window.addEventListener("keydown", (e) => {
+    if (els.quiz.style.display === "none") return;
+
+    const key = e.key;
+    const map = { "1":0, "2":1, "3":2, "4":3, "a":0, "b":1, "c":2, "d":3, "A":0, "B":1, "C":2, "D":3 };
+    if (key in map){
+      const i = map[key];
+      const btn = els.options.querySelectorAll(".optBtn")[i];
+      if (btn) btn.click();
+      return;
+    }
+    if (key === "Enter" && !els.nextBtn.disabled){
+      els.nextBtn.click();
+    }
+  });
+
+  return { setVisible, startFromBank, newSet, retrySameSet };
+}
+
+/* =========================
+   CORE engine wiring
+   ========================= */
+const coreEngine = makeQuizEngine({
+  els: {
+    setup: $("coreSetup"),
+    quiz: $("coreQuiz"),
+    results: $("coreResults"),
+    qi: $("coreQi"),
+    qt: $("coreQt"),
+    score: $("coreScore"),
+    pbar: $("corePbar"),
+    prompt: $("corePrompt"),
+    options: $("coreOptions"),
+    feedback: $("coreFeedback"),
+    nextBtn: $("coreNextBtn"),
+    finishBtn: $("coreFinishBtn"),
+    finalScore: $("coreFinalScore"),
+    finalTotal: $("coreFinalTotal"),
+    finalPct: $("coreFinalPct"),
+    review: $("coreReview"),
+    retrySameBtn: $("coreRetrySameBtn"),
+    newSetBtn: $("coreNewSetBtn"),
+  },
+  getCount: () => clampInt($("coreCount").value, 1, 100),
+});
+
+async function initCoreBank(){
+  $("coreLoadHint").textContent = "Loading bank…";
+  $("coreStartBtn").disabled = true;
+
+  try{
+    const pairs = await loadCoreBankFromSite();
+    buildCoreBanks(pairs);
+    const total = coreBank.combined.length;
+    if (total < 4) throw new Error("bank too small");
+
+    $("coreLoadHint").textContent = "Ready.";
+    $("coreStartBtn").disabled = false;
+    $("coreFallback").style.display = "none";
+  }catch{
+    $("coreLoadHint").textContent = "Bank file not loaded from site.";
+    $("coreFallback").style.display = "";
+  }
+}
+
+initCoreBank();
+
+$("coreLoadBtn").addEventListener("click", async () => {
+  const f = $("coreBankFile").files?.[0];
+  if (!f) return;
+  const txt = await f.text();
+  const pairs = parseGlossaryTextToPairs(txt);
+  buildCoreBanks(pairs);
+  const total = coreBank.combined.length;
+
+  if (total >= 4){
+    $("coreLoadHint").textContent = "Ready.";
+    $("coreStartBtn").disabled = false;
+    $("coreFallback").style.display = "none";
+  }
+});
+
+$("coreStartBtn").addEventListener("click", () => {
+  const n = clampInt($("coreCount").value, 1, 100);
+  const bank = coreBank.combined;
+
+  // enforce 1–100 and also cap at available items
+  const maxN = Math.min(100, bank.length);
+  const useN = clampInt(n, 1, maxN);
+
+  $("coreCount").value = String(useN);
+  coreEngine.startFromBank(bank, useN, false);
+});
+
+$("coreCount").addEventListener("change", () => {
+  $("coreCount").value = String(clampInt($("coreCount").value, 1, 100));
+});
+$("coreCount").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !$("coreStartBtn").disabled) $("coreStartBtn").click();
+});
+
+/* =========================
+   CUSTOM engine wiring
+   ========================= */
+let customBankItems = [];
+let customEngine = makeQuizEngine({
+  els: {
+    setup: $("customSetup"),
+    quiz: $("customQuiz"),
+    results: $("customResults"),
+    qi: $("customQi"),
+    qt: $("customQt"),
+    score: $("customScore"),
+    pbar: $("customPbar"),
+    prompt: $("customPrompt"),
+    options: $("customOptions"),
+    feedback: $("customFeedback"),
+    nextBtn: $("customNextBtn"),
+    finishBtn: $("customFinishBtn"),
+    finalScore: $("customFinalScore"),
+    finalTotal: $("customFinalTotal"),
+    finalPct: $("customFinalPct"),
+    review: $("customReview"),
+    retrySameBtn: $("customRetrySameBtn"),
+    newSetBtn: $("customNewSetBtn"),
+  },
+  getCount: () => clampInt($("customCount").value, 1, 100),
+});
+
+function setCustomHint(msg){
+  $("customHint").textContent = msg;
+}
+
+$("customFile").addEventListener("change", async () => {
+  const f = $("customFile").files?.[0];
+  if (!f){
+    $("customStartBtn").disabled = true;
+    setCustomHint("Upload a text file. If it contains term–definition pairs, the quiz builds automatically.");
+    return;
+  }
+
+  const txt = await f.text();
+  const pairs = parseGlossaryTextToPairs(txt);
+
+  if (pairs.length >= 8){
+    const items = pairs.map(p => ({kind: classifyKind(p.term), term: p.term, meaning: p.meaning}));
+    customBankItems = items;
+    $("customStartBtn").disabled = false;
+    $("customJsonPane").style.display = "none";
+    setCustomHint("Ready.");
+  }else{
+    // Not enough structured pairs; require JSON
+    customBankItems = [];
+    $("customStartBtn").disabled = true;
+    $("customJsonPane").style.display = "";
+    setCustomHint("This file does not contain enough term–definition pairs. Paste MCQ JSON below.");
+  }
+});
+
+$("customStartBtn").addEventListener("click", () => {
+  const n = clampInt($("customCount").value, 1, 100);
+  const maxN = Math.min(100, customBankItems.length);
+  const useN = clampInt(n, 1, maxN);
+  $("customCount").value = String(useN);
+  customEngine.startFromBank(customBankItems, useN, false);
+});
+
+$("customCount").addEventListener("change", () => {
+  $("customCount").value = String(clampInt($("customCount").value, 1, 100));
+});
+
+/* JSON fallback for custom tab */
+function normalizeJsonToItems(json){
+  // Accept:
+  // 1) { questions:[ { stem|question, options:[..], answer:'A'|'B'|'C'|'D' or answerIndex, explanation } ] }
+  // 2) [ { question, options:[..], answerIndex, explanation } ]
+  const qArr = Array.isArray(json) ? json : (Array.isArray(json?.questions) ? json.questions : null);
+  if (!qArr) return [];
+
+  const items = [];
+  for (const q of qArr){
+    const stem = safeText(q.stem ?? q.question ?? "");
+    const options = Array.isArray(q.options) ? q.options.map(safeText) : [];
+    if (!stem || options.length < 4) continue;
+
+    let ansIdx = -1;
+    if (typeof q.answerIndex === "number") ansIdx = q.answerIndex;
+    else if (typeof q.answer === "string"){
+      const a = q.answer.trim().toUpperCase();
+      const map = {A:0,B:1,C:2,D:3};
+      if (a in map) ansIdx = map[a];
+    }
+    if (ansIdx < 0 || ansIdx > 3) continue;
+
+    // Convert to term/meaning style to reuse the same engine:
+    // term = stem, meaning = correct option; distractors handled via pool
+    items.push({
+      kind: "VOCAB",
+      term: stem,
+      meaning: options[ansIdx],
+      explanation: safeText(q.explanation ?? q.rationale ?? "")
+    });
+
+    // Also ensure the distractor pool exists: we add additional “bank items” mapping each distractor
+    // to itself by adding pseudo-items (keeps pool rich). Keep minimal; only if needed.
+    for (let i = 0; i < options.length; i++){
+      if (i === ansIdx) continue;
+      items.push({
+        kind: "VOCAB",
+        term: "(distractor)",
+        meaning: options[i],
+        explanation: ""
+      });
+    }
+  }
+
+  // De-dupe by meaning (keep first), but retain enough for pools
+  return items.filter(x => x.term !== "");
+}
+
+$("customJsonLoadBtn").addEventListener("click", () => {
+  const raw = $("customJson").value || "";
+  $("customJsonHint").textContent = "";
+
+  try{
+    const parsed = JSON.parse(raw);
+    const items = normalizeJsonToItems(parsed);
+
+    // Need enough items with unique meanings to build choices reliably
+    const uniques = new Set(items.map(x => x.meaning)).size;
+
+    if (items.length < 8 || uniques < 8){
+      $("customJsonHint").textContent = "JSON loaded, but not enough usable questions/options to build a quiz.";
+      return;
+    }
+
+    customBankItems = items;
+    $("customStartBtn").disabled = false;
+    $("customJsonPane").style.display = "none";
+    setCustomHint("Ready.");
+  }catch{
+    $("customJsonHint").textContent = "Invalid JSON.";
+  }
+});
+</script>
+
+</body>
+</html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Berthel’s Biology — Testing & Review Workspace</title>
   <meta name="color-scheme" content="dark" />
   <style>
