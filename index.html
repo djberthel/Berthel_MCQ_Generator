@@ -3,34 +3,43 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Berthel’s Biology — Unified Workspace</title>
+  <title>Berthel’s Biology — Testing & Review Workspace</title>
   <meta name="color-scheme" content="dark" />
   <style>
+    /* --------------------------------------------
+       FONT: Latin Modern (local-installed preferred)
+       -------------------------------------------- */
     :root{
+      --serif: "Latin Modern Roman","LM Roman 10","LM Roman 12","CMU Serif","Computer Modern Serif","Times New Roman",serif;
+      --mono:  "Latin Modern Mono","LM Mono 10","CMU Typewriter Text",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono","Courier New",monospace;
+
       --bg0:#050506;
       --bg1:#0b0c10;
       --bg2:#12131a;
+
       --card:rgba(255,255,255,.06);
       --card2:rgba(255,255,255,.04);
       --border:rgba(255,255,255,.12);
       --border2:rgba(255,255,255,.18);
+
       --fg:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.68);
       --muted2:rgba(255,255,255,.52);
+
       --shadow: 0 18px 52px rgba(0,0,0,.55);
       --ring: 0 0 0 3px rgba(255,255,255,.10);
+
       --ok:#9ff3c2;
       --bad:#ff9aa5;
       --warn:#ffe3a6;
-      --pill: rgba(255,255,255,.08);
-      --pillBorder: rgba(255,255,255,.14);
+
       --btn: rgba(255,255,255,.10);
       --btnHover: rgba(255,255,255,.14);
       --btnActive: rgba(255,255,255,.18);
+
       --input: rgba(0,0,0,.30);
       --input2: rgba(0,0,0,.18);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: system-ui,-apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
       --radius: 18px;
     }
 
@@ -39,7 +48,7 @@
     body{
       margin:0;
       color:var(--fg);
-      font: 16px/1.55 var(--sans);
+      font: 16px/1.55 var(--serif);
       background:
         radial-gradient(1200px 600px at 10% -10%, rgba(255,255,255,.09), transparent 55%),
         radial-gradient(900px 540px at 90% -20%, rgba(255,255,255,.07), transparent 52%),
@@ -56,11 +65,12 @@
 
     .hero{
       display:flex; align-items:center; justify-content:space-between;
-      gap:16px; padding:16px 0;
+      gap:16px; padding:16px 0 12px;
     }
 
     .brand{
-      display:flex; align-items:center; gap:14px; min-width: 280px;
+      display:flex; align-items:center; gap:14px;
+      min-width: 280px;
     }
 
     .avatarWrap{
@@ -69,12 +79,13 @@
       background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
       box-shadow: var(--shadow);
       overflow:hidden;
-      flex: 0 0 auto;
+      flex:0 0 auto;
     }
+
     #avatar{
       width:100%; height:100%;
       object-fit:cover;
-      object-position: 50% 35%;
+      object-position:50% 35%;
       display:block;
       filter: contrast(1.03) brightness(1.02);
     }
@@ -85,27 +96,11 @@
       letter-spacing: .2px;
       font-weight: 820;
     }
-    .titles p{margin:6px 0 0; color:var(--muted); max-width: 62ch}
-
-    .tagRow{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
-    }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px;
-      border:1px solid var(--pillBorder);
-      background: var(--pill);
-      border-radius:999px;
-      font-weight: 720;
-      color: rgba(255,255,255,.86);
-      box-shadow: 0 10px 30px rgba(0,0,0,.25);
-      white-space: nowrap;
-    }
-    .pill small{color:var(--muted); font-weight:650}
-    .pill .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: rgba(255,255,255,.75);
-      opacity:.9;
+    .titles p{
+      margin:6px 0 0;
+      color:var(--muted);
+      max-width: 62ch;
+      font-size: 15px;
     }
 
     .nav{
@@ -123,6 +118,7 @@
       font-weight: 760;
       letter-spacing:.1px;
       transition: transform .06s, background .15s, border-color .15s, opacity .2s;
+      font-family: var(--serif);
     }
     .tabBtn:hover{ background: var(--btnHover); border-color: var(--border2); }
     .tabBtn:active{ transform: translateY(1px); background: var(--btnActive); }
@@ -150,6 +146,7 @@
       box-shadow: var(--shadow);
     }
     .pad{padding:18px}
+
     .card h2{
       margin:0 0 10px;
       font-size: 18px;
@@ -164,29 +161,39 @@
     .grow{flex:1}
     .min220{min-width:220px}
     .min260{min-width:260px}
-    .min320{min-width:320px}
 
-    label{display:block; font-size: 12px; color: var(--muted); margin-bottom:6px; font-weight:700; letter-spacing:.2px}
+    label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom:6px;
+      font-weight:700;
+      letter-spacing:.2px
+    }
 
     input[type="text"], input[type="number"], textarea, select{
       width:100%;
       color: var(--fg);
-      background: rgba(0,0,0,.30);
+      background: var(--input);
       border:1px solid var(--border);
       border-radius: 12px;
       padding: 11px 12px;
       outline:none;
-      box-shadow: none;
       transition: border-color .15s, box-shadow .15s, background .15s;
+      font-family: var(--serif);
+    }
+    textarea{
+      min-height: 140px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.55;
     }
     input[type="text"]::placeholder, textarea::placeholder{color: rgba(255,255,255,.40)}
-    input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus{
+    input:focus, textarea:focus, select:focus{
       border-color: rgba(255,255,255,.22);
       box-shadow: var(--ring);
-      background: rgba(0,0,0,.18);
+      background: var(--input2);
     }
-    input[type="number"]{appearance: textfield;}
-    textarea{min-height: 140px; font-family: var(--mono); font-size: 13px; line-height: 1.55}
 
     .btn{
       border:1px solid var(--border);
@@ -197,13 +204,14 @@
       cursor:pointer;
       font-weight: 820;
       transition: transform .06s, background .15s, border-color .15s, opacity .2s;
+      font-family: var(--serif);
     }
     .btn:hover{ background: var(--btnHover); border-color: var(--border2); }
     .btn:active{ transform: translateY(1px); background: var(--btnActive); }
     .btn:disabled{ opacity:.55; cursor:not-allowed; }
     .btn.ghost{ background: transparent; }
-    .btn.danger{ border-color: rgba(255,154,165,.38); background: rgba(255,154,165,.08); }
     .btn.ok{ border-color: rgba(159,243,194,.35); background: rgba(159,243,194,.08); }
+    .btn.danger{ border-color: rgba(255,154,165,.38); background: rgba(255,154,165,.08); }
 
     .notice{
       border:1px solid var(--border);
@@ -228,6 +236,19 @@
       color: rgba(255,255,255,.86);
       white-space: nowrap;
     }
+
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.18);
+      color: rgba(255,255,255,.80);
+      font-weight: 780;
+    }
+
+    .mono{font-family: var(--mono)}
+    .hide{display:none !important;}
 
     /* Quiz UI */
     .progressBar{
@@ -272,6 +293,7 @@
       transition: transform .06s, background .15s, border-color .15s;
       font-size: 15px;
       line-height: 1.35;
+      font-family: var(--serif);
     }
     .opt:hover{ background: rgba(255,255,255,.06); border-color: var(--border2); transform: translateY(-1px); }
     .opt:active{ transform: translateY(1px); }
@@ -286,26 +308,43 @@
       border-radius: 14px;
       padding: 10px 12px;
     }
-    summary{cursor:pointer; color: var(--muted); font-weight: 800}
-
-    .mono{font-family: var(--mono)}
-    .hide{display:none !important;}
-    .sectionTitle{
-      display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    summary{
+      cursor:pointer;
+      color: var(--muted);
+      font-weight: 800;
+      font-family: var(--serif);
     }
-    .sectionTitle .right{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    .tiny{font-size:12px;color:var(--muted)}
-    .badge{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:6px 10px;
-      border-radius:999px;
+
+    /* Home update notes */
+    #updateNotes{
+      min-height: 220px;
+      padding: 12px;
+      border-radius: 14px;
       border:1px solid var(--border);
       background: rgba(0,0,0,.18);
-      color: rgba(255,255,255,.80);
-      font-weight: 780;
+      color: rgba(255,255,255,.88);
+      outline: none;
+      box-shadow: none;
+      font-family: var(--serif);
+      white-space: pre-wrap;
+    }
+    #updateNotes:focus{ box-shadow: var(--ring); border-color: rgba(255,255,255,.22); }
+
+    /* JSON report viewer */
+    pre.json{
+      margin:0;
+      padding: 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.28);
+      overflow:auto;
+      font: 12px/1.5 var(--mono);
+      color: rgba(255,255,255,.86);
+      max-height: 420px;
     }
   </style>
 </head>
+
 <body>
   <div class="topbar">
     <div class="container">
@@ -319,17 +358,16 @@
             <p>Professional student testing and review workspace.</p>
           </div>
         </div>
-
-        <div class="tagRow">
-          <span class="pill"><span class="dot"></span>LIVE BUILD: <b>Unified Workspace</b> <small>v2026.02.10</small></span>
+        <div class="row" style="justify-content:flex-end">
+          <span class="badge">Latin Modern (local)</span>
+          <span class="badge" id="buildTag">v2026.02.10</span>
         </div>
       </div>
 
       <div class="nav" role="tablist" aria-label="Workspace tabs">
         <button class="tabBtn" id="tab-home" aria-selected="true" aria-controls="panel-home" role="tab">Home</button>
         <button class="tabBtn" id="tab-ety" aria-selected="false" aria-controls="panel-ety" role="tab">Etymology + Vocabulary</button>
-        <button class="tabBtn" id="tab-mcq" aria-selected="false" aria-controls="panel-mcq" role="tab">MCQ</button>
-        <button class="tabBtn" id="tab-settings" aria-selected="false" aria-controls="panel-settings" role="tab">Settings</button>
+        <button class="tabBtn" id="tab-mcq" aria-selected="false" aria-controls="panel-mcq" role="tab">MCQ Content</button>
       </div>
     </div>
   </div>
@@ -338,32 +376,19 @@
     <!-- HOME -->
     <section class="card" id="panel-home" role="tabpanel" aria-labelledby="tab-home">
       <div class="pad">
-        <div class="sectionTitle">
-          <h2>Workspace overview</h2>
-          <div class="right">
-            <span class="badge">Offline-friendly</span>
-            <span class="badge">No external deps</span>
-          </div>
-        </div>
-
-        <div class="notice warn">
-          <b>Note:</b> Some browsers block <span class="mono">fetch()</span> when opened as <span class="mono">file://</span>.
-          If the preset bank doesn’t auto-load from <span class="mono">ib_bio_clean_index.txt</span>, run a local server or use the upload fallback in Settings.
-        </div>
-
-        <div class="hr"></div>
-
         <div class="grid">
           <div class="card">
             <div class="pad">
-              <h2>Student workflow</h2>
-              <ol style="margin:8px 0 0; padding-left: 18px; color: rgba(255,255,255,.86)">
-                <li>Open <b>Etymology + Vocabulary</b> or <b>MCQ</b>.</li>
-                <li>Select the number of practice questions.</li>
-                <li>The quiz auto-generates immediately.</li>
-              </ol>
-              <div class="tiny" style="margin-top:10px">
-                Keyboard: <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next.
+              <h2>Update notes (teacher-only)</h2>
+              <div class="subtle">
+                Stored locally in this browser (localStorage). Students can see what’s on-screen; this is not access control.
+              </div>
+              <div class="hr"></div>
+              <div id="updateNotes" contenteditable="true" spellcheck="false"></div>
+              <div class="row" style="margin-top:12px">
+                <button class="btn ok" id="saveNotes">Save notes</button>
+                <button class="btn ghost" id="clearNotes">Clear</button>
+                <span class="subtle" id="notesState">—</span>
               </div>
             </div>
           </div>
@@ -372,16 +397,26 @@
             <div class="pad">
               <h2>Status</h2>
               <div class="notice" id="statusBox">
-                <div><b>Avatar:</b> <span id="statusAvatar" class="muted">loading…</span></div>
-                <div style="margin-top:6px"><b>Term bank:</b> <span id="statusBank" class="muted">loading…</span></div>
-                <div style="margin-top:6px"><b>MCQ JSON:</b> <span id="statusMcq" class="muted">loading…</span></div>
+                <div><b>Avatar:</b> <span class="muted" id="stAvatar">loading…</span></div>
+                <div style="margin-top:6px"><b>Term bank:</b> <span class="muted" id="stBank">loading…</span></div>
+                <div style="margin-top:6px"><b>MCQ JSON:</b> <span class="muted" id="stMcq">not loaded</span></div>
+              </div>
+
+              <div class="hr"></div>
+
+              <div class="notice warn">
+                <b>Local file note:</b> some browsers block <span class="mono">fetch()</span> on <span class="mono">file://</span>.
+                If the term bank doesn’t auto-load, use the one-time bank upload inside the Etymology tab.
               </div>
 
               <div class="hr"></div>
 
               <div class="row">
                 <button class="btn" id="jumpEty">Open Etymology + Vocabulary</button>
-                <button class="btn" id="jumpMcq">Open MCQ</button>
+                <button class="btn" id="jumpMcq">Open MCQ Content</button>
+              </div>
+              <div class="subtle" style="margin-top:10px">
+                Keyboard: <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next
               </div>
             </div>
           </div>
@@ -392,74 +427,70 @@
     <!-- ETYMOLOGY + VOCAB -->
     <section class="card hide" id="panel-ety" role="tabpanel" aria-labelledby="tab-ety">
       <div class="pad">
-        <div class="sectionTitle">
-          <h2>Etymology + Vocabulary Review Engine</h2>
-          <div class="right">
-            <span class="badge">Preset bank</span>
-            <span class="badge">Auto-generate</span>
-            <span class="badge">Review</span>
-          </div>
+        <h2>Etymology + Vocabulary Review Engine</h2>
+        <div class="subtle">
+          Preset bank: <span class="mono">ib_bio_clean_index.txt</span> (same folder as this HTML).
+          Quiz generates immediately once the bank is loaded and a question count is set.
         </div>
 
-        <div class="grid" style="margin-top:12px">
+        <div class="hr"></div>
+
+        <div class="grid">
           <div class="card">
             <div class="pad">
               <h2>Practice settings</h2>
-              <div class="subtle">Preset bank: <span class="mono">ib_bio_clean_index.txt</span> (same directory as this HTML).</div>
+              <div class="row between">
+                <div class="min220">
+                  <label>Number of questions (1–100)</label>
+                  <input id="etyN" type="number" min="1" max="100" value="40" />
+                  <div class="subtle" id="etyMaxHint">Bank size: —</div>
+                </div>
+                <div class="grow"></div>
+                <div class="row">
+                  <button class="btn" id="etyNewBtn" disabled>Generate new</button>
+                  <button class="btn ghost" id="etyRetakeBtn" disabled>Retake same</button>
+                </div>
+              </div>
 
               <div class="hr"></div>
 
-              <div class="row between">
-                <div class="min220">
-                  <label>Number of questions</label>
-                  <input id="etyQCount" type="number" min="1" value="40" />
-                  <div class="tiny" id="etyMaxHint">Max: —</div>
+              <div class="notice" id="etyLoadState">
+                <b>Bank:</b> <span class="muted" id="etyBankState">loading…</span>
+              </div>
+
+              <!-- Bank upload fallback (no “settings page”) -->
+              <div class="hr"></div>
+              <details>
+                <summary>Bank not loading? Upload ib_bio_clean_index.txt once</summary>
+                <div style="margin-top:10px">
+                  <label>Upload term bank (.txt)</label>
+                  <input id="etyBankUpload" type="file" accept=".txt" />
+                  <div class="subtle" style="margin-top:8px">
+                    This is a fallback for browsers that block <span class="mono">fetch()</span> from <span class="mono">file://</span>.
+                  </div>
                 </div>
-
-                <div class="grow"></div>
-
-                <button id="etyStartBtn" class="btn" disabled>Generate quiz</button>
-              </div>
-
-              <div class="notice" style="margin-top:12px" id="etyRunState">
-                <div><b>Bank:</b> <span class="muted" id="etyBankState">loading…</span></div>
-                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="etySessionState">not running</span></div>
-              </div>
-
-              <div class="tiny" style="margin-top:10px">
-                Auto-generate: changing the number of questions will regenerate (once loaded).
-              </div>
+              </details>
             </div>
           </div>
 
           <div class="card">
             <div class="pad">
-              <h2>Controls</h2>
+              <h2>Run behavior</h2>
               <div class="notice">
-                <div><b>Keyboard:</b> <span class="kbd">1–4</span> answer · <span class="kbd">Enter</span> next</div>
-                <div class="tiny" style="margin-top:8px">
-                  If the bank fails to auto-load (browser blocking <span class="mono">fetch()</span> on <span class="mono">file://</span>), go to Settings and upload the TXT once.
-                </div>
+                <div><b>Answer key:</b> forced near-25% A/B/C/D with no runs &gt; 3.</div>
+                <div style="margin-top:8px"><b>Classification heuristic:</b> hyphenated word-parts are treated as etymology; otherwise vocabulary.</div>
+                <div style="margin-top:8px"><b>Finish screen:</b> “JSON Report” includes attempt log + errors list.</div>
               </div>
-
-              <div class="hr"></div>
-
-              <details>
-                <summary>What counts as “etymology” vs “vocabulary”</summary>
-                <div class="tiny" style="margin-top:8px">
-                  The parser uses a heuristic: word parts with leading/trailing hyphens (e.g., <span class="mono">-lysis</span>, <span class="mono">bio-</span>) are treated as etymology; others as vocabulary. You can override later if you want explicit tags.
-                </div>
-              </details>
             </div>
           </div>
         </div>
 
         <div style="height:16px"></div>
 
-        <!-- Active quiz -->
+        <!-- Active ETY Quiz -->
         <section class="card hide" id="etyQuizCard">
           <div class="pad">
-            <div class="row between" style="margin-bottom: 10px">
+            <div class="row between" style="margin-bottom:10px">
               <div class="row">
                 <span class="badge">Q <span id="etyQi">0</span>/<span id="etyQt">0</span></span>
                 <span class="badge">Score <span id="etyScore">0</span></span>
@@ -469,133 +500,144 @@
                 <div class="progressBar"><div id="etyPbar"></div></div>
               </div>
               <div class="row">
-                <button class="btn ghost" id="etyFinishNowBtn">Finish</button>
+                <button class="btn ghost" id="etyFinishNow">Finish</button>
               </div>
             </div>
 
             <div class="qPrompt" id="etyPrompt"></div>
-            <div class="opts" id="etyOpts" role="group" aria-label="options"></div>
+            <div class="opts" id="etyOpts"></div>
 
-            <div class="row between" style="margin-top: 12px">
-              <div class="notice" style="padding:10px 12px" id="etyFeedbackBox">
+            <div class="row between" style="margin-top:12px">
+              <div class="notice" style="padding:10px 12px">
                 <b>Feedback:</b> <span class="muted" id="etyFeedback">—</span>
               </div>
               <div class="row">
-                <button class="btn" id="etyNextBtn" disabled>Next</button>
-                <button class="btn danger" id="etyAbortBtn">Abort</button>
+                <button class="btn" id="etyNext" disabled>Next</button>
+                <button class="btn danger" id="etyAbort">Abort</button>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Results -->
-        <section class="card hide" id="etyResultCard">
+        <!-- ETY JSON Report -->
+        <section class="card hide" id="etyReportCard">
           <div class="pad">
-            <h2>Results</h2>
+            <h2>JSON Report (Etymology + Vocabulary)</h2>
             <div class="row" style="margin-top:6px">
-              <span class="pill">Score: <b id="etyFinalScore">0</b></span>
-              <span class="pill">Questions: <b id="etyFinalTotal">0</b></span>
-              <span class="pill">Accuracy: <b id="etyFinalPct">0%</b></span>
+              <span class="badge">Score <span id="etyRScore">0</span></span>
+              <span class="badge">Total <span id="etyRTotal">0</span></span>
+              <span class="badge">Accuracy <span id="etyRPct">0%</span></span>
             </div>
 
             <div class="hr"></div>
 
-            <details open>
-              <summary>Review</summary>
-              <ol id="etyReview" style="margin-top:10px"></ol>
-            </details>
+            <div class="grid">
+              <div class="card">
+                <div class="pad">
+                  <h2>Error log</h2>
+                  <div class="notice" id="etyErrBox">
+                    <b>Wrong answers:</b> <span class="muted" id="etyErrCount">0</span>
+                  </div>
+                  <div class="hr"></div>
+                  <details open>
+                    <summary>Review (wrong only)</summary>
+                    <ol id="etyWrongList" style="margin-top:10px"></ol>
+                  </details>
+                </div>
+              </div>
 
-            <div style="height:12px"></div>
-
-            <div class="row">
-              <button class="btn ok" id="etyRetryBtn">Try again</button>
-              <button class="btn ghost" id="etyExitBtn">Exit to settings</button>
+              <div class="card">
+                <div class="pad">
+                  <h2>JSON output</h2>
+                  <div class="subtle">Downloadable attempt log + validation summary.</div>
+                  <div class="hr"></div>
+                  <pre class="json" id="etyJsonView"></pre>
+                  <div class="row" style="margin-top:12px">
+                    <button class="btn ok" id="etyDownloadJson">Download JSON</button>
+                    <button class="btn" id="etyNewFromReport">Generate new</button>
+                    <button class="btn ghost" id="etyRetakeFromReport">Retake same</button>
+                  </div>
+                </div>
+              </div>
             </div>
+
           </div>
         </section>
       </div>
     </section>
 
-    <!-- MCQ -->
+    <!-- MCQ CONTENT -->
     <section class="card hide" id="panel-mcq" role="tabpanel" aria-labelledby="tab-mcq">
       <div class="pad">
-        <div class="sectionTitle">
-          <h2>MCQ (JSON-driven)</h2>
-          <div class="right">
-            <span class="badge">Preset JSON</span>
-            <span class="badge">Auto-generate</span>
-            <span class="badge">Review</span>
-          </div>
+        <h2>MCQ Content Engine (uploaded content → JSON → quiz)</h2>
+        <div class="subtle">
+          This tab is designed for your “MCQ JSON Machine” workflow:
+          upload text → generate MCQ JSON with your GPT → paste JSON → quiz auto-runs → JSON Report.
         </div>
 
-        <div class="grid" style="margin-top:12px">
+        <div class="hr"></div>
+
+        <div class="grid">
           <div class="card">
             <div class="pad">
-              <h2>Practice settings</h2>
-              <div class="subtle">
-                This MCQ tab expects a preset JSON file in the same directory (default):
-                <span class="mono">mcq_bank.json</span>.
+              <h2>Inputs</h2>
+
+              <div class="row">
+                <div class="grow min260">
+                  <label>Upload content (.txt)</label>
+                  <input id="mcqFile" type="file" accept=".txt,.md,.text" />
+                  <div class="subtle" id="mcqFileState">No file loaded.</div>
+                </div>
+
+                <div class="min220">
+                  <label>Number of MCQs (1–100)</label>
+                  <input id="mcqN" type="number" min="1" max="100" value="20" />
+                  <div class="subtle" id="mcqTime">Time: —</div>
+                </div>
               </div>
 
               <div class="hr"></div>
 
-              <div class="row between">
-                <div class="min220">
-                  <label>Number of questions</label>
-                  <input id="mcqRunCount" type="number" min="1" value="20" />
-                  <div class="tiny" id="mcqRunMax">Max: —</div>
+              <details>
+                <summary>Paste MCQ JSON from “MCQ JSON Machine”</summary>
+                <div style="margin-top:10px">
+                  <label>MCQ JSON</label>
+                  <textarea id="mcqJsonIn" placeholder='{"title":"...","questions":[{"prompt":"...","choices":["A","B","C","D"],"answer_index":2,"explanation":"..."}]}'></textarea>
+                  <div class="row" style="margin-top:12px">
+                    <button class="btn ok" id="mcqValidate">Validate JSON</button>
+                    <button class="btn ghost" id="mcqClearJson">Clear</button>
+                    <span class="subtle" id="mcqJsonState">Not validated.</span>
+                  </div>
                 </div>
+              </details>
 
-                <div class="grow"></div>
+              <div class="hr"></div>
 
-                <button class="btn" id="mcqStartBtn" disabled>Generate quiz</button>
+              <div class="notice warn">
+                <b>Docx constraint:</b> the strict DOCX generation rules you provided cannot be executed inside a static offline HTML page.
+                This engine assumes your GPT produces the MCQ JSON; the page runs the quiz + reporting locally.
               </div>
 
-              <div class="notice" style="margin-top:12px" id="mcqRunState">
-                <div><b>Bank:</b> <span class="muted" id="mcqBankState">loading…</span></div>
-                <div style="margin-top:6px"><b>Session:</b> <span class="muted" id="mcqSession">not running</span></div>
-              </div>
-
-              <div class="tiny" style="margin-top:10px">
-                Auto-generate: changing the number of questions will regenerate (once loaded).
-              </div>
             </div>
           </div>
 
           <div class="card">
             <div class="pad">
-              <h2>Options</h2>
-              <div class="row">
-                <div class="grow min220">
-                  <label>Shuffle questions</label>
-                  <select id="mcqShuffle">
-                    <option value="yes" selected>Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </div>
-
-                <div class="grow min220">
-                  <label>Show explanation after answer</label>
-                  <select id="mcqShowExp">
-                    <option value="yes" selected>Yes</option>
-                    <option value="no">No</option>
-                  </select>
-                </div>
+              <h2>Run behavior</h2>
+              <div class="notice">
+                <div><b>Answer-letter RNG:</b> enforced near-25% A/B/C/D with no runs &gt; 3.</div>
+                <div style="margin-top:8px"><b>Key forcing:</b> the engine reorders each question’s options so the correct answer lands on the forced letter.</div>
+                <div style="margin-top:8px"><b>Finish screen:</b> JSON Report includes schema validation issues + attempt log + wrong-answer detail.</div>
               </div>
 
               <div class="hr"></div>
 
-              <div class="notice">
-                <div class="tiny">
-                  If you are not using a preset file, go to Settings and upload a JSON once. This is kept in local storage for that browser.
-                </div>
-              </div>
-
-              <div style="height:12px"></div>
-
               <div class="row">
-                <button class="btn ghost" id="mcqFinishBtn" disabled>Finish</button>
-                <button class="btn ghost" id="mcqExportAttemptsBtn" disabled>Export attempt log (JSON)</button>
+                <button class="btn" id="mcqNewBtn" disabled>Generate new</button>
+                <button class="btn ghost" id="mcqRetakeBtn" disabled>Retake same</button>
+              </div>
+              <div class="subtle" style="margin-top:10px">
+                Keyboard: <span class="kbd">A–D</span> (or <span class="kbd">1–4</span>) answer · <span class="kbd">Enter</span> next
               </div>
             </div>
           </div>
@@ -603,7 +645,7 @@
 
         <div style="height:16px"></div>
 
-        <!-- Active MCQ quiz -->
+        <!-- MCQ Quiz -->
         <section class="card hide" id="mcqQuizCard">
           <div class="pad">
             <div class="row between" style="margin-bottom:10px">
@@ -615,175 +657,103 @@
                 <div class="progressBar"><div id="mcqPbar"></div></div>
               </div>
               <div class="row">
-                <button class="btn ghost" id="mcqNextBtn" disabled>Next</button>
+                <button class="btn ghost" id="mcqFinishNow">Finish</button>
               </div>
             </div>
 
             <div class="qPrompt" id="mcqPrompt"></div>
             <div class="opts" id="mcqOpts"></div>
 
-            <div class="notice" id="mcqFeedbackBox" style="margin-top:12px">
-              <b>Feedback:</b> <span class="muted" id="mcqFeedback">—</span>
-              <div class="tiny" id="mcqExplanation" style="margin-top:6px"></div>
+            <div class="row between" style="margin-top:12px">
+              <div class="notice" style="padding:10px 12px">
+                <b>Feedback:</b> <span class="muted" id="mcqFeedback">—</span>
+                <div class="subtle" id="mcqExplain" style="margin-top:6px"></div>
+              </div>
+              <div class="row">
+                <button class="btn" id="mcqNext" disabled>Next</button>
+                <button class="btn danger" id="mcqAbort">Abort</button>
+              </div>
             </div>
           </div>
         </section>
 
-        <!-- MCQ Results -->
-        <section class="card hide" id="mcqResultCard">
+        <!-- MCQ JSON Report -->
+        <section class="card hide" id="mcqReportCard">
           <div class="pad">
-            <h2>MCQ Results</h2>
+            <h2>JSON Report (MCQ Content)</h2>
             <div class="row" style="margin-top:6px">
-              <span class="pill">Score: <b id="mcqFinalScore">0</b></span>
-              <span class="pill">Questions: <b id="mcqFinalTotal">0</b></span>
-              <span class="pill">Accuracy: <b id="mcqFinalPct">0%</b></span>
+              <span class="badge">Score <span id="mcqRScore">0</span></span>
+              <span class="badge">Total <span id="mcqRTotal">0</span></span>
+              <span class="badge">Accuracy <span id="mcqRPct">0%</span></span>
+              <span class="badge" id="mcqScopeBadge">Scope: —</span>
+              <span class="badge" id="mcqTimeBadge">Time: —</span>
             </div>
 
             <div class="hr"></div>
 
-            <details open>
-              <summary>Review</summary>
-              <ol id="mcqReview" style="margin-top:10px"></ol>
-            </details>
+            <div class="grid">
+              <div class="card">
+                <div class="pad">
+                  <h2>Validation + errors</h2>
+                  <div class="notice" id="mcqValBox">
+                    <b>Schema issues:</b> <span class="muted" id="mcqValCount">0</span>
+                  </div>
+                  <div class="hr"></div>
+                  <details open>
+                    <summary>Schema issues (if any)</summary>
+                    <ol id="mcqValList" style="margin-top:10px"></ol>
+                  </details>
 
-            <div style="height:12px"></div>
+                  <div class="hr"></div>
 
-            <div class="row">
-              <button class="btn ok" id="mcqRetryBtn">Try again</button>
-              <button class="btn ghost" id="mcqExitBtn">Exit to settings</button>
+                  <div class="notice" id="mcqErrBox">
+                    <b>Wrong answers:</b> <span class="muted" id="mcqErrCount">0</span>
+                  </div>
+                  <div class="hr"></div>
+                  <details open>
+                    <summary>Review (wrong only)</summary>
+                    <ol id="mcqWrongList" style="margin-top:10px"></ol>
+                  </details>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="pad">
+                  <h2>JSON output</h2>
+                  <div class="subtle">Includes: content metadata, forced key, attempt log, validation summary.</div>
+                  <div class="hr"></div>
+                  <pre class="json" id="mcqJsonView"></pre>
+                  <div class="row" style="margin-top:12px">
+                    <button class="btn ok" id="mcqDownloadJson">Download JSON</button>
+                    <button class="btn" id="mcqNewFromReport">Generate new</button>
+                    <button class="btn ghost" id="mcqRetakeFromReport">Retake same</button>
+                  </div>
+                </div>
+              </div>
             </div>
+
           </div>
         </section>
-      </div>
-    </section>
 
-    <!-- SETTINGS -->
-    <section class="card hide" id="panel-settings" role="tabpanel" aria-labelledby="tab-settings">
-      <div class="pad">
-        <div class="sectionTitle">
-          <h2>Settings (fallback upload only)</h2>
-          <div class="right">
-            <span class="badge">Avatar</span>
-            <span class="badge">Bank upload</span>
-            <span class="badge">MCQ upload</span>
-          </div>
-        </div>
-
-        <div class="grid" style="margin-top:12px">
-          <div class="card">
-            <div class="pad">
-              <h2>Avatar</h2>
-              <div class="subtle">Default avatar: <span class="mono">Chinstrap_LOgo.jfif</span> (same directory as this HTML).</div>
-
-              <div style="height:10px"></div>
-
-              <label>Upload avatar (JPG/PNG/WebP/JFIF)</label>
-              <input id="avatarFile" type="file" accept="image/*" />
-
-              <div style="height:12px"></div>
-
-              <div class="notice" id="avatarMsg">
-                <b>Avatar status:</b> <span class="muted" id="avatarMsgText">—</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="pad">
-              <h2>Fallback uploads (if preset fetch is blocked)</h2>
-              <div class="subtle">
-                Upload once; saved to this browser (localStorage).
-              </div>
-
-              <div class="hr"></div>
-
-              <div class="row">
-                <div class="grow min260">
-                  <label>Upload term bank TXT/JSON (ib_bio_clean_index.txt)</label>
-                  <input id="bankCombinedFile" type="file" accept=".txt,.json" />
-                </div>
-                <div class="grow min260">
-                  <label>Upload MCQ JSON (mcq_bank.json)</label>
-                  <input id="mcqJsonFile" type="file" accept=".json" />
-                </div>
-              </div>
-
-              <div style="height:12px"></div>
-
-              <div class="row">
-                <button class="btn" id="saveStateBtn">Save now</button>
-                <button class="btn ghost" id="loadStateBtn">Load saved</button>
-                <button class="btn danger" id="wipeStateBtn">Wipe saved</button>
-              </div>
-
-              <div style="height:12px"></div>
-              <div class="notice" id="stateMsg">
-                <b>State:</b> <span class="muted" id="stateMsgText">No action yet.</span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   </main>
 
   <script>
-    /***********************
-     * PRESETS (same directory as this HTML)
-     ***********************/
-    const PRESET_TERM_BANK_URL = './ib_bio_clean_index.txt';
-    const PRESET_AVATAR_PATH = './Chinstrap_LOgo.jfif';
+    /* =========================
+       PRESETS (same directory)
+       ========================= */
+    const AVATAR_PATH = './Chinstrap_LOgo.jfif';
+    const TERM_BANK_PATH = './ib_bio_clean_index.txt';
 
-    // MCQ: default preset JSON filename. Put it in the same folder.
-    // If you use a different name, change this constant.
-    const PRESET_MCQ_JSON_URL = './mcq_bank.json';
-
-    /***********************
-     * TAB NAV
-     ***********************/
-    const tabs = [
-      {btn:'tab-home', panel:'panel-home'},
-      {btn:'tab-ety', panel:'panel-ety'},
-      {btn:'tab-mcq', panel:'panel-mcq'},
-      {btn:'tab-settings', panel:'panel-settings'},
-    ];
+    /* =========================
+       HELPERS
+       ========================= */
     const $ = (id)=>document.getElementById(id);
 
-    function showPanel(panelId){
-      for (const t of tabs){
-        const b = $(t.btn);
-        const p = $(t.panel);
-        const on = (t.panel === panelId);
-        b.setAttribute('aria-selected', on ? 'true' : 'false');
-        p.classList.toggle('hide', !on);
-      }
-      const map = {'panel-home':'home','panel-ety':'ety','panel-mcq':'mcq','panel-settings':'settings'};
-      history.replaceState(null, '', '#' + (map[panelId] || 'home'));
-    }
-    for (const t of tabs){ $(t.btn).addEventListener('click', () => showPanel(t.panel)); }
-    $('jumpEty').addEventListener('click', ()=>showPanel('panel-ety'));
-    $('jumpMcq').addEventListener('click', ()=>showPanel('panel-mcq'));
-
-    (function initHash(){
-      const h = (location.hash || '').replace('#','').toLowerCase();
-      const map = {home:'panel-home', ety:'panel-ety', mcq:'panel-mcq', settings:'panel-settings'};
-      showPanel(map[h] || 'panel-home');
-    })();
-
-    /***********************
-     * STATUS
-     ***********************/
-    function setStatus(){
-      $('statusAvatar').textContent = window.__avatarOk ? 'loaded' : 'not loaded';
-      $('statusBank').textContent = window.__bankTotal ? `${window.__bankTotal} items` : 'not loaded';
-      $('statusMcq').textContent = window.__mcqLoaded ? `${window.__mcqLoaded} questions` : 'not loaded';
-    }
-
-    /***********************
-     * UTIL
-     ***********************/
-    function safeJsonParse(s){ try { return JSON.parse(s); } catch { return null; } }
     function clamp(n, lo, hi){ return Math.min(Math.max(n, lo), hi); }
+
+    function safeJsonParse(s){ try { return JSON.parse(s); } catch { return null; } }
 
     async function readFileAsText(file){
       return new Promise((resolve, reject) => {
@@ -793,13 +763,17 @@
         r.readAsText(file);
       });
     }
-    async function readFileAsDataUrl(file){
-      return new Promise((resolve, reject) => {
-        const r = new FileReader();
-        r.onload = () => resolve(String(r.result || ''));
-        r.onerror = () => reject(new Error('File read failed'));
-        r.readAsDataURL(file);
-      });
+
+    function downloadText(filename, text){
+      const blob = new Blob([text], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
     }
 
     function randomInt(max){
@@ -815,6 +789,7 @@
       }
       return Math.floor(Math.random() * max);
     }
+
     function shuffle(arr){
       for (let i = arr.length - 1; i > 0; i--){
         const j = randomInt(i + 1);
@@ -823,46 +798,122 @@
       return arr;
     }
 
-    /***********************
-     * AVATAR (preset first)
-     ***********************/
-    async function applyAvatarFromPath(path){
-      return new Promise((resolve) => {
-        const img = $('avatar');
-        let done = false;
-        const finish = (ok, msg) => {
-          if (done) return;
-          done = true;
-          window.__avatarOk = ok;
-          $('avatarMsgText').textContent = msg;
-          setStatus();
-          resolve(ok);
-        };
-        img.onload = () => finish(true, 'Loaded.');
-        img.onerror = () => finish(false, 'Failed to load preset. Upload in Settings.');
-        img.src = path;
-      });
+    /* -----------------------------------------
+       ANSWER-LETTER RNG (as specified)
+       - ~25% A/B/C/D
+       - no >3 identical in a row
+       - frequency difference <= 1
+       ----------------------------------------- */
+    function generateKeyLetters(N){
+      const letters = ['A','B','C','D'];
+      const base = Math.floor(N/4);
+      const rem  = N % 4;
+
+      let counts = {A:base, B:base, C:base, D:base};
+      const add = shuffle(letters.slice()).slice(0, rem);
+      add.forEach(L => counts[L]++);
+
+      const target = [];
+      for (const L of letters){
+        for (let i=0;i<counts[L];i++) target.push(L);
+      }
+
+      function okRun(arr){
+        let run = 1;
+        for (let i=1;i<arr.length;i++){
+          if (arr[i] === arr[i-1]){
+            run++;
+            if (run > 3) return false;
+          } else run = 1;
+        }
+        return true;
+      }
+
+      // frequency diff <= 1 is guaranteed by construction, but keep constraint pass anyway
+      // Try shuffles until run constraint passes (bounded)
+      for (let tries=0; tries<5000; tries++){
+        const candidate = shuffle(target.slice());
+        if (okRun(candidate)) return candidate;
+      }
+      // If somehow never passes, return best-effort shuffle
+      return shuffle(target.slice());
     }
 
-    $('avatarFile').addEventListener('change', async (e) => {
-      const f = e.target.files?.[0];
-      if (!f) return;
-      const durl = await readFileAsDataUrl(f);
-      const img = $('avatar');
-      img.src = durl;
-      window.__avatarOk = true;
-      try { localStorage.setItem('bb.avatar.data', durl); } catch {}
-      $('avatarMsgText').textContent = 'Uploaded + applied.';
-      setStatus();
-    });
+    function keyLetterToIndex(L){ return ({A:0,B:1,C:2,D:3})[L] ?? 0; }
 
-    /***********************
-     * TERM BANK (preset TXT auto-load)
-     ***********************/
+    /* =========================
+       TAB NAV
+       ========================= */
+    const tabs = [
+      {btn:'tab-home', panel:'panel-home'},
+      {btn:'tab-ety',  panel:'panel-ety'},
+      {btn:'tab-mcq',  panel:'panel-mcq'},
+    ];
+
+    function showPanel(panelId){
+      for (const t of tabs){
+        const b = $(t.btn);
+        const p = $(t.panel);
+        const on = (t.panel === panelId);
+        b.setAttribute('aria-selected', on ? 'true' : 'false');
+        p.classList.toggle('hide', !on);
+      }
+      const map = {'panel-home':'home','panel-ety':'ety','panel-mcq':'mcq'};
+      history.replaceState(null, '', '#' + (map[panelId] || 'home'));
+    }
+
+    tabs.forEach(t => $(t.btn).addEventListener('click', () => showPanel(t.panel)));
+    $('jumpEty').addEventListener('click', ()=>showPanel('panel-ety'));
+    $('jumpMcq').addEventListener('click', ()=>showPanel('panel-mcq'));
+
+    (function initHash(){
+      const h = (location.hash || '').replace('#','').toLowerCase();
+      const map = {home:'panel-home', ety:'panel-ety', mcq:'panel-mcq'};
+      showPanel(map[h] || 'panel-home');
+    })();
+
+    /* =========================
+       HOME NOTES (localStorage)
+       ========================= */
+    const NOTES_KEY = 'bb.home.updateNotes.v1';
+    function loadNotes(){
+      const saved = localStorage.getItem(NOTES_KEY);
+      $('updateNotes').textContent = saved || "• (Add update notes here)\n• …";
+      $('notesState').textContent = saved ? 'Loaded.' : 'Draft.';
+    }
+    function saveNotes(){
+      localStorage.setItem(NOTES_KEY, $('updateNotes').textContent);
+      $('notesState').textContent = 'Saved.';
+    }
+    function clearNotes(){
+      localStorage.removeItem(NOTES_KEY);
+      $('updateNotes').textContent = '';
+      $('notesState').textContent = 'Cleared.';
+    }
+    $('saveNotes').addEventListener('click', saveNotes);
+    $('clearNotes').addEventListener('click', clearNotes);
+    $('updateNotes').addEventListener('input', ()=>{ $('notesState').textContent = 'Unsaved changes.'; });
+
+    /* =========================
+       AVATAR
+       ========================= */
+    function loadAvatar(){
+      const img = $('avatar');
+      img.onload = () => { $('stAvatar').textContent = 'loaded'; };
+      img.onerror = () => {
+        $('stAvatar').textContent = 'failed (check Chinstrap_LOgo.jfif path)';
+        img.src = '';
+      };
+      img.src = AVATAR_PATH;
+    }
+
+    /* =========================
+       TERM BANK PARSER
+       ========================= */
     function classifyKind(term){
       const t = (term || '').trim();
       const looksEty =
-        (/^-?[a-z]{1,12}-?$/.test(t) && (t.startsWith('-') || t.endsWith('-'))) ||
+        (/^-?[a-z]{1,14}-?$/.test(t) && (t.startsWith('-') || t.endsWith('-'))) ||
         /,\s*-\w+/.test(t) ||
         /-\w+$/.test(t) || /^\w+-/.test(t);
       return looksEty ? 'ETY' : 'VOCAB';
@@ -890,6 +941,7 @@
       const lower = s.toLowerCase();
       if (lower === 'glossary' || lower.startsWith('words in blue')) return out;
 
+      // tab-delimited
       if (s.includes('\t')){
         const parts = s.split('\t').map(x => x.trim()).filter(Boolean);
         if (parts.length >= 2){
@@ -898,6 +950,7 @@
         }
       }
 
+      // two-column via multi-spaces
       const cols = s.split(/\s{2,}/).map(x => x.trim()).filter(Boolean);
       if (cols.length >= 2){
         for (let i=0; i<cols.length-1; i+=2){
@@ -908,12 +961,12 @@
         return out;
       }
 
+      // dash / colon
       const mDash = s.match(/^(.+?)\s*[—–-]\s+(.+)$/);
       if (mDash){
         out.push({term: mDash[1].trim(), meaning: mDash[2].trim(), kind: classifyKind(mDash[1])});
         return out;
       }
-
       const mColon = s.match(/^(.+?)\s*:\s+(.+)$/);
       if (mColon){
         out.push({term: mColon[1].trim(), meaning: mColon[2].trim(), kind: classifyKind(mColon[1])});
@@ -933,15 +986,12 @@
         if (!line) continue;
 
         const pairs = parsePairsFromLine(line);
-
         if (pairs.length){
-          for (const p of pairs){
-            entries.push(p);
-            last = p;
-          }
+          for (const p of pairs){ entries.push(p); last = p; }
           continue;
         }
 
+        // continuation line appended to last meaning
         if (last && line.length > 2){
           last.meaning = (last.meaning + ' ' + line).replace(/\s+/g,' ').trim();
         }
@@ -956,664 +1006,912 @@
       return await res.text();
     }
 
+    /* =========================
+       ETY ENGINE STATE
+       ========================= */
     let bankAll = [];
-    let bankEty = [];
-    let bankVocab = [];
+    let etySession = null; // {id, created_at, N, keyLetters, questions[], answers[], score, finished_at}
 
-    function updateBankUI(){
-      bankEty = bankAll.filter(x=>x.kind === 'ETY');
-      bankVocab = bankAll.filter(x=>x.kind === 'VOCAB');
-
-      const total = bankAll.length;
-      window.__bankTotal = total;
-
-      $('etyMaxHint').textContent = 'Max: ' + (total ? total : '—');
-      $('etyQCount').max = String(Math.max(total, 1));
-      $('etyStartBtn').disabled = total === 0;
-      $('etyBankState').textContent = total ? `${total} items loaded.` : 'not loaded';
-      setStatus();
+    function updateStatus(){
+      $('stBank').textContent = bankAll.length ? (bankAll.length + ' items') : 'not loaded';
+      $('stMcq').textContent = window.__mcqLoaded ? (window.__mcqLoaded + ' questions') : 'not loaded';
     }
 
-    /***********************
-     * ETY QUIZ ENGINE (auto-generate)
-     ***********************/
-    const CHOICES = 4;
-    let etyPlan = [];
-    let etyIndex = 0;
-    let etyScore = 0;
-    let etyAnswered = false;
-    let etyHistory = [];
-    let etyAutoReady = false;
+    function setEtyUIReady(ready){
+      $('etyNewBtn').disabled = !ready;
+      $('etyRetakeBtn').disabled = !ready || !etySession;
+    }
 
-    function setEtyPrompt(kind, term){
+    function buildEtySession(fresh=true){
+      if (!bankAll.length) return null;
+
+      const N = clamp(parseInt($('etyN').value || 40, 10), 1, 100);
+      const take = Math.min(N, bankAll.length);
+
+      // choose questions
+      let indices = Array.from({length: bankAll.length}, (_, i) => i);
+      shuffle(indices);
+      indices = indices.slice(0, take);
+
+      const keyLetters = generateKeyLetters(take);
+
+      const questions = indices.map((idx, q) => {
+        const item = bankAll[idx];
+        const correct = item.meaning;
+
+        // distractors: meanings from same kind if possible, else from all
+        const pool = bankAll
+          .filter(x => x !== item && x.kind === item.kind)
+          .map(x => x.meaning);
+
+        const fallbackPool = bankAll.filter(x => x !== item).map(x => x.meaning);
+        const usePool = pool.length >= 12 ? pool : fallbackPool;
+
+        const distractors = [];
+        const used = new Set([correct]);
+        let guard = 0;
+        while (distractors.length < 3 && guard < 5000){
+          const cand = usePool[randomInt(usePool.length)];
+          if (cand && !used.has(cand)){
+            distractors.push(cand);
+            used.add(cand);
+          }
+          guard++;
+        }
+        while (distractors.length < 3) distractors.push('—');
+
+        // force correct into the letter specified by keyLetters[q]
+        const forcedLetter = keyLetters[q];
+        const forcedIndex = keyLetterToIndex(forcedLetter);
+
+        const options = [null,null,null,null];
+        options[forcedIndex] = correct;
+
+        // fill remaining slots with distractors in shuffled order
+        const remainingSlots = [0,1,2,3].filter(i => i !== forcedIndex);
+        shuffle(remainingSlots);
+        remainingSlots.forEach((slot, i) => options[slot] = distractors[i]);
+
+        return {
+          q_index: q + 1,
+          kind: item.kind,
+          term: item.term,
+          correct,
+          forced_letter: forcedLetter,
+          options
+        };
+      });
+
+      const session = {
+        engine: 'ETY_VOCAB',
+        session_id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + '_' + randomInt(1e9),
+        created_at: new Date().toISOString(),
+        N: take,
+        key_letters: keyLetters,
+        questions,
+        answers: [], // {q_index, picked_letter, picked_text, ok, correct_letter, correct_text}
+        score: 0,
+        finished_at: null
+      };
+
+      return session;
+    }
+
+    function renderEtyQuestion(qIdx){
+      const s = etySession;
+      if (!s) return;
+
+      const q = s.questions[qIdx];
+      $('etyQi').textContent = String(q.q_index);
+      $('etyQt').textContent = String(s.N);
+      $('etyScore').textContent = String(s.score);
+      $('etyKindBadge').textContent = q.kind;
+
+      // prompt
       const p = $('etyPrompt');
       p.innerHTML = '';
-      const lead = document.createTextNode(kind === 'ETY' ? 'What is the meaning of ' : 'Which definition best matches ');
+      const lead = document.createTextNode(q.kind === 'ETY' ? 'What is the meaning of ' : 'Which definition best matches ');
       const badge = document.createElement('span');
       badge.className = 'termBadge';
-      badge.textContent = term;
+      badge.textContent = q.term;
       p.appendChild(lead);
       p.appendChild(badge);
       p.appendChild(document.createTextNode('?'));
-      $('etyKindBadge').textContent = kind;
-    }
 
-    function buildChoices(correct, pool){
-      const picks = [correct];
-      let tries = 0;
-      while (picks.length < CHOICES && tries < 2500){
-        const c = pool[randomInt(pool.length)];
-        if (c && !picks.includes(c)) picks.push(c);
-        tries++;
-      }
-      while (picks.length < CHOICES) picks.push('—');
-      return shuffle(picks);
-    }
-
-    function renderEtyChoices(choices, correct, record){
+      // options
+      const letters = ['A','B','C','D'];
       const box = $('etyOpts');
       box.innerHTML = '';
-      choices.forEach((choice, i) => {
+      $('etyFeedback').textContent = '—';
+      $('etyNext').disabled = true;
+
+      letters.forEach((L, i) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'opt';
-        btn.dataset.correct = (choice === correct) ? '1' : '0';
+        btn.dataset.letter = L;
 
         const k = document.createElement('span');
         k.className = 'kbd k';
-        k.textContent = String(i + 1);
+        k.textContent = String(i+1);
 
         const t = document.createElement('span');
         t.className = 't';
-        t.textContent = choice;
+        t.textContent = q.options[i];
 
         btn.appendChild(k); btn.appendChild(t);
-        btn.addEventListener('click', () => gradeEty(btn, correct, {...record, picked: choice, ok: choice === correct}));
+
+        btn.addEventListener('click', () => gradeEty(qIdx, L));
+
         box.appendChild(btn);
       });
+
+      const progress = Math.round((q.q_index - 1) / s.N * 100);
+      $('etyPbar').style.width = progress + '%';
     }
 
-    function resetEtySession(total){
-      etyPlan = [];
-      etyIndex = 0;
-      etyScore = 0;
-      etyAnswered = false;
-      etyHistory = [];
+    function gradeEty(qIdx, pickedLetter){
+      const s = etySession;
+      const q = s.questions[qIdx];
+      const correctLetter = q.forced_letter; // by construction
+      const ok = (pickedLetter === correctLetter);
 
-      $('etyQi').textContent = '0';
-      $('etyQt').textContent = String(total);
-      $('etyScore').textContent = '0';
-      $('etyPbar').style.width = '0%';
-      $('etyFeedback').textContent = '—';
-      $('etyNextBtn').disabled = true;
-      $('etySessionState').textContent = 'not running';
-    }
-
-    function nextEtyQuestion(){
-      if (etyIndex >= etyPlan.length) return finishEty();
-      etyAnswered = false;
-      $('etyNextBtn').disabled = true;
-      $('etyFeedback').textContent = '—';
-
-      const item = bankAll[etyPlan[etyIndex]];
-      if (!item) { etyIndex++; return nextEtyQuestion(); }
-
-      $('etyQi').textContent = String(etyIndex + 1);
-      setEtyPrompt(item.kind, item.term);
-
-      const correct = item.meaning;
-      const pool = (item.kind === 'ETY' ? bankEty : bankVocab).map(x => x.meaning);
-      const effectivePool = pool.length >= 4 ? pool : bankAll.map(x => x.meaning);
-
-      const record = {kind: item.kind, term: item.term, correct, picked:'', ok:false};
-      const choices = buildChoices(correct, effectivePool);
-      renderEtyChoices(choices, correct, record);
-    }
-
-    function gradeEty(btn, correct, record){
-      if (etyAnswered) return;
-      etyAnswered = true;
-
+      // lock buttons
       const all = Array.from(document.querySelectorAll('#etyOpts .opt'));
-      all.forEach(el => el.disabled = true);
+      all.forEach(b => b.disabled = true);
 
-      if (btn.dataset.correct === '1'){
-        btn.classList.add('correct');
-        etyScore++;
+      // decorate
+      all.forEach(b => {
+        const L = b.dataset.letter;
+        if (L === correctLetter) b.classList.add('correct');
+        if (L === pickedLetter && !ok) b.classList.add('wrong');
+      });
+
+      if (ok){
+        s.score++;
         $('etyFeedback').textContent = 'Correct.';
       } else {
-        btn.classList.add('wrong');
-        $('etyFeedback').textContent = 'Correct: ' + correct;
-        const target = all.find(el => el.dataset.correct === '1');
-        if (target) target.classList.add('correct');
+        $('etyFeedback').textContent = 'Correct: ' + q.correct;
       }
 
-      $('etyScore').textContent = String(etyScore);
-      etyHistory.push(record);
+      const pickedIndex = keyLetterToIndex(pickedLetter);
+      const correctIndex = keyLetterToIndex(correctLetter);
 
-      etyIndex++;
-      $('etyPbar').style.width = Math.round((etyIndex / etyPlan.length) * 100) + '%';
-      $('etyNextBtn').disabled = false;
+      s.answers.push({
+        q_index: q.q_index,
+        kind: q.kind,
+        term: q.term,
+        picked_letter: pickedLetter,
+        picked_text: q.options[pickedIndex],
+        ok,
+        correct_letter: correctLetter,
+        correct_text: q.options[correctIndex]
+      });
+
+      $('etyScore').textContent = String(s.score);
+      $('etyNext').disabled = false;
+
+      const progress = Math.round((q.q_index) / s.N * 100);
+      $('etyPbar').style.width = progress + '%';
+    }
+
+    function nextEty(){
+      const s = etySession;
+      if (!s) return;
+
+      const answered = s.answers.length;
+      if (answered >= s.N){
+        finishEty();
+        return;
+      }
+      renderEtyQuestion(answered); // next unanswered index
+    }
+
+    function abortEty(){
+      $('etyQuizCard').classList.add('hide');
+      $('etyReportCard').classList.add('hide');
+      $('etyKindBadge').textContent = '—';
     }
 
     function finishEty(){
+      const s = etySession;
+      if (!s) return;
+
+      s.finished_at = new Date().toISOString();
+
+      // Build “validation / parser” report
+      const wrong = s.answers.filter(a => !a.ok);
+
+      const report = {
+        engine: s.engine,
+        session_id: s.session_id,
+        created_at: s.created_at,
+        finished_at: s.finished_at,
+        N: s.N,
+        score: s.score,
+        accuracy: s.N ? (s.score / s.N) : 0,
+        key_letters: s.key_letters,
+        errors: wrong.map(w => ({
+          q_index: w.q_index,
+          kind: w.kind,
+          term: w.term,
+          picked_letter: w.picked_letter,
+          picked_text: w.picked_text,
+          correct_letter: w.correct_letter,
+          correct_text: w.correct_text
+        })),
+        attempt_log: s.answers,
+        questions_minimal: s.questions.map(q => ({
+          q_index: q.q_index,
+          kind: q.kind,
+          term: q.term,
+          forced_letter: q.forced_letter,
+          options: q.options
+        }))
+      };
+
+      // UI
       $('etyQuizCard').classList.add('hide');
-      $('etyResultCard').classList.remove('hide');
+      $('etyReportCard').classList.remove('hide');
 
-      $('etyFinalScore').textContent = String(etyScore);
-      $('etyFinalTotal').textContent = String(etyPlan.length);
-      $('etyFinalPct').textContent = etyPlan.length ? (Math.round((etyScore / etyPlan.length) * 100) + '%') : '0%';
+      $('etyRScore').textContent = String(s.score);
+      $('etyRTotal').textContent = String(s.N);
+      $('etyRPct').textContent = s.N ? (Math.round((s.score / s.N) * 100) + '%') : '0%';
 
-      const ol = $('etyReview');
-      ol.innerHTML = '';
-      etyHistory.forEach(h => {
+      $('etyErrCount').textContent = String(wrong.length);
+
+      const wl = $('etyWrongList');
+      wl.innerHTML = '';
+      wrong.forEach(w => {
         const li = document.createElement('li');
-        li.style.color = h.ok ? 'var(--ok)' : 'var(--bad)';
-        li.textContent = `${h.kind} · ${h.term} → ${h.correct}` + (h.ok ? '' : ` · you chose: ${h.picked}`);
-        ol.appendChild(li);
+        li.style.color = 'var(--bad)';
+        li.textContent = `${w.kind} · ${w.term} — picked ${w.picked_letter} (${w.picked_text}); correct ${w.correct_letter} (${w.correct_text}).`;
+        wl.appendChild(li);
       });
-
-      $('etySessionState').textContent = 'completed';
-    }
-
-    function startEty(){
-      if (!bankAll.length) return;
-
-      const requested = clamp(parseInt($('etyQCount').value || 40, 10), 1, bankAll.length);
-      const indices = Array.from({length: bankAll.length}, (_, i) => i);
-      shuffle(indices);
-      etyPlan = indices.slice(0, requested);
-
-      resetEtySession(etyPlan.length);
-      $('etySessionState').textContent = `running (${etyPlan.length} Q)`;
-
-      $('etyResultCard').classList.add('hide');
-      $('etyQuizCard').classList.remove('hide');
-      nextEtyQuestion();
-    }
-
-    // Auto-generate when Q count changes (once bank is loaded)
-    $('etyQCount').addEventListener('input', () => {
-      if (!etyAutoReady) return;
-      startEty();
-    });
-
-    $('etyStartBtn').addEventListener('click', startEty);
-    $('etyNextBtn').addEventListener('click', nextEtyQuestion);
-    $('etyFinishNowBtn').addEventListener('click', finishEty);
-    $('etyAbortBtn').addEventListener('click', () => {
-      resetEtySession(0);
-      $('etyQuizCard').classList.add('hide');
-      $('etyResultCard').classList.add('hide');
-      $('etySessionState').textContent = 'aborted';
-    });
-    $('etyRetryBtn').addEventListener('click', () => {
-      $('etyResultCard').classList.add('hide');
-      startEty();
-    });
-    $('etyExitBtn').addEventListener('click', () => showPanel('panel-settings'));
-
-    window.addEventListener('keydown', (e) => {
-      if ($('panel-ety').classList.contains('hide')) return;
-      if ($('etyQuizCard').classList.contains('hide')) return;
-
-      if (/^[1-4]$/.test(e.key)){
-        const i = Number(e.key) - 1;
-        document.querySelectorAll('#etyOpts .opt')[i]?.click();
-      } else if (e.key === 'Enter'){
-        if (!$('etyNextBtn').disabled) $('etyNextBtn').click();
+      if (!wrong.length){
+        const li = document.createElement('li');
+        li.style.color = 'var(--ok)';
+        li.textContent = 'No errors.';
+        wl.appendChild(li);
       }
-    });
 
-    /***********************
-     * MCQ JSON RUNNER (preset JSON + auto-generate)
-     ***********************/
-    let mcqBank = null;
-    let mcqPlan = [];
-    let mcqIndex = 0;
-    let mcqScore = 0;
-    let mcqAnswered = false;
-    let mcqAttempts = [];
-    let mcqAutoReady = false;
+      const jsonTxt = JSON.stringify(report, null, 2);
+      $('etyJsonView').textContent = jsonTxt;
 
-    function normalizeMcqJson(obj){
-      if (!obj) return null;
-      const title = String(obj.title ?? obj.name ?? 'MCQ Set').trim();
-      const qArr = Array.isArray(obj.questions) ? obj.questions
-                : Array.isArray(obj.items) ? obj.items
-                : Array.isArray(obj.mcqs) ? obj.mcqs
+      $('etyDownloadJson').onclick = () => downloadText(`ETY_VOCAB_${s.N}Q_AttemptLog.json`, jsonTxt);
+
+      setEtyUIReady(true);
+      $('etyRetakeBtn').disabled = false;
+    }
+
+    function startEtyNew(){
+      const s = buildEtySession(true);
+      if (!s) return;
+      etySession = s;
+
+      $('etyReportCard').classList.add('hide');
+      $('etyQuizCard').classList.remove('hide');
+
+      $('etyScore').textContent = '0';
+      $('etyPbar').style.width = '0%';
+      $('etyKindBadge').textContent = '—';
+
+      renderEtyQuestion(0);
+
+      $('etyRetakeBtn').disabled = false;
+    }
+
+    function startEtyRetake(){
+      if (!etySession) return;
+
+      // Retake same questions: rebuild answers/score but keep questions/key
+      const keep = etySession;
+      etySession = {
+        ...keep,
+        created_at: new Date().toISOString(),
+        answers: [],
+        score: 0,
+        finished_at: null
+      };
+
+      $('etyReportCard').classList.add('hide');
+      $('etyQuizCard').classList.remove('hide');
+
+      $('etyScore').textContent = '0';
+      $('etyPbar').style.width = '0%';
+      renderEtyQuestion(0);
+    }
+
+    /* =========================
+       MCQ CONTENT ENGINE
+       ========================= */
+    let mcqContentText = '';
+    let mcqBank = null;     // normalized {title, questions[]}
+    let mcqSession = null;  // session object similar to ety
+    let mcqValidationIssues = [];
+    window.__mcqLoaded = 0;
+
+    function roundTo1SigFigMinutes(n){
+      // n minutes, rounded to 1 significant figure (e.g., 54 -> 50, 37 -> 40, 10 -> 10)
+      n = Math.max(1, Math.round(n));
+      const p = Math.floor(Math.log10(n));
+      const scale = Math.pow(10, p);
+      return Math.round(n / scale) * scale;
+    }
+
+    function extractSyllabusCodes(text){
+      // Finds patterns like D3.3.1, C2.2, B1.1.3 etc
+      const re = /\b([A-D])(\d(?:\.\d+){1,3})\b/g;
+      const found = [];
+      let m;
+      while ((m = re.exec(text)) !== null){
+        found.push(m[1] + m[2]);
+      }
+      return found;
+    }
+
+    function compareCode(a,b){
+      // parse letter + numeric parts
+      const pa = a.match(/^([A-D])(\d+(?:\.\d+)*)$/);
+      const pb = b.match(/^([A-D])(\d+(?:\.\d+)*)$/);
+      if (!pa || !pb) return a.localeCompare(b);
+      const la = pa[1], lb = pb[1];
+      if (la !== lb) return la.localeCompare(lb);
+      const na = pa[2].split('.').map(x=>parseInt(x,10));
+      const nb = pb[2].split('.').map(x=>parseInt(x,10));
+      const L = Math.max(na.length, nb.length);
+      for (let i=0;i<L;i++){
+        const xa = na[i] ?? -1;
+        const xb = nb[i] ?? -1;
+        if (xa !== xb) return xa - xb;
+      }
+      return 0;
+    }
+
+    function computeCodeRangeFromText(text){
+      const codes = extractSyllabusCodes(text || '');
+      if (!codes.length) return null;
+      codes.sort(compareCode);
+      return {min: codes[0], max: codes[codes.length - 1]};
+    }
+
+    function normalizeMcqJson(raw){
+      mcqValidationIssues = [];
+
+      if (!raw || typeof raw !== 'object'){
+        mcqValidationIssues.push('Root must be a JSON object.');
+        return null;
+      }
+
+      const title = String(raw.title ?? raw.name ?? 'MCQ Set').trim() || 'MCQ Set';
+
+      const qArr = Array.isArray(raw.questions) ? raw.questions
+                : Array.isArray(raw.items) ? raw.items
+                : Array.isArray(raw.mcqs) ? raw.mcqs
                 : null;
-      if (!qArr) return null;
+
+      if (!qArr){
+        mcqValidationIssues.push('Missing questions array (expected "questions").');
+        return null;
+      }
 
       const questions = [];
-      for (const q of qArr){
-        if (!q) continue;
-        const prompt = String(q.prompt ?? q.question ?? q.stem ?? q.text ?? '').trim();
-        const choices = q.choices ?? q.options ?? q.answers ?? null;
-        if (!prompt || !Array.isArray(choices) || choices.length < 2) continue;
+      qArr.forEach((q, idx) => {
+        if (!q || typeof q !== 'object'){
+          mcqValidationIssues.push(`Question ${idx+1}: not an object.`);
+          return;
+        }
 
-        const ch = choices.map(x => String(x).trim());
+        const prompt = String(q.prompt ?? q.question ?? q.stem ?? q.text ?? '').trim();
+        if (!prompt) mcqValidationIssues.push(`Question ${idx+1}: missing prompt/stem.`);
+
+        const choices = q.choices ?? q.options ?? q.answers ?? null;
+        if (!Array.isArray(choices)) mcqValidationIssues.push(`Question ${idx+1}: missing choices/options array.`);
+        const ch = Array.isArray(choices) ? choices.map(x => String(x).trim()) : [];
+
+        if (ch.length !== 4) mcqValidationIssues.push(`Question ${idx+1}: expected exactly 4 choices; got ${ch.length}.`);
 
         let ai = null;
         if (Number.isInteger(q.answer_index)) ai = q.answer_index;
         else if (Number.isInteger(q.answer)) ai = q.answer;
-        else if (typeof q.answer_letter === 'string'){
-          ai = 'ABCD'.indexOf(q.answer_letter.trim().toUpperCase());
-        } else if (typeof q.correct === 'string'){
-          ai = 'ABCD'.indexOf(q.correct.trim().toUpperCase());
-        }
-        if (ai == null || ai < 0 || ai >= ch.length) continue;
+        else if (typeof q.answer_letter === 'string') ai = 'ABCD'.indexOf(q.answer_letter.trim().toUpperCase());
+        else if (typeof q.correct === 'string') ai = 'ABCD'.indexOf(q.correct.trim().toUpperCase());
 
-        questions.push({
-          prompt,
-          choices: ch,
-          answer_index: ai,
-          explanation: String(q.explanation ?? q.rationale ?? '').trim(),
-          tags: Array.isArray(q.tags) ? q.tags.map(x => String(x)) : []
-        });
+        if (ai == null || ai < 0 || ai > 3) mcqValidationIssues.push(`Question ${idx+1}: missing/invalid answer_index (0–3).`);
+
+        // Only include if minimally usable
+        if (prompt && ch.length === 4 && ai != null && ai >= 0 && ai <= 3){
+          questions.push({
+            prompt,
+            choices: ch,
+            answer_index: ai,
+            explanation: String(q.explanation ?? q.rationale ?? '').trim(),
+            tags: Array.isArray(q.tags) ? q.tags.map(x=>String(x)) : []
+          });
+        }
+      });
+
+      if (!questions.length){
+        mcqValidationIssues.push('No usable questions after validation.');
+        return null;
       }
 
-      if (!questions.length) return null;
       return {title, questions};
     }
 
-    async function loadMcqFromPresetOrSaved(){
-      // Saved (uploaded once) takes precedence
-      try{
-        const saved = localStorage.getItem('bb.mcq.json');
-        if (saved){
-          const raw = safeJsonParse(saved);
-          const normalized = normalizeMcqJson(raw);
-          if (normalized) return normalized;
-        }
-      } catch {}
-
-      // Else preset file
-      const txt = await fetchText(PRESET_MCQ_JSON_URL);
-      const raw = safeJsonParse(txt);
-      if (!raw) throw new Error('Preset MCQ JSON invalid.');
-      const normalized = normalizeMcqJson(raw);
-      if (!normalized) throw new Error('Preset MCQ JSON schema not recognized.');
-      return normalized;
+    function setMcqControlsEnabled(enabled){
+      $('mcqNewBtn').disabled = !enabled;
+      $('mcqRetakeBtn').disabled = !enabled || !mcqSession;
     }
 
-    function updateMcqUI(){
-      const n = mcqBank?.questions?.length || 0;
-      window.__mcqLoaded = n;
+    function buildMcqSession(fresh=true){
+      if (!mcqBank) return null;
 
-      $('mcqRunMax').textContent = 'Max: ' + (n ? n : '—');
-      $('mcqRunCount').max = String(Math.max(n, 1));
-      $('mcqStartBtn').disabled = n === 0;
+      const N = clamp(parseInt($('mcqN').value || 20, 10), 1, 100);
+      const take = Math.min(N, mcqBank.questions.length);
 
-      $('mcqBankState').textContent = n ? `${n} questions loaded.` : 'not loaded';
-      setStatus();
+      let indices = Array.from({length: mcqBank.questions.length}, (_, i) => i);
+      shuffle(indices);
+      indices = indices.slice(0, take);
+
+      const keyLetters = generateKeyLetters(take);
+
+      const questions = indices.map((srcIdx, q) => {
+        const src = mcqBank.questions[srcIdx];
+        const forcedLetter = keyLetters[q];
+        const forcedIndex = keyLetterToIndex(forcedLetter);
+
+        // reorder options so correct lands at forcedIndex
+        const correctText = src.choices[src.answer_index];
+        const distractors = src.choices.filter((_, i) => i !== src.answer_index);
+
+        const options = [null,null,null,null];
+        options[forcedIndex] = correctText;
+
+        const remainingSlots = [0,1,2,3].filter(i => i !== forcedIndex);
+        // keep distractors in a randomized order to prevent fixed positions
+        shuffle(remainingSlots);
+        shuffle(distractors);
+
+        remainingSlots.forEach((slot, i) => options[slot] = distractors[i]);
+
+        return {
+          q_index: q + 1,
+          source_index: srcIdx,
+          prompt: src.prompt,
+          forced_letter: forcedLetter,
+          correct_text: correctText,
+          options,
+          explanation: src.explanation || '',
+          tags: src.tags || []
+        };
+      });
+
+      return {
+        engine: 'MCQ_CONTENT',
+        session_id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + '_' + randomInt(1e9),
+        created_at: new Date().toISOString(),
+        N: take,
+        key_letters: keyLetters,
+        questions,
+        answers: [],
+        score: 0,
+        finished_at: null
+      };
     }
 
-    function resetMcqSession(total){
-      mcqPlan = [];
-      mcqIndex = 0;
-      mcqScore = 0;
-      mcqAnswered = false;
-      mcqAttempts = [];
+    function renderMcqQuestion(qIdx){
+      const s = mcqSession;
+      if (!s) return;
 
-      $('mcqQi').textContent = '0';
-      $('mcqQt').textContent = String(total);
-      $('mcqScore').textContent = '0';
-      $('mcqPbar').style.width = '0%';
-      $('mcqFeedback').textContent = '—';
-      $('mcqExplanation').textContent = '';
-      $('mcqNextBtn').disabled = true;
-      $('mcqFinishBtn').disabled = true;
-      $('mcqExportAttemptsBtn').disabled = true;
-    }
+      const q = s.questions[qIdx];
+      $('mcqQi').textContent = String(q.q_index);
+      $('mcqQt').textContent = String(s.N);
+      $('mcqScore').textContent = String(s.score);
 
-    function renderMcqQuestion(){
-      if (!mcqBank) return;
-      if (mcqIndex >= mcqPlan.length) return finishMcq();
-
-      mcqAnswered = false;
-      $('mcqNextBtn').disabled = true;
-      $('mcqFeedback').textContent = '—';
-      $('mcqExplanation').textContent = '';
-
-      const q = mcqBank.questions[mcqPlan[mcqIndex]];
-      $('mcqQi').textContent = String(mcqIndex + 1);
-      $('mcqQt').textContent = String(mcqPlan.length);
       $('mcqPrompt').textContent = q.prompt;
 
-      const opts = $('mcqOpts');
-      opts.innerHTML = '';
+      const letters = ['A','B','C','D'];
+      const box = $('mcqOpts');
+      box.innerHTML = '';
 
-      q.choices.forEach((choice, i) => {
+      $('mcqFeedback').textContent = '—';
+      $('mcqExplain').textContent = '';
+      $('mcqNext').disabled = true;
+
+      letters.forEach((L, i) => {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'opt';
-        btn.dataset.correct = (i === q.answer_index) ? '1' : '0';
+        btn.dataset.letter = L;
 
         const k = document.createElement('span');
         k.className = 'kbd k';
-        k.textContent = 'ABCD'[i] || String(i+1);
+        k.textContent = L;
 
         const t = document.createElement('span');
         t.className = 't';
-        t.textContent = choice;
+        t.textContent = q.options[i];
 
         btn.appendChild(k); btn.appendChild(t);
-        btn.addEventListener('click', () => gradeMcq(btn, q, i));
-        opts.appendChild(btn);
+        btn.addEventListener('click', () => gradeMcq(qIdx, L));
+        box.appendChild(btn);
       });
+
+      const progress = Math.round((q.q_index - 1) / s.N * 100);
+      $('mcqPbar').style.width = progress + '%';
     }
 
-    function gradeMcq(btn, q, pickedIndex){
-      if (mcqAnswered) return;
-      mcqAnswered = true;
+    function gradeMcq(qIdx, pickedLetter){
+      const s = mcqSession;
+      const q = s.questions[qIdx];
+      const correctLetter = q.forced_letter; // by construction
+      const ok = (pickedLetter === correctLetter);
 
       const all = Array.from(document.querySelectorAll('#mcqOpts .opt'));
-      all.forEach(el => el.disabled = true);
+      all.forEach(b => b.disabled = true);
 
-      const ok = (pickedIndex === q.answer_index);
+      all.forEach(b => {
+        const L = b.dataset.letter;
+        if (L === correctLetter) b.classList.add('correct');
+        if (L === pickedLetter && !ok) b.classList.add('wrong');
+      });
+
       if (ok){
-        btn.classList.add('correct');
-        mcqScore++;
+        s.score++;
         $('mcqFeedback').textContent = 'Correct.';
       } else {
-        btn.classList.add('wrong');
-        $('mcqFeedback').textContent = 'Correct: ' + (q.choices[q.answer_index] ?? '(missing)');
-        const target = all.find(el => el.dataset.correct === '1');
-        if (target) target.classList.add('correct');
+        $('mcqFeedback').textContent = 'Correct: ' + q.correct_text;
       }
 
-      $('mcqScore').textContent = String(mcqScore);
-      mcqAttempts.push({
-        ts: new Date().toISOString(),
-        q_index: mcqPlan[mcqIndex],
-        prompt: q.prompt,
-        picked_index: pickedIndex,
-        answer_index: q.answer_index,
+      if (q.explanation){
+        $('mcqExplain').textContent = 'Explanation: ' + q.explanation;
+      }
+
+      const pickedIndex = keyLetterToIndex(pickedLetter);
+      const correctIndex = keyLetterToIndex(correctLetter);
+
+      s.answers.push({
+        q_index: q.q_index,
+        source_index: q.source_index,
+        picked_letter: pickedLetter,
+        picked_text: q.options[pickedIndex],
         ok,
-        explanation: q.explanation || '',
-        tags: q.tags || []
+        correct_letter: correctLetter,
+        correct_text: q.options[correctIndex],
+        prompt: q.prompt,
+        tags: q.tags
       });
 
-      if ($('mcqShowExp').value === 'yes' && q.explanation){
-        $('mcqExplanation').textContent = q.explanation;
+      $('mcqScore').textContent = String(s.score);
+      $('mcqNext').disabled = false;
+
+      const progress = Math.round((q.q_index) / s.N * 100);
+      $('mcqPbar').style.width = progress + '%';
+    }
+
+    function nextMcq(){
+      const s = mcqSession;
+      if (!s) return;
+
+      const answered = s.answers.length;
+      if (answered >= s.N){
+        finishMcq();
+        return;
       }
-
-      mcqIndex++;
-      $('mcqPbar').style.width = Math.round((mcqIndex / mcqPlan.length) * 100) + '%';
-      $('mcqNextBtn').disabled = false;
-      $('mcqFinishBtn').disabled = false;
-      $('mcqExportAttemptsBtn').disabled = false;
+      renderMcqQuestion(answered);
     }
 
-    function startMcq(){
-      if (!mcqBank) return;
-      const total = mcqBank.questions.length;
-      const requested = clamp(parseInt($('mcqRunCount').value || 20, 10), 1, total);
-
-      const indices = Array.from({length: total}, (_, i) => i);
-      if ($('mcqShuffle').value === 'yes') shuffle(indices);
-
-      mcqPlan = indices.slice(0, requested);
-      resetMcqSession(mcqPlan.length);
-
-      $('mcqQuizCard').classList.remove('hide');
-      $('mcqResultCard').classList.add('hide');
-
-      $('mcqSession').textContent = `running (${mcqPlan.length} Q)`;
-      renderMcqQuestion();
+    function abortMcq(){
+      $('mcqQuizCard').classList.add('hide');
+      $('mcqReportCard').classList.add('hide');
     }
-
-    $('mcqRunCount').addEventListener('input', () => {
-      if (!mcqAutoReady) return;
-      startMcq();
-    });
-
-    $('mcqStartBtn').addEventListener('click', startMcq);
-    $('mcqNextBtn').addEventListener('click', renderMcqQuestion);
 
     function finishMcq(){
+      const s = mcqSession;
+      if (!s) return;
+
+      s.finished_at = new Date().toISOString();
+
+      const wrong = s.answers.filter(a => !a.ok);
+
+      const scope = computeCodeRangeFromText(mcqContentText || '');
+      const scopeStr = scope ? `${scope.min}–${scope.max}` : '—';
+
+      const N = s.N;
+      const timeMinutes = roundTo1SigFigMinutes(N);
+
+      const report = {
+        engine: s.engine,
+        session_id: s.session_id,
+        created_at: s.created_at,
+        finished_at: s.finished_at,
+        N: s.N,
+        score: s.score,
+        accuracy: s.N ? (s.score / s.N) : 0,
+        inferred_time_minutes: timeMinutes,
+        inferred_content_scope: scope ? scopeStr : null,
+        content_file: $('mcqFile')?.files?.[0]?.name || null,
+        bank_title: mcqBank?.title || null,
+        validation_issues: mcqValidationIssues.slice(),
+        key_letters: s.key_letters,
+        errors: wrong.map(w => ({
+          q_index: w.q_index,
+          picked_letter: w.picked_letter,
+          picked_text: w.picked_text,
+          correct_letter: w.correct_letter,
+          correct_text: w.correct_text,
+          prompt: w.prompt
+        })),
+        attempt_log: s.answers,
+        questions_minimal: s.questions.map(q => ({
+          q_index: q.q_index,
+          forced_letter: q.forced_letter,
+          prompt: q.prompt,
+          options: q.options,
+          explanation: q.explanation
+        }))
+      };
+
+      // UI
       $('mcqQuizCard').classList.add('hide');
-      $('mcqResultCard').classList.remove('hide');
+      $('mcqReportCard').classList.remove('hide');
 
-      $('mcqFinalScore').textContent = String(mcqScore);
-      $('mcqFinalTotal').textContent = String(mcqPlan.length);
-      $('mcqFinalPct').textContent = mcqPlan.length ? (Math.round((mcqScore / mcqPlan.length) * 100) + '%') : '0%';
+      $('mcqRScore').textContent = String(s.score);
+      $('mcqRTotal').textContent = String(s.N);
+      $('mcqRPct').textContent = s.N ? (Math.round((s.score / s.N) * 100) + '%') : '0%';
 
-      const ol = $('mcqReview');
-      ol.innerHTML = '';
-      mcqAttempts.forEach(a => {
+      $('mcqScopeBadge').textContent = 'Scope: ' + scopeStr;
+      $('mcqTimeBadge').textContent = 'Time: ' + timeMinutes + ' min';
+
+      // validation issues
+      $('mcqValCount').textContent = String(mcqValidationIssues.length);
+      const vl = $('mcqValList');
+      vl.innerHTML = '';
+      if (mcqValidationIssues.length){
+        mcqValidationIssues.forEach(msg => {
+          const li = document.createElement('li');
+          li.style.color = 'var(--warn)';
+          li.textContent = msg;
+          vl.appendChild(li);
+        });
+      } else {
         const li = document.createElement('li');
-        li.style.color = a.ok ? 'var(--ok)' : 'var(--bad)';
-        const picked = a.picked_index != null ? ('ABCD'[a.picked_index] || a.picked_index) : '?';
-        const ans = a.answer_index != null ? ('ABCD'[a.answer_index] || a.answer_index) : '?';
-        li.textContent = `${a.ok ? '✓' : '✗'} [${picked} vs ${ans}] ${a.prompt}`;
-        if (a.explanation){
-          const div = document.createElement('div');
-          div.className = 'tiny';
-          div.style.marginTop = '6px';
-          div.style.color = 'rgba(255,255,255,.70)';
-          div.textContent = 'Explanation: ' + a.explanation;
-          li.appendChild(div);
-        }
-        ol.appendChild(li);
-      });
+        li.style.color = 'var(--ok)';
+        li.textContent = 'No schema issues detected.';
+        vl.appendChild(li);
+      }
 
-      $('mcqSession').textContent = 'completed';
+      // wrong list
+      $('mcqErrCount').textContent = String(wrong.length);
+      const wl = $('mcqWrongList');
+      wl.innerHTML = '';
+      wrong.forEach(w => {
+        const li = document.createElement('li');
+        li.style.color = 'var(--bad)';
+        li.textContent = `Q${w.q_index}: picked ${w.picked_letter} (${w.picked_text}); correct ${w.correct_letter} (${w.correct_text}).`;
+        wl.appendChild(li);
+      });
+      if (!wrong.length){
+        const li = document.createElement('li');
+        li.style.color = 'var(--ok)';
+        li.textContent = 'No errors.';
+        wl.appendChild(li);
+      }
+
+      const jsonTxt = JSON.stringify(report, null, 2);
+      $('mcqJsonView').textContent = jsonTxt;
+      $('mcqDownloadJson').onclick = () => downloadText(`MCQ_Content_${s.N}Q_AttemptLog.json`, jsonTxt);
+
+      setMcqControlsEnabled(true);
+      $('mcqRetakeBtn').disabled = false;
     }
 
-    $('mcqFinishBtn').addEventListener('click', finishMcq);
-    $('mcqRetryBtn').addEventListener('click', () => {
-      $('mcqResultCard').classList.add('hide');
-      startMcq();
-    });
-    $('mcqExitBtn').addEventListener('click', () => showPanel('panel-settings'));
+    function startMcqNew(){
+      const s = buildMcqSession(true);
+      if (!s) return;
+      mcqSession = s;
 
-    $('mcqExportAttemptsBtn').addEventListener('click', () => {
-      const payload = {
-        exported_at: new Date().toISOString(),
-        title: mcqBank?.title || 'MCQ',
-        run_count: mcqPlan.length,
-        score: mcqScore,
-        attempts: mcqAttempts
+      $('mcqReportCard').classList.add('hide');
+      $('mcqQuizCard').classList.remove('hide');
+
+      $('mcqScore').textContent = '0';
+      $('mcqPbar').style.width = '0%';
+      renderMcqQuestion(0);
+
+      $('mcqRetakeBtn').disabled = false;
+    }
+
+    function startMcqRetake(){
+      if (!mcqSession) return;
+      const keep = mcqSession;
+      mcqSession = {
+        ...keep,
+        created_at: new Date().toISOString(),
+        answers: [],
+        score: 0,
+        finished_at: null
       };
-      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'mcq_attempt_log.json';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
+      $('mcqReportCard').classList.add('hide');
+      $('mcqQuizCard').classList.remove('hide');
+
+      $('mcqScore').textContent = '0';
+      $('mcqPbar').style.width = '0%';
+      renderMcqQuestion(0);
+    }
+
+    /* =========================
+       WIRE UI EVENTS
+       ========================= */
+
+    // ETY buttons
+    $('etyNewBtn').addEventListener('click', startEtyNew);
+    $('etyRetakeBtn').addEventListener('click', startEtyRetake);
+    $('etyNext').addEventListener('click', nextEty);
+    $('etyFinishNow').addEventListener('click', finishEty);
+    $('etyAbort').addEventListener('click', abortEty);
+
+    $('etyNewFromReport').addEventListener('click', startEtyNew);
+    $('etyRetakeFromReport').addEventListener('click', startEtyRetake);
+
+    // Auto-generate new ETY quiz when N changes (if bank loaded)
+    $('etyN').addEventListener('input', () => {
+      if (!bankAll.length) return;
+      // do not interrupt an active question; only auto-generate if not currently in quiz
+      const inQuiz = !$('etyQuizCard').classList.contains('hide');
+      if (!inQuiz) startEtyNew();
     });
 
+    // MCQ buttons
+    $('mcqNewBtn').addEventListener('click', startMcqNew);
+    $('mcqRetakeBtn').addEventListener('click', startMcqRetake);
+    $('mcqNext').addEventListener('click', nextMcq);
+    $('mcqFinishNow').addEventListener('click', finishMcq);
+    $('mcqAbort').addEventListener('click', abortMcq);
+
+    $('mcqNewFromReport').addEventListener('click', startMcqNew);
+    $('mcqRetakeFromReport').addEventListener('click', startMcqRetake);
+
+    // MCQ inputs
+    $('mcqN').addEventListener('input', () => {
+      const N = clamp(parseInt($('mcqN').value || 20, 10), 1, 100);
+      $('mcqN').value = String(N);
+      $('mcqTime').textContent = 'Time: ' + roundTo1SigFigMinutes(N) + ' minutes';
+      // auto-generate new if bank ready and not in active quiz
+      const inQuiz = !$('mcqQuizCard').classList.contains('hide');
+      if (mcqBank && !inQuiz) startMcqNew();
+    });
+
+    $('mcqClearJson').addEventListener('click', () => {
+      $('mcqJsonIn').value = '';
+      $('mcqJsonState').textContent = 'Not validated.';
+      mcqBank = null;
+      window.__mcqLoaded = 0;
+      setMcqControlsEnabled(false);
+      updateStatus();
+    });
+
+    $('mcqValidate').addEventListener('click', () => {
+      const raw = safeJsonParse($('mcqJsonIn').value || '');
+      if (!raw){
+        $('mcqJsonState').textContent = 'Invalid JSON.';
+        mcqBank = null;
+        window.__mcqLoaded = 0;
+        setMcqControlsEnabled(false);
+        updateStatus();
+        return;
+      }
+
+      const normalized = normalizeMcqJson(raw);
+      if (!normalized){
+        $('mcqJsonState').textContent = 'JSON parsed, but schema issues found (see report after run).';
+        mcqBank = null;
+        window.__mcqLoaded = 0;
+        setMcqControlsEnabled(false);
+        updateStatus();
+        return;
+      }
+
+      mcqBank = normalized;
+      window.__mcqLoaded = mcqBank.questions.length;
+      $('mcqJsonState').textContent = `Validated: ${mcqBank.questions.length} usable questions.`;
+      setMcqControlsEnabled(true);
+      updateStatus();
+
+      // auto-generate immediately if not in quiz
+      const inQuiz = !$('mcqQuizCard').classList.contains('hide');
+      if (!inQuiz) startMcqNew();
+    });
+
+    $('mcqFile').addEventListener('change', async (e) => {
+      const f = e.target.files?.[0];
+      if (!f){
+        mcqContentText = '';
+        $('mcqFileState').textContent = 'No file loaded.';
+        return;
+      }
+      const txt = await readFileAsText(f);
+      mcqContentText = txt;
+      $('mcqFileState').textContent = `Loaded: ${f.name} (${txt.length.toLocaleString()} chars).`;
+      const scope = computeCodeRangeFromText(txt);
+      // update report badges later; here just keep time updated
+    });
+
+    // Keyboard bindings: ETY and MCQ
     window.addEventListener('keydown', (e) => {
-      // ETY keys
+      // ETY
       if (!$('panel-ety').classList.contains('hide') && !$('etyQuizCard').classList.contains('hide')){
         if (/^[1-4]$/.test(e.key)){
           const i = Number(e.key) - 1;
           document.querySelectorAll('#etyOpts .opt')[i]?.click();
           return;
         }
-        if (e.key === 'Enter' && !$('etyNextBtn').disabled){
-          $('etyNextBtn').click();
+        if (e.key === 'Enter' && !$('etyNext').disabled){
+          $('etyNext').click();
           return;
         }
       }
 
-      // MCQ keys
+      // MCQ
       if (!$('panel-mcq').classList.contains('hide') && !$('mcqQuizCard').classList.contains('hide')){
-        const key = e.key.toUpperCase();
+        const k = e.key.toUpperCase();
         const map = {A:0,B:1,C:2,D:3,'1':0,'2':1,'3':2,'4':3};
-        if (key in map){
-          document.querySelectorAll('#mcqOpts .opt')[map[key]]?.click();
+        if (k in map){
+          document.querySelectorAll('#mcqOpts .opt')[map[k]]?.click();
           return;
         }
-        if (e.key === 'Enter' && !$('mcqNextBtn').disabled){
-          $('mcqNextBtn').click();
+        if (e.key === 'Enter' && !$('mcqNext').disabled){
+          $('mcqNext').click();
           return;
         }
       }
     });
 
-    /***********************
-     * SETTINGS UPLOADS
-     ***********************/
-    $('bankCombinedFile').addEventListener('change', async (e) => {
-      const f = e.target.files?.[0];
-      if (!f) return;
-      const txt = await readFileAsText(f);
-      bankAll = parseGlossaryText(txt);
-      updateBankUI();
-      etyAutoReady = bankAll.length > 0;
-      $('etyStartBtn').disabled = bankAll.length === 0;
-      $('etyBankState').textContent = bankAll.length ? `${bankAll.length} items loaded (uploaded).` : 'not loaded';
-
-      try { localStorage.setItem('bb.bankAll', JSON.stringify(bankAll)); } catch {}
-      $('stateMsgText').textContent = 'Term bank uploaded + stored.';
-    });
-
-    $('mcqJsonFile').addEventListener('change', async (e) => {
-      const f = e.target.files?.[0];
-      if (!f) return;
-      const txt = await readFileAsText(f);
-      const raw = safeJsonParse(txt);
-      const normalized = normalizeMcqJson(raw);
-      if (!normalized){
-        $('stateMsgText').textContent = 'MCQ JSON uploaded but schema not recognized.';
-        return;
-      }
-      mcqBank = normalized;
-      updateMcqUI();
-      mcqAutoReady = (mcqBank.questions.length > 0);
-      $('mcqStartBtn').disabled = mcqBank.questions.length === 0;
-      $('mcqBankState').textContent = mcqBank.questions.length ? `${mcqBank.questions.length} questions loaded (uploaded).` : 'not loaded';
-
-      try { localStorage.setItem('bb.mcq.json', JSON.stringify(raw)); } catch {}
-      $('stateMsgText').textContent = 'MCQ JSON uploaded + stored.';
-    });
-
-    $('saveStateBtn').addEventListener('click', () => {
-      try{
-        if (bankAll?.length) localStorage.setItem('bb.bankAll', JSON.stringify(bankAll));
-        if (mcqBank?.questions?.length) localStorage.setItem('bb.mcq.bankNormalized', JSON.stringify(mcqBank));
-        $('stateMsgText').textContent = 'Saved.';
-      } catch {
-        $('stateMsgText').textContent = 'Save failed (storage blocked).';
-      }
-    });
-
-    $('loadStateBtn').addEventListener('click', async () => {
-      try{
-        const savedAvatar = localStorage.getItem('bb.avatar.data');
-        if (savedAvatar){
-          $('avatar').src = savedAvatar;
-          window.__avatarOk = true;
-        }
-
-        const b = localStorage.getItem('bb.bankAll');
-        const arr = b ? safeJsonParse(b) : null;
-        if (Array.isArray(arr) && arr.length){
-          bankAll = dedupe(arr.map(x => ({
-            term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
-          })));
-          updateBankUI();
-          etyAutoReady = bankAll.length > 0;
-          $('etyBankState').textContent = `${bankAll.length} items loaded (saved).`;
-        }
-
-        const rawSaved = localStorage.getItem('bb.mcq.json');
-        const raw = rawSaved ? safeJsonParse(rawSaved) : null;
-        const normalized = raw ? normalizeMcqJson(raw) : null;
-        if (normalized){
-          mcqBank = normalized;
-          updateMcqUI();
-          mcqAutoReady = mcqBank.questions.length > 0;
-          $('mcqBankState').textContent = `${mcqBank.questions.length} questions loaded (saved).`;
-        }
-
-        $('stateMsgText').textContent = 'Loaded saved state.';
-        setStatus();
-      } catch {
-        $('stateMsgText').textContent = 'Load failed.';
-      }
-    });
-
-    $('wipeStateBtn').addEventListener('click', () => {
-      try{
-        localStorage.removeItem('bb.avatar.data');
-        localStorage.removeItem('bb.bankAll');
-        localStorage.removeItem('bb.mcq.json');
-        $('stateMsgText').textContent = 'Wiped.';
-      } catch {
-        $('stateMsgText').textContent = 'Wipe failed.';
-      }
-    });
-
-    /***********************
-     * BOOT: auto-load preset avatar + preset banks
-     ***********************/
+    /* =========================
+       BOOT
+       ========================= */
     (async function boot(){
-      window.__avatarOk = false;
-      window.__bankTotal = 0;
-      window.__mcqLoaded = 0;
+      loadNotes();
+      loadAvatar();
 
-      // 1) Avatar: saved upload else preset file
+      // MCQ time default display
+      const N0 = clamp(parseInt($('mcqN').value || 20, 10), 1, 100);
+      $('mcqTime').textContent = 'Time: ' + roundTo1SigFigMinutes(N0) + ' minutes';
+
+      // Load term bank from preset
       try{
-        const savedAvatar = localStorage.getItem('bb.avatar.data');
-        if (savedAvatar){
-          $('avatar').src = savedAvatar;
-          window.__avatarOk = true;
-          $('avatarMsgText').textContent = 'Loaded saved avatar.';
-        } else {
-          const ok = await applyAvatarFromPath(PRESET_AVATAR_PATH);
-          window.__avatarOk = ok;
-        }
+        const txt = await fetchText(TERM_BANK_PATH);
+        bankAll = parseGlossaryText(txt);
+        $('etyBankState').textContent = bankAll.length ? `${bankAll.length} items loaded (preset).` : 'Loaded, but no usable entries found.';
+        $('etyMaxHint').textContent = 'Bank size: ' + (bankAll.length ? bankAll.length : '—');
+        $('etyNewBtn').disabled = !bankAll.length;
+        $('stBank').textContent = bankAll.length ? (bankAll.length + ' items') : 'not loaded';
+        setEtyUIReady(!!bankAll.length);
+
+        // Auto-generate initial ETY quiz immediately (student flow)
+        if (bankAll.length) startEtyNew();
       } catch {
-        // ignore
+        bankAll = [];
+        $('etyBankState').textContent = 'Preset load blocked/failed. Upload the bank below.';
+        $('etyMaxHint').textContent = 'Bank size: —';
+        setEtyUIReady(false);
+        updateStatus();
       }
 
-      // 2) Term bank: saved else preset TXT
-      try{
-        const savedBank = localStorage.getItem('bb.bankAll');
-        const arr = savedBank ? safeJsonParse(savedBank) : null;
-        if (Array.isArray(arr) && arr.length){
-          bankAll = dedupe(arr.map(x => ({
-            term: x.term, meaning: x.meaning, kind: (x.kind === 'ETY' || x.kind === 'VOCAB') ? x.kind : classifyKind(x.term)
-          })));
-          updateBankUI();
-          $('etyBankState').textContent = `${bankAll.length} items loaded (saved).`;
-        } else {
-          const txt = await fetchText(PRESET_TERM_BANK_URL);
-          bankAll = parseGlossaryText(txt);
-          updateBankUI();
-          $('etyBankState').textContent = bankAll.length ? `${bankAll.length} items loaded (preset).` : 'not loaded';
-        }
-        etyAutoReady = bankAll.length > 0;
-      } catch {
-        $('etyBankState').textContent = 'preset load blocked; upload in Settings.';
-      }
+      // Bank upload fallback
+      $('etyBankUpload').addEventListener('change', async (e) => {
+        const f = e.target.files?.[0];
+        if (!f) return;
+        const txt = await readFileAsText(f);
+        bankAll = parseGlossaryText(txt);
+        $('etyBankState').textContent = bankAll.length ? `${bankAll.length} items loaded (uploaded).` : 'Uploaded, but no usable entries found.';
+        $('etyMaxHint').textContent = 'Bank size: ' + (bankAll.length ? bankAll.length : '—');
+        setEtyUIReady(!!bankAll.length);
+        updateStatus();
+        if (bankAll.length) startEtyNew();
+      });
 
-      // 3) MCQ JSON: saved else preset JSON
-      try{
-        mcqBank = await loadMcqFromPresetOrSaved();
-        updateMcqUI();
-        $('mcqBankState').textContent = `${mcqBank.questions.length} questions loaded (${localStorage.getItem('bb.mcq.json') ? 'saved' : 'preset'}).`;
-        mcqAutoReady = mcqBank.questions.length > 0;
-      } catch {
-        $('mcqBankState').textContent = 'preset load failed; upload in Settings.';
-      }
-
-      // Enable generate buttons if ready
-      $('etyStartBtn').disabled = !etyAutoReady;
-      $('mcqStartBtn').disabled = !mcqAutoReady;
-
-      // Auto-generate *once* when loaded: use current inputs.
-      if (etyAutoReady) startEty();
-      if (mcqAutoReady) startMcq();
-
-      setStatus();
+      updateStatus();
     })();
   </script>
 </body>
