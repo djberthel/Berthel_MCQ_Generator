@@ -3,1547 +3,1976 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="color-scheme" content="dark" />
   <title>Berthel’s Biology</title>
 
-  <!-- Latin Modern Roman -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.20/index.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.20/700.css">
+  <!-- Latin Modern (via fontsource). If CDN fails, falls back to serif. -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.19/index.css">
 
   <!-- SheetJS for XLSX parsing -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <style>
     :root{
-      --bg:#05060a;
-      --panel:#0a0d13;
-      --panel2:#0d111a;
-      --ink:#f3f5f7;
-      --muted:#aab3c2;
-      --faint:#6f7786;
-      --line:#1a2230;
-      --line2:#232c3c;
-
-      --ok:#2fe06f;
-      --bad:#ff4b4b;
-      --warn:#ffd36a;
-
-      --btn:#f4f6f8;
-      --btnInk:#0a0c10;
-
-      --radius:18px;
-      --radius2:14px;
-
-      --shadow:0 12px 42px rgba(0,0,0,.45);
-      --shadow2:0 10px 28px rgba(0,0,0,.35);
-
-      --base:20px;
-      --lh:1.35;
+      --bg0:#06070a;
+      --bg1:#0b0d12;
+      --panel:#0e1118cc;
+      --panel2:#0b0d12cc;
+      --line:#1e2430;
+      --line2:#2a3140;
+      --txt:#f4f6ff;
+      --muted:#b9c0d6;
+      --muted2:#8f97ac;
+      --good:#36d399;
+      --bad:#ff4d6d;
+      --warn:#ffd166;
+      --white:#ffffff;
+      --black:#000000;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 24px;
+      --font: "Latin Modern Roman","Computer Modern Serif","Times New Roman",serif;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
     body{
       margin:0;
-      background: radial-gradient(1200px 700px at 20% 0%, #0b0f17 0%, var(--bg) 60%) fixed;
-      color:var(--ink);
-      font-family:"Latin Modern Roman","Times New Roman",serif;
-      font-size:var(--base);
-      line-height:var(--lh);
+      font-family:var(--font);
+      background: radial-gradient(1200px 700px at 15% 20%, #111623 0%, transparent 60%),
+                  radial-gradient(900px 500px at 85% 35%, #0f1320 0%, transparent 55%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1));
+      color:var(--txt);
+      letter-spacing:.1px;
+      font-size: 18px;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background: radial-gradient(900px 520px at 50% 0%, rgba(255,255,255,.05), transparent 60%);
+      pointer-events:none;
     }
 
-    .wrap{max-width:1080px;margin:0 auto;padding:24px 18px 44px}
-
-    /* Visible by default; JS hides it. If you see it, scripts are blocked/not running. */
-    .jsBanner{
-      border:1px solid rgba(255,211,106,.35);
-      background:rgba(255,211,106,.08);
-      color:#fff3c9;
-      padding:12px 14px;
-      border-radius:14px;
-      margin:0 0 14px;
-      box-shadow:var(--shadow2);
+    .wrap{
+      max-width: 1100px;
+      margin: 26px auto 60px;
+      padding: 0 18px;
     }
-    body[data-js="on"] .jsBanner{display:none}
 
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;gap:14px;
-      padding:18px 18px;
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      box-shadow:var(--shadow);
+    /* Header */
+    .hero{
+      display:flex;
+      align-items:center;
+      gap: 18px;
+      padding: 18px 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      position: relative;
     }
-    .brand{display:flex;align-items:center;gap:14px;min-width:0}
+    .hero-left{
+      display:flex;
+      align-items:center;
+      gap: 16px;
+      min-width: 0;
+    }
     .avatar{
-      width:54px;height:54px;border-radius:16px;
-      border:1px solid var(--line2);
-      background:#0b0e13;
-      object-fit:cover;
-      flex:0 0 auto;
-      box-shadow:var(--shadow2);
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.06);
+      object-fit: cover;
+      flex: 0 0 auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
     }
-    .titleblock{min-width:0}
-    .title{
-      font-size:30px;font-weight:700;letter-spacing:.2px;
-      margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    .hero-title{
+      display:flex;
+      flex-direction:column;
+      min-width: 0;
     }
-    .subtitle{
-      margin:2px 0 0;
-      color:var(--muted);
-      font-size:18px;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    .hero-title h1{
+      margin:0;
+      font-size: 34px;
+      line-height: 1.05;
+      font-weight: 700;
     }
-    .versionPill{
-      border:1px solid var(--line2);
-      background:rgba(255,255,255,.03);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:16px;
-      color:var(--muted);
-      white-space:nowrap;
-      box-shadow:var(--shadow2);
+    .hero-title .sub{
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .hero-right{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .version{
+      color: var(--muted2);
+      font-size: 14px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+      white-space: nowrap;
+      user-select: none;
     }
 
+    /* Tabs */
     .tabs{
-      display:flex;gap:10px;flex-wrap:wrap;
-      margin:14px 0 0;
+      margin-top: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .tabBtn{
-      appearance:none;border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      color:var(--ink);
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:18px;
-      cursor:pointer;
-      box-shadow:var(--shadow2);
-      user-select:none;
+    .tab-btn{
+      font-family:var(--font);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--txt);
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
     }
-    .tabBtn[aria-selected="true"]{
-      background:rgba(255,255,255,.06);
-      border-color:rgba(255,255,255,.16);
+    .tab-btn:hover{ background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.18); }
+    .tab-btn:active{ transform: translateY(1px); }
+    .tab-btn.active{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.22);
     }
 
+    /* Panels */
     .panel{
-      margin-top:16px;
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-      box-shadow:var(--shadow);
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,.22);
+      box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .panelHeader{
-      padding:16px 18px;
-      border-bottom:1px solid var(--line);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    .panel-inner{
+      padding: 18px 18px 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02));
     }
-    .panelHeader h2{margin:0;font-size:20px;font-weight:700;color:var(--muted)}
-    .panelBody{padding:18px}
+    .hidden{ display:none !important; }
 
-    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
-    label{display:block;color:var(--muted);font-size:16px;margin-bottom:6px}
-    input[type="text"], input[type="number"], textarea{
-      width:100%;
-      background:rgba(0,0,0,.35);
-      color:var(--ink);
-      border:1px solid var(--line2);
-      border-radius:14px;
-      padding:14px 14px;
-      font-size:20px;
-      outline:none;
+    .section-title{
+      font-size: 22px;
+      margin: 0 0 10px;
+      font-weight: 700;
     }
-    textarea{min-height:140px;resize:vertical}
-    input[type="number"]{max-width:240px}
+    .muted{ color: var(--muted); }
+
+    .divider{
+      height: 1px;
+      background: var(--line);
+      margin: 16px 0;
+    }
+
+    /* Controls */
+    .row{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+    .field{
+      flex: 1 1 280px;
+      min-width: 240px;
+    }
+    label{
+      display:block;
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    input[type="number"], input[type="password"], textarea, input[type="text"]{
+      width:100%;
+      font-family: var(--font);
+      color: var(--txt);
+      background: rgba(0,0,0,.25);
+      border: 1px solid var(--line2);
+      border-radius: 14px;
+      padding: 12px 12px;
+      outline: none;
+      font-size: 18px;
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+
     .btn{
-      appearance:none;border:1px solid rgba(255,255,255,.18);
-      background:rgba(255,255,255,.06);
-      color:var(--ink);
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:18px;
+      font-family: var(--font);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 12px 14px;
       cursor:pointer;
-      box-shadow:var(--shadow2);
+      background: rgba(255,255,255,.06);
+      color: var(--txt);
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
       user-select:none;
     }
-    .btnPrimary{
-      background:var(--btn);
-      color:var(--btnInk);
-      border-color:transparent;
-      font-weight:700;
+    .btn:hover{ background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.28); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: rgba(255,255,255,.92);
+      color:#0b0d12;
+      border-color: rgba(255,255,255,.92);
+      font-weight: 700;
     }
-    .btnDanger{
-      background:rgba(255,75,75,.14);
-      border-color:rgba(255,75,75,.35);
-      color:#ffd0d0;
-      font-weight:700;
+    .btn.primary:hover{ background: rgba(255,255,255,1); }
+    .btn.danger{
+      background: rgba(255,77,109,.15);
+      border-color: rgba(255,77,109,.35);
     }
-    .btnGhost{
-      background:transparent;
-      border-color:var(--line2);
-      color:var(--muted);
-    }
-    .hint{color:var(--faint);font-size:16px;margin:8px 0 0}
-    .statusLine{
-      margin-top:10px;
-      padding:10px 12px;
-      border:1px solid var(--line2);
-      border-radius:14px;
-      background:rgba(0,0,0,.22);
-      color:var(--muted);
-      font-size:16px;
+    .btn.ghost{
+      background: transparent;
+      border-color: rgba(255,255,255,.12);
+      color: var(--muted);
     }
 
-    .pillRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .pill{
-      border:1px solid var(--line2);
-      background:rgba(255,255,255,.03);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:16px;
-      color:var(--muted);
+    .chiprow{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      border: 1px solid var(--line2);
+      background: rgba(255,255,255,.04);
+      color: var(--txt);
+      border-radius: 999px;
+      padding: 9px 12px;
+      cursor:pointer;
+      user-select:none;
+      font-size: 16px;
+    }
+    .chip.active{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.22);
     }
 
-    .split{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:14px;
+    /* Status */
+    .status{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+      color: var(--muted);
+      font-size: 16px;
     }
-    @media (max-width:900px){
-      .split{grid-template-columns:1fr}
-    }
+    .status.good{ border-color: rgba(54,211,153,.35); color: rgba(54,211,153,.95); }
+    .status.bad{ border-color: rgba(255,77,109,.35); color: rgba(255,77,109,.95); }
 
     /* Quiz */
-    .quizTop{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;
-      margin-bottom:12px;
+    .quiz-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 12px;
     }
-    .qMeta{
-      color:var(--muted);
-      font-size:16px;
+    .qmeta{
+      color: var(--muted);
+      font-size: 16px;
     }
-    .qStem{
-      font-size:30px;
-      font-weight:700;
-      margin:4px 0 0;
-      line-height:1.15;
+    .qstem{
+      font-size: 30px;
+      font-weight: 800;
+      margin: 4px 0 12px;
+      line-height: 1.15;
     }
-    .qPrompt{
-      color:var(--muted);
-      margin:10px 0 0;
-      font-size:18px;
-    }
-    .optList{margin-top:14px;display:flex;flex-direction:column;gap:10px}
-    .opt{
-      display:flex;gap:12px;align-items:flex-start;
-      border:1px solid var(--line2);
-      border-radius:16px;
-      background:rgba(0,0,0,.20);
-      padding:14px 14px;
-      cursor:pointer;
-    }
-    .opt:hover{background:rgba(255,255,255,.03)}
-    .opt input{margin-top:6px;transform:scale(1.15);cursor:pointer}
-    .optLabel{
-      display:flex;gap:10px;align-items:flex-start;
-      cursor:pointer;
-      width:100%;
-    }
-    .optLetter{
-      font-weight:800;
-      width:28px;flex:0 0 auto;
-    }
-    .optText{
-      color:var(--ink);
-      font-size:19px;
-      line-height:1.35;
-      margin-top:-1px;
+    .qprompt{
+      color: var(--muted);
+      font-size: 17px;
+      margin-bottom: 12px;
     }
 
-    .quizNav{
-      margin-top:16px;
-      display:flex;gap:10px;flex-wrap:wrap;
-      justify-content:space-between;
-      align-items:center;
+    .optlist{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
     }
-    .quizNavLeft,.quizNavRight{display:flex;gap:10px;flex-wrap:wrap}
-    .centerActions{display:flex;gap:10px;flex-wrap:wrap}
+    .opt{
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 14px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--line2);
+      background: rgba(0,0,0,.20);
+      cursor: pointer;
+      transition: background .15s ease, border-color .15s ease, transform .06s ease;
+      user-select:none;
+    }
+    .opt:hover{ background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.22); }
+    .opt:active{ transform: translateY(1px); }
+    .opt.selected{
+      border-color: rgba(255,255,255,.55);
+      background: rgba(255,255,255,.08);
+    }
+    .letter{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.16);
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+    .opttext{
+      line-height: 1.35;
+      font-size: 18px;
+    }
+
+    .quiz-nav{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .quiz-nav .left, .quiz-nav .right{ display:flex; gap:10px; align-items:center; }
 
     /* Summary */
-    .scoreBox{
-      border:1px solid var(--line2);
-      border-radius:18px;
-      padding:14px 14px;
-      background:rgba(0,0,0,.22);
-      margin-bottom:14px;
+    .summary-kpis{
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
     }
-    .scoreBig{
-      font-size:34px;
-      font-weight:800;
-      margin:0;
+    .kpi{
+      flex: 1 1 220px;
+      border: 1px solid var(--line2);
+      background: rgba(0,0,0,.20);
+      border-radius: 16px;
+      padding: 12px 14px;
     }
-    .scoreSub{
-      margin:4px 0 0;
-      color:var(--muted);
-      font-size:18px;
+    .kpi .big{
+      font-size: 28px;
+      font-weight: 900;
+      margin-bottom: 2px;
     }
-    .tagOK{color:var(--ok);font-weight:800}
-    .tagBAD{color:var(--bad);font-weight:800}
-    .tagWARN{color:var(--warn);font-weight:800}
+    .kpi .small{
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .advice{
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+      line-height: 1.35;
+      font-size: 17px;
+    }
+    .advice strong{ color: var(--txt); }
 
-    .reviewList{
-      margin-top:14px;
-      display:flex;flex-direction:column;gap:10px;
+    .review{
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
     }
-    .reviewItem{
-      border:1px solid var(--line2);
-      border-radius:16px;
-      background:rgba(0,0,0,.18);
-      padding:12px 12px;
+    .review-item{
+      border: 1px solid var(--line2);
+      border-radius: 16px;
+      background: rgba(0,0,0,.20);
+      padding: 12px 14px;
+      margin-bottom: 10px;
     }
-    .reviewHead{
-      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      margin-bottom:8px;
-      color:var(--muted);
-      font-size:16px;
+    .review-head{
+      display:flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
-    .reviewStem{font-size:20px;font-weight:800;margin:0 0 6px}
-    .reviewLine{margin:4px 0;color:var(--ink);font-size:18px}
-    .mono{font-variant-numeric:tabular-nums}
+    .pill{
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+    }
+    .pill.good{ border-color: rgba(54,211,153,.35); color: rgba(54,211,153,.95); }
+    .pill.bad{ border-color: rgba(255,77,109,.35); color: rgba(255,77,109,.95); }
+    .pill.warn{ border-color: rgba(255,209,102,.35); color: rgba(255,209,102,.95); }
+    .review-term{
+      font-weight: 800;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+    .review-body{
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.35;
+      font-size: 17px;
+    }
+    .review-body .line{ margin-top: 6px; }
+    .mono{ font-variant-numeric: tabular-nums; }
 
-    /* Modal */
-    .modalBackdrop{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,.55);
-      display:none;
-      align-items:center;justify-content:center;
-      padding:18px;
-      z-index:9999;
+    /* Updates list */
+    .updates{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 10px;
     }
-    .modal{
-      width:min(560px, 100%);
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      box-shadow:var(--shadow);
-      overflow:hidden;
+    .update{
+      border: 1px solid var(--line2);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,.20);
     }
-    .modalHead{
-      padding:14px 16px;
-      border-bottom:1px solid var(--line);
-      display:flex;justify-content:space-between;align-items:center;gap:12px;
+    .update .when{
+      color: var(--muted2);
+      font-size: 14px;
+      margin-bottom: 6px;
     }
-    .modalHead strong{color:var(--muted)}
-    .modalBody{padding:16px}
-    .xBtn{cursor:pointer;border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:12px;padding:8px 10px;font-size:16px}
-    .show{display:flex !important}
+    .update .text{
+      color: var(--txt);
+      line-height: 1.35;
+    }
 
-    /* Hidden sections */
-    .hidden{display:none !important}
+    .admin-box{
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 16px;
+      background: rgba(0,0,0,.16);
+      padding: 12px 14px;
+      margin-top: 14px;
+    }
+    .admin-row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: end;
+      margin-top: 10px;
+    }
 
-    /* Noscript */
-    noscript{
-      display:block;
-      border:1px solid rgba(255,75,75,.35);
-      background:rgba(255,75,75,.10);
-      padding:12px 14px;
-      border-radius:14px;
-      margin-bottom:14px;
-      color:#ffd0d0;
-      box-shadow:var(--shadow2);
+    /* File input only used in Custom Content */
+    input[type="file"]{
+      width:100%;
+      font-family:var(--font);
+      color: var(--muted);
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <noscript>
-      JavaScript is disabled. This site requires JavaScript to run quizzes and load the spreadsheet.
-    </noscript>
-
-    <div class="jsBanner">
-      JavaScript did not run. If you’re seeing this, your page is being opened in a script-blocking previewer (or JS is disabled).
-      Open the HTML as a normal page (not an embedded preview), or serve it from a local server/host.
-    </div>
-
-    <header class="topbar">
-      <div class="brand">
-        <img class="avatar" id="avatarImg" src="Chinstrap_LOgo.jfif" alt="Berthel's Biology avatar">
-        <div class="titleblock">
-          <h1 class="title">Berthel’s Biology</h1>
-          <div class="subtitle">Professional student testing and review workspace.</div>
+    <header class="hero">
+      <div class="hero-left">
+        <img id="avatar" class="avatar" src="Chinstrap_LOgo.jfif" alt="Avatar"
+             onerror="this.onerror=null; this.src=window.__AVATAR_FALLBACK || this.src;">
+        <div class="hero-title">
+          <h1>Berthel’s Biology</h1>
+          <div class="sub">Professional student testing and review workspace.</div>
         </div>
       </div>
-      <div class="versionPill mono" id="versionPill">—</div>
+      <div class="hero-right">
+        <div id="version" class="version">v …</div>
+      </div>
     </header>
 
-    <nav class="tabs" role="tablist" aria-label="Primary">
-      <button type="button" class="tabBtn" id="tabHome" aria-selected="true">Home</button>
-      <button type="button" class="tabBtn" id="tabEV" aria-selected="false">Etymology &amp; Vocabulary</button>
-      <button type="button" class="tabBtn" id="tabCustom" aria-selected="false">Custom Content</button>
+    <nav class="tabs" aria-label="Tabs">
+      <button class="tab-btn active" data-tab="home">Home</button>
+      <button class="tab-btn" data-tab="ev">Etymology &amp; Vocabulary</button>
+      <button class="tab-btn" data-tab="custom">Custom Content</button>
     </nav>
 
     <!-- HOME -->
-    <section class="panel" id="viewHome">
-      <div class="panelHeader">
-        <h2>Update notes</h2>
-        <button type="button" class="btn btnGhost" id="adminBtn">Admin</button>
-      </div>
-      <div class="panelBody">
-        <div class="hint">Updates are timestamped (Beijing time).</div>
-        <div id="updatesList" class="reviewList" style="margin-top:12px;"></div>
-        <div class="hint" style="margin-top:12px;">
-          Note: static sites can’t write to the server. Use Admin → Export, then upload <span class="mono">updates.json</span> to broadcast changes to all users.
+    <section id="tab-home" class="panel">
+      <div class="panel-inner">
+        <h2 class="section-title">Update notes</h2>
+        <div class="muted">Updates are timestamped (Beijing time).</div>
+
+        <div id="updates" class="updates"></div>
+
+        <div class="admin-box">
+          <div class="muted"><strong>Admin</strong></div>
+          <div id="admin-locked">
+            <div class="row" style="margin-top:10px;">
+              <div class="field">
+                <label for="adminPass">Password</label>
+                <input id="adminPass" type="password" placeholder="Enter password" autocomplete="current-password" />
+              </div>
+              <div style="flex:0 0 auto;">
+                <button id="adminLogin" class="btn primary">Unlock</button>
+              </div>
+            </div>
+            <div id="adminMsg" class="status" style="display:none;"></div>
+          </div>
+
+          <div id="admin-open" class="hidden">
+            <div class="muted" style="margin-top:8px;">
+              Add an update note. It will auto-timestamp in Beijing time.
+            </div>
+            <div class="admin-row">
+              <div class="field">
+                <label for="updateText">New update message</label>
+                <textarea id="updateText" placeholder="Write the update note here…"></textarea>
+              </div>
+              <div style="flex:0 0 auto;">
+                <button id="addUpdate" class="btn primary">Post update</button>
+              </div>
+              <div style="flex:0 0 auto;">
+                <button id="adminLock" class="btn ghost">Lock</button>
+              </div>
+            </div>
+            <div class="muted" style="margin-top:10px; font-size:15px;">
+              (Notes persist in this browser. If you host a static site and want these to be global, you’ll manually paste updates into the HTML or add a backend.)
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ETY / VOCAB -->
-    <section class="panel hidden" id="viewEV">
-      <div class="panelHeader">
-        <h2>Etymology &amp; Vocabulary</h2>
-        <button type="button" class="btn btnGhost" id="evReloadBtn">Reload</button>
-      </div>
+    <!-- ETY & VOCAB -->
+    <section id="tab-ev" class="panel hidden">
+      <div class="panel-inner">
+        <h2 class="section-title">Etymology &amp; Vocabulary</h2>
 
-      <div class="panelBody">
-        <div class="split">
-          <div>
-            <label for="evCount">Number of questions (1–100)</label>
-            <div class="row">
-              <input id="evCount" type="number" min="1" max="100" step="1" placeholder="e.g., 25" />
-              <button type="button" class="btn btnPrimary" id="evStartBtn">Start</button>
-              <button type="button" class="btn btnGhost" id="evChangeBtn">Change number</button>
+        <div class="row">
+          <div class="field">
+            <label>Mode</label>
+            <div class="chiprow" id="modeChips">
+              <div class="chip active" data-mode="mixed">Mixed</div>
+              <div class="chip" data-mode="vocab">Vocabulary</div>
+              <div class="chip" data-mode="ety">Etymology</div>
             </div>
-
-            <div class="pillRow">
-              <span class="pill">Mode:
-                <select id="evMode" style="margin-left:8px;background:transparent;color:var(--ink);border:1px solid var(--line2);border-radius:12px;padding:8px 10px;font-size:16px;">
-                  <option value="mixed" selected>Mixed</option>
-                  <option value="vocab">Vocabulary only</option>
-                  <option value="ety">Etymology only</option>
-                </select>
-              </span>
-              <span class="pill" id="evDataStatus">Loading dataset…</span>
-            </div>
-
-            <div class="hint" style="margin-top:10px;">
-              Auto-loads <span class="mono">Vocab_Ety_Master_List.xlsx</span> from the same folder.
-              If it doesn’t load, you are likely opening via <span class="mono">file://</span>. Serve the folder or host it.
-            </div>
-
           </div>
 
-          <div>
-            <div class="statusLine" id="evTechStatus">Waiting for dataset…</div>
-            <div class="hint" style="margin-top:10px;">
-              Finish early any time — your summary will still be generated (attempted + unattempted).
-            </div>
+          <div class="field">
+            <label for="qCountEV">Number of questions (1–100)</label>
+            <input id="qCountEV" type="number" min="1" max="100" step="1" inputmode="numeric" placeholder="e.g., 25" />
+          </div>
+
+          <div style="flex:0 0 auto;">
+            <button id="startEV" class="btn primary">Start</button>
           </div>
         </div>
 
-        <div id="evQuizArea" class="hidden" style="margin-top:18px;"></div>
-        <div id="evSummaryArea" class="hidden" style="margin-top:18px;"></div>
+        <div id="loadStatus" class="status">Loading master list…</div>
+
+        <!-- Quiz Container -->
+        <div id="evStage" class="hidden">
+          <div class="divider"></div>
+
+          <div id="quizView" class="">
+            <div class="quiz-top">
+              <div id="qMeta" class="qmeta mono"></div>
+              <button id="changeNumberEV" class="btn ghost">Change number</button>
+            </div>
+
+            <div id="qStem" class="qstem"></div>
+            <div id="qPrompt" class class="qprompt"></div>
+
+            <div id="optList" class="optlist"></div>
+
+            <div class="quiz-nav">
+              <div class="left">
+                <button id="backBtn" class="btn ghost">Back</button>
+              </div>
+              <div class="right">
+                <button id="finishNowBtn" class="btn danger">Finish now</button>
+                <button id="nextBtn" class="btn primary">Next</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="summaryView" class="hidden"></div>
+        </div>
       </div>
     </section>
 
     <!-- CUSTOM CONTENT -->
-    <section class="panel hidden" id="viewCustom">
-      <div class="panelHeader">
-        <h2>Custom Content</h2>
-        <button type="button" class="btn btnGhost" id="customResetBtn">Reset</button>
-      </div>
-      <div class="panelBody">
+    <section id="tab-custom" class="panel hidden">
+      <div class="panel-inner">
+        <h2 class="section-title">Custom Content</h2>
+        <div class="muted">Upload a plain text file formatted as one term–definition per line (use “—” or “:” as separator).</div>
 
-        <div class="split">
-          <div>
-            <label for="customFile">Upload text content</label>
-            <input id="customFile" type="file" accept=".txt,.md,.text" />
-
-            <div class="hint">Optional: paste content below instead (upload or paste, not both).</div>
-
-            <label for="customText" style="margin-top:12px;">Paste content</label>
-            <textarea id="customText" placeholder="Paste content here…"></textarea>
-
-            <label for="customN" style="margin-top:12px;">Number of questions (1–100)</label>
-            <div class="row">
-              <input id="customN" type="number" min="1" max="100" step="1" placeholder="e.g., 20" />
-              <button type="button" class="btn btnPrimary" id="customMakePromptBtn">Make prompt</button>
-            </div>
-
-            <div class="hint" style="margin-top:10px;">
-              This tab is designed to work with your separate GPT (“MCQ JSON Machine”).
-              Generate JSON there, then paste it below.
-            </div>
+        <div class="row" style="margin-top:12px;">
+          <div class="field">
+            <label for="customFile">Upload text file</label>
+            <input id="customFile" type="file" accept=".txt,.md,.csv" />
           </div>
-
-          <div>
-            <div class="statusLine" id="customStatus">Awaiting content.</div>
-
-            <label for="customPrompt" style="margin-top:12px;">Prompt to copy into MCQ JSON Machine</label>
-            <textarea id="customPrompt" readonly placeholder="Click “Make prompt”…"></textarea>
-            <div class="row" style="margin-top:10px;">
-              <button type="button" class="btn btnGhost" id="copyPromptBtn">Copy prompt</button>
-            </div>
-
-            <label for="customJson" style="margin-top:12px;">Paste JSON returned by MCQ JSON Machine</label>
-            <textarea id="customJson" placeholder='Expected shape: {"title":"...","questions":[{"stem":"...","options":{"A":"...","B":"...","C":"...","D":"..."},"answer":"A","rationale":"..."}]}'></textarea>
-
-            <div class="row" style="margin-top:10px;">
-              <button type="button" class="btn btnPrimary" id="customLoadQuizBtn">Load quiz</button>
-            </div>
+          <div class="field">
+            <label for="qCountCustom">Number of questions (1–100)</label>
+            <input id="qCountCustom" type="number" min="1" max="100" step="1" inputmode="numeric" placeholder="e.g., 15" />
+          </div>
+          <div style="flex:0 0 auto;">
+            <button id="startCustom" class="btn primary">Start</button>
           </div>
         </div>
 
-        <div id="customQuizArea" class="hidden" style="margin-top:18px;"></div>
-        <div id="customSummaryArea" class="hidden" style="margin-top:18px;"></div>
+        <div id="customStatus" class="status">Awaiting upload…</div>
+
+        <div id="customStage" class="hidden">
+          <div class="divider"></div>
+          <div id="customQuizView"></div>
+        </div>
       </div>
     </section>
   </div>
 
-  <!-- ADMIN MODAL -->
-  <div class="modalBackdrop" id="adminModal">
-    <div class="modal">
-      <div class="modalHead">
-        <strong>Admin</strong>
-        <button type="button" class="xBtn" id="adminCloseBtn">Close</button>
-      </div>
-      <div class="modalBody">
-        <div id="adminLocked">
-          <label for="adminPass">Password</label>
-          <div class="row">
-            <input id="adminPass" type="text" placeholder="Enter password" />
-            <button type="button" class="btn btnPrimary" id="adminUnlockBtn">Unlock</button>
-          </div>
-          <div class="hint" id="adminPassHint" style="margin-top:10px;"></div>
-        </div>
-
-        <div id="adminEditor" class="hidden">
-          <label for="updateText">Post an update (will be timestamped in Beijing time)</label>
-          <textarea id="updateText" placeholder="Write the update note…"></textarea>
-
-          <div class="row" style="margin-top:10px;">
-            <button type="button" class="btn btnPrimary" id="postUpdateBtn">Post update</button>
-            <button type="button" class="btn btnGhost" id="exportUpdatesBtn">Export updates.json</button>
-            <button type="button" class="btn btnDanger" id="clearLocalUpdatesBtn">Clear local</button>
-          </div>
-
-          <div class="hint" style="margin-top:10px;">
-            Export downloads <span class="mono">updates.json</span>. Upload/replace it on your host to broadcast updates to all users.
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
 <script>
-/* ===========================
-   Configuration
-=========================== */
-const SPREADSHEET_FILE = "Vocab_Ety_Master_List.xlsx";
-const UPDATES_FILE = "updates.json";
-const ADMIN_PASSWORD = "temetnosce"; // as requested
+/* =========================
+   Avatar fallback (from your earlier base64)
+   ========================= */
+window.__AVATAR_FALLBACK =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE"+
+  "BQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME"+
+  "DgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU"+
+  "FBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA"+
+  "AAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB"+
+  "BhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/"+
+  "xAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A"+
+  "9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o"+
+  "lq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI"+
+  "3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5"+
+  "p+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU"+
+  "qVKlSpUqVKlSpUqVKlf/2Q==";
 
-/* Avatar fallback (only used if Chinstrap_LOgo.jfif fails) */
-const AVATAR_FALLBACK_DATA_URL = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE%0ABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME%0ADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU%0AFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA%0AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB%0ABhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/%0AxAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A%0A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o%0Alq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI%0A3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5%0Ap+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU%0AqVKlSpUqVKlSpUqVKlf/2Q==";
+/* =========================
+   Time helpers (Beijing)
+   ========================= */
+const TZ = "Asia/Shanghai";
 
-/* ===========================
-   State
-=========================== */
-const STATE = {
-  data: { vocab: [], ety: [] },
-  evQuiz: null,
-  customQuiz: null,
-  updates: [],
-  updatesSource: "local"
+function fmtBeijing(date, withSeconds=false){
+  const opt = {
+    timeZone: TZ,
+    year: "numeric", month:"2-digit", day:"2-digit",
+    hour:"2-digit", minute:"2-digit",
+    hour12:false
+  };
+  if(withSeconds) opt.second = "2-digit";
+  // en-CA yields YYYY-MM-DD style reliably.
+  return new Intl.DateTimeFormat("en-CA", opt).format(date).replace(",", "");
+}
+
+function setVersionFromLastModified(){
+  const lm = new Date(document.lastModified);
+  // If parsing fails, use now.
+  const dt = isNaN(lm.getTime()) ? new Date() : lm;
+  document.getElementById("version").textContent = "v " + fmtBeijing(dt, true);
+}
+
+/* =========================
+   Tabs
+   ========================= */
+function setTab(tab){
+  document.querySelectorAll(".tab-btn").forEach(b=>{
+    b.classList.toggle("active", b.dataset.tab === tab);
+  });
+  document.getElementById("tab-home").classList.toggle("hidden", tab !== "home");
+  document.getElementById("tab-ev").classList.toggle("hidden", tab !== "ev");
+  document.getElementById("tab-custom").classList.toggle("hidden", tab !== "custom");
+}
+
+/* =========================
+   Updates (Home)
+   ========================= */
+const UPDATES_KEY = "bb_updates_v1";
+const ADMIN_KEY = "bb_admin_unlocked_v1";
+
+// Default seeded update note (professional, next update)
+const DEFAULT_UPDATES = [
+  {
+    when: "—",
+    text:
+      "Next update: numeric input will accept every integer 1–100; quiz summaries will be complete and more diagnostic; distractors will be generated within the same question type and biased toward semantic similarity for plausibility."
+  }
+];
+
+function loadUpdates(){
+  try{
+    const raw = localStorage.getItem(UPDATES_KEY);
+    if(!raw) return DEFAULT_UPDATES;
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr) || arr.length===0) return DEFAULT_UPDATES;
+    return arr;
+  }catch(e){
+    return DEFAULT_UPDATES;
+  }
+}
+
+function saveUpdates(arr){
+  localStorage.setItem(UPDATES_KEY, JSON.stringify(arr));
+}
+
+function renderUpdates(){
+  const box = document.getElementById("updates");
+  const arr = loadUpdates();
+  box.innerHTML = "";
+  arr.forEach(u=>{
+    const div = document.createElement("div");
+    div.className = "update";
+    const when = document.createElement("div");
+    when.className = "when mono";
+    when.textContent = (u.when && u.when !== "—") ? u.when : "(seeded)";
+    const txt = document.createElement("div");
+    txt.className = "text";
+    txt.textContent = u.text || "";
+    div.appendChild(when);
+    div.appendChild(txt);
+    box.appendChild(div);
+  });
+}
+
+function setAdminUI(unlocked){
+  localStorage.setItem(ADMIN_KEY, unlocked ? "1" : "0");
+  document.getElementById("admin-locked").classList.toggle("hidden", unlocked);
+  document.getElementById("admin-open").classList.toggle("hidden", !unlocked);
+}
+
+/* =========================
+   Master list loading (XLSX)
+   ========================= */
+const MASTER_FILE = "Vocab_Ety_Master_List.xlsx";
+
+let MASTER = {
+  vocab: [],
+  ety: [],
+  vocabIndex: null,
+  etyIndex: null,
+  loaded: false
 };
 
-/* ===========================
-   Utilities
-=========================== */
-function beijingNow(){
-  // Asia/Shanghai is Beijing time (UTC+8), no DST.
-  const d = new Date();
-  const fmt = new Intl.DateTimeFormat("sv-SE", {
-    timeZone:"Asia/Shanghai",
-    year:"numeric", month:"2-digit", day:"2-digit",
-    hour:"2-digit", minute:"2-digit", second:"2-digit",
-    hour12:false
-  });
-  // sv-SE gives "YYYY-MM-DD HH:mm:ss"
-  return fmt.format(d).replace(" ", " ");
-}
+const STOP = new Set([
+  "the","a","an","and","or","of","to","in","on","for","with","by","as","is","are","was","were",
+  "be","been","being","that","this","these","those","from","at","it","its","into","within",
+  "over","under","between","during","before","after","while","which","who","whom","their","there",
+  "than","then","also","may","might","can","could","should","would","often","typically","primarily"
+]);
 
-function clampInt(n, min, max){
-  const x = Number(n);
-  if(!Number.isFinite(x)) return null;
-  const i = Math.trunc(x);
-  if(String(i) !== String(x) && !Number.isInteger(x)) return null;
-  if(i < min || i > max) return null;
-  return i;
-}
+function normSpace(s){ return (s||"").toString().replace(/\s+/g," ").trim(); }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[m]));
-}
-
-function stripExamples(text){
-  let t = String(text || "").trim();
-  // Remove explicit "Examples:" and anything after it.
-  t = t.replace(/\bExamples?:\s*.*$/i, "").trim();
-  // Remove inline e.g. trails (lightly)
-  t = t.replace(/\s*\(e\.g\..*?\)\s*$/i, "").trim();
-  return t;
+function stripExamples(s){
+  let t = (s||"").toString();
+  // remove "Examples: ..." or "Example: ..." segments
+  t = t.replace(/\bExamples?\s*:\s*.*$/i, "").trim();
+  // remove inline "e.g., ..." style tails
+  t = t.replace(/\b(e\.g\.|eg)\b.*$/i, "").trim();
+  return normSpace(t);
 }
 
 function tokenize(s){
-  return String(s || "")
+  const raw = (s||"")
     .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g," ")
-    .split(/\s+/)
-    .filter(Boolean)
-    .filter(w => !STOPWORDS.has(w));
+    .replace(/[^a-z0-9\s\-]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+  if(!raw) return [];
+  const toks = raw.split(" ").filter(w=>{
+    if(!w) return false;
+    if(w.length<=2) return false;
+    if(STOP.has(w)) return false;
+    return true;
+  });
+  return toks;
 }
 
-const STOPWORDS = new Set([
-  "the","a","an","and","or","to","of","in","on","for","with","by","from","into","at",
-  "is","are","was","were","be","being","been","as","that","this","these","those",
-  "it","its","their","there","within","between","over","under","including","includes",
-  "when","while","during","through","via","can","may","might","often","usually","most",
-  "used","use","using","make","makes","made"
-]);
-
-function jaccard(aTokens, bTokens){
-  const A = new Set(aTokens), B = new Set(bTokens);
-  if(A.size === 0 || B.size === 0) return 0;
-  let inter = 0;
-  for(const x of A) if(B.has(x)) inter++;
-  const union = A.size + B.size - inter;
-  return union ? inter/union : 0;
+function wordCount(s){
+  const t = normSpace(s);
+  if(!t) return 0;
+  return t.split(" ").length;
 }
+
+function techScore(s){
+  const t = (s||"").toString();
+  const words = t.split(/\s+/).filter(Boolean);
+  let score = 0;
+  for(const w of words){
+    const hasDigit = /\d/.test(w);
+    const hasHyphen = /-/.test(w);
+    const long = w.replace(/[^A-Za-z]/g,"").length >= 9;
+    if(hasDigit || hasHyphen || long) score++;
+  }
+  return score;
+}
+
+function leadClass(s){
+  const t = normSpace(s).toLowerCase();
+  if(!t) return "none";
+  const first = t.split(" ")[0];
+  if(first==="the") return "the";
+  if(first==="a"||first==="an") return "a";
+  if(first.endsWith("ing")) return "ing";
+  return "other";
+}
+
+function hasConnector(s){
+  return /\b(because|therefore|thus|due to|so that|as a result)\b/i.test(s||"");
+}
+
+function containsStem(s, stem){
+  const a = (s||"").toLowerCase();
+  const b = (stem||"").toLowerCase().trim();
+  if(!b) return false;
+  return a.includes(b);
+}
+
+function buildTFIDF(entries){
+  // entries: {answerText, topic}
+  const N = entries.length;
+  const df = new Map();
+  const tfs = [];
+  for(const e of entries){
+    const toks = tokenize(e.answerText);
+    const tf = new Map();
+    toks.forEach(w=> tf.set(w,(tf.get(w)||0)+1));
+    tfs.push(tf);
+    const uniq = new Set(toks);
+    uniq.forEach(w=> df.set(w, (df.get(w)||0)+1));
+  }
+  const idf = new Map();
+  df.forEach((v,k)=>{
+    idf.set(k, Math.log((N+1)/(v+1))+1);
+  });
+
+  const vecs = [];
+  const norms = [];
+  for(let i=0;i<N;i++){
+    const tf = tfs[i];
+    let norm = 0;
+    const vec = new Map();
+    tf.forEach((cnt,w)=>{
+      const val = (1 + Math.log(cnt)) * (idf.get(w) || 1);
+      vec.set(w,val);
+      norm += val*val;
+    });
+    norms.push(Math.sqrt(norm) || 1);
+    vecs.push(vec);
+  }
+  return {vecs, norms};
+}
+
+function cosine(i, j, vecs, norms){
+  const a = vecs[i], b = vecs[j];
+  const [small, big] = (a.size <= b.size) ? [a,b] : [b,a];
+  let dot = 0;
+  small.forEach((va,w)=>{
+    const vb = big.get(w);
+    if(vb) dot += va*vb;
+  });
+  return dot / (norms[i]*norms[j]);
+}
+
+function buildNeighborLists(entries){
+  const {vecs, norms} = buildTFIDF(entries);
+  const N = entries.length;
+  const neighbors = Array.from({length:N}, ()=>[]);
+  for(let i=0;i<N;i++){
+    const sims = [];
+    for(let j=0;j<N;j++){
+      if(i===j) continue;
+      sims.push([j, cosine(i,j,vecs,norms)]);
+    }
+    sims.sort((a,b)=> b[1]-a[1]);
+    neighbors[i] = sims.slice(0, 40).map(x=>x[0]); // top 40
+  }
+  return {neighbors, vecs, norms};
+}
+
+function pickSubtopic(row, headerMap){
+  // Accept any of these as "topic"
+  const keys = ["topic","unit","chapter","subtopic","code","syllabus","strand"];
+  for(const k of keys){
+    const hk = headerMap.get(k);
+    if(hk && row[hk]) return normSpace(row[hk]);
+  }
+  return "";
+}
+
+function findHeader(headers, candidates){
+  const lower = headers.map(h=>({raw:h, low: String(h).toLowerCase().trim()}));
+  for(const cand of candidates){
+    const c = cand.toLowerCase().trim();
+    const hit = lower.find(h=> h.low === c);
+    if(hit) return hit.raw;
+  }
+  // partial
+  for(const cand of candidates){
+    const c = cand.toLowerCase().trim();
+    const hit = lower.find(h=> h.low.includes(c));
+    if(hit) return hit.raw;
+  }
+  return null;
+}
+
+function buildHeaderMap(headers){
+  const map = new Map();
+  headers.forEach(h=>{
+    const k = String(h).toLowerCase().trim();
+    map.set(k, h);
+  });
+  return map;
+}
+
+function rowToEntries(rows, sheetName){
+  if(!rows || rows.length===0) return {vocab:[], ety:[]};
+  const headers = Object.keys(rows[0] || {});
+  const headerMap = buildHeaderMap(headers);
+
+  // detect potential columns
+  const termCol = findHeader(headers, ["term","word","vocabulary","vocab","glossary term","entry"]);
+  const defCol  = findHeader(headers, ["definition","meaning","desc","description"]);
+  const typeCol = findHeader(headers, ["type","category","section"]);
+  const wordPartCol = findHeader(headers, ["word part","wordpart","morpheme","prefix","suffix","root","part"]);
+  const exCol = findHeader(headers, ["examples","example"]);
+
+  const outV = [], outE = [];
+
+  for(const r of rows){
+    // skip empty rows
+    const rawTerm = normSpace(termCol ? r[termCol] : "");
+    const rawDef  = normSpace(defCol  ? r[defCol]  : "");
+    const rawType = normSpace(typeCol ? r[typeCol] : "");
+    const rawWP   = normSpace(wordPartCol ? r[wordPartCol] : "");
+    const rawEx   = normSpace(exCol ? r[exCol] : "");
+
+    const topic = pickSubtopic(r, headerMap);
+
+    // ignore obvious junk rows
+    const junk = (rawTerm || rawWP).toUpperCase();
+    if(junk.includes("CLEAN INDEX")) continue;
+
+    // determine type
+    let kind = "";
+    const sn = (sheetName||"").toLowerCase();
+    if(rawType){
+      const t = rawType.toLowerCase();
+      if(t.includes("ety") || t.includes("word part") || t.includes("morpheme") || t.includes("prefix") || t.includes("suffix") || t.includes("root")) kind = "ety";
+      if(t.includes("vocab") || t.includes("glossary") || t.includes("definition")) kind = "vocab";
+    }
+    if(!kind && (sn.includes("ety") || sn.includes("etym"))) kind = "ety";
+    if(!kind && sn.includes("vocab")) kind = "vocab";
+    if(!kind){
+      if(rawWP && !rawTerm) kind = "ety";
+      else if(rawTerm) kind = "vocab";
+    }
+
+    if(kind === "vocab"){
+      const term = rawTerm;
+      const def = rawDef;
+      if(!term || !def) continue;
+      outV.push({
+        kind:"vocab",
+        stem: term,
+        answerText: normSpace(def),
+        topic: topic || ""
+      });
+    }else if(kind === "ety"){
+      const wp = rawWP || rawTerm; // allow termCol used for word part
+      let meaning = rawDef;
+      if(rawEx){
+        // if meaning missing but examples present, still require meaning
+      }
+      if(!wp || !meaning) continue;
+      meaning = stripExamples(meaning);
+      if(!meaning) continue;
+      outE.push({
+        kind:"ety",
+        stem: wp,
+        answerText: meaning,
+        topic: topic || ""
+      });
+    }
+  }
+
+  return {vocab: outV, ety: outE};
+}
+
+async function loadMasterList(){
+  const status = document.getElementById("loadStatus");
+  status.className = "status";
+  status.textContent = "Loading master list…";
+
+  try{
+    const res = await fetch(MASTER_FILE, {cache:"no-store"});
+    if(!res.ok) throw new Error("Fetch failed: " + res.status);
+    const buf = await res.arrayBuffer();
+    const wb = XLSX.read(buf, {type:"array"});
+
+    let vocab = [];
+    let ety = [];
+
+    wb.SheetNames.forEach(name=>{
+      const sheet = wb.Sheets[name];
+      const json = XLSX.utils.sheet_to_json(sheet, {defval:""});
+      const part = rowToEntries(json, name);
+      vocab = vocab.concat(part.vocab);
+      ety = ety.concat(part.ety);
+    });
+
+    // de-dup by stem+answerText
+    const dedup = (arr)=>{
+      const seen = new Set();
+      const out = [];
+      for(const e of arr){
+        const key = (e.stem+"||"+e.answerText).toLowerCase();
+        if(seen.has(key)) continue;
+        seen.add(key);
+        out.push(e);
+      }
+      return out;
+    };
+    vocab = dedup(vocab);
+    ety = dedup(ety);
+
+    MASTER.vocab = vocab;
+    MASTER.ety = ety;
+
+    if(vocab.length < 4 && ety.length < 4){
+      throw new Error("Parsed too few usable rows.");
+    }
+
+    // Build neighbor lists per type (semantic similarity)
+    if(vocab.length >= 4){
+      MASTER.vocabIndex = buildNeighborLists(vocab);
+    }
+    if(ety.length >= 4){
+      MASTER.etyIndex = buildNeighborLists(ety);
+    }
+
+    MASTER.loaded = true;
+    status.className = "status good";
+    status.textContent = `Preset loaded. Vocabulary: ${vocab.length}  |  Etymology: ${ety.length}`;
+
+    // enable stage container
+    document.getElementById("evStage").classList.remove("hidden");
+  }catch(err){
+    MASTER.loaded = false;
+    status.className = "status bad";
+    status.textContent = "Index failed to load.";
+    console.error(err);
+  }
+}
+
+/* =========================
+   Quiz engine (Etym/Vocab)
+   ========================= */
+const LETTERS = ["A","B","C","D"];
 
 function shuffle(arr){
   for(let i=arr.length-1;i>0;i--){
     const j = Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]]=[arr[j],arr[i]];
+    [arr[i],arr[j]] = [arr[j],arr[i]];
   }
   return arr;
 }
 
-function downloadJson(filename, obj){
-  const blob = new Blob([JSON.stringify(obj,null,2)], {type:"application/json"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-}
+function genKey(N){
+  const base = Math.floor(N/4);
+  const counts = {A:base,B:base,C:base,D:base};
+  let rem = N % 4;
+  const pick = shuffle(["A","B","C","D"].slice());
+  for(let i=0;i<rem;i++) counts[pick[i]]++;
 
-/* ===========================
-   Tabs
-=========================== */
-const viewHome = document.getElementById("viewHome");
-const viewEV = document.getElementById("viewEV");
-const viewCustom = document.getElementById("viewCustom");
-
-const tabHome = document.getElementById("tabHome");
-const tabEV = document.getElementById("tabEV");
-const tabCustom = document.getElementById("tabCustom");
-
-function setTab(which){
-  const all = [
-    {btn:tabHome, view:viewHome, key:"home"},
-    {btn:tabEV, view:viewEV, key:"ev"},
-    {btn:tabCustom, view:viewCustom, key:"custom"}
-  ];
-  for(const t of all){
-    const active = (t.key === which);
-    t.btn.setAttribute("aria-selected", active ? "true" : "false");
-    t.view.classList.toggle("hidden", !active);
+  let key = [];
+  for(const L of LETTERS){
+    for(let i=0;i<counts[L];i++) key.push(L);
   }
-}
 
-tabHome.addEventListener("click", ()=>setTab("home"));
-tabEV.addEventListener("click", ()=>setTab("ev"));
-tabCustom.addEventListener("click", ()=>setTab("custom"));
-
-/* ===========================
-   Startup signals
-=========================== */
-document.body.dataset.js = "on";
-document.getElementById("versionPill").textContent = beijingNow();
-
-/* Avatar fallback */
-const avatarImg = document.getElementById("avatarImg");
-avatarImg.addEventListener("error", () => { avatarImg.src = AVATAR_FALLBACK_DATA_URL; });
-
-/* ===========================
-   Updates (Home)
-=========================== */
-const updatesList = document.getElementById("updatesList");
-
-function renderUpdates(){
-  updatesList.innerHTML = "";
-  if(!STATE.updates.length){
-    updatesList.innerHTML = `
-      <div class="reviewItem">
-        <div class="reviewHead"><span class="mono">—</span><span class="tagWARN">No updates yet</span></div>
-        <div class="reviewLine">Admin can post the first update.</div>
-      </div>`;
-    return;
-  }
-  for(const u of STATE.updates){
-    const item = document.createElement("div");
-    item.className = "reviewItem";
-    item.innerHTML = `
-      <div class="reviewHead">
-        <span class="mono">${escapeHtml(u.ts || "—")}</span>
-        <span class="mono">${STATE.updatesSource === "server" ? "server" : "local"}</span>
-      </div>
-      <div class="reviewLine">${escapeHtml(u.text || "")}</div>
-    `;
-    updatesList.appendChild(item);
-  }
-}
-
-function loadLocalUpdates(){
-  try{
-    const raw = localStorage.getItem("bb_updates_v1");
-    if(!raw) return [];
-    const arr = JSON.parse(raw);
-    return Array.isArray(arr) ? arr : [];
-  }catch{ return []; }
-}
-
-function saveLocalUpdates(){
-  localStorage.setItem("bb_updates_v1", JSON.stringify(STATE.updates));
-}
-
-async function tryLoadServerUpdates(){
-  try{
-    const res = await fetch(UPDATES_FILE, {cache:"no-store"});
-    if(!res.ok) return false;
-    const data = await res.json();
-    if(Array.isArray(data)){
-      STATE.updates = data;
-      STATE.updatesSource = "server";
-      return true;
+  // shuffle until constraints satisfied
+  for(let tries=0; tries<2000; tries++){
+    shuffle(key);
+    let ok = true;
+    // runs > 3
+    let run = 1;
+    for(let i=1;i<key.length;i++){
+      if(key[i]===key[i-1]) run++; else run=1;
+      if(run>3){ ok=false; break; }
     }
-    return false;
-  }catch{
-    return false;
+    if(!ok) continue;
+    // freq diff <= 1
+    const f = {A:0,B:0,C:0,D:0};
+    key.forEach(x=>f[x]++);
+    const vals = Object.values(f);
+    const max = Math.max(...vals), min = Math.min(...vals);
+    if(max-min>1) ok=false;
+
+    if(ok) return key.slice();
   }
+  return key; // last resort
 }
 
-async function initUpdates(){
-  const serverOk = await tryLoadServerUpdates();
-  if(!serverOk){
-    STATE.updates = loadLocalUpdates();
-    STATE.updatesSource = "local";
-  }
-  renderUpdates();
+function groupByTopic(entries){
+  const map = new Map();
+  entries.forEach((e, idx)=>{
+    const t = e.topic ? e.topic : "";
+    if(!map.has(t)) map.set(t, []);
+    map.get(t).push(idx);
+  });
+  // shuffle within
+  map.forEach(v=> shuffle(v));
+  return map;
 }
 
-/* Admin modal */
-const adminModal = document.getElementById("adminModal");
-const adminBtn = document.getElementById("adminBtn");
-const adminCloseBtn = document.getElementById("adminCloseBtn");
-const adminUnlockBtn = document.getElementById("adminUnlockBtn");
-const adminPass = document.getElementById("adminPass");
-const adminLocked = document.getElementById("adminLocked");
-const adminEditor = document.getElementById("adminEditor");
-const adminPassHint = document.getElementById("adminPassHint");
-const updateText = document.getElementById("updateText");
-const postUpdateBtn = document.getElementById("postUpdateBtn");
-const exportUpdatesBtn = document.getElementById("exportUpdatesBtn");
-const clearLocalUpdatesBtn = document.getElementById("clearLocalUpdatesBtn");
-
-function openAdmin(){
-  adminModal.classList.add("show");
-  adminLocked.classList.remove("hidden");
-  adminEditor.classList.add("hidden");
-  adminPass.value = "";
-  adminPassHint.textContent = "";
-}
-function closeAdmin(){
-  adminModal.classList.remove("show");
-}
-
-adminBtn.addEventListener("click", openAdmin);
-adminCloseBtn.addEventListener("click", closeAdmin);
-adminModal.addEventListener("click", (e)=>{ if(e.target === adminModal) closeAdmin(); });
-
-adminUnlockBtn.addEventListener("click", ()=>{
-  const p = (adminPass.value || "").trim();
-  if(p === ADMIN_PASSWORD){
-    adminLocked.classList.add("hidden");
-    adminEditor.classList.remove("hidden");
-    adminPassHint.textContent = "";
-  }else{
-    adminPassHint.textContent = "Incorrect password.";
-  }
-});
-
-postUpdateBtn.addEventListener("click", ()=>{
-  const txt = (updateText.value || "").trim();
-  if(!txt) return;
-  const entry = { ts: beijingNow(), text: txt };
-  STATE.updates.unshift(entry);
-  STATE.updatesSource = "local";
-  saveLocalUpdates();
-  renderUpdates();
-  updateText.value = "";
-});
-
-exportUpdatesBtn.addEventListener("click", ()=>{
-  downloadJson("updates.json", STATE.updates);
-});
-
-clearLocalUpdatesBtn.addEventListener("click", ()=>{
-  localStorage.removeItem("bb_updates_v1");
-  STATE.updates = [];
-  STATE.updatesSource = "local";
-  renderUpdates();
-});
-
-/* ===========================
-   XLSX loading + parsing
-=========================== */
-const evDataStatus = document.getElementById("evDataStatus");
-const evTechStatus = document.getElementById("evTechStatus");
-const evReloadBtn = document.getElementById("evReloadBtn");
-
-function setDataStatus(msg){
-  evDataStatus.textContent = msg;
-}
-function setTechStatus(msg){
-  evTechStatus.textContent = msg;
-}
-
-function normKey(k){ return String(k||"").toLowerCase().replace(/\s+/g," ").trim(); }
-
-function findKey(keys, patterns){
-  const lk = keys.map(normKey);
-  for(const pat of patterns){
-    const idx = lk.findIndex(x => pat.every(p => x.includes(p)));
-    if(idx >= 0) return keys[idx];
-  }
-  return null;
-}
-
-function coerceText(v){
-  if(v === null || v === undefined) return "";
-  return String(v).trim();
-}
-
-function parseRowsToData(rows){
-  const vocab = [];
-  const ety = [];
-
-  if(!rows.length) return {vocab, ety};
-
-  const keys = Object.keys(rows[0] || {});
-  const typeKey = findKey(keys, [["type"],["category"]]);
-
-  // Vocab mapping
-  const vTermKey = findKey(keys, [
-    ["vocab","term"],["vocabulary","term"],["term"],["word"],["vocab"]
-  ]);
-  const vDefKey = findKey(keys, [
-    ["vocab","def"],["vocabulary","def"],["definition"],["def"]
-  ]);
-
-  // Etymology mapping
-  const ePartKey = findKey(keys, [
-    ["ety","part"],["etym","part"],["word","part"],["part"],["morpheme"],["root"],["prefix"],["suffix"]
-  ]);
-  const eMeanKey = findKey(keys, [
-    ["ety","meaning"],["etym","meaning"],["meaning"],["gloss"]
-  ]);
-
-  for(const r of rows){
-    const tVal = typeKey ? coerceText(r[typeKey]).toLowerCase() : "";
-    const vTerm = vTermKey ? coerceText(r[vTermKey]) : "";
-    const vDef  = vDefKey  ? coerceText(r[vDefKey])  : "";
-    const ePart = ePartKey ? coerceText(r[ePartKey]) : "";
-    const eMean = eMeanKey ? stripExamples(coerceText(r[eMeanKey])) : "";
-
-    const isV = tVal.includes("vocab") || tVal.includes("glossary") || tVal.includes("definition");
-    const isE = tVal.includes("ety") || tVal.includes("etym") || tVal.includes("word part") || tVal.includes("morpheme");
-
-    // If explicit type: respect it
-    if(typeKey && tVal){
-      if(isV && vTerm && vDef) vocab.push({term:vTerm, def:vDef});
-      if(isE && ePart && eMean) ety.push({part:ePart, meaning:eMean});
-      continue;
-    }
-
-    // Otherwise: infer by presence
-    if(vTerm && vDef) vocab.push({term:vTerm, def:vDef});
-    if(ePart && eMean) ety.push({part:ePart, meaning:eMean});
-  }
-
-  // de-dup + clean
-  const seenV = new Set();
-  const cleanV = [];
-  for(const it of vocab){
-    const k = (it.term+"||"+it.def).toLowerCase();
-    if(seenV.has(k)) continue;
-    if(!it.term || !it.def) continue;
-    seenV.add(k);
-    cleanV.push(it);
-  }
-
-  const seenE = new Set();
-  const cleanE = [];
-  for(const it of ety){
-    const k = (it.part+"||"+it.meaning).toLowerCase();
-    if(seenE.has(k)) continue;
-    if(!it.part || !it.meaning) continue;
-    seenE.add(k);
-    cleanE.push(it);
-  }
-
-  return {vocab:cleanV, ety:cleanE};
-}
-
-function parseWorkbook(wb){
-  // Try to find dedicated sheets by name
-  const names = wb.SheetNames || [];
-  const lower = names.map(n => n.toLowerCase());
-
-  const vocabSheetName =
-    names[lower.findIndex(n => n.includes("vocab"))] ||
-    names[lower.findIndex(n => n.includes("gloss"))] ||
-    names[0];
-
-  const etySheetName =
-    names[lower.findIndex(n => n.includes("ety"))] ||
-    names[lower.findIndex(n => n.includes("etym"))] ||
-    names[0];
-
-  let vocabRows = [];
-  let etyRows = [];
-
-  // Read vocab candidate sheet
-  try{
-    const wsV = wb.Sheets[vocabSheetName];
-    vocabRows = XLSX.utils.sheet_to_json(wsV, {defval:"", raw:false});
-  }catch{}
-
-  // Read ety candidate sheet (may be same as vocab sheet)
-  try{
-    const wsE = wb.Sheets[etySheetName];
-    etyRows = XLSX.utils.sheet_to_json(wsE, {defval:"", raw:false});
-  }catch{}
-
-  // If both sheets are same, parse once
-  if(vocabSheetName === etySheetName){
-    const merged = parseRowsToData(vocabRows);
-    return merged;
-  }
-
-  // Parse separately, then merge
-  const v = parseRowsToData(vocabRows);
-  const e = parseRowsToData(etyRows);
-  return {
-    vocab: v.vocab.length ? v.vocab : e.vocab,
-    ety:   e.ety.length   ? e.ety   : v.ety
-  };
-}
-
-async function loadSpreadsheet(){
-  setDataStatus("Loading dataset…");
-  setTechStatus("Fetching spreadsheet…");
-
-  if(!window.XLSX){
-    setDataStatus("XLSX library missing");
-    setTechStatus("SheetJS failed to load (CDN blocked). Host xlsx.full.min.js locally or allow CDN.");
-    return;
-  }
-
-  try{
-    const res = await fetch(SPREADSHEET_FILE, {cache:"no-store"});
-    if(!res.ok) throw new Error("HTTP "+res.status);
-    const buf = await res.arrayBuffer();
-    const wb = XLSX.read(buf, {type:"array"});
-    const parsed = parseWorkbook(wb);
-
-    STATE.data.vocab = parsed.vocab;
-    STATE.data.ety = parsed.ety;
-
-    const vN = STATE.data.vocab.length;
-    const eN = STATE.data.ety.length;
-
-    setDataStatus(`Loaded: Vocabulary ${vN} | Etymology ${eN}`);
-    setTechStatus(vN || eN ? "Ready." : "No usable rows found. Check spreadsheet headers/columns.");
-  }catch(err){
-    setDataStatus("Dataset not loaded");
-    setTechStatus("Failed to load XLSX. If you opened via file://, fetch is blocked. Serve/host the folder. ("+err.message+")");
-  }
-}
-
-evReloadBtn.addEventListener("click", loadSpreadsheet);
-
-/* ===========================
-   EV Quiz engine (ABCD)
-=========================== */
-const evCount = document.getElementById("evCount");
-const evStartBtn = document.getElementById("evStartBtn");
-const evChangeBtn = document.getElementById("evChangeBtn");
-const evMode = document.getElementById("evMode");
-
-const evQuizArea = document.getElementById("evQuizArea");
-const evSummaryArea = document.getElementById("evSummaryArea");
-
-function buildLogicalDistractors(pool, correctIdx, textField, k=3){
-  const correctText = pool[correctIdx][textField];
-  const cTok = tokenize(correctText);
-  const scores = [];
-
-  for(let i=0;i<pool.length;i++){
-    if(i === correctIdx) continue;
-    const t = pool[i][textField];
-    const s = jaccard(cTok, tokenize(t));
-    scores.push({i, s});
-  }
-
-  // Prefer high similarity but not identical; then fall back.
-  scores.sort((a,b)=>b.s - a.s);
-
+function sampleWithCoverage(entries, count){
+  const topicMap = groupByTopic(entries);
+  const topics = Array.from(topicMap.keys());
+  // If no topic structure, just random sample unique
+  const hasMeaningfulTopics = !(topics.length===1 && topics[0]==="");
+  const used = new Set();
   const picked = [];
-  for(const cand of scores){
-    if(picked.length >= k) break;
-    if(cand.s >= 0.95) continue; // too close; risk duplicate-ish
-    picked.push(cand.i);
-  }
-  // If not enough, fill randomly
-  if(picked.length < k){
-    const remaining = scores.map(x=>x.i).filter(i => !picked.includes(i));
-    shuffle(remaining);
-    while(picked.length < k && remaining.length) picked.push(remaining.pop());
-  }
-  return picked.slice(0,k);
-}
 
-function makeEVQuiz(mode, N){
-  const vocab = STATE.data.vocab;
-  const ety = STATE.data.ety;
-
-  const questions = [];
-  const wantV = (mode === "vocab" || mode === "mixed");
-  const wantE = (mode === "ety" || mode === "mixed");
-
-  const vIdx = [...vocab.keys()];
-  const eIdx = [...ety.keys()];
-  shuffle(vIdx); shuffle(eIdx);
-
-  // Determine composition
-  let vTake = 0, eTake = 0;
-  if(mode === "vocab"){
-    vTake = Math.min(N, vIdx.length);
-  }else if(mode === "ety"){
-    eTake = Math.min(N, eIdx.length);
-  }else{
-    // mixed: approximate half-half but respect availability
-    const half = Math.floor(N/2);
-    vTake = Math.min(half + (N%2), vIdx.length);
-    eTake = Math.min(half, eIdx.length);
-
-    if(vTake + eTake < N){
-      // fill remaining from whichever has more available
-      const remaining = N - (vTake + eTake);
-      const vAvail = vIdx.length - vTake;
-      const eAvail = eIdx.length - eTake;
-      if(vAvail >= eAvail) vTake += Math.min(remaining, vAvail);
-      else eTake += Math.min(remaining, eAvail);
+  if(hasMeaningfulTopics){
+    let safety = 0;
+    while(picked.length < count && safety < 100000){
+      safety++;
+      for(const t of topics){
+        const arr = topicMap.get(t);
+        if(!arr || arr.length===0) continue;
+        // pop next unused
+        while(arr.length && used.has(arr[arr.length-1])) arr.pop();
+        if(!arr.length) continue;
+        const idx = arr.pop();
+        if(used.has(idx)) continue;
+        used.add(idx);
+        picked.push(idx);
+        if(picked.length >= count) break;
+      }
+      // if we're stuck, break
+      const remaining = entries.length - used.size;
+      if(remaining<=0) break;
     }
   }
 
-  if((wantV && vTake < 1) && (wantE && eTake < 1)){
-    return null;
+  // fill remainder randomly
+  if(picked.length < count){
+    const all = [...Array(entries.length).keys()].filter(i=>!used.has(i));
+    shuffle(all);
+    while(picked.length < count && all.length){
+      picked.push(all.pop());
+    }
   }
 
-  // Build vocab questions
-  for(let n=0;n<vTake;n++){
-    const idx = vIdx[n];
-    const corr = vocab[idx];
+  return picked.map(i=>entries[i]);
+}
 
-    // Options are definitions only (same type), logical distractors based on definition similarity
-    const distractIdx = buildLogicalDistractors(vocab, idx, "def", 3);
-    const options = [
-      {text:corr.def, isCorrect:true},
-      ...distractIdx.map(di => ({text:vocab[di].def, isCorrect:false}))
-    ];
-    shuffle(options);
+function overlapCount(a, b){
+  const A = new Set(tokenize(a));
+  const B = new Set(tokenize(b));
+  let c = 0;
+  A.forEach(w=>{ if(B.has(w)) c++; });
+  return c;
+}
 
-    const letters = ["A","B","C","D"];
-    const optMap = {};
-    let answer = "A";
-    options.forEach((o,i)=>{
-      optMap[letters[i]] = o.text;
-      if(o.isCorrect) answer = letters[i];
-    });
+function antiCuePass(stem, options, correctIdx){
+  // word-count parity
+  const counts = options.map(o=>wordCount(o.text));
+  const sorted = counts.slice().sort((x,y)=>x-y);
+  const median = sorted.length ? sorted[Math.floor(sorted.length/2)] : 1;
+  const max = Math.max(...counts), min = Math.min(...counts);
 
-    questions.push({
-      kind:"Vocabulary",
-      stem:corr.term,
-      prompt:"Choose the best definition.",
-      options:optMap,
-      answer,
-      rationale: "" // optional
-    });
+  // constraints
+  for(const wc of counts){
+    if(median>0){
+      if(Math.abs(wc - median) > Math.ceil(0.2*median)) return false;
+    }
+  }
+  if(max - min > (median<=8 ? 3 : 6)) return false;
+
+  // technicality parity
+  const tech = options.map(o=>techScore(o.text));
+  const cTech = tech[correctIdx];
+  if(cTech >= 2){
+    let comparable = 0;
+    for(let i=0;i<4;i++){
+      if(i===correctIdx) continue;
+      if(tech[i] >= Math.max(1, cTech-1)) comparable++;
+    }
+    if(comparable < 2) return false;
   }
 
-  // Build etymology questions
-  for(let n=0;n<eTake;n++){
-    const idx = eIdx[n];
-    const corr = ety[idx];
-    const distractIdx = buildLogicalDistractors(ety, idx, "meaning", 3);
-    const options = [
-      {text:stripExamples(corr.meaning), isCorrect:true},
-      ...distractIdx.map(di => ({text:stripExamples(ety[di].meaning), isCorrect:false}))
-    ];
-    shuffle(options);
-
-    const letters = ["A","B","C","D"];
-    const optMap = {};
-    let answer = "A";
-    options.forEach((o,i)=>{
-      optMap[letters[i]] = o.text;
-      if(o.isCorrect) answer = letters[i];
-    });
-
-    questions.push({
-      kind:"Etymology",
-      stem:corr.part,
-      prompt:"Choose the best meaning.",
-      options:optMap,
-      answer,
-      rationale:""
-    });
+  // hedging/absolute parity
+  const hedge = options.map(o=>/\b(always|never|only|typically|primarily)\b/i.test(o.text));
+  const cH = hedge[correctIdx];
+  if(cH){
+    let others = 0; for(let i=0;i<4;i++) if(i!==correctIdx && hedge[i]) others++;
+    if(others===0) return false;
   }
 
-  shuffle(questions);
+  // connector parity
+  const conn = options.map(o=>hasConnector(o.text));
+  const cC = conn[correctIdx];
+  if(cC){
+    let others = 0; for(let i=0;i<4;i++) if(i!==correctIdx && conn[i]) others++;
+    if(others===0) return false;
+  }
 
-  // Trim to N if overfilled due to availability adjustments
-  const finalQ = questions.slice(0, Math.min(N, questions.length));
+  // surface-overlap: correct option must not be unique in containing the stem token
+  const hit = options.map(o=>containsStem(o.text, stem));
+  const cHit = hit[correctIdx];
+  if(cHit){
+    let others = 0; for(let i=0;i<4;i++) if(i!==correctIdx && hit[i]) others++;
+    if(others===0) return false;
+  }
+
+  return true;
+}
+
+function buildOptionSet(entry, pool, indexData, desiredLetter){
+  // pool: entries array for the same kind
+  // indexData: {neighbors}
+  const correctText = entry.answerText;
+  const stem = entry.stem;
+  const correctLead = leadClass(correctText);
+  const correctTopic = entry.topic || "";
+
+  const neighbors = indexData?.neighbors || [];
+  const i = pool.indexOf(entry);
+  const top = (i>=0 && neighbors[i]) ? neighbors[i].slice() : [];
+
+  // Prefer same-topic candidates first (if topic exists and enough)
+  const sameTopic = [];
+  if(correctTopic){
+    for(let j=0;j<pool.length;j++){
+      if(j===i) continue;
+      if((pool[j].topic||"") === correctTopic) sameTopic.push(j);
+    }
+  }
+
+  // candidate list: same-topic first, then semantic neighbors
+  let candidates = [];
+  if(sameTopic.length >= 6){
+    // rank same-topic by similarity via neighbor order if possible
+    const topSet = new Set(top);
+    const inTop = sameTopic.filter(x=>topSet.has(x));
+    const rest = sameTopic.filter(x=>!topSet.has(x));
+    candidates = inTop.concat(rest);
+  }else{
+    candidates = top.slice();
+  }
+
+  // fallback: all indices
+  if(candidates.length < 12){
+    candidates = candidates.concat([...Array(pool.length).keys()]);
+  }
+
+  // Filter candidates to same type + usable
+  candidates = candidates.filter(j=>{
+    if(j===i) return false;
+    const txt = pool[j].answerText;
+    if(!txt) return false;
+    if(txt.toLowerCase() === correctText.toLowerCase()) return false;
+    // avoid distractors with zero overlap (too obviously unrelated)
+    if(overlapCount(correctText, txt) < 2) return false;
+    // reduce giveaway: avoid distractor containing the stem if correct doesn't
+    const cHasStem = containsStem(correctText, stem);
+    const dHasStem = containsStem(txt, stem);
+    if(!cHasStem && dHasStem) return false;
+
+    // lead class preference (keep template-ish)
+    const lc = leadClass(txt);
+    if(correctLead !== "other" && lc !== correctLead) return false;
+
+    // word-count prefilter vs correct (looser than final constraints)
+    const wcC = wordCount(correctText);
+    const wcD = wordCount(txt);
+    if(wcC>0){
+      const lo = Math.floor(wcC*0.70);
+      const hi = Math.ceil(wcC*1.30);
+      if(wcD < lo || wcD > hi) return false;
+    }
+    return true;
+  });
+
+  // ensure uniqueness
+  candidates = Array.from(new Set(candidates));
+
+  // Choose distractors with repeated attempts
+  const tries = 220;
+  const keyIdx = LETTERS.indexOf(desiredLetter);
+
+  for(let t=0;t<tries;t++){
+    // pull from first 24 (most similar) with occasional wider pick
+    const cap = Math.min(candidates.length, (t<140 ? 24 : 60));
+    const pickFrom = candidates.slice(0, cap);
+    if(pickFrom.length < 3) break;
+
+    const chosen = new Set();
+    while(chosen.size < 3 && pickFrom.length){
+      const j = pickFrom[Math.floor(Math.random()*pickFrom.length)];
+      chosen.add(j);
+      if(chosen.size<3 && t%3===0){
+        // small bias to include one mid-range
+        const k = candidates[Math.min(candidates.length-1, 24 + Math.floor(Math.random()*20))];
+        if(k!==undefined) chosen.add(k);
+      }
+    }
+    if(chosen.size < 3) continue;
+
+    let distractors = Array.from(chosen).slice(0,3).map(j=> pool[j].answerText);
+
+    // Build options with correct inserted at keyIdx
+    shuffle(distractors);
+    const opts = [];
+    let d = 0;
+    for(let k=0;k<4;k++){
+      if(k===keyIdx){
+        opts.push({letter: LETTERS[k], text: correctText, isCorrect:true});
+      }else{
+        opts.push({letter: LETTERS[k], text: distractors[d++], isCorrect:false});
+      }
+    }
+
+    // Obviousness heuristics: correct isn't uniquely longest/shortest by >20% (handled in antiCue)
+    if(!antiCuePass(stem, opts, keyIdx)) continue;
+
+    return opts;
+  }
+
+  // last resort: random distractors from pool that meet minimal filters
+  const all = [...Array(pool.length).keys()].filter(j=>j!==i);
+  shuffle(all);
+  const dist = [];
+  for(const j of all){
+    if(dist.length>=3) break;
+    const txt = pool[j].answerText;
+    if(!txt) continue;
+    if(overlapCount(correctText, txt) < 1) continue;
+    dist.push(txt);
+  }
+  while(dist.length<3) dist.push("—"); // shouldn't happen
+
+  const keyIdx = LETTERS.indexOf(desiredLetter);
+  shuffle(dist);
+  const opts = [];
+  let d=0;
+  for(let k=0;k<4;k++){
+    if(k===keyIdx) opts.push({letter:LETTERS[k], text:correctText, isCorrect:true});
+    else opts.push({letter:LETTERS[k], text:dist[d++], isCorrect:false});
+  }
+  return opts;
+}
+
+function makeQuestion(entry, keyLetter){
+  const kind = entry.kind;
+  const pool = (kind==="vocab") ? MASTER.vocab : MASTER.ety;
+  const idx  = (kind==="vocab") ? MASTER.vocabIndex : MASTER.etyIndex;
+
+  const opts = buildOptionSet(entry, pool, idx, keyLetter);
+
+  const prompt = (kind==="vocab")
+    ? "Choose the best definition."
+    : "Choose the best meaning.";
 
   return {
-    title: "Etymology & Vocabulary Practice",
-    questions: finalQ,
-    answers: new Array(finalQ.length).fill(null),
-    startedAt: beijingNow()
+    kind,
+    stem: entry.stem,
+    answerText: entry.answerText,
+    topic: entry.topic || "",
+    prompt,
+    keyLetter,
+    options: opts
   };
 }
 
-/* Render quiz */
-function renderQuiz(container, quiz, onFinish){
-  const qn = quiz.questions.length;
+function validateCount(n){
+  const x = Number(n);
+  if(!Number.isInteger(x)) return {ok:false, msg:"Enter an integer."};
+  if(x<1 || x>100) return {ok:false, msg:"Enter an integer from 1 to 100."};
+  return {ok:true, val:x};
+}
+
+function buildQuiz(mode, N){
+  const hasV = MASTER.vocab.length >= 4;
+  const hasE = MASTER.ety.length >= 4;
+
+  let selected = [];
+  if(mode==="vocab"){
+    if(!hasV) return null;
+    selected = sampleWithCoverage(MASTER.vocab, N);
+  }else if(mode==="ety"){
+    if(!hasE) return null;
+    selected = sampleWithCoverage(MASTER.ety, N);
+  }else{ // mixed
+    if(hasV && hasE){
+      const vCount = Math.ceil(N/2);
+      const eCount = N - vCount;
+      selected = sampleWithCoverage(MASTER.vocab, vCount).concat(sampleWithCoverage(MASTER.ety, eCount));
+      shuffle(selected);
+    }else if(hasV){
+      selected = sampleWithCoverage(MASTER.vocab, N);
+    }else if(hasE){
+      selected = sampleWithCoverage(MASTER.ety, N);
+    }else{
+      return null;
+    }
+  }
+
+  const key = genKey(selected.length);
+  const questions = selected.map((e,i)=> makeQuestion(e, key[i]));
+
+  return {
+    mode,
+    N: questions.length,
+    questions,
+    answers: Array(questions.length).fill(null), // stores letter chosen or null
+    startedAt: new Date(),
+    finishedAt: null,
+    finishedEarly: false
+  };
+}
+
+/* =========================
+   Render Quiz + Summary
+   ========================= */
+let EV_STATE = null;
+let EV_MODE = "mixed";
+
+const qMeta = document.getElementById("qMeta");
+const qStem = document.getElementById("qStem");
+const qPrompt = document.getElementById("qPrompt");
+const optList = document.getElementById("optList");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+const finishNowBtn = document.getElementById("finishNowBtn");
+const summaryView = document.getElementById("summaryView");
+const quizView = document.getElementById("quizView");
+
+let qIndex = 0;
+
+function renderQuestion(){
+  const s = EV_STATE;
+  const q = s.questions[qIndex];
+  qMeta.textContent = `Question ${qIndex+1} of ${s.N}`;
+  qStem.textContent = q.stem;
+  qPrompt.textContent = q.prompt;
+
+  optList.innerHTML = "";
+  q.options.forEach((o, idx)=>{
+    const div = document.createElement("div");
+    div.className = "opt";
+    const chosen = s.answers[qIndex];
+    if(chosen === o.letter) div.classList.add("selected");
+
+    const letter = document.createElement("div");
+    letter.className = "letter mono";
+    letter.textContent = o.letter;
+
+    const text = document.createElement("div");
+    text.className = "opttext";
+    text.textContent = o.text;
+
+    div.appendChild(letter);
+    div.appendChild(text);
+
+    div.addEventListener("click", ()=>{
+      s.answers[qIndex] = o.letter;
+      renderQuestion();
+    });
+
+    optList.appendChild(div);
+  });
+
+  backBtn.disabled = (qIndex===0);
+  nextBtn.textContent = (qIndex===s.N-1) ? "Finish" : "Next";
+}
+
+function computeResults(state){
+  let correct = 0, attempted = 0;
+  const details = [];
+  for(let i=0;i<state.N;i++){
+    const q = state.questions[i];
+    const ans = state.answers[i]; // letter or null
+    const wasAttempted = !!ans;
+    if(wasAttempted) attempted++;
+    const correctLetter = q.keyLetter;
+    const ok = (ans === correctLetter);
+    if(ok) correct++;
+
+    const optByLetter = {};
+    q.options.forEach(o=> optByLetter[o.letter]=o.text);
+
+    details.push({
+      i,
+      stem: q.stem,
+      kind: q.kind,
+      prompt: q.prompt,
+      yourLetter: ans,
+      correctLetter,
+      yourText: ans ? optByLetter[ans] : "",
+      correctText: optByLetter[correctLetter],
+      topic: q.topic || "",
+      status: !wasAttempted ? "unattempted" : (ok ? "correct" : "incorrect")
+    });
+  }
+  const total = state.N;
+  const pct = total ? Math.round((correct/total)*100) : 0;
+  const attemptedPct = attempted ? Math.round((correct/attempted)*100) : 0;
+  return {correct, total, pct, attempted, attemptedPct, details};
+}
+
+function adviceText(pct, attempted, total){
+  // Constructive advice based on percentage (overall, unattempted counted wrong by design)
+  if(total===0) return "";
+  const unattempted = total - attempted;
+
+  let band;
+  if(pct >= 90) band = "high";
+  else if(pct >= 75) band = "solid";
+  else if(pct >= 60) band = "unstable";
+  else band = "low";
+
+  const lines = [];
+
+  // Required rationale lines (your wording preference)
+  lines.push(`<strong>Attempted:</strong> <span class="mono">${attempted}/${total}</span>. Unattempted questions are scored as incorrect (by design).`);
+  lines.push(`Distractors were selected from the same question type and biased toward semantic similarity for plausibility.`);
+
+  if(band==="high"){
+    lines.push(`Accuracy is strong. Keep the same question count until you can repeat this reliably, then increase the question count.`);
+  }else if(band==="solid"){
+    lines.push(`Good trajectory. Retake at the same question count until accuracy is stable, then increase the question count.`);
+  }else if(band==="unstable"){
+    lines.push(`Performance is not stable yet. Reduce the question count, retake, and only increase once accuracy holds.`);
+  }else{
+    lines.push(`If you missed many, reduce the question count and retake until accuracy is stable — then increase the question count.`);
+  }
+
+  if(unattempted > 0){
+    lines.push(`You ended early with <span class="mono">${unattempted}</span> unattempted. If time pressure caused that, reduce the question count.`);
+  }
+
+  return lines.map(s=>`<div class="line">${s}</div>`).join("");
+}
+
+function renderSummary(){
+  const s = EV_STATE;
+  s.finishedAt = new Date();
+
+  const res = computeResults(s);
+
+  quizView.classList.add("hidden");
+  summaryView.classList.remove("hidden");
+  summaryView.innerHTML = "";
+
+  const title = document.createElement("div");
+  title.innerHTML = `<div class="quiz-top">
+      <div class="qmeta mono">Results</div>
+      <button id="changeNumberEV2" class="btn ghost">Change number</button>
+    </div>
+    <div class="section-title" style="margin-top:0;">Summary</div>`;
+
+  const kpis = document.createElement("div");
+  kpis.className = "summary-kpis";
+
+  const k1 = document.createElement("div");
+  k1.className = "kpi";
+  k1.innerHTML = `<div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div>`;
+
+  const k2 = document.createElement("div");
+  k2.className = "kpi";
+  k2.innerHTML = `<div class="big mono">${res.pct}%</div><div class="small">Overall accuracy</div>`;
+
+  const k3 = document.createElement("div");
+  k3.className = "kpi";
+  k3.innerHTML = `<div class="big mono">${res.attempted}/${res.total}</div><div class="small">Attempted</div>`;
+
+  const k4 = document.createElement("div");
+  k4.className = "kpi";
+  k4.innerHTML = `<div class="big mono">${res.attempted ? res.attemptedPct : 0}%</div><div class="small">Accuracy on attempted</div>`;
+
+  kpis.appendChild(k1); kpis.appendChild(k2); kpis.appendChild(k3); kpis.appendChild(k4);
+
+  const advice = document.createElement("div");
+  advice.className = "advice";
+  advice.innerHTML = adviceText(res.pct, res.attempted, res.total);
+
+  const actions = document.createElement("div");
+  actions.className = "quiz-nav";
+  actions.innerHTML = `
+    <div class="left">
+      <button id="retakeSame" class="btn">Retake same quiz</button>
+      <button id="newQuiz" class="btn primary">New quiz</button>
+    </div>
+    <div class="right">
+      <button id="toggleReview" class="btn ghost">Show review</button>
+    </div>
+  `;
+
+  const review = document.createElement("div");
+  review.className = "review hidden";
+  review.id = "reviewBlock";
+  review.innerHTML = `<div class="section-title" style="font-size:20px;">Review (all questions)</div>`;
+
+  // Ensure ALL questions included (including unattempted)
+  res.details.forEach(d=>{
+    const item = document.createElement("div");
+    item.className = "review-item";
+    let pillClass = "pill";
+    let pillText = "";
+    if(d.status==="correct"){ pillClass += " good"; pillText = "Correct"; }
+    else if(d.status==="incorrect"){ pillClass += " bad"; pillText = "Incorrect"; }
+    else { pillClass += " warn"; pillText = "Unattempted"; }
+
+    const typeLabel = (d.kind==="vocab") ? "Vocabulary" : "Etymology";
+
+    item.innerHTML = `
+      <div class="review-head">
+        <div class="review-term">${d.stem}</div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <span class="pill">${typeLabel}</span>
+          <span class="${pillClass}">${pillText}</span>
+          <span class="pill mono">Q${d.i+1}</span>
+        </div>
+      </div>
+      <div class="review-body">
+        <div class="line"><span class="muted">Correct:</span> <span class="mono">${d.correctLetter}</span>. ${d.correctText}</div>
+        <div class="line"><span class="muted">Your answer:</span> ${d.yourLetter ? `<span class="mono">${d.yourLetter}</span>. ${d.yourText}` : `<span class="mono">—</span>`}</div>
+      </div>
+    `;
+    review.appendChild(item);
+  });
+
+  summaryView.appendChild(title);
+  summaryView.appendChild(kpis);
+  summaryView.appendChild(advice);
+  summaryView.appendChild(actions);
+  summaryView.appendChild(review);
+
+  // handlers
+  document.getElementById("changeNumberEV2").addEventListener("click", ()=>{
+    resetEVToSetup();
+  });
+  document.getElementById("retakeSame").addEventListener("click", ()=>{
+    EV_STATE.answers = Array(EV_STATE.N).fill(null);
+    EV_STATE.finishedAt = null;
+    EV_STATE.finishedEarly = false;
+    qIndex = 0;
+    summaryView.classList.add("hidden");
+    quizView.classList.remove("hidden");
+    renderQuestion();
+  });
+  document.getElementById("newQuiz").addEventListener("click", ()=>{
+    resetEVToSetup();
+  });
+  document.getElementById("toggleReview").addEventListener("click", (e)=>{
+    const blk = document.getElementById("reviewBlock");
+    const show = blk.classList.contains("hidden");
+    blk.classList.toggle("hidden", !show);
+    e.target.textContent = show ? "Hide review" : "Show review";
+  });
+}
+
+function resetEVToSetup(){
+  EV_STATE = null;
+  qIndex = 0;
+  summaryView.classList.add("hidden");
+  quizView.classList.remove("hidden");
+  document.getElementById("qCountEV").value = "";
+  // keep mode selection
+}
+
+function finishQuiz(early=false){
+  EV_STATE.finishedEarly = !!early;
+  renderSummary();
+}
+
+/* =========================
+   Mode chips
+   ========================= */
+function setMode(mode){
+  EV_MODE = mode;
+  document.querySelectorAll("#modeChips .chip").forEach(c=>{
+    c.classList.toggle("active", c.dataset.mode===mode);
+  });
+}
+
+/* =========================
+   Custom Content (simple parser)
+   ========================= */
+function parseCustomText(text){
+  const lines = (text||"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const entries = [];
+  for(const line of lines){
+    // try em dash / en dash / hyphen / colon
+    let parts = null;
+    if(line.includes("—")) parts = line.split("—");
+    else if(line.includes("–")) parts = line.split("–");
+    else if(line.includes(":")) parts = line.split(":");
+    if(!parts || parts.length < 2) continue;
+    const left = normSpace(parts.shift());
+    const right = normSpace(parts.join(":"));
+    if(left && right){
+      entries.push({ kind:"vocab", stem:left, answerText:right, topic:"" });
+    }
+  }
+  // dedup
+  const seen = new Set();
+  const out = [];
+  for(const e of entries){
+    const k = (e.stem+"||"+e.answerText).toLowerCase();
+    if(seen.has(k)) continue;
+    seen.add(k);
+    out.push(e);
+  }
+  return out;
+}
+
+function renderCustomQuiz(state, mount){
+  // Reuse the same quiz renderer but isolated
+  const container = mount;
+  container.innerHTML = "";
+
+  const quiz = document.createElement("div");
+  const qMetaC = document.createElement("div");
+  const stemC = document.createElement("div");
+  const promptC = document.createElement("div");
+  const optsC = document.createElement("div");
+  const navC = document.createElement("div");
+  optsC.className = "optlist";
+  promptC.className = "qprompt";
+  stemC.className = "qstem";
+  qMetaC.className = "qmeta mono";
+  navC.className = "quiz-nav";
 
   let idx = 0;
 
-  function currentAnswer(){
-    return quiz.answers[idx];
-  }
-
-  function setAnswer(letter){
-    quiz.answers[idx] = letter;
-    render();
-  }
-
   function render(){
-    const q = quiz.questions[idx];
-    const letters = ["A","B","C","D"];
+    const q = state.questions[idx];
+    qMetaC.textContent = `Question ${idx+1} of ${state.N}`;
+    stemC.textContent = q.stem;
+    promptC.textContent = "Choose the best definition.";
 
-    container.innerHTML = `
-      <div class="quizTop">
-        <div>
-          <div class="qMeta mono">Question ${idx+1} of ${qn} · ${escapeHtml(q.kind)}</div>
-          <div class="qStem">${escapeHtml(q.stem)}</div>
-          <div class="qPrompt">${escapeHtml(q.prompt)}</div>
-        </div>
-        <div class="pill mono">Change number anytime</div>
+    optsC.innerHTML = "";
+    q.options.forEach(o=>{
+      const div = document.createElement("div");
+      div.className = "opt";
+      if(state.answers[idx]===o.letter) div.classList.add("selected");
+
+      const L = document.createElement("div");
+      L.className = "letter mono";
+      L.textContent = o.letter;
+      const T = document.createElement("div");
+      T.className = "opttext";
+      T.textContent = o.text;
+
+      div.appendChild(L); div.appendChild(T);
+      div.addEventListener("click", ()=>{
+        state.answers[idx]=o.letter;
+        render();
+      });
+      optsC.appendChild(div);
+    });
+
+    navC.innerHTML = `
+      <div class="left">
+        <button class="btn ghost" id="cBack">Back</button>
       </div>
-
-      <div class="optList">
-        ${letters.map(L => {
-          const text = q.options[L] ?? "";
-          const checked = currentAnswer() === L ? "checked" : "";
-          return `
-            <label class="opt">
-              <input type="radio" name="opt" value="${L}" ${checked} />
-              <span class="optLabel">
-                <span class="optLetter">${L}.</span>
-                <span class="optText">${escapeHtml(text)}</span>
-              </span>
-            </label>
-          `;
-        }).join("")}
-      </div>
-
-      <div class="quizNav">
-        <div class="quizNavLeft">
-          <button type="button" class="btn btnGhost" id="btnBack" ${idx===0?"disabled":""}>Back</button>
-        </div>
-
-        <div class="centerActions">
-          <button type="button" class="btn btnDanger" id="btnFinish">Finish now</button>
-        </div>
-
-        <div class="quizNavRight">
-          <button type="button" class="btn btnPrimary" id="btnNext">${idx===qn-1?"Finish":"Next"}</button>
-        </div>
+      <div class="right">
+        <button class="btn danger" id="cFinishNow">Finish now</button>
+        <button class="btn primary" id="cNext">${idx===state.N-1 ? "Finish" : "Next"}</button>
       </div>
     `;
 
-    container.querySelectorAll('input[name="opt"]').forEach(r=>{
-      r.addEventListener("change", (e)=>setAnswer(e.target.value));
-    });
-
-    container.querySelector("#btnBack").addEventListener("click", ()=>{
+    navC.querySelector("#cBack").disabled = (idx===0);
+    navC.querySelector("#cBack").addEventListener("click", ()=>{
       if(idx>0){ idx--; render(); }
     });
-
-    container.querySelector("#btnNext").addEventListener("click", ()=>{
-      if(idx < qn-1){
-        idx++; render();
-      }else{
-        onFinish();
+    navC.querySelector("#cNext").addEventListener("click", ()=>{
+      if(idx<state.N-1){ idx++; render(); }
+      else{
+        // summary
+        const res = computeResults(state);
+        container.innerHTML = `
+          <div class="section-title">Summary</div>
+          <div class="summary-kpis">
+            <div class="kpi"><div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div></div>
+            <div class="kpi"><div class="big mono">${res.pct}%</div><div class="small">Overall accuracy</div></div>
+            <div class="kpi"><div class="big mono">${res.attempted}/${res.total}</div><div class="small">Attempted</div></div>
+            <div class="kpi"><div class="big mono">${res.attempted ? res.attemptedPct : 0}%</div><div class="small">Accuracy on attempted</div></div>
+          </div>
+          <div class="advice">${adviceText(res.pct, res.attempted, res.total)}</div>
+        `;
       }
     });
-
-    container.querySelector("#btnFinish").addEventListener("click", onFinish);
+    navC.querySelector("#cFinishNow").addEventListener("click", ()=>{
+      // summary
+      const res = computeResults(state);
+      container.innerHTML = `
+        <div class="section-title">Summary</div>
+        <div class="summary-kpis">
+          <div class="kpi"><div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div></div>
+          <div class="kpi"><div class="big mono">${res.pct}%</div><div class="small">Overall accuracy</div></div>
+          <div class="kpi"><div class="big mono">${res.attempted}/${res.total}</div><div class="small">Attempted</div></div>
+          <div class="kpi"><div class="big mono">${res.attempted ? res.attemptedPct : 0}%</div><div class="small">Accuracy on attempted</div></div>
+        </div>
+        <div class="advice">${adviceText(res.pct, res.attempted, res.total)}</div>
+      `;
+    });
   }
+
+  quiz.appendChild(qMetaC);
+  quiz.appendChild(stemC);
+  quiz.appendChild(promptC);
+  quiz.appendChild(optsC);
+  quiz.appendChild(navC);
+  container.appendChild(quiz);
 
   render();
 }
 
-/* Summary */
-function buildSummary(quiz){
-  const letters = ["A","B","C","D"];
-  const total = quiz.questions.length;
+/* =========================
+   Init + Event wiring
+   ========================= */
+document.addEventListener("DOMContentLoaded", async ()=>{
+  setVersionFromLastModified();
 
-  let correct = 0, attempted = 0;
-  const wrong = [];
-
-  for(let i=0;i<total;i++){
-    const q = quiz.questions[i];
-    const ans = quiz.answers[i];
-    const isAttempted = !!ans;
-    if(isAttempted) attempted++;
-    const isCorrect = ans === q.answer;
-    if(isCorrect) correct++;
-    else wrong.push({i, q, ans});
-  }
-
-  const percent = Math.round((correct/total)*100);
-  let band = "tagWARN";
-  if(percent >= 80) band = "tagOK";
-  else if(percent < 50) band = "tagBAD";
-
-  // Breakdown by kind
-  const kindStats = {};
-  for(let i=0;i<total;i++){
-    const k = quiz.questions[i].kind;
-    kindStats[k] ||= {total:0, correct:0, attempted:0};
-    kindStats[k].total++;
-    if(quiz.answers[i]) kindStats[k].attempted++;
-    if(quiz.answers[i] === quiz.questions[i].answer) kindStats[k].correct++;
-  }
-
-  // Professional rationale (minimalist but concrete)
-  const rationaleLines = [];
-  rationaleLines.push(`Attempted: ${attempted}/${total}. Unattempted questions are scored as incorrect (by design).`);
-  rationaleLines.push(`Distractors were selected from the same question type and biased toward semantic similarity for plausibility.`);
-  rationaleLines.push(`If you missed many, reduce N and retake until accuracy is stable — then increase N.`);
-
-  return {correct, total, attempted, percent, band, wrong, kindStats, rationaleLines};
-}
-
-function renderSummary(container, quiz, onRetakeSame, onNewSet, onChangeNumber){
-  const s = buildSummary(quiz);
-
-  const kindBits = Object.entries(s.kindStats).map(([k,st])=>{
-    const p = st.total ? Math.round((st.correct/st.total)*100) : 0;
-    const cls = p >= 80 ? "tagOK" : (p < 50 ? "tagBAD" : "tagWARN");
-    return `<div class="pill mono">${escapeHtml(k)}: <span class="${cls}">${st.correct}/${st.total} (${p}%)</span></div>`;
-  }).join("");
-
-  container.innerHTML = `
-    <div class="scoreBox">
-      <p class="scoreBig"><span class="${s.band}">${s.correct}/${s.total} (${s.percent}%)</span></p>
-      <p class="scoreSub mono">Started: ${escapeHtml(quiz.startedAt)} · Finished: ${escapeHtml(beijingNow())}</p>
-      <div class="pillRow" style="margin-top:10px;">${kindBits}</div>
-    </div>
-
-    <div class="reviewItem">
-      <div class="reviewHead"><span class="mono">Summary rationale</span><span class="mono">Beijing time</span></div>
-      ${s.rationaleLines.map(x=>`<div class="reviewLine">${escapeHtml(x)}</div>`).join("")}
-    </div>
-
-    <div class="row" style="margin-top:14px;">
-      <button type="button" class="btn btnPrimary" id="retakeSame">Retake same quiz</button>
-      <button type="button" class="btn btnGhost" id="newSet">Generate new quiz</button>
-      <button type="button" class="btn btnGhost" id="changeN">Change number</button>
-    </div>
-
-    <div class="reviewList">
-      ${s.wrong.slice(0, 60).map(w=>{
-        const q = w.q;
-        const your = w.ans ? w.ans : "—";
-        const yourTxt = w.ans ? q.options[w.ans] : "";
-        const corrTxt = q.options[q.answer] || "";
-        const headTag = (w.ans ? `<span class="tagBAD">Incorrect</span>` : `<span class="tagWARN">Unanswered</span>`);
-        return `
-          <div class="reviewItem">
-            <div class="reviewHead">
-              <span class="mono">Q${w.i+1} · ${escapeHtml(q.kind)}</span>
-              ${headTag}
-            </div>
-            <div class="reviewStem">${escapeHtml(q.stem)}</div>
-            <div class="reviewLine"><span class="tagBAD">Your answer:</span> <span class="mono">${escapeHtml(your)}</span> ${escapeHtml(yourTxt)}</div>
-            <div class="reviewLine"><span class="tagOK">Correct:</span> <span class="mono">${escapeHtml(q.answer)}</span> ${escapeHtml(corrTxt)}</div>
-          </div>
-        `;
-      }).join("")}
-    </div>
-  `;
-
-  container.querySelector("#retakeSame").addEventListener("click", onRetakeSame);
-  container.querySelector("#newSet").addEventListener("click", onNewSet);
-  container.querySelector("#changeN").addEventListener("click", onChangeNumber);
-}
-
-/* EV controls */
-function evResetViews(){
-  evQuizArea.classList.add("hidden");
-  evSummaryArea.classList.add("hidden");
-  evQuizArea.innerHTML = "";
-  evSummaryArea.innerHTML = "";
-}
-
-evChangeBtn.addEventListener("click", ()=>{
-  evResetViews();
-  evCount.focus();
-});
-
-evStartBtn.addEventListener("click", ()=>{
-  const N = clampInt(evCount.value, 1, 100);
-  if(!N){
-    setTechStatus("Enter an integer from 1 to 100.");
-    return;
-  }
-  const mode = evMode.value;
-  const quiz = makeEVQuiz(mode, N);
-  if(!quiz || !quiz.questions.length){
-    setTechStatus("No questions available for that mode. Check dataset load.");
-    return;
-  }
-
-  STATE.evQuiz = quiz;
-  evResetViews();
-  evQuizArea.classList.remove("hidden");
-  renderQuiz(evQuizArea, quiz, ()=>{
-    evQuizArea.classList.add("hidden");
-    evSummaryArea.classList.remove("hidden");
-    renderSummary(evSummaryArea, quiz,
-      // Retake same
-      ()=>{
-        quiz.answers = new Array(quiz.questions.length).fill(null);
-        quiz.startedAt = beijingNow();
-        evSummaryArea.classList.add("hidden");
-        evQuizArea.classList.remove("hidden");
-        renderQuiz(evQuizArea, quiz, ()=>evStartBtn.click()); // will route to summary
-      },
-      // New set
-      ()=>evStartBtn.click(),
-      // Change number
-      ()=>evChangeBtn.click()
-    );
+  // Tabs
+  document.querySelectorAll(".tab-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=> setTab(btn.dataset.tab));
   });
 
-  setTechStatus("Quiz running.");
-});
+  // Updates
+  renderUpdates();
+  setAdminUI(localStorage.getItem(ADMIN_KEY)==="1");
 
-/* ===========================
-   Custom Content: Prompt -> Paste JSON -> Quiz
-=========================== */
-const customFile = document.getElementById("customFile");
-const customText = document.getElementById("customText");
-const customN = document.getElementById("customN");
-const customMakePromptBtn = document.getElementById("customMakePromptBtn");
-const customPrompt = document.getElementById("customPrompt");
-const copyPromptBtn = document.getElementById("copyPromptBtn");
-const customJson = document.getElementById("customJson");
-const customLoadQuizBtn = document.getElementById("customLoadQuizBtn");
-const customStatus = document.getElementById("customStatus");
-const customQuizArea = document.getElementById("customQuizArea");
-const customSummaryArea = document.getElementById("customSummaryArea");
-const customResetBtn = document.getElementById("customResetBtn");
-
-async function readFileAsText(file){
-  return new Promise((resolve,reject)=>{
-    const r = new FileReader();
-    r.onload = ()=>resolve(String(r.result||""));
-    r.onerror = ()=>reject(new Error("Failed to read file."));
-    r.readAsText(file);
+  document.getElementById("adminLogin").addEventListener("click", ()=>{
+    const pass = document.getElementById("adminPass").value || "";
+    const msg = document.getElementById("adminMsg");
+    msg.style.display = "block";
+    if(pass === "temetnosce"){
+      msg.className = "status good";
+      msg.textContent = "Unlocked.";
+      setAdminUI(true);
+      document.getElementById("adminPass").value = "";
+      setTimeout(()=>{ msg.style.display="none"; }, 900);
+    }else{
+      msg.className = "status bad";
+      msg.textContent = "Incorrect password.";
+    }
   });
-}
 
-function customReset(){
-  customFile.value = "";
-  customText.value = "";
-  customN.value = "";
-  customPrompt.value = "";
-  customJson.value = "";
-  customStatus.textContent = "Awaiting content.";
-  customQuizArea.classList.add("hidden");
-  customSummaryArea.classList.add("hidden");
-  customQuizArea.innerHTML = "";
-  customSummaryArea.innerHTML = "";
-  STATE.customQuiz = null;
-}
+  document.getElementById("adminLock").addEventListener("click", ()=>{
+    setAdminUI(false);
+  });
 
-customResetBtn.addEventListener("click", customReset);
+  document.getElementById("addUpdate").addEventListener("click", ()=>{
+    const ta = document.getElementById("updateText");
+    const text = normSpace(ta.value);
+    if(!text) return;
+    const arr = loadUpdates();
+    arr.unshift({
+      when: fmtBeijing(new Date(), true),
+      text
+    });
+    saveUpdates(arr);
+    ta.value = "";
+    renderUpdates();
+  });
 
-customMakePromptBtn.addEventListener("click", async ()=>{
-  const N = clampInt(customN.value, 1, 100);
-  if(!N){
-    customStatus.textContent = "Enter an integer from 1 to 100.";
-    return;
-  }
+  // Mode chips
+  document.querySelectorAll("#modeChips .chip").forEach(ch=>{
+    ch.addEventListener("click", ()=> setMode(ch.dataset.mode));
+  });
 
-  let content = (customText.value || "").trim();
-  if(!content && customFile.files && customFile.files[0]){
-    try{
-      content = (await readFileAsText(customFile.files[0])).trim();
-    }catch(e){
-      customStatus.textContent = e.message;
+  // Load master list
+  await loadMasterList();
+
+  // Start EV
+  document.getElementById("startEV").addEventListener("click", ()=>{
+    if(!MASTER.loaded) return;
+    const v = validateCount(document.getElementById("qCountEV").value);
+    if(!v.ok){
+      const st = document.getElementById("loadStatus");
+      st.className = "status bad";
+      st.textContent = v.msg;
       return;
     }
-  }
-  if(!content){
-    customStatus.textContent = "Provide content (upload or paste).";
-    return;
-  }
-
-  const prompt = [
-    "You are MCQ JSON Machine. Generate high-quality MCQs strictly from the content below.",
-    `Number of MCQs: ${N}`,
-    "",
-    "Return JSON only with this shape:",
-    '{"title":"<inferred>","questions":[{"stem":"...","options":{"A":"...","B":"...","C":"...","D":"..."},"answer":"A","rationale":"<brief>"}]}',
-    "",
-    "CONTENT:",
-    content
-  ].join("\n");
-
-  customPrompt.value = prompt;
-  customStatus.textContent = "Prompt generated. Paste it into your MCQ JSON Machine, then paste returned JSON below.";
-});
-
-copyPromptBtn.addEventListener("click", async ()=>{
-  if(!customPrompt.value.trim()) return;
-  try{
-    await navigator.clipboard.writeText(customPrompt.value);
-    customStatus.textContent = "Prompt copied.";
-  }catch{
-    customStatus.textContent = "Clipboard blocked by browser. Select and copy manually.";
-  }
-});
-
-function validateCustomQuiz(obj){
-  if(!obj || typeof obj !== "object") return "JSON must be an object.";
-  if(!Array.isArray(obj.questions) || !obj.questions.length) return "JSON must include questions[].";
-  for(let i=0;i<obj.questions.length;i++){
-    const q = obj.questions[i];
-    if(!q || typeof q !== "object") return `Question ${i+1} invalid.`;
-    if(typeof q.stem !== "string" || !q.stem.trim()) return `Question ${i+1} missing stem.`;
-    if(!q.options || typeof q.options !== "object") return `Question ${i+1} missing options.`;
-    for(const L of ["A","B","C","D"]){
-      if(typeof q.options[L] !== "string" || !q.options[L].trim()) return `Question ${i+1} missing option ${L}.`;
+    // build quiz
+    const quiz = buildQuiz(EV_MODE, v.val);
+    if(!quiz){
+      const st = document.getElementById("loadStatus");
+      st.className = "status bad";
+      st.textContent = "Insufficient data for this mode.";
+      return;
     }
-    if(!["A","B","C","D"].includes(q.answer)) return `Question ${i+1} answer must be A/B/C/D.`;
-  }
-  return null;
-}
-
-customLoadQuizBtn.addEventListener("click", ()=>{
-  let obj;
-  try{
-    obj = JSON.parse(customJson.value || "");
-  }catch{
-    customStatus.textContent = "Invalid JSON.";
-    return;
-  }
-  const err = validateCustomQuiz(obj);
-  if(err){
-    customStatus.textContent = err;
-    return;
-  }
-
-  // Normalize into our quiz shape
-  const quiz = {
-    title: obj.title || "Custom Content Practice",
-    questions: obj.questions.map(q => ({
-      kind: "Custom",
-      stem: q.stem,
-      prompt: "Choose the best option.",
-      options: q.options,
-      answer: q.answer,
-      rationale: q.rationale || ""
-    })),
-    answers: new Array(obj.questions.length).fill(null),
-    startedAt: beijingNow()
-  };
-  STATE.customQuiz = quiz;
-
-  customQuizArea.classList.remove("hidden");
-  customSummaryArea.classList.add("hidden");
-  customQuizArea.innerHTML = "";
-  customSummaryArea.innerHTML = "";
-
-  renderQuiz(customQuizArea, quiz, ()=>{
-    customQuizArea.classList.add("hidden");
-    customSummaryArea.classList.remove("hidden");
-    renderSummary(customSummaryArea, quiz,
-      ()=>{
-        quiz.answers = new Array(quiz.questions.length).fill(null);
-        quiz.startedAt = beijingNow();
-        customSummaryArea.classList.add("hidden");
-        customQuizArea.classList.remove("hidden");
-        renderQuiz(customQuizArea, quiz, ()=>customLoadQuizBtn.click());
-      },
-      ()=>{
-        // "new set" for custom means: user must paste new JSON
-        customStatus.textContent = "Paste a new JSON set to generate a new quiz.";
-        customSummaryArea.classList.add("hidden");
-        customQuizArea.classList.add("hidden");
-      },
-      ()=>{
-        // change number is handled in their JSON machine; keep minimal
-        customStatus.textContent = "Change N, regenerate prompt, then paste a new JSON set.";
-        customSummaryArea.classList.add("hidden");
-        customQuizArea.classList.add("hidden");
-      }
-    );
+    EV_STATE = quiz;
+    qIndex = 0;
+    summaryView.classList.add("hidden");
+    quizView.classList.remove("hidden");
+    renderQuestion();
   });
 
-  customStatus.textContent = "Quiz loaded.";
-});
+  // Change number
+  document.getElementById("changeNumberEV").addEventListener("click", ()=>{
+    resetEVToSetup();
+  });
 
-/* ===========================
-   Init
-=========================== */
-(async function init(){
-  await initUpdates();
-  await loadSpreadsheet();
-})();
+  // Quiz nav
+  backBtn.addEventListener("click", ()=>{
+    if(!EV_STATE) return;
+    if(qIndex>0){ qIndex--; renderQuestion(); }
+  });
+
+  nextBtn.addEventListener("click", ()=>{
+    if(!EV_STATE) return;
+    if(qIndex < EV_STATE.N - 1){
+      qIndex++;
+      renderQuestion();
+    }else{
+      finishQuiz(false);
+    }
+  });
+
+  finishNowBtn.addEventListener("click", ()=>{
+    if(!EV_STATE) return;
+    finishQuiz(true);
+  });
+
+  // Custom content
+  document.getElementById("startCustom").addEventListener("click", async ()=>{
+    const status = document.getElementById("customStatus");
+    const file = document.getElementById("customFile").files[0];
+    if(!file){
+      status.className = "status bad";
+      status.textContent = "Upload a text file first.";
+      return;
+    }
+    const v = validateCount(document.getElementById("qCountCustom").value);
+    if(!v.ok){
+      status.className = "status bad";
+      status.textContent = v.msg;
+      return;
+    }
+    const text = await file.text();
+    const entries = parseCustomText(text);
+    if(entries.length < 4){
+      status.className = "status bad";
+      status.textContent = "Could not parse enough term–definition pairs.";
+      return;
+    }
+    // Build a quiz using the same engine (treat as vocab)
+    const key = genKey(Math.min(v.val, entries.length));
+    const picked = sampleWithCoverage(entries, Math.min(v.val, entries.length));
+    // Build neighbors for custom
+    const idxData = buildNeighborLists(picked);
+    const questions = picked.map((e,i)=>{
+      // local buildOptionSet using picked pool and idxData
+      const opts = buildOptionSet(e, picked, idxData, key[i]);
+      return { ...makeQuestion(e, key[i]), options: opts };
+    });
+
+    const state = {
+      mode:"custom",
+      N: questions.length,
+      questions,
+      answers: Array(questions.length).fill(null)
+    };
+
+    status.className = "status good";
+    status.textContent = `Loaded ${entries.length} pairs. Starting quiz…`;
+    document.getElementById("customStage").classList.remove("hidden");
+    const mount = document.getElementById("customQuizView");
+    renderCustomQuiz(state, mount);
+  });
+});
 </script>
 </body>
 </html>
