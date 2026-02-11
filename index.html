@@ -6,7 +6,6 @@
   <title>Berthel's Biology</title>
 
   <style>
-    /* ====== Latin Modern (local-first; falls back cleanly) ====== */
     @font-face{
       font-family:"Latin Modern Roman";
       src:url("./lmroman10-regular.woff2") format("woff2"),
@@ -26,18 +25,14 @@
 
     :root{
       --bg0:#000;
-      --bg1:#0b0c0f;
       --panel:#0f1116;
-      --panel2:#0b0d12;
       --line:rgba(255,255,255,.12);
       --soft:rgba(255,255,255,.08);
       --text:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.68);
       --faint:rgba(255,255,255,.46);
-      --accent:rgba(255,255,255,.92);
       --good:#36d06e;
       --bad:#ff4d4d;
-      --warn:#ffd166;
       --shadow: 0 12px 40px rgba(0,0,0,.55);
       --radius:18px;
     }
@@ -53,100 +48,40 @@
         radial-gradient(900px 520px at 82% 18%, rgba(255,255,255,.06), transparent 62%),
         linear-gradient(180deg, #05060a, #000 60%);
       letter-spacing:.2px;
-      font-size:18px; /* larger */
+      font-size:18px;
     }
 
-    a{ color:inherit; text-decoration:none; }
-    button, input, textarea{
-      font-family:inherit;
-      color:inherit;
-    }
+    button, input, textarea{ font-family:inherit; color:inherit; }
 
-    /* ====== Layout ====== */
-    .wrap{
-      max-width:1120px;
-      margin:0 auto;
-      padding:28px 18px 40px;
-    }
-    .topbar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:18px;
-    }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
-    }
+    .wrap{ max-width:1120px; margin:0 auto; padding:28px 18px 40px; }
+    .topbar{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px; }
+    .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
     .avatar{
-      width:56px; height:56px;
-      border-radius:999px;
+      width:56px; height:56px; border-radius:999px;
       border:1px solid var(--line);
       background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
       box-shadow:0 10px 26px rgba(0,0,0,.55);
-      overflow:hidden;
-      flex:0 0 auto;
+      overflow:hidden; flex:0 0 auto;
     }
-    .avatar img{
-      width:100%; height:100%;
-      object-fit:cover;
-      object-position:center 30%;
-      display:block;
-      filter:contrast(1.02);
-    }
-    .brandText{
-      min-width:0;
-    }
-    .brandTitle{
-      font-size:34px;
-      font-weight:700;
-      margin:0;
-      line-height:1.08;
-      letter-spacing:.3px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .brandSub{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:18px;
-    }
+    .avatar img{ width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block; }
+    .brandTitle{ font-size:34px; font-weight:700; margin:0; line-height:1.08; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brandSub{ margin:6px 0 0; color:var(--muted); font-size:18px; }
     .version{
-      color:var(--faint);
-      font-size:16px;
-      white-space:nowrap;
-      padding:8px 12px;
-      border:1px solid var(--soft);
-      border-radius:999px;
+      color:var(--faint); font-size:16px; white-space:nowrap;
+      padding:8px 12px; border:1px solid var(--soft); border-radius:999px;
       background:rgba(0,0,0,.25);
     }
 
-    .tabs{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin:16px 0 18px;
-    }
+    .tabs{ display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 18px; }
     .tab{
-      padding:10px 14px;
-      border:1px solid var(--soft);
-      border-radius:999px;
-      background:rgba(0,0,0,.22);
-      cursor:pointer;
-      user-select:none;
+      padding:10px 14px; border:1px solid var(--soft); border-radius:999px;
+      background:rgba(0,0,0,.22); cursor:pointer; user-select:none;
       transition:transform .04s ease, background .12s ease, border-color .12s ease;
       font-size:18px;
     }
     .tab:hover{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.18); }
     .tab:active{ transform:translateY(1px); }
-    .tab.active{
-      background:rgba(255,255,255,.08);
-      border-color:rgba(255,255,255,.26);
-    }
+    .tab.active{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.26); }
 
     .panel{
       border:1px solid var(--line);
@@ -155,258 +90,90 @@
       box-shadow:var(--shadow);
       padding:18px;
     }
-    .panelHeader{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:14px;
-    }
-    .panelTitle{
-      margin:0;
-      font-size:26px;
-      font-weight:700;
-      letter-spacing:.2px;
-    }
-    .panelHint{
-      margin:8px 0 0;
-      color:var(--muted);
-      font-size:18px;
-      line-height:1.35;
-    }
+    .panelHeader{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
+    .panelTitle{ margin:0; font-size:26px; font-weight:700; letter-spacing:.2px; }
+    .panelHint{ margin:8px 0 0; color:var(--muted); font-size:18px; line-height:1.35; }
 
-    .row{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      align-items:flex-end;
-      margin-top:14px;
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:240px;
-      flex:1 1 260px;
-    }
-    label{
-      color:var(--muted);
-      font-size:16px;
-    }
+    .row{ display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; margin-top:14px; }
+    .field{ display:flex; flex-direction:column; gap:8px; min-width:240px; flex:1 1 260px; }
+    label{ color:var(--muted); font-size:16px; }
     input[type="number"], input[type="password"], textarea{
-      border-radius:14px;
-      border:1px solid var(--soft);
+      border-radius:14px; border:1px solid var(--soft);
       background:rgba(0,0,0,.28);
-      padding:12px 12px;
-      outline:none;
-      font-size:18px;
+      padding:12px 12px; outline:none; font-size:18px;
     }
     textarea{ min-height:120px; resize:vertical; }
 
     .btn{
       border:1px solid var(--soft);
       background:rgba(255,255,255,.06);
-      padding:12px 14px;
-      border-radius:14px;
-      cursor:pointer;
-      transition:background .12s ease, border-color .12s ease, transform .04s ease;
-      font-size:18px;
-      user-select:none;
+      padding:12px 14px; border-radius:14px;
+      cursor:pointer; transition:background .12s ease, border-color .12s ease, transform .04s ease;
+      font-size:18px; user-select:none;
     }
     .btn:hover{ background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.18); }
     .btn:active{ transform:translateY(1px); }
-    .btn.primary{
-      background:rgba(255,255,255,.92);
-      color:#000;
-      border-color:rgba(255,255,255,.92);
-    }
+    .btn.primary{ background:rgba(255,255,255,.92); color:#000; border-color:rgba(255,255,255,.92); }
     .btn.primary:hover{ background:rgba(255,255,255,.98); }
-    .btn.ghost{
-      background:transparent;
-    }
-    .btn.danger{
-      background:rgba(255,77,77,.14);
-      border-color:rgba(255,77,77,.35);
-    }
-    .btn.good{
-      background:rgba(54,208,110,.12);
-      border-color:rgba(54,208,110,.35);
-    }
+    .btn.ghost{ background:transparent; }
+    .btn.danger{ background:rgba(255,77,77,.14); border-color:rgba(255,77,77,.35); }
+    .btn.good{ background:rgba(54,208,110,.12); border-color:rgba(54,208,110,.35); }
 
-    .split{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    @media (min-width: 980px){
-      .split{ grid-template-columns: 1.25fr .75fr; }
-    }
+    .split{ display:grid; grid-template-columns: 1fr; gap:14px; }
+    @media (min-width: 980px){ .split{ grid-template-columns: 1.25fr .75fr; } }
 
-    /* ====== Quiz ====== */
-    .quizTop{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:12px;
-      margin-bottom:12px;
-    }
-    .qMeta{
-      color:var(--muted);
-      font-size:17px;
-    }
-    .qTitle{
-      margin:6px 0 0;
-      font-size:34px;
-      font-weight:700;
-      line-height:1.12;
-      letter-spacing:.2px;
-    }
+    .quizTop{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px; }
+    .qMeta{ color:var(--muted); font-size:17px; }
+    .qTitle{ margin:6px 0 0; font-size:34px; font-weight:700; line-height:1.12; }
 
-    .options{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      margin-top:16px;
-    }
+    .options{ display:flex; flex-direction:column; gap:12px; margin-top:16px; }
     .opt{
-      border:1px solid var(--soft);
-      background:rgba(0,0,0,.22);
-      border-radius:16px;
-      padding:14px 14px;
-      cursor:pointer;
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
+      border:1px solid var(--soft); background:rgba(0,0,0,.22);
+      border-radius:16px; padding:14px 14px; cursor:pointer;
+      display:flex; gap:12px; align-items:flex-start;
       transition:background .12s ease, border-color .12s ease, transform .04s ease;
     }
     .opt:hover{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.18); }
     .opt:active{ transform:translateY(1px); }
-    .opt.selected{
-      border-color:rgba(255,255,255,.32);
-      background:rgba(255,255,255,.07);
-    }
+    .opt.selected{ border-color:rgba(255,255,255,.32); background:rgba(255,255,255,.07); }
     .optLetter{
-      width:34px;
-      height:34px;
-      border-radius:12px;
-      border:1px solid var(--soft);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-weight:700;
-      background:rgba(255,255,255,.04);
-      flex:0 0 auto;
-      margin-top:1px;
+      width:34px; height:34px; border-radius:12px;
+      border:1px solid var(--soft); display:flex; align-items:center; justify-content:center;
+      font-weight:700; background:rgba(255,255,255,.04); flex:0 0 auto; margin-top:1px;
     }
-    .optText{
-      line-height:1.32;
-      color:var(--text);
-    }
+    .optText{ line-height:1.32; color:var(--text); }
 
-    .nav{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-top:18px;
-      flex-wrap:wrap;
-    }
-    .navLeft, .navRight{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
+    .nav{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap; }
+    .navLeft, .navRight{ display:flex; gap:10px; flex-wrap:wrap; }
 
-    /* ====== Summary ====== */
-    .scoreLine{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-    .scoreBig{
-      font-size:40px;
-      font-weight:700;
-      letter-spacing:.3px;
-    }
+    .scoreLine{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:10px; }
+    .scoreBig{ font-size:40px; font-weight:700; letter-spacing:.3px; }
     .pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 12px;
-      border-radius:999px;
-      border:1px solid var(--soft);
-      background:rgba(0,0,0,.22);
-      color:var(--muted);
-      font-size:16px;
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--soft); background:rgba(0,0,0,.22);
+      color:var(--muted); font-size:16px;
     }
     .pill.good{ border-color:rgba(54,208,110,.35); color:rgba(54,208,110,.95); background:rgba(54,208,110,.09); }
     .pill.bad{ border-color:rgba(255,77,77,.35); color:rgba(255,77,77,.95); background:rgba(255,77,77,.09); }
-    .review{
-      margin-top:16px;
-      border-top:1px solid var(--soft);
-      padding-top:14px;
-    }
-    .reviewItem{
-      border:1px solid var(--soft);
-      background:rgba(0,0,0,.18);
-      border-radius:16px;
-      padding:14px;
-      margin-bottom:12px;
-    }
-    .reviewHead{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-bottom:10px;
-    }
-    .reviewQ{
-      font-weight:700;
-      font-size:18px;
-      line-height:1.2;
-    }
-    .tag{
-      font-size:14px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid var(--soft);
-      color:var(--muted);
-      background:rgba(0,0,0,.2);
-    }
-    .rLine{
-      margin:6px 0 0;
-      color:var(--muted);
-      line-height:1.35;
-      font-size:17px;
-    }
+
+    .review{ margin-top:16px; border-top:1px solid var(--soft); padding-top:14px; }
+    .reviewItem{ border:1px solid var(--soft); background:rgba(0,0,0,.18); border-radius:16px; padding:14px; margin-bottom:12px; }
+    .reviewHead{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+    .reviewQ{ font-weight:700; font-size:18px; line-height:1.2; }
+    .tag{ font-size:14px; padding:6px 10px; border-radius:999px; border:1px solid var(--soft); color:var(--muted); background:rgba(0,0,0,.2); }
+    .rLine{ margin:6px 0 0; color:var(--muted); line-height:1.35; font-size:17px; }
     .rLine strong{ color:var(--text); font-weight:700; }
 
-    .status{
-      margin-top:10px;
-      color:var(--muted);
-      font-size:16px;
-    }
+    .status{ margin-top:10px; color:var(--muted); font-size:16px; }
     .status.ok{ color:rgba(54,208,110,.92); }
     .status.bad{ color:rgba(255,77,77,.92); }
 
     .adminLink{
-      margin-top:18px;
-      color:var(--faint);
-      font-size:15px;
-      display:inline-block;
-      padding:8px 10px;
-      border:1px solid transparent;
-      border-radius:999px;
+      margin-top:18px; color:var(--faint); font-size:15px;
+      display:inline-block; padding:8px 10px; border:1px solid transparent; border-radius:999px;
     }
-    .adminLink:hover{
-      border-color:var(--soft);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-    }
+    .adminLink:hover{ border-color:var(--soft); background:rgba(255,255,255,.03); color:var(--muted); }
     .hidden{ display:none !important; }
   </style>
 </head>
@@ -649,99 +416,70 @@
   </div>
 
   <script>
-    /* ==========================
-       BUILD VERSION (Beijing UTC+8)
-       ========================== */
-    const BUILD_VERSION = "v20260210-160740"; // 2026-02-10 16:07:40 (UTC+8)
+    /* ========= Version ========= */
+    const BUILD_VERSION = "v20260211-130900";
     document.getElementById("versionBox").textContent = BUILD_VERSION;
 
-    /* ==========================
-       AVATAR (file with fallback)
-       ========================== */
+    /* ========= Avatar (file w/ fallback) ========= */
     const avatarImg = document.getElementById("avatarImg");
     const fallbackDataUriEncoded =
       "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE%0ABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME%0ADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU%0AFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA%0AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB%0ABhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/%0AxAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A%0A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o%0Alq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI%0A3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5%0Ap+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU%0AqVKlSpUqVKlSpUqVKlf/2Q==";
     const fallbackDataUri = decodeURIComponent(fallbackDataUriEncoded);
+    avatarImg.addEventListener("error", () => { avatarImg.src = fallbackDataUri; });
 
-    avatarImg.addEventListener("error", () => {
-      avatarImg.src = fallbackDataUri;
-    });
-
-    /* ==========================
-       Tabs
-       ========================== */
+    /* ========= Tabs ========= */
     const tabs = document.querySelectorAll(".tab");
     const tabPanels = {
       home: document.getElementById("tab-home"),
       etyvocab: document.getElementById("tab-etyvocab"),
       custom: document.getElementById("tab-custom"),
     };
-
     function setTab(key){
       tabs.forEach(t => {
         const is = t.dataset.tab === key;
         t.classList.toggle("active", is);
         t.setAttribute("aria-selected", is ? "true" : "false");
       });
-      Object.entries(tabPanels).forEach(([k, el]) => {
-        el.classList.toggle("hidden", k !== key);
-      });
+      Object.entries(tabPanels).forEach(([k, el]) => el.classList.toggle("hidden", k !== key));
     }
     tabs.forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
 
-    /* ==========================
-       Time (Beijing)
-       ========================== */
+    /* ========= Time (Beijing) ========= */
     function nowBeijingISO(){
       const d = new Date();
       const fmt = new Intl.DateTimeFormat("sv-SE", {
         timeZone: "Asia/Shanghai",
-        year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "2-digit", minute: "2-digit", second: "2-digit",
-        hour12: false
+        year:"numeric", month:"2-digit", day:"2-digit",
+        hour:"2-digit", minute:"2-digit", second:"2-digit",
+        hour12:false
       });
-      // "YYYY-MM-DD HH:mm:ss"
-      return fmt.format(d);
+      return fmt.format(d); // "YYYY-MM-DD HH:mm:ss"
     }
 
-    /* ==========================
-       HOME Updates (Admin-gated)
-       ========================== */
+    /* ========= HOME updates ========= */
     const ADMIN_PASS = "DEREK"; // change this
     const UPDATES_KEY = "bb_updates_v1";
-
     const defaultUpdates = [
-      {
-        ts: "2026-02-10 16:07:40",
-        msg: "Next update: Fix Ety+Vocab numeric input (1–100), ensure all integers accepted, and deliver a cleaner post-quiz summary with rationale + retry options."
-      }
+      { ts: "2026-02-11 13:09:00", msg: "Next update: Fix Ety+Vocab numeric input (1–100), ensure all integers accepted, and deliver a cleaner post-quiz summary with rationale + retry options." }
     ];
 
+    function escapeHTML(s){
+      return String(s).replace(/[&<>"']/g, c => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+      }[c]));
+    }
     function loadUpdates(){
       const raw = localStorage.getItem(UPDATES_KEY);
-      if(!raw){
-        localStorage.setItem(UPDATES_KEY, JSON.stringify(defaultUpdates));
-        return [...defaultUpdates];
-      }
-      try{
-        const arr = JSON.parse(raw);
-        if(Array.isArray(arr)) return arr;
-      }catch(_){}
+      if(!raw){ localStorage.setItem(UPDATES_KEY, JSON.stringify(defaultUpdates)); return [...defaultUpdates]; }
+      try{ const arr = JSON.parse(raw); if(Array.isArray(arr)) return arr; }catch(_){}
       localStorage.setItem(UPDATES_KEY, JSON.stringify(defaultUpdates));
       return [...defaultUpdates];
     }
-
-    function saveUpdates(arr){
-      localStorage.setItem(UPDATES_KEY, JSON.stringify(arr));
-    }
-
+    function saveUpdates(arr){ localStorage.setItem(UPDATES_KEY, JSON.stringify(arr)); }
     function renderUpdates(){
       const list = document.getElementById("updatesList");
       const updates = loadUpdates().slice().sort((a,b)=> (a.ts<b.ts?1:-1));
-      if(updates.length === 0){
-        list.innerHTML = "<div class='status'>No updates.</div>";
-        return;
-      }
+      if(updates.length === 0){ list.innerHTML = "<div class='status'>No updates.</div>"; return; }
       list.innerHTML = updates.map(u => `
         <div class="reviewItem">
           <div class="reviewHead">
@@ -751,21 +489,16 @@
         </div>
       `).join("");
     }
-
     const adminToggle = document.getElementById("adminToggle");
     const adminPanel  = document.getElementById("adminPanel");
     const adminStatus = document.getElementById("adminStatus");
     const addUpdateBtn = document.getElementById("addUpdateBtn");
     const lockAdminBtn = document.getElementById("lockAdminBtn");
     const updateText = document.getElementById("updateText");
-
     let adminUnlocked = false;
 
     adminToggle.addEventListener("click", () => {
-      if(adminUnlocked){
-        adminPanel.classList.toggle("hidden");
-        return;
-      }
+      if(adminUnlocked){ adminPanel.classList.toggle("hidden"); return; }
       const p = prompt("Admin passphrase:");
       if(p === null) return;
       if(p === ADMIN_PASS){
@@ -778,14 +511,12 @@
         adminStatus.className = "status bad";
       }
     });
-
     lockAdminBtn.addEventListener("click", () => {
       adminUnlocked = false;
       adminPanel.classList.add("hidden");
       adminStatus.textContent = "Locked.";
       adminStatus.className = "status";
     });
-
     addUpdateBtn.addEventListener("click", () => {
       if(!adminUnlocked) return;
       const msg = (updateText.value || "").trim();
@@ -803,32 +534,21 @@
       adminStatus.className = "status ok";
       renderUpdates();
     });
-
     renderUpdates();
 
-    /* ==========================
-       Utilities
-       ========================== */
-    function escapeHTML(s){
-      return String(s).replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[c]));
-    }
-
+    /* ========= Utilities ========= */
     function clampInt(n, min, max){
       const x = Math.trunc(Number(n));
       if(!Number.isFinite(x)) return null;
       if(x < min || x > max) return null;
       return x;
     }
-
     function secondsToMMSS(sec){
       const s = Math.max(0, Math.floor(sec));
       const m = Math.floor(s/60);
       const r = s % 60;
       return `${m}:${String(r).padStart(2,"0")}`;
     }
-
     function shuffle(arr){
       for(let i=arr.length-1;i>0;i--){
         const j = Math.floor(Math.random()*(i+1));
@@ -836,9 +556,7 @@
       }
       return arr;
     }
-
     function makeAnswerKey(n){
-      // balanced A/B/C/D; no >3 repeats
       const letters = ["A","B","C","D"];
       while(true){
         const base = Math.floor(n/4);
@@ -846,36 +564,26 @@
         const counts = {A:base,B:base,C:base,D:base};
         const picks = shuffle(letters.slice()).slice(0, rem);
         picks.forEach(l => counts[l]++);
-
         let key = [];
         letters.forEach(l => { for(let i=0;i<counts[l];i++) key.push(l); });
         shuffle(key);
 
-        // constraint: no >3 repeats
-        let runOk = true;
-        let run = 1;
+        let runOk = true, run = 1;
         for(let i=1;i<key.length;i++){
-          if(key[i] === key[i-1]) run++;
-          else run = 1;
+          if(key[i] === key[i-1]) run++; else run = 1;
           if(run > 3){ runOk = false; break; }
         }
         if(!runOk) continue;
 
-        // constraint: frequencies differ by at most 1
         const freqs = letters.map(l => key.filter(x => x===l).length);
-        const maxF = Math.max(...freqs), minF = Math.min(...freqs);
-        if(maxF - minF > 1) continue;
-
+        if(Math.max(...freqs) - Math.min(...freqs) > 1) continue;
         return key;
       }
     }
-
     function pickDistinct(pool, k, banSet){
-      // returns k distinct items from pool, excluding any items whose id is in banSet
       const out = [];
-      const triesMax = 5000;
       let tries = 0;
-      while(out.length < k && tries++ < triesMax){
+      while(out.length < k && tries++ < 8000){
         const it = pool[Math.floor(Math.random()*pool.length)];
         if(!it) continue;
         if(banSet && banSet.has(it._id)) continue;
@@ -885,42 +593,57 @@
       return out;
     }
 
-    /* ==========================
-       Parsing: ib_bio_clean_index.txt
-       Fixes the two errors you showed:
-       - Headings like "CLEAN INDEX ..." never enter the pools
-       - Lines like "Variable A factor..." split into term="Variable", def="A factor..."
-       Also removes "Examples: ..." from word-part meanings.
-       ========================== */
-    const bannedLineRe = /(CLEAN INDEX|GLOSSARY|WORD PARTS|Words in blue|Option topics|Change number|Table of contents)/i;
+    /* ==========================================================
+       FIX: ETYMOLOGIES NOT LOADING
+       - Your file has word-parts in formats that were being classified as vocab:
+         (a) inline: "prefix — meaning. Examples: ..."
+         (b) blocks where "Change number" sits between term and — meaning lines
+       - This parser:
+         1) skips ignorable lines when looking ahead (so "Change number" can't break ety blocks)
+         2) classifies entries with "Examples:" as etymology (not vocabulary)
+         3) stops vocab definitions from swallowing leading — bullet ety lines
+         4) strips Examples: completely from ety meanings
+       ========================================================== */
+    const bannedLineRe = /(CLEAN INDEX|GLOSSARY|WORD PARTS|Words in blue|Option topics|Table of contents)/i;
+    const ignorableLineRe = /(Change number)/i;
+    const dashMeaningRe = /^\s*(?:[—–-]|•)\s+/;
 
-    const DEF_STARTERS = new Set([
-      "A","An","The","Essential","Organic","Inorganic","Any","Group","Process","Movement","Change",
-      "White","Red","Blood","Protein","Enzyme","Cell","Cells","Organism","Organisms","Structure",
-      "Theoretical","Ability","Condition","Disease","Series","Mixture","Method","Rate","Energy",
-      "Substance","System","Form","Type","Reaction","Molecule","Molecules","Gene","Genes"
-    ]);
-
-    function stripExamples(s){
-      // remove "Examples: ..." (and variants)
-      const idx = s.toLowerCase().indexOf("examples:");
-      if(idx >= 0) return s.slice(0, idx).trim().replace(/[.;,:-]+$/,"").trim();
-      return s.trim();
+    function isIgnorableLine(s){
+      const t = (s || "").trim();
+      if(!t) return true;
+      if(bannedLineRe.test(t)) return true;
+      if(ignorableLineRe.test(t)) return true;
+      return false;
     }
-
+    function stripExamples(s){
+      const idx = String(s).toLowerCase().indexOf("examples:");
+      if(idx >= 0) return String(s).slice(0, idx).trim().replace(/[.;,:-]+$/,"").trim();
+      return String(s).trim();
+    }
     function cleanMeaningLine(s){
-      // remove leading em-dash / hyphen bullets, and examples
-      let t = s.replace(/^\s*[—–-]\s*/,"").trim();
+      let t = String(s).replace(/^\s*(?:[—–-]|•)\s*/,"").trim();
       t = stripExamples(t);
       return t.trim();
+    }
+    function nextRelevant(lines, idx){
+      let i = idx;
+      while(i < lines.length && isIgnorableLine(lines[i])) i++;
+      return i;
     }
 
     function splitInlineTermDef(line){
       let s = (line || "").replace(/\u00A0/g," ").trim();
       if(!s) return null;
+      if(bannedLineRe.test(s) || ignorableLineRe.test(s)) return null;
 
-      // hard reject headings
-      if(bannedLineRe.test(s)) return null;
+      // "term — def" inline (em/en dash)
+      // handle both " — " and " – "
+      const md = s.match(/^(.+?)\s+[—–]\s+(.+)$/);
+      if(md){
+        const term = md[1].trim();
+        const def  = md[2].trim();
+        if(term && def) return { term, def };
+      }
 
       // tab split
       if(s.includes("\t")){
@@ -935,155 +658,153 @@
       if(m){
         const term = m[1].trim();
         const def  = m[2].trim();
-        if(term && def && !bannedLineRe.test(term) && !bannedLineRe.test(def)) return { term, def };
-      }
-
-      // token-based split: find earliest definition-starter token
-      const tokens = s.split(/\s+/);
-      if(tokens.length >= 3){
-        for(let i=1; i<Math.min(tokens.length-1, 6); i++){
-          const tok = tokens[i].replace(/[,:;]+$/,"");
-          if(DEF_STARTERS.has(tok)){
-            const term = tokens.slice(0,i).join(" ").trim();
-            const def  = tokens.slice(i).join(" ").trim();
-            // sanity: short term, meaningful def
-            if(term.length <= 40 && def.length >= 12){
-              // avoid splitting obvious non-entries
-              if(!bannedLineRe.test(term) && !bannedLineRe.test(def)) return { term, def };
-            }
-            break;
-          }
-        }
+        if(term && def) return { term, def };
       }
 
       return null;
+    }
+
+    function looksLikeWordPart(term, def){
+      const t = (term || "").trim();
+      const d = (def || "").trim();
+      if(!t || !d) return false;
+
+      // strongest signal: Examples: appears (word-part lines in your file use this)
+      if(/examples\s*:/i.test(d)) return true;
+
+      // common morpheme formatting
+      if(/[-–—]$/.test(t)) return true;
+      if(/^[-–—]/.test(t)) return true;
+
+      // short, non-sentence meanings (heuristic)
+      if(t.length <= 14 && d.length <= 90 && !/[.!?]\s*$/.test(d)) return true;
+
+      return false;
     }
 
     function parseCleanIndex(text){
       const lines = text.replace(/\r/g,"").split("\n");
       const vocab = [];
       const ety   = [];
-      let i = 0;
       let idCounter = 1;
 
-      function nextNonEmpty(idx){
-        while(idx < lines.length && !lines[idx].trim()) idx++;
-        return idx;
-      }
-
+      let i = 0;
       while(i < lines.length){
-        i = nextNonEmpty(i);
+        i = nextRelevant(lines, i);
         if(i >= lines.length) break;
 
-        let line = lines[i].trim();
+        const line = (lines[i] || "").trim();
+        if(isIgnorableLine(line)){ i++; continue; }
 
-        // skip headings/junk
-        if(!line || bannedLineRe.test(line)){
-          i++;
-          continue;
-        }
+        // If this line itself is a bullet meaning line, it's not usable without a term.
+        // Skip it (prevents garbage entries).
+        if(dashMeaningRe.test(line)){ i++; continue; }
 
-        // WORD PART candidate: current line = term, next non-empty line starts with —/–/-
-        const termCandidate = line;
-        const j = nextNonEmpty(i+1);
-        const next = (j < lines.length) ? lines[j].trim() : "";
+        // Look ahead for word-part bullet meanings (skip "Change number" etc.)
+        const j = nextRelevant(lines, i+1);
+        const next = (j < lines.length) ? (lines[j] || "").trim() : "";
+        const nextIsDashMeaning = dashMeaningRe.test(next);
 
-        const nextLooksLikeMeaning = /^[—–-]\s+/.test(next);
-
-        if(nextLooksLikeMeaning){
-          // parse etymology block: termCandidate + meaning lines until blank
+        if(nextIsDashMeaning){
+          // Etymology block: term line + one or more bullet-meaning lines (possibly with Examples:)
+          const term = line.trim();
           let k = j;
           const meaningLines = [];
-          while(k < lines.length && lines[k].trim()){
-            const ml = lines[k].trim();
-            if(bannedLineRe.test(ml)) { k++; continue; }
-            meaningLines.push(cleanMeaningLine(ml));
+          while(k < lines.length){
+            const raw = (lines[k] || "").trim();
+            if(!raw) break;
+            if(isIgnorableLine(raw)){ k++; continue; }
+            if(!dashMeaningRe.test(raw)) break; // stop when bullets end
+            meaningLines.push(cleanMeaningLine(raw));
             k++;
           }
           const meaning = meaningLines.join(" ").replace(/\s+/g," ").trim();
-          const term = termCandidate.trim();
-
-          if(term && meaning && !bannedLineRe.test(term) && !bannedLineRe.test(meaning)){
+          if(term && meaning){
             ety.push({_id:`e${idCounter++}`, term, def: meaning});
           }
           i = k + 1;
           continue;
         }
 
-        // VOCAB: try inline split; otherwise treat as term line + def block
+        // Inline term/def
         const inline = splitInlineTermDef(line);
-
         if(inline){
-          const term = inline.term.trim();
+          let term = inline.term.trim();
           let def = inline.def.trim();
 
-          // def may continue on subsequent lines until blank
+          // pull continuation lines (but STOP if a bullet-meaning line appears)
           let k = i+1;
           const more = [];
-          while(k < lines.length && lines[k].trim()){
-            const t = lines[k].trim();
-            if(bannedLineRe.test(t)) { k++; continue; }
-            more.push(t);
+          while(k < lines.length){
+            const raw = (lines[k] || "").trim();
+            if(!raw) break;
+            if(isIgnorableLine(raw)){ k++; continue; }
+            if(dashMeaningRe.test(raw)) break; // prevent vocab swallowing word-part bullets
+            more.push(raw);
             k++;
           }
-          if(more.length){
-            def = (def + " " + more.join(" ")).replace(/\s+/g," ").trim();
-          }
+          if(more.length) def = (def + " " + more.join(" ")).replace(/\s+/g," ").trim();
 
-          // filter again
-          if(term && def && !bannedLineRe.test(term) && !bannedLineRe.test(def)){
-            vocab.push({_id:`v${idCounter++}`, term, def});
-          }
-          i = k + 1;
-          continue;
-        }else{
-          // term line, then definition lines until blank
-          const term = line.trim();
-          let k = i+1;
-          const defLines = [];
-          while(k < lines.length && lines[k].trim()){
-            const t = lines[k].trim();
-            if(bannedLineRe.test(t)) { k++; continue; }
-            defLines.push(t);
-            k++;
-          }
-          const def = defLines.join(" ").replace(/\s+/g," ").trim();
-          if(term && def && term.length <= 60 && def.length >= 8 && !bannedLineRe.test(term) && !bannedLineRe.test(def)){
+          // classify ety vs vocab
+          if(looksLikeWordPart(term, def)){
+            def = stripExamples(def);
+            ety.push({_id:`e${idCounter++}`, term, def});
+          }else{
             vocab.push({_id:`v${idCounter++}`, term, def});
           }
           i = k + 1;
           continue;
         }
+
+        // Term line followed by definition lines (vocab), again STOP if bullet meanings appear
+        const term = line.trim();
+        let k = i+1;
+        const defLines = [];
+        while(k < lines.length){
+          const raw = (lines[k] || "").trim();
+          if(!raw) break;
+          if(isIgnorableLine(raw)){ k++; continue; }
+          if(dashMeaningRe.test(raw)) break; // prevent swallowing word-part section
+          defLines.push(raw);
+          k++;
+        }
+        let def = defLines.join(" ").replace(/\s+/g," ").trim();
+
+        if(term && def){
+          // If a vocab block contains Examples:, it’s almost certainly a word-part entry
+          if(looksLikeWordPart(term, def)){
+            def = stripExamples(def);
+            ety.push({_id:`e${idCounter++}`, term, def});
+          }else{
+            vocab.push({_id:`v${idCounter++}`, term, def});
+          }
+        }
+        i = k + 1;
       }
 
-      // final cleanup: remove anything empty/too weird
-      const cleanPool = (arr) => arr
-        .filter(x => x.term && x.def)
-        .map(x => ({...x, term: x.term.replace(/\s+/g," ").trim(), def: x.def.replace(/\s+/g," ").trim()}))
-        .filter(x => x.term.length <= 70 && x.def.length <= 380)
-        .filter(x => !bannedLineRe.test(x.term) && !bannedLineRe.test(x.def));
+      // Final cleanup
+      function cleanPool(arr){
+        return arr
+          .map(x => ({...x, term: String(x.term).replace(/\s+/g," ").trim(), def: String(x.def).replace(/\s+/g," ").trim()}))
+          .filter(x => x.term && x.def)
+          .filter(x => x.term.length <= 70 && x.def.length <= 420)
+          .filter(x => !bannedLineRe.test(x.term) && !bannedLineRe.test(x.def))
+          .filter(x => !ignorableLineRe.test(x.term) && !ignorableLineRe.test(x.def));
+      }
 
       return { vocab: cleanPool(vocab), ety: cleanPool(ety) };
     }
 
-    /* ==========================
-       Quiz Engine (shared)
-       - A/B/C/D choices (not bullets)
-       - Finish early -> summary
-       - Summary includes red/green indicators + rationale
-       - Distractors pulled ONLY from same question type pool
-       ========================== */
+    /* ========= Quiz engine ========= */
     function buildQuiz({count, vocabPool, etyPool, mix=true}){
       const n = count;
       const key = makeAnswerKey(n);
 
-      // Decide which type each question is (balanced if both pools exist)
       const hasV = vocabPool.length >= 6;
       const hasE = etyPool.length >= 6;
 
       let types = [];
       if(mix && hasV && hasE){
-        // 50/50 split
         const vN = Math.ceil(n/2);
         const eN = n - vN;
         types = Array(vN).fill("vocab").concat(Array(eN).fill("ety"));
@@ -1096,11 +817,10 @@
         return { error: "Not enough usable entries to generate a quiz." };
       }
 
-      // sample distinct entries
       const usedV = new Set();
       const usedE = new Set();
-
       const questions = [];
+
       for(let qi=0; qi<n; qi++){
         const type = types[qi];
         const correctLetter = key[qi];
@@ -1122,13 +842,12 @@
           }
 
           questions.push({
-            id: `q${qi+1}`,
+            id:`q${qi+1}`,
             type,
-            stem: picked.term,
-            prompt: picked.term, // IMPORTANT: term only; avoids "Variable A factor..." bug
-            rationale: picked.def,
+            prompt:picked.term,
+            rationale:picked.def,
             correctIndex,
-            options: opts
+            options:opts
           });
         }else{
           const picked = pickDistinct(etyPool, 1, usedE)[0];
@@ -1146,13 +865,12 @@
           }
 
           questions.push({
-            id: `q${qi+1}`,
+            id:`q${qi+1}`,
             type,
-            stem: picked.term,
-            prompt: picked.term,
-            rationale: picked.def,
+            prompt:picked.term,
+            rationale:picked.def,
             correctIndex,
-            options: opts
+            options:opts
           });
         }
       }
@@ -1162,56 +880,45 @@
 
     function createQuizController(cfg){
       const {
-        // setup elements
         setupRoot, countInput, startBtn, loadStatusEl, fallbackFileEl,
-        // quiz elements
         quizRoot, metaEl, stemEl, optionsEl, backBtn, nextBtn, finishBtn, changeBtn,
-        // summary
         summaryRoot, summaryHintEl, scoreBigEl, pctPillEl, attemptPillEl, timePillEl,
         retryBtn, newBtn, changeBtn2, reviewEl,
-        // data loader
         getPools, onNewQuizRequested, onChangeNumber
       } = cfg;
 
       const LETTERS = ["A","B","C","D"];
-
       let pools = { vocab: [], ety: [] };
-      let state = {
-        mode: "setup",
-        count: 0,
-        questions: [],
-        answers: [], // selected indices or null
-        startedAt: null,
-        finishedAt: null
-      };
-
-      function setSetupEnabled(enabled){
-        startBtn.disabled = !enabled;
-      }
+      let state = { questions: [], answers: [], startedAt:null, finishedAt:null };
 
       function validateCount(){
         const v = clampInt(countInput.value, 1, 100);
-        setSetupEnabled(v !== null);
+        startBtn.disabled = (v === null);
         return v;
       }
 
       function showSetup(){
-        state.mode = "setup";
         setupRoot.classList.remove("hidden");
         quizRoot.classList.add("hidden");
         summaryRoot.classList.add("hidden");
       }
       function showQuiz(){
-        state.mode = "quiz";
         setupRoot.classList.add("hidden");
         quizRoot.classList.remove("hidden");
         summaryRoot.classList.add("hidden");
       }
       function showSummary(){
-        state.mode = "summary";
         setupRoot.classList.add("hidden");
         quizRoot.classList.add("hidden");
         summaryRoot.classList.remove("hidden");
+      }
+
+      function getCurrentIndex(){
+        const raw = quizRoot.getAttribute("data-qindex");
+        return raw ? Number(raw) : 0;
+      }
+      function setCurrentIndex(i){
+        quizRoot.setAttribute("data-qindex", String(i));
       }
 
       function renderQuestion(idx){
@@ -1227,11 +934,11 @@
           div.className = "opt" + (selected === oi ? " selected" : "");
           div.setAttribute("role","button");
           div.setAttribute("tabindex","0");
-          div.addEventListener("click", () => selectOption(idx, oi));
+          div.addEventListener("click", () => { state.answers[idx]=oi; renderQuestion(idx); });
           div.addEventListener("keydown", (e) => {
             if(e.key === "Enter" || e.key === " "){
               e.preventDefault();
-              selectOption(idx, oi);
+              state.answers[idx]=oi; renderQuestion(idx);
             }
           });
 
@@ -1249,50 +956,19 @@
         });
 
         backBtn.disabled = (idx === 0);
-        const isLast = (idx === state.questions.length - 1);
-        nextBtn.textContent = isLast ? "Finish" : "Next";
-      }
-
-      function selectOption(qi, oi){
-        state.answers[qi] = oi;
-        // re-render current question options
-        const cur = getCurrentIndex();
-        renderQuestion(cur);
-      }
-
-      function getCurrentIndex(){
-        const raw = quizRoot.getAttribute("data-qindex");
-        return raw ? Number(raw) : 0;
-      }
-      function setCurrentIndex(i){
-        quizRoot.setAttribute("data-qindex", String(i));
+        nextBtn.textContent = (idx === state.questions.length - 1) ? "Finish" : "Next";
       }
 
       function computeResults(){
         const total = state.questions.length;
-        let attempted = 0;
-        let correct = 0;
-
-        let vocabT=0, vocabC=0, etyT=0, etyC=0;
-
+        let attempted = 0, correct = 0;
         for(let i=0;i<total;i++){
           const a = state.answers[i];
           if(a !== null && a !== undefined) attempted++;
-          const q = state.questions[i];
-          const isCorrect = (a === q.correctIndex);
-          if(isCorrect) correct++;
-
-          if(q.type === "vocab"){
-            vocabT++;
-            if(isCorrect) vocabC++;
-          }else{
-            etyT++;
-            if(isCorrect) etyC++;
-          }
+          if(a === state.questions[i].correctIndex) correct++;
         }
-
         const pct = total ? Math.round((correct/total)*100) : 0;
-        return { total, attempted, correct, pct, vocabT, vocabC, etyT, etyC };
+        return { total, attempted, correct, pct };
       }
 
       function renderSummary(){
@@ -1301,9 +977,7 @@
         const start = state.startedAt || end;
         const elapsedSec = Math.max(0, Math.floor((end - start)/1000));
 
-        summaryHintEl.textContent =
-          `Results reflect accuracy, distractor discipline, and definition-level precision.`;
-
+        summaryHintEl.textContent = "Results reflect accuracy and definition-level precision.";
         scoreBigEl.textContent = `${res.correct}/${res.total}`;
 
         pctPillEl.textContent = `${res.pct}%`;
@@ -1312,7 +986,6 @@
         attemptPillEl.textContent = `Attempted: ${res.attempted}/${res.total}`;
         timePillEl.textContent = `Time: ${secondsToMMSS(elapsedSec)}`;
 
-        // Review (shows rationale; red/green indicator)
         reviewEl.innerHTML = "";
         for(let i=0;i<res.total;i++){
           const q = state.questions[i];
@@ -1332,7 +1005,6 @@
 
           const block = document.createElement("div");
           block.className = "reviewItem";
-
           block.innerHTML = `
             <div class="reviewHead">
               <div class="reviewQ">Q${i+1}. ${escapeHTML(q.prompt)}</div>
@@ -1349,26 +1021,18 @@
         }
       }
 
-      function startQuiz(newQuiz){
+      function startQuiz(){
         const c = validateCount();
         if(c === null) return;
 
         pools = getPools();
-
-        const built = newQuiz || buildQuiz({
-          count: c,
-          vocabPool: pools.vocab,
-          etyPool: pools.ety,
-          mix: true
-        });
-
+        const built = buildQuiz({ count:c, vocabPool:pools.vocab, etyPool:pools.ety, mix:true });
         if(built.error){
           loadStatusEl.textContent = built.error;
           loadStatusEl.className = "status bad";
           return;
         }
 
-        state.count = c;
         state.questions = built.questions;
         state.answers = Array(state.questions.length).fill(null);
         state.startedAt = new Date();
@@ -1385,51 +1049,28 @@
         renderSummary();
       }
 
-      // Setup interactions
       countInput.addEventListener("input", validateCount);
       countInput.addEventListener("keydown", (e) => {
-        if(e.key === "Enter"){
-          e.preventDefault();
-          if(!startBtn.disabled) startQuiz(null);
-        }
+        if(e.key === "Enter"){ e.preventDefault(); if(!startBtn.disabled) startQuiz(); }
       });
-      startBtn.addEventListener("click", () => startQuiz(null));
+      startBtn.addEventListener("click", startQuiz);
 
-      // Change number
-      changeBtn.addEventListener("click", () => {
-        onChangeNumber?.();
-        showSetup();
-      });
-      if(changeBtn2){
-        changeBtn2.addEventListener("click", () => {
-          onChangeNumber?.();
-          showSetup();
-        });
-      }
+      changeBtn.addEventListener("click", () => { onChangeNumber?.(); showSetup(); });
+      if(changeBtn2) changeBtn2.addEventListener("click", () => { onChangeNumber?.(); showSetup(); });
 
       backBtn.addEventListener("click", () => {
         const i = getCurrentIndex();
-        if(i>0){
-          setCurrentIndex(i-1);
-          renderQuestion(i-1);
-        }
+        if(i>0){ setCurrentIndex(i-1); renderQuestion(i-1); }
       });
-
       nextBtn.addEventListener("click", () => {
         const i = getCurrentIndex();
-        const isLast = (i === state.questions.length - 1);
-        if(isLast){
-          finishQuiz();
-          return;
-        }
+        if(i === state.questions.length - 1){ finishQuiz(); return; }
         setCurrentIndex(i+1);
         renderQuestion(i+1);
       });
-
-      finishBtn.addEventListener("click", () => finishQuiz());
+      finishBtn.addEventListener("click", finishQuiz);
 
       retryBtn.addEventListener("click", () => {
-        // retry same quiz: same questions/options
         state.answers = Array(state.questions.length).fill(null);
         state.startedAt = new Date();
         state.finishedAt = null;
@@ -1438,12 +1079,8 @@
         renderQuestion(0);
       });
 
-      newBtn.addEventListener("click", () => {
-        onNewQuizRequested?.();
-        showSetup();
-      });
+      newBtn.addEventListener("click", () => { onNewQuizRequested?.(); showSetup(); });
 
-      // Fallback file loader (optional)
       if(fallbackFileEl){
         fallbackFileEl.addEventListener("change", async () => {
           const file = fallbackFileEl.files && fallbackFileEl.files[0];
@@ -1454,20 +1091,10 @@
         });
       }
 
-      return {
-        showSetup,
-        setStatus: (text, ok=true) => {
-          loadStatusEl.textContent = text;
-          loadStatusEl.className = "status " + (ok ? "ok" : "bad");
-        },
-        overridePools: (p) => cfg._overridePools(p),
-        startQuiz
-      };
+      return { showSetup, startQuiz };
     }
 
-    /* ==========================
-       ETY+VOCAB: Load preset file
-       ========================== */
+    /* ========= Preset load ========= */
     let presetPools = { vocab: [], ety: [] };
     const etyLoadStatus = document.getElementById("etyLoadStatus");
 
@@ -1478,7 +1105,6 @@
         const text = await res.text();
         presetPools = parseCleanIndex(text);
 
-        // sanity: require minimal sizes
         const ok = (presetPools.vocab.length >= 10 || presetPools.ety.length >= 10);
         if(ok){
           etyLoadStatus.textContent = `Preset loaded. Vocabulary: ${presetPools.vocab.length} | Etymology: ${presetPools.ety.length}`;
@@ -1487,16 +1113,14 @@
           etyLoadStatus.textContent = "Preset loaded, but not enough usable entries. Upload the file below.";
           etyLoadStatus.className = "status bad";
         }
-      }catch(err){
+      }catch(_){
         etyLoadStatus.textContent = "Preset failed to load. Upload ib_bio_clean_index.txt below.";
         etyLoadStatus.className = "status bad";
       }
     }
     loadPreset();
 
-    /* ==========================
-       ETY+VOCAB Controller
-       ========================== */
+    /* ========= ETY+VOCAB Controller ========= */
     const etyController = createQuizController({
       setupRoot: document.getElementById("etySetup"),
       countInput: document.getElementById("etyCount"),
@@ -1525,8 +1149,8 @@
       reviewEl: document.getElementById("etyReview"),
 
       getPools: () => presetPools,
-      onNewQuizRequested: () => { /* no-op; user changes number or restarts */ },
-      onChangeNumber: () => { /* no-op */ },
+      onNewQuizRequested: () => {},
+      onChangeNumber: () => {},
 
       _overridePools: (p) => {
         presetPools = p;
@@ -1538,9 +1162,7 @@
       }
     });
 
-    /* ==========================
-       CUSTOM CONTENT
-       ========================== */
+    /* ========= CUSTOM CONTENT ========= */
     let customPools = { vocab: [], ety: [] };
     const custFile = document.getElementById("custFile");
     const custCount = document.getElementById("custCount");
@@ -1550,15 +1172,12 @@
     function validateCust(){
       const n = clampInt(custCount.value, 1, 100);
       const fileOk = !!(custFile.files && custFile.files[0]);
-      custStartBtn.disabled = !(n !== null && fileOk && customPools.vocab.length >= 6);
+      custStartBtn.disabled = !(n !== null && fileOk && (customPools.vocab.length >= 6 || customPools.ety.length >= 6));
     }
 
     custCount.addEventListener("input", validateCust);
     custCount.addEventListener("keydown", (e) => {
-      if(e.key === "Enter"){
-        e.preventDefault();
-        if(!custStartBtn.disabled) custController.startQuiz(null);
-      }
+      if(e.key === "Enter"){ e.preventDefault(); if(!custStartBtn.disabled) custController.startQuiz(); }
     });
 
     custFile.addEventListener("change", async () => {
@@ -1571,12 +1190,7 @@
         return;
       }
       const text = await f.text();
-
-      // For custom uploads we treat everything as vocabulary-style unless it explicitly uses — word-part lines.
-      const parsed = parseCleanIndex(text);
-
-      // custom quiz uses vocab pool primarily; ety allowed if present, but minimal UI.
-      customPools = parsed;
+      customPools = parseCleanIndex(text);
 
       if(customPools.vocab.length >= 6 || customPools.ety.length >= 6){
         custStatus.textContent = `Loaded. Vocabulary: ${customPools.vocab.length} | Etymology: ${customPools.ety.length}`;
@@ -1588,9 +1202,6 @@
       validateCust();
     });
 
-    /* ==========================
-       CUSTOM Controller
-       ========================== */
     const custController = createQuizController({
       setupRoot: document.getElementById("custSetup"),
       countInput: document.getElementById("custCount"),
@@ -1619,10 +1230,9 @@
       reviewEl: document.getElementById("custReview"),
 
       getPools: () => customPools,
-      onNewQuizRequested: () => { /* keep file; user can change number */ },
-      onChangeNumber: () => { /* no-op */ },
-
-      _overridePools: (_) => {}
+      onNewQuizRequested: () => {},
+      onChangeNumber: () => {},
+      _overridePools: () => {}
     });
 
     document.getElementById("custBackSetupBtn").addEventListener("click", () => {
@@ -1632,27 +1242,6 @@
     });
 
     validateCust();
-
-    /* ==========================
-       Final small fix:
-       if student clicks “Generate new quiz” from summary,
-       keep the same number in the input and just rebuild.
-       ========================== */
-    document.getElementById("etyNewBtn").addEventListener("click", () => {
-      // rebuild immediately using current count
-      etyController.showSetup();
-      const btn = document.getElementById("etyStartBtn");
-      btn.disabled = false;
-      etyController.startQuiz(null);
-    });
-
-    document.getElementById("custNewBtn").addEventListener("click", () => {
-      custController.showSetup();
-      validateCust();
-      if(!custStartBtn.disabled){
-        custController.startQuiz(null);
-      }
-    });
   </script>
 </body>
 </html>
