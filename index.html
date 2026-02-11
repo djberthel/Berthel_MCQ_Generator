@@ -589,8 +589,8 @@
 (() => {
   /* ----------------- CONFIG ----------------- */
   const PRESET_CANDIDATES = [
-    "Vocab_Ee.csv",
-    "Vocab_Ee.xlsx"
+    "Vocab_Ety_Master_List.csv",
+    ""Vocab_Ety_Master_List.xlsx"
   ];
 
   // If your spreadsheet has different names, change PRESET_CANDIDATES above.
@@ -804,7 +804,7 @@
     const pin = prompt("Admin PIN:");
     if (!pin) return;
     // You can change this PIN (yes, it’s client-side; this is a lightweight gate, not real auth).
-    if (pin !== "CHANGE_ME") {
+    if (pin !== "temetnosce") {
       alert("Denied.");
       return;
     }
@@ -1061,7 +1061,7 @@
 
     const got = await fetchFirstAvailable(PRESET_CANDIDATES);
     if (!got){
-      setPresetErr("Expected Vocab_Ee.csv or Vocab_Ee.xlsx in the same folder. (Also: opening via a proper server is required for auto-loading.)");
+      setPresetErr("Expected Vocab_Ety_Master_List.csv or Vocab_Ety_Master_List.xlsx in the same folder. (Also: opening via a proper server is required for auto-loading.)");
       return;
     }
 
