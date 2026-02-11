@@ -3,1245 +3,1842 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Berthel's Biology</title>
+  <meta name="color-scheme" content="dark" />
+  <title>Berthel’s Biology — Professional student testing and review workspace.</title>
+
+  <!-- Latin Modern (via Fontsource on jsDelivr) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.20/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.20/400-italic.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/latin-modern-roman@5.0.20/700.css">
+
+  <!-- SheetJS (for .xlsx preset parsing) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
   <style>
-    @font-face{
-      font-family:"Latin Modern Roman";
-      src:url("./lmroman10-regular.woff2") format("woff2"),
-          url("./lmroman10-regular.woff") format("woff");
-      font-weight:400;
-      font-style:normal;
-      font-display:swap;
-    }
-    @font-face{
-      font-family:"Latin Modern Roman";
-      src:url("./lmroman10-bold.woff2") format("woff2"),
-          url("./lmroman10-bold.woff") format("woff");
-      font-weight:700;
-      font-style:normal;
-      font-display:swap;
-    }
-
     :root{
-      --bg0:#000;
-      --panel:#0f1116;
-      --line:rgba(255,255,255,.12);
-      --soft:rgba(255,255,255,.08);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.68);
-      --faint:rgba(255,255,255,.46);
-      --good:#36d06e;
+      --bg: #06070a;
+      --panel: #0b0e13;
+      --panel2:#0e121a;
+      --ink: #f4f6f8;
+      --muted: #a7b0be;
+      --faint: #6c7584;
+      --line: #1b2230;
+      --line2:#242c3b;
+      --ok: #2fd36a;
       --bad:#ff4d4d;
-      --shadow: 0 12px 40px rgba(0,0,0,.55);
-      --radius:18px;
+      --warn:#ffd36a;
+
+      --btn: #f6f7f9;
+      --btnInk:#0a0c10;
+
+      --radius: 18px;
+      --radius2: 14px;
+
+      --shadow: 0 10px 40px rgba(0,0,0,.45);
+      --shadow2: 0 10px 28px rgba(0,0,0,.35);
+
+      --base: 19px;
+      --lh: 1.35;
     }
 
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
     body{
       margin:0;
-      color:var(--text);
-      font-family:"Latin Modern Roman","LM Roman 10","CMU Serif","Times New Roman",serif;
-      background:
-        radial-gradient(1200px 600px at 18% 8%, rgba(255,255,255,.08), transparent 60%),
-        radial-gradient(900px 520px at 82% 18%, rgba(255,255,255,.06), transparent 62%),
-        linear-gradient(180deg, #05060a, #000 60%);
-      letter-spacing:.2px;
-      font-size:18px;
+      background: radial-gradient(1400px 800px at 20% 0%, #0b0f17 0%, var(--bg) 55%) fixed;
+      color:var(--ink);
+      font-family: "Latin Modern Roman","CMU Serif","Times New Roman",serif;
+      font-size: var(--base);
+      line-height: var(--lh);
+      letter-spacing: .1px;
     }
 
-    button, input, textarea{ font-family:inherit; color:inherit; }
+    .wrap{
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 26px 18px 40px;
+    }
 
-    .wrap{ max-width:1120px; margin:0 auto; padding:28px 18px 40px; }
-    .topbar{ display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px; }
-    .brand{ display:flex; align-items:center; gap:14px; min-width:0; }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 18px 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width: 0;
+    }
+
     .avatar{
-      width:56px; height:56px; border-radius:999px;
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-      box-shadow:0 10px 26px rgba(0,0,0,.55);
-      overflow:hidden; flex:0 0 auto;
-    }
-    .avatar img{ width:100%; height:100%; object-fit:cover; object-position:center 30%; display:block; }
-    .brandTitle{ font-size:34px; font-weight:700; margin:0; line-height:1.08; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .brandSub{ margin:6px 0 0; color:var(--muted); font-size:18px; }
-    .version{
-      color:var(--faint); font-size:16px; white-space:nowrap;
-      padding:8px 12px; border:1px solid var(--soft); border-radius:999px;
-      background:rgba(0,0,0,.25);
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      border: 1px solid var(--line2);
+      background: #0b0e13;
+      box-shadow: var(--shadow2);
+      object-fit: cover;
+      flex: 0 0 auto;
     }
 
-    .tabs{ display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 18px; }
-    .tab{
-      padding:10px 14px; border:1px solid var(--soft); border-radius:999px;
-      background:rgba(0,0,0,.22); cursor:pointer; user-select:none;
-      transition:transform .04s ease, background .12s ease, border-color .12s ease;
-      font-size:18px;
+    .titleblock{
+      min-width: 0;
     }
-    .tab:hover{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.18); }
-    .tab:active{ transform:translateY(1px); }
-    .tab.active{ background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.26); }
+    .title{
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .subtitle{
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 16.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ver{
+      color: var(--muted);
+      font-size: 14.5px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.22);
+      user-select: none;
+    }
+
+    .tabs{
+      margin-top: 16px;
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+
+    .tabbtn{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      font: inherit;
+      box-shadow: none;
+    }
+    .tabbtn[aria-selected="true"]{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
+    }
 
     .panel{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.015));
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
-    .panelHeader{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px; }
-    .panelTitle{ margin:0; font-size:26px; font-weight:700; letter-spacing:.2px; }
-    .panelHint{ margin:8px 0 0; color:var(--muted); font-size:18px; line-height:1.35; }
+    .panelin{
+      padding: 18px;
+    }
 
-    .row{ display:flex; gap:14px; flex-wrap:wrap; align-items:flex-end; margin-top:14px; }
-    .field{ display:flex; flex-direction:column; gap:8px; min-width:240px; flex:1 1 260px; }
-    label{ color:var(--muted); font-size:16px; }
-    input[type="number"], input[type="password"], textarea{
-      border-radius:14px; border:1px solid var(--soft);
-      background:rgba(0,0,0,.28);
-      padding:12px 12px; outline:none; font-size:18px;
+    .hr{
+      height: 1px;
+      background: var(--line);
+      margin: 14px 0;
     }
-    textarea{ min-height:120px; resize:vertical; }
+
+    .muted{ color: var(--muted); }
+    .faint{ color: var(--faint); }
+
+    .row{
+      display:flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .spacer{ flex:1; }
+
+    .label{
+      display:block;
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    input[type="number"], input[type="text"], textarea{
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line2);
+      background: rgba(0,0,0,.25);
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+    }
+    textarea{ min-height: 140px; resize: vertical; }
 
     .btn{
-      border:1px solid var(--soft);
-      background:rgba(255,255,255,.06);
-      padding:12px 14px; border-radius:14px;
-      cursor:pointer; transition:background .12s ease, border-color .12s ease, transform .04s ease;
-      font-size:18px; user-select:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding: 11px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      cursor:pointer;
+      font: inherit;
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
     }
-    .btn:hover{ background:rgba(255,255,255,.10); border-color:rgba(255,255,255,.18); }
-    .btn:active{ transform:translateY(1px); }
-    .btn.primary{ background:rgba(255,255,255,.92); color:#000; border-color:rgba(255,255,255,.92); }
-    .btn.primary:hover{ background:rgba(255,255,255,.98); }
-    .btn.ghost{ background:transparent; }
-    .btn.danger{ background:rgba(255,77,77,.14); border-color:rgba(255,77,77,.35); }
-    .btn.good{ background:rgba(54,208,110,.12); border-color:rgba(54,208,110,.35); }
+    .btn:disabled{
+      opacity:.45;
+      cursor: not-allowed;
+    }
+    .btnPrimary{
+      background: var(--btn);
+      color: var(--btnInk);
+      border-color: rgba(255,255,255,.6);
+    }
+    .btnGhost{
+      background: rgba(0,0,0,.18);
+      border-color: var(--line2);
+    }
 
-    .split{ display:grid; grid-template-columns: 1fr; gap:14px; }
-    @media (min-width: 980px){ .split{ grid-template-columns: 1.25fr .75fr; } }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .grid2{ grid-template-columns: 1fr; }
+      .title{ font-size: 24px; }
+      :root{ --base: 18px; }
+    }
 
-    .quizTop{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:12px; }
-    .qMeta{ color:var(--muted); font-size:17px; }
-    .qTitle{ margin:6px 0 0; font-size:34px; font-weight:700; line-height:1.12; }
+    /* Quiz UI */
+    .quizTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    .qmeta{
+      color: var(--muted);
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .qstem{
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    .qtag{
+      display:inline-block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+    }
 
-    .options{ display:flex; flex-direction:column; gap:12px; margin-top:16px; }
+    .optList{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
     .opt{
-      border:1px solid var(--soft); background:rgba(0,0,0,.22);
-      border-radius:16px; padding:14px 14px; cursor:pointer;
-      display:flex; gap:12px; align-items:flex-start;
-      transition:background .12s ease, border-color .12s ease, transform .04s ease;
+      display:flex;
+      gap: 12px;
+      align-items:flex-start;
+      padding: 14px 14px;
+      border-radius: var(--radius2);
+      border: 1px solid var(--line2);
+      background: rgba(0,0,0,.18);
+      cursor:pointer;
+      transition: transform .02s ease, border-color .12s ease, background .12s ease;
+      user-select:none;
     }
-    .opt:hover{ background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.18); }
-    .opt:active{ transform:translateY(1px); }
-    .opt.selected{ border-color:rgba(255,255,255,.32); background:rgba(255,255,255,.07); }
-    .optLetter{
-      width:34px; height:34px; border-radius:12px;
-      border:1px solid var(--soft); display:flex; align-items:center; justify-content:center;
-      font-weight:700; background:rgba(255,255,255,.04); flex:0 0 auto; margin-top:1px;
+    .opt:hover{
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.04);
     }
-    .optText{ line-height:1.32; color:var(--text); }
+    .opt.sel{
+      border-color: rgba(255,255,255,.38);
+      background: rgba(255,255,255,.08);
+    }
+    .opt .letter{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border: 1px solid var(--line2);
+      background: rgba(0,0,0,.22);
+      color: var(--ink);
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+    .opt .txt{
+      padding-top: 2px;
+      flex: 1 1 auto;
+      color: var(--ink);
+    }
 
-    .nav{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:18px; flex-wrap:wrap; }
-    .navLeft, .navRight{ display:flex; gap:10px; flex-wrap:wrap; }
+    .quizNav{
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
 
-    .scoreLine{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:10px; }
-    .scoreBig{ font-size:40px; font-weight:700; letter-spacing:.3px; }
     .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px; border-radius:999px;
-      border:1px solid var(--soft); background:rgba(0,0,0,.22);
-      color:var(--muted); font-size:16px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+      color: var(--muted);
+      font-size: 14.5px;
     }
-    .pill.good{ border-color:rgba(54,208,110,.35); color:rgba(54,208,110,.95); background:rgba(54,208,110,.09); }
-    .pill.bad{ border-color:rgba(255,77,77,.35); color:rgba(255,77,77,.95); background:rgba(255,77,77,.09); }
 
-    .review{ margin-top:16px; border-top:1px solid var(--soft); padding-top:14px; }
-    .reviewItem{ border:1px solid var(--soft); background:rgba(0,0,0,.18); border-radius:16px; padding:14px; margin-bottom:12px; }
-    .reviewHead{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
-    .reviewQ{ font-weight:700; font-size:18px; line-height:1.2; }
-    .tag{ font-size:14px; padding:6px 10px; border-radius:999px; border:1px solid var(--soft); color:var(--muted); background:rgba(0,0,0,.2); }
-    .rLine{ margin:6px 0 0; color:var(--muted); line-height:1.35; font-size:17px; }
-    .rLine strong{ color:var(--text); font-weight:700; }
-
-    .status{ margin-top:10px; color:var(--muted); font-size:16px; }
-    .status.ok{ color:rgba(54,208,110,.92); }
-    .status.bad{ color:rgba(255,77,77,.92); }
-
-    .adminLink{
-      margin-top:18px; color:var(--faint); font-size:15px;
-      display:inline-block; padding:8px 10px; border:1px solid transparent; border-radius:999px;
+    /* Summary */
+    .scoreline{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      margin-top: 10px;
     }
-    .adminLink:hover{ border-color:var(--soft); background:rgba(255,255,255,.03); color:var(--muted); }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line2);
+      background: rgba(0,0,0,.18);
+      color: var(--ink);
+      font-size: 15.5px;
+    }
+    .dot{
+      width: 10px; height:10px; border-radius:999px;
+      background: var(--muted);
+    }
+    .dot.ok{ background: var(--ok); }
+    .dot.bad{ background: var(--bad); }
+    .dot.warn{ background: var(--warn); }
+
+    .review{
+      margin-top: 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .revCard{
+      border: 1px solid var(--line2);
+      border-radius: var(--radius2);
+      background: rgba(0,0,0,.16);
+      padding: 14px;
+    }
+    .revHead{
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items:flex-start;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .revTitle{
+      font-weight: 700;
+      font-size: 18px;
+      margin: 0;
+    }
+    .revMark{
+      font-size: 14px;
+      color: var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+    }
+    .revBody{
+      color: var(--ink);
+    }
+    .revBody .small{
+      color: var(--muted);
+      font-size: 15px;
+      margin-top: 8px;
+    }
+    .revBody .k{
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    /* Home updates */
+    .updates{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .uitem{
+      border: 1px solid var(--line2);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,.16);
+    }
+    .uts{
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    /* Hidden admin */
+    .admin{
+      margin-top: 14px;
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(255,255,255,.03);
+    }
     .hidden{ display:none !important; }
+
+    /* Small helpers */
+    .err{
+      color: #ffd6d6;
+      border: 1px solid rgba(255,77,77,.35);
+      background: rgba(255,77,77,.07);
+      padding: 10px 12px;
+      border-radius: 14px;
+      margin-top: 10px;
+      font-size: 15.5px;
+    }
+    .okmsg{
+      color: #d8ffe6;
+      border: 1px solid rgba(47,211,106,.30);
+      background: rgba(47,211,106,.07);
+      padding: 10px 12px;
+      border-radius: 14px;
+      margin-top: 10px;
+      font-size: 15.5px;
+    }
+
+    a{ color: var(--ink); text-decoration: underline; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
+
     <div class="topbar">
       <div class="brand">
-        <div class="avatar" aria-label="avatar">
-          <img id="avatarImg" src="./Chinstrap_LOgo.jfif" alt="Penguin avatar" />
-        </div>
-        <div class="brandText">
-          <h1 class="brandTitle">Berthel's Biology</h1>
-          <p class="brandSub">Professional student testing and review workspace.</p>
+        <img id="avatar" class="avatar" src="Chinstrap_LOgo.jfif" alt="Avatar" />
+        <div class="titleblock">
+          <h1 class="title">Berthel’s Biology</h1>
+          <div class="subtitle">Professional student testing and review workspace.</div>
         </div>
       </div>
-      <div class="version" id="versionBox">v00000000-000000</div>
+      <div id="ver" class="ver" title="Version"></div>
     </div>
 
     <div class="tabs" role="tablist" aria-label="Sections">
-      <div class="tab active" data-tab="home" role="tab" aria-selected="true">Home</div>
-      <div class="tab" data-tab="etyvocab" role="tab" aria-selected="false">Etymology + Vocabulary</div>
-      <div class="tab" data-tab="custom" role="tab" aria-selected="false">Custom Content</div>
+      <button class="tabbtn" role="tab" aria-selected="true" data-tab="home">Home</button>
+      <button class="tabbtn" role="tab" aria-selected="false" data-tab="preset">Etymology &amp; Vocabulary</button>
+      <button class="tabbtn" role="tab" aria-selected="false" data-tab="custom">Custom Content</button>
     </div>
 
     <!-- HOME -->
     <section id="tab-home" class="panel" role="tabpanel">
-      <div class="panelHeader">
-        <div>
-          <h2 class="panelTitle">Updates</h2>
-          <p class="panelHint">Latest engine notes (most recent first).</p>
+      <div class="panelin">
+        <div class="row" style="align-items:flex-end;">
+          <div style="min-width:0;">
+            <div class="label">Update notes</div>
+            <div class="muted" style="max-width: 74ch;">
+              Updates are timestamped (Beijing time).
+            </div>
+          </div>
+          <div class="spacer"></div>
+          <button id="btnAdmin" class="btn btnGhost" title="Admin" aria-label="Admin" style="display:none;">Admin</button>
         </div>
-      </div>
 
-      <div id="updatesList"></div>
+        <div class="hr"></div>
 
-      <a class="adminLink" id="adminToggle" href="javascript:void(0)">Admin</a>
+        <div id="updates" class="updates"></div>
 
-      <div id="adminPanel" class="hidden" style="margin-top:14px;">
-        <div class="split">
-          <div class="panel" style="padding:16px;">
-            <h3 class="panelTitle" style="font-size:22px;margin:0 0 10px;">Add update</h3>
-            <div class="row" style="margin-top:0;">
-              <div class="field" style="flex:1 1 520px;min-width:280px;">
-                <label for="updateText">Message</label>
-                <textarea id="updateText" placeholder="Write the update note..."></textarea>
-              </div>
-            </div>
-            <div class="row">
-              <button class="btn good" id="addUpdateBtn">Add (timestamped)</button>
-              <button class="btn ghost" id="lockAdminBtn">Lock</button>
-            </div>
-            <div class="status" id="adminStatus"></div>
+        <div id="adminPanel" class="admin hidden">
+          <div class="label">Post an update</div>
+          <textarea id="adminMsg" placeholder="Write an update note..."></textarea>
+          <div class="row" style="margin-top:10px;">
+            <button id="adminPost" class="btn btnPrimary">Post update</button>
+            <button id="adminDownload" class="btn btnGhost">Download updates.json</button>
+            <div class="spacer"></div>
+            <div class="faint" style="font-size:14.5px;">Admin mode</div>
           </div>
-
-          <div class="panel" style="padding:16px;">
-            <h3 class="panelTitle" style="font-size:22px;margin:0 0 10px;">Deploy helper</h3>
-            <p class="panelHint" style="margin-top:0;">
-              If you want everyone to see the same updates across devices, publish the updated HTML after adding notes here.
-            </p>
-          </div>
+          <div id="adminInfo" class="muted" style="margin-top:10px; font-size:15px;"></div>
         </div>
       </div>
     </section>
 
-    <!-- ETY + VOCAB -->
-    <section id="tab-etyvocab" class="panel hidden" role="tabpanel">
-      <div id="etySetup">
-        <div class="panelHeader">
-          <div>
-            <h2 class="panelTitle">Etymology + Vocabulary Quiz</h2>
-            <p class="panelHint">Choose how many practice questions you want (1–100).</p>
-          </div>
-        </div>
+    <!-- PRESET QUIZ -->
+    <section id="tab-preset" class="panel hidden" role="tabpanel">
+      <div class="panelin">
 
-        <div class="split">
-          <div class="panel" style="padding:16px;">
-            <div class="row" style="margin-top:0;">
-              <div class="field">
-                <label for="etyCount">Number of questions (1–100)</label>
-                <input id="etyCount" type="number" min="1" max="100" step="1" inputmode="numeric" placeholder="e.g., 25" />
-              </div>
-              <button class="btn primary" id="etyStartBtn" disabled>Start</button>
+        <div class="grid2">
+          <div>
+            <div class="label">Preset status</div>
+            <div id="presetStatus" class="muted">Loading preset…</div>
+            <div id="presetErr" class="err hidden"></div>
+            <div id="presetOk" class="okmsg hidden"></div>
+          </div>
+
+          <div>
+            <div class="label">Practice set</div>
+            <div class="row">
+              <select id="mode" style="width:100%; padding:13px 14px; border-radius:14px; border:1px solid var(--line2); background: rgba(0,0,0,.25); color: var(--ink); font: inherit; outline:none;">
+                <option value="mixed">Mixed (Vocabulary + Etymology)</option>
+                <option value="vocab">Vocabulary only</option>
+                <option value="ety">Etymology only</option>
+              </select>
             </div>
 
-            <div class="row" style="margin-top:10px;">
-              <div class="field" style="min-width:280px;">
-                <label for="etyFallbackFile">If the preset list doesn’t load, upload: ib_bio_clean_index.txt</label>
-                <input id="etyFallbackFile" type="file" accept=".txt,text/plain" />
+            <div style="margin-top:12px;">
+              <label class="label" for="nq">Number of questions (1–100)</label>
+              <div class="row">
+                <input id="nq" type="number" min="1" max="100" step="1" placeholder="e.g., 25" />
+                <button id="startPreset" class="btn btnPrimary" style="min-width:110px;">Start</button>
               </div>
+              <div id="nqErr" class="err hidden"></div>
             </div>
-
-            <div class="status" id="etyLoadStatus">Loading preset list…</div>
-          </div>
-
-          <div class="panel" style="padding:16px;">
-            <h3 class="panelTitle" style="font-size:22px;margin:0 0 10px;">What you’ll get</h3>
-            <p class="panelHint" style="margin-top:0;">
-              A clean MCQ flow with A–D choices, the ability to finish early, and a professional results summary with rationale.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div id="etyQuiz" class="hidden">
-        <div class="quizTop">
-          <div>
-            <div class="qMeta" id="etyMeta">Question 1 of 10</div>
-            <div class="qTitle" id="etyStem">—</div>
-          </div>
-          <button class="btn ghost" id="etyChangeNumberBtn">Change number</button>
-        </div>
-
-        <div class="options" id="etyOptions"></div>
-
-        <div class="nav">
-          <div class="navLeft">
-            <button class="btn" id="etyBackBtn">Back</button>
-            <button class="btn danger" id="etyFinishBtn">Finish now</button>
-          </div>
-          <div class="navRight">
-            <button class="btn primary" id="etyNextBtn">Next</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="etySummary" class="hidden">
-        <div class="panelHeader">
-          <div>
-            <h2 class="panelTitle">Summary</h2>
-            <p class="panelHint" id="etySummaryHint">—</p>
           </div>
         </div>
 
-        <div class="scoreLine">
-          <div class="scoreBig" id="etyScoreBig">0/0</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <span class="pill" id="etyPctPill">0%</span>
-            <span class="pill" id="etyAttemptPill">Attempted: 0</span>
-            <span class="pill" id="etyTimePill">Time: 0:00</span>
-          </div>
-        </div>
+        <div class="hr"></div>
 
-        <div class="row" style="margin-top:14px;">
-          <button class="btn good" id="etyRetryBtn">Retry same quiz</button>
-          <button class="btn" id="etyNewBtn">Generate new quiz</button>
-          <button class="btn ghost" id="etyChangeNumberBtn2">Change number</button>
-        </div>
+        <div id="quizArea" class="hidden"></div>
+        <div id="summaryArea" class="hidden"></div>
 
-        <div class="review" id="etyReview"></div>
       </div>
     </section>
 
     <!-- CUSTOM CONTENT -->
     <section id="tab-custom" class="panel hidden" role="tabpanel">
-      <div id="custSetup">
-        <div class="panelHeader">
-          <div>
-            <h2 class="panelTitle">Custom Content Quiz</h2>
-            <p class="panelHint">Upload a .txt file and choose how many questions you want (1–100).</p>
-          </div>
+      <div class="panelin">
+        <div class="label">Upload content</div>
+        <div class="muted" style="max-width: 78ch;">
+          Upload a text file, choose a question count, then load MCQ JSON (from your generator) to run the quiz here.
         </div>
 
-        <div class="split">
-          <div class="panel" style="padding:16px;">
-            <div class="row" style="margin-top:0;">
-              <div class="field">
-                <label for="custFile">Upload text file</label>
-                <input id="custFile" type="file" accept=".txt,text/plain" />
-              </div>
+        <div class="hr"></div>
 
-              <div class="field">
-                <label for="custCount">Number of questions (1–100)</label>
-                <input id="custCount" type="number" min="1" max="100" step="1" inputmode="numeric" placeholder="e.g., 20" />
-              </div>
-
-              <button class="btn primary" id="custStartBtn" disabled>Start</button>
+        <div class="grid2">
+          <div>
+            <label class="label" for="customFile">Content file (.txt)</label>
+            <input id="customFile" type="file" accept=".txt,.md,text/plain,text/markdown" />
+            <div style="margin-top:12px;">
+              <label class="label" for="customN">Number of questions (1–100)</label>
+              <input id="customN" type="number" min="1" max="100" step="1" placeholder="e.g., 20" />
+            </div>
+            <div class="row" style="margin-top:12px;">
+              <button id="makePrompt" class="btn btnPrimary">Generate prompt</button>
+              <button id="clearCustom" class="btn btnGhost">Clear</button>
             </div>
 
-            <div class="status" id="custStatus">Waiting for a file…</div>
+            <div id="customErr" class="err hidden"></div>
+            <div id="customOk" class="okmsg hidden"></div>
           </div>
 
-          <div class="panel" style="padding:16px;">
-            <h3 class="panelTitle" style="font-size:22px;margin:0 0 10px;">Supported format</h3>
-            <p class="panelHint" style="margin-top:0;">
-              Best results come from term–definition style notes (term lines followed by definition lines).
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div id="custQuiz" class="hidden">
-        <div class="quizTop">
           <div>
-            <div class="qMeta" id="custMeta">Question 1 of 10</div>
-            <div class="qTitle" id="custStem">—</div>
-          </div>
-          <button class="btn ghost" id="custChangeBtn">Change number</button>
-        </div>
-
-        <div class="options" id="custOptions"></div>
-
-        <div class="nav">
-          <div class="navLeft">
-            <button class="btn" id="custBackBtn">Back</button>
-            <button class="btn danger" id="custFinishBtn">Finish now</button>
-          </div>
-          <div class="navRight">
-            <button class="btn primary" id="custNextBtn">Next</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="custSummary" class="hidden">
-        <div class="panelHeader">
-          <div>
-            <h2 class="panelTitle">Summary</h2>
-            <p class="panelHint" id="custSummaryHint">—</p>
+            <label class="label" for="jsonIn">MCQ JSON</label>
+            <textarea id="jsonIn" placeholder='Paste MCQ JSON here (questions + options + correct).'></textarea>
+            <div class="row" style="margin-top:12px;">
+              <button id="loadJsonQuiz" class="btn btnPrimary">Load quiz</button>
+            </div>
           </div>
         </div>
 
-        <div class="scoreLine">
-          <div class="scoreBig" id="custScoreBig">0/0</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <span class="pill" id="custPctPill">0%</span>
-            <span class="pill" id="custAttemptPill">Attempted: 0</span>
-            <span class="pill" id="custTimePill">Time: 0:00</span>
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:14px;">
-          <button class="btn good" id="custRetryBtn">Retry same quiz</button>
-          <button class="btn" id="custNewBtn">Generate new quiz</button>
-          <button class="btn ghost" id="custBackSetupBtn">Back to setup</button>
-        </div>
-
-        <div class="review" id="custReview"></div>
+        <div id="customQuizArea" class="hidden" style="margin-top:16px;"></div>
+        <div id="customSummaryArea" class="hidden" style="margin-top:16px;"></div>
       </div>
     </section>
+
   </div>
 
-  <script>
-    /* ========= Version ========= */
-    const BUILD_VERSION = "v20260211-130900";
-    document.getElementById("versionBox").textContent = BUILD_VERSION;
+<script>
+(() => {
+  /* ----------------- CONFIG ----------------- */
+  const PRESET_CANDIDATES = [
+    "Vocab_Ee.csv",
+    "Vocab_Ee.xlsx"
+  ];
 
-    /* ========= Avatar (file w/ fallback) ========= */
-    const avatarImg = document.getElementById("avatarImg");
-    const fallbackDataUriEncoded =
-      "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE%0ABQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRQBAwME%0ADgQHBgkIBwkUDQsMFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU%0AFBQUFBQUFBQUFBQUFBQUFP/AABEIAQ0A+gMBIgACEQEDEQH/xAAbAAEAAgMBAQAA%0AAAAAAAAAAAAGBQcBAgMEB//EADoQAAIBAgQDBQYEBwAAAAAAAAECAwQRAAUSITFB%0ABhMiUWEHMoGRoRQjQlNiscHR8BVCYv/EABcBAQEBAQAAAAAAAAAAAAAAAAABAgP/%0AxAAhEQEBAQEAAgIDAQAAAAAAAAABEQIhAxIxQVEiMmFxkf/aAAwDAQACEQMRAD8A%0A9u0pV5I9kqm5wK8GJxHkqQ8E1Y3p6y+6o8JqF0cKk0YwW2zZbG3mI8fQnR3iYh8o%0Alq4k3h7p8N8bT5p3c5c3m0n9oBv6m4+S1x7m2q0fH2l9t2g2Lw2qgQpJH2c0j5cI%0A3VJf0yQ8b4nXKXqE7H6z1y2t3l1m7QbZ7bqB7VQ4xQH4u3m5w7Y1zv5bOq8f7g5%0Ap+4s0m3b0G2v2aYb5qUoUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpUqVKlSpU%0AqVKlSpUqVKlSpUqVKlf/2Q==";
-    const fallbackDataUri = decodeURIComponent(fallbackDataUriEncoded);
-    avatarImg.addEventListener("error", () => { avatarImg.src = fallbackDataUri; });
+  // If your spreadsheet has different names, change PRESET_CANDIDATES above.
 
-    /* ========= Tabs ========= */
-    const tabs = document.querySelectorAll(".tab");
-    const tabPanels = {
-      home: document.getElementById("tab-home"),
-      etyvocab: document.getElementById("tab-etyvocab"),
-      custom: document.getElementById("tab-custom"),
-    };
-    function setTab(key){
-      tabs.forEach(t => {
-        const is = t.dataset.tab === key;
-        t.classList.toggle("active", is);
-        t.setAttribute("aria-selected", is ? "true" : "false");
-      });
-      Object.entries(tabPanels).forEach(([k, el]) => el.classList.toggle("hidden", k !== key));
+  // Optional: keep a local copy of updates here as fallback.
+  const EMBEDDED_UPDATES = [
+    {
+      ts: "—",
+      msg: "Next update: input validation hardened (1–100), improved summary rationale, and cleaner retake flow."
     }
-    tabs.forEach(t => t.addEventListener("click", () => setTab(t.dataset.tab)));
+  ];
 
-    /* ========= Time (Beijing) ========= */
-    function nowBeijingISO(){
-      const d = new Date();
-      const fmt = new Intl.DateTimeFormat("sv-SE", {
-        timeZone: "Asia/Shanghai",
-        year:"numeric", month:"2-digit", day:"2-digit",
-        hour:"2-digit", minute:"2-digit", second:"2-digit",
-        hour12:false
-      });
-      return fmt.format(d); // "YYYY-MM-DD HH:mm:ss"
-    }
+  /* ----------------- UTIL ----------------- */
+  const $ = (id) => document.getElementById(id);
 
-    /* ========= HOME updates ========= */
-    const ADMIN_PASS = "temetnosce"; // change this
-    const UPDATES_KEY = "bb_updates_v1";
-    const defaultUpdates = [
-      { ts: "2026-02-11 13:09:00", msg: "Next update: Fix Ety+Vocab numeric input (1–100), ensure all integers accepted, and deliver a cleaner post-quiz summary with rationale + retry options." }
-    ];
+  function beijingNowISO(){
+    // YYYY-MM-DD HH:MM:SS in Asia/Shanghai
+    const dt = new Date();
+    const s = dt.toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" }); // "YYYY-MM-DD HH:MM:SS"
+    return s;
+  }
 
-    function escapeHTML(s){
-      return String(s).replace(/[&<>"']/g, c => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-      }[c]));
-    }
-    function loadUpdates(){
-      const raw = localStorage.getItem(UPDATES_KEY);
-      if(!raw){ localStorage.setItem(UPDATES_KEY, JSON.stringify(defaultUpdates)); return [...defaultUpdates]; }
-      try{ const arr = JSON.parse(raw); if(Array.isArray(arr)) return arr; }catch(_){}
-      localStorage.setItem(UPDATES_KEY, JSON.stringify(defaultUpdates));
-      return [...defaultUpdates];
-    }
-    function saveUpdates(arr){ localStorage.setItem(UPDATES_KEY, JSON.stringify(arr)); }
-    function renderUpdates(){
-      const list = document.getElementById("updatesList");
-      const updates = loadUpdates().slice().sort((a,b)=> (a.ts<b.ts?1:-1));
-      if(updates.length === 0){ list.innerHTML = "<div class='status'>No updates.</div>"; return; }
-      list.innerHTML = updates.map(u => `
-        <div class="reviewItem">
-          <div class="reviewHead">
-            <div class="reviewQ">${escapeHTML(u.msg)}</div>
-            <span class="tag">${escapeHTML(u.ts)}</span>
-          </div>
-        </div>
-      `).join("");
-    }
-    const adminToggle = document.getElementById("adminToggle");
-    const adminPanel  = document.getElementById("adminPanel");
-    const adminStatus = document.getElementById("adminStatus");
-    const addUpdateBtn = document.getElementById("addUpdateBtn");
-    const lockAdminBtn = document.getElementById("lockAdminBtn");
-    const updateText = document.getElementById("updateText");
-    let adminUnlocked = false;
+  function beijingFromDate(dt){
+    return dt.toLocaleString("sv-SE", { timeZone: "Asia/Shanghai" });
+  }
 
-    adminToggle.addEventListener("click", () => {
-      if(adminUnlocked){ adminPanel.classList.toggle("hidden"); return; }
-      const p = prompt("Admin passphrase:");
-      if(p === null) return;
-      if(p === ADMIN_PASS){
-        adminUnlocked = true;
-        adminPanel.classList.remove("hidden");
-        adminStatus.textContent = "Unlocked.";
-        adminStatus.className = "status ok";
-      }else{
-        adminStatus.textContent = "Incorrect passphrase.";
-        adminStatus.className = "status bad";
+  function clampInt(n, lo, hi){
+    if (!Number.isFinite(n)) return null;
+    const k = Math.trunc(n);
+    if (k < lo || k > hi) return null;
+    return k;
+  }
+
+  function escapeHtml(str){
+    return (str ?? "").replace(/[&<>"']/g, (c) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    }[c]));
+  }
+
+  function normSpace(s){
+    return (s ?? "")
+      .replace(/\s+/g, " ")
+      .replace(/\u00A0/g, " ")
+      .trim();
+  }
+
+  function stripExamples(s){
+    let x = (s ?? "");
+    x = x.replace(/Examples?:.*$/i, ""); // remove trailing Examples: ...
+    x = x.replace(/\(Examples?:.*?\)/ig, ""); // remove parenthetical examples
+    x = x.replace(/\be\.g\.\s*.*$/i, ""); // blunt removal if e.g. at end
+    x = x.replace(/^[\-\u2014\u2013•\s]+/g, ""); // leading bullets/dashes
+    x = x.replace(/\s+/g, " ").trim();
+    return x;
+  }
+
+  function looksLikeHeaderTerm(t){
+    const s = normSpace(t).toUpperCase();
+    if (!s) return true;
+    if (s.includes("CLEAN INDEX")) return true;
+    if (s.includes("GLOSSARY")) return true;
+    if (s.includes("WORD PART")) return true;
+    if (s.length >= 18 && /^[A-Z0-9\s\(\)\+\-\/]+$/.test(s)) return true;
+    return false;
+  }
+
+  function tokenize(s){
+    const stop = new Set([
+      "the","a","an","and","or","of","to","in","on","for","with","by","from","that","this","these","those",
+      "is","are","was","were","be","been","being","as","at","into","within","over","under","between","during",
+      "includes","including","include","via","through","across","it","its","their","there","which","who","whom",
+      "not","no","without","only","most","more","less","than","then","such"
+    ]);
+    const raw = (s ?? "").toLowerCase()
+      .replace(/[\u2014\u2013]/g, "-")
+      .replace(/[^a-z0-9\s\-]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!raw) return [];
+    const toks = raw.split(" ")
+      .map(x => x.trim())
+      .filter(x => x.length >= 3 && !stop.has(x));
+    return toks;
+  }
+
+  function jaccard(aSet, bSet){
+    if (!aSet.size || !bSet.size) return 0;
+    let inter = 0;
+    for (const v of aSet) if (bSet.has(v)) inter++;
+    const uni = aSet.size + bSet.size - inter;
+    return uni ? inter / uni : 0;
+  }
+
+  function buildKeyLetters(n){
+    // Balanced A/B/C/D, no >3 repeats
+    const letters = ["A","B","C","D"];
+    let base = Math.floor(n/4);
+    let rem = n % 4;
+    const counts = {A:base, B:base, C:base, D:base};
+    // distribute remainder randomly
+    const pick = letters.slice().sort(() => Math.random() - 0.5);
+    for (let i=0; i<rem; i++) counts[pick[i]]++;
+
+    function make(){
+      let arr = [];
+      for (const L of letters){
+        for (let i=0; i<counts[L]; i++) arr.push(L);
       }
-    });
-    lockAdminBtn.addEventListener("click", () => {
-      adminUnlocked = false;
-      adminPanel.classList.add("hidden");
-      adminStatus.textContent = "Locked.";
-      adminStatus.className = "status";
-    });
-    addUpdateBtn.addEventListener("click", () => {
-      if(!adminUnlocked) return;
-      const msg = (updateText.value || "").trim();
-      if(!msg){
-        adminStatus.textContent = "Write an update message first.";
-        adminStatus.className = "status bad";
-        return;
-      }
-      const ts = nowBeijingISO();
-      const updates = loadUpdates();
-      updates.push({ ts, msg });
-      saveUpdates(updates);
-      updateText.value = "";
-      adminStatus.textContent = "Update added.";
-      adminStatus.className = "status ok";
-      renderUpdates();
-    });
-    renderUpdates();
-
-    /* ========= Utilities ========= */
-    function clampInt(n, min, max){
-      const x = Math.trunc(Number(n));
-      if(!Number.isFinite(x)) return null;
-      if(x < min || x > max) return null;
-      return x;
-    }
-    function secondsToMMSS(sec){
-      const s = Math.max(0, Math.floor(sec));
-      const m = Math.floor(s/60);
-      const r = s % 60;
-      return `${m}:${String(r).padStart(2,"0")}`;
-    }
-    function shuffle(arr){
-      for(let i=arr.length-1;i>0;i--){
+      // Fisher–Yates
+      for (let i=arr.length-1; i>0; i--){
         const j = Math.floor(Math.random()*(i+1));
-        [arr[i],arr[j]] = [arr[j],arr[i]];
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      // constraint: no >3 in a row
+      let run = 1;
+      for (let i=1; i<arr.length; i++){
+        if (arr[i] === arr[i-1]) {
+          run++;
+          if (run > 3) return null;
+        } else run = 1;
       }
       return arr;
     }
-    function makeAnswerKey(n){
-      const letters = ["A","B","C","D"];
-      while(true){
-        const base = Math.floor(n/4);
-        const rem = n % 4;
-        const counts = {A:base,B:base,C:base,D:base};
-        const picks = shuffle(letters.slice()).slice(0, rem);
-        picks.forEach(l => counts[l]++);
-        let key = [];
-        letters.forEach(l => { for(let i=0;i<counts[l];i++) key.push(l); });
-        shuffle(key);
 
-        let runOk = true, run = 1;
-        for(let i=1;i<key.length;i++){
-          if(key[i] === key[i-1]) run++; else run = 1;
-          if(run > 3){ runOk = false; break; }
-        }
-        if(!runOk) continue;
+    for (let tries=0; tries<200; tries++){
+      const k = make();
+      if (k) return k;
+    }
+    // fallback (rare)
+    return Array.from({length:n}, () => letters[Math.floor(Math.random()*4)]);
+  }
 
-        const freqs = letters.map(l => key.filter(x => x===l).length);
-        if(Math.max(...freqs) - Math.min(...freqs) > 1) continue;
-        return key;
+  /* ----------------- VERSION (document.lastModified → Beijing) ----------------- */
+  try{
+    const lm = new Date(document.lastModified);
+    $("ver").textContent = "v" + beijingFromDate(lm);
+  }catch{
+    $("ver").textContent = "v" + beijingNowISO();
+  }
+
+  /* ----------------- AVATAR FALLBACK ----------------- */
+  $("avatar").addEventListener("error", () => {
+    // Minimal inline fallback if file missing
+    const svg = encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128">
+        <rect width="100%" height="100%" fill="#0b0e13"/>
+        <path d="M64 18c18 0 32 18 32 40 0 22-14 52-32 52S32 80 32 58c0-22 14-40 32-40z" fill="#f4f6f8" opacity=".92"/>
+        <path d="M64 34c10 0 18 10 18 22 0 14-8 34-18 34S46 70 46 56c0-12 8-22 18-22z" fill="#0a0c10"/>
+        <circle cx="56" cy="52" r="3" fill="#f4f6f8"/>
+        <circle cx="72" cy="52" r="3" fill="#f4f6f8"/>
+        <path d="M64 58l10 6-10 6-10-6z" fill="#f4f6f8"/>
+      </svg>
+    `);
+    $("avatar").src = "data:image/svg+xml;charset=utf-8," + svg;
+  }, { once:true });
+
+  /* ----------------- TABS ----------------- */
+  const tabBtns = Array.from(document.querySelectorAll(".tabbtn"));
+  function setTab(name){
+    tabBtns.forEach(b => b.setAttribute("aria-selected", String(b.dataset.tab === name)));
+    ["home","preset","custom"].forEach(t => {
+      const el = $("tab-" + t);
+      if (!el) return;
+      el.classList.toggle("hidden", t !== name);
+    });
+  }
+  tabBtns.forEach(b => b.addEventListener("click", () => setTab(b.dataset.tab)));
+
+  /* ----------------- HOME UPDATES (updates.json if present, else embedded) ----------------- */
+  let updates = [];
+
+  async function loadUpdates(){
+    // Attempt to load updates.json from same directory
+    try{
+      const r = await fetch("updates.json", { cache: "no-store" });
+      if (!r.ok) throw new Error("No updates.json");
+      const data = await r.json();
+      if (!Array.isArray(data)) throw new Error("Invalid updates.json");
+      updates = data.slice().reverse(); // newest first
+    }catch{
+      updates = EMBEDDED_UPDATES.slice();
+    }
+    renderUpdates();
+  }
+
+  function renderUpdates(){
+    const host = $("updates");
+    host.innerHTML = "";
+    if (!updates.length){
+      host.innerHTML = `<div class="uitem"><div class="uts">—</div><div>No updates posted.</div></div>`;
+      return;
+    }
+    for (const u of updates){
+      const ts = escapeHtml(u.ts ?? "—");
+      const msg = escapeHtml(u.msg ?? "");
+      host.insertAdjacentHTML("beforeend",
+        `<div class="uitem">
+           <div class="uts">${ts}</div>
+           <div>${msg}</div>
+         </div>`
+      );
+    }
+  }
+
+  // Admin mode (minimal, intentionally hidden)
+  let adminUnlocked = false;
+  let adminTap = 0;
+  $("ver").addEventListener("click", (e) => {
+    // Shift+click version 1x to unlock (simple + deliberate)
+    if (!e.shiftKey) return;
+    const pin = prompt("Admin PIN:");
+    if (!pin) return;
+    // You can change this PIN (yes, it’s client-side; this is a lightweight gate, not real auth).
+    if (pin !== "CHANGE_ME") {
+      alert("Denied.");
+      return;
+    }
+    adminUnlocked = true;
+    $("btnAdmin").style.display = "inline-flex";
+    $("btnAdmin").textContent = "Admin";
+    $("btnAdmin").classList.remove("hidden");
+    $("btnAdmin").click();
+  });
+
+  $("btnAdmin").addEventListener("click", () => {
+    if (!adminUnlocked) return;
+    $("adminPanel").classList.toggle("hidden");
+  });
+
+  $("adminPost").addEventListener("click", () => {
+    if (!adminUnlocked) return;
+    const msg = normSpace($("adminMsg").value);
+    if (!msg){
+      $("adminInfo").textContent = "Message is empty.";
+      return;
+    }
+    const entry = { ts: beijingNowISO(), msg };
+    // Store newest last in file; display newest first.
+    // We keep internal canonical in ascending time, then render reversed.
+    const canonical = updates.slice().reverse(); // currently newest-first → oldest-first
+    canonical.push(entry);
+    updates = canonical.slice().reverse();
+    $("adminMsg").value = "";
+    $("adminInfo").textContent = "Posted (local). Download updates.json to publish.";
+    renderUpdates();
+    // Keep a local copy so refresh doesn’t lose it (admin machine only).
+    try{ localStorage.setItem("bb_updates_cache", JSON.stringify(canonical)); }catch{}
+  });
+
+  $("adminDownload").addEventListener("click", () => {
+    if (!adminUnlocked) return;
+    // Build canonical array oldest->newest
+    const canonical = updates.slice().reverse();
+    const blob = new Blob([JSON.stringify(canonical, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "updates.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+    $("adminInfo").textContent = "Downloaded updates.json.";
+  });
+
+  // Restore admin local cache if present (only affects this browser)
+  try{
+    const cached = localStorage.getItem("bb_updates_cache");
+    if (cached){
+      const arr = JSON.parse(cached);
+      if (Array.isArray(arr) && arr.length){
+        updates = arr.slice().reverse();
+        renderUpdates();
       }
     }
-    function pickDistinct(pool, k, banSet){
-      const out = [];
-      let tries = 0;
-      while(out.length < k && tries++ < 8000){
-        const it = pool[Math.floor(Math.random()*pool.length)];
-        if(!it) continue;
-        if(banSet && banSet.has(it._id)) continue;
-        if(out.some(x => x._id === it._id)) continue;
-        out.push(it);
-      }
-      return out;
-    }
-
-    /* ==========================================================
-       FIX: ETYMOLOGIES NOT LOADING
-       - Your file has word-parts in formats that were being classified as vocab:
-         (a) inline: "prefix — meaning. Examples: ..."
-         (b) blocks where "Change number" sits between term and — meaning lines
-       - This parser:
-         1) skips ignorable lines when looking ahead (so "Change number" can't break ety blocks)
-         2) classifies entries with "Examples:" as etymology (not vocabulary)
-         3) stops vocab definitions from swallowing leading — bullet ety lines
-         4) strips Examples: completely from ety meanings
-       ========================================================== */
-    const bannedLineRe = /(CLEAN INDEX|GLOSSARY|WORD PARTS|Words in blue|Option topics|Table of contents)/i;
-    const ignorableLineRe = /(Change number)/i;
-    const dashMeaningRe = /^\s*(?:[—–-]|•)\s+/;
-
-    function isIgnorableLine(s){
-      const t = (s || "").trim();
-      if(!t) return true;
-      if(bannedLineRe.test(t)) return true;
-      if(ignorableLineRe.test(t)) return true;
-      return false;
-    }
-    function stripExamples(s){
-      const idx = String(s).toLowerCase().indexOf("examples:");
-      if(idx >= 0) return String(s).slice(0, idx).trim().replace(/[.;,:-]+$/,"").trim();
-      return String(s).trim();
-    }
-    function cleanMeaningLine(s){
-      let t = String(s).replace(/^\s*(?:[—–-]|•)\s*/,"").trim();
-      t = stripExamples(t);
-      return t.trim();
-    }
-    function nextRelevant(lines, idx){
-      let i = idx;
-      while(i < lines.length && isIgnorableLine(lines[i])) i++;
-      return i;
-    }
-
-    function splitInlineTermDef(line){
-      let s = (line || "").replace(/\u00A0/g," ").trim();
-      if(!s) return null;
-      if(bannedLineRe.test(s) || ignorableLineRe.test(s)) return null;
-
-      // "term — def" inline (em/en dash)
-      // handle both " — " and " – "
-      const md = s.match(/^(.+?)\s+[—–]\s+(.+)$/);
-      if(md){
-        const term = md[1].trim();
-        const def  = md[2].trim();
-        if(term && def) return { term, def };
-      }
-
-      // tab split
-      if(s.includes("\t")){
-        const [a,...rest] = s.split("\t");
-        const term = a.trim();
-        const def = rest.join(" ").trim();
-        if(term && def) return { term, def };
-      }
-
-      // 2+ space split
-      const m = s.match(/^(.+?)\s{2,}(.+)$/);
-      if(m){
-        const term = m[1].trim();
-        const def  = m[2].trim();
-        if(term && def) return { term, def };
-      }
-
-      return null;
-    }
-
-    function looksLikeWordPart(term, def){
-      const t = (term || "").trim();
-      const d = (def || "").trim();
-      if(!t || !d) return false;
-
-      // strongest signal: Examples: appears (word-part lines in your file use this)
-      if(/examples\s*:/i.test(d)) return true;
-
-      // common morpheme formatting
-      if(/[-–—]$/.test(t)) return true;
-      if(/^[-–—]/.test(t)) return true;
-
-      // short, non-sentence meanings (heuristic)
-      if(t.length <= 14 && d.length <= 90 && !/[.!?]\s*$/.test(d)) return true;
-
-      return false;
-    }
-
-    function parseCleanIndex(text){
-      const lines = text.replace(/\r/g,"").split("\n");
-      const vocab = [];
-      const ety   = [];
-      let idCounter = 1;
-
-      let i = 0;
-      while(i < lines.length){
-        i = nextRelevant(lines, i);
-        if(i >= lines.length) break;
-
-        const line = (lines[i] || "").trim();
-        if(isIgnorableLine(line)){ i++; continue; }
-
-        // If this line itself is a bullet meaning line, it's not usable without a term.
-        // Skip it (prevents garbage entries).
-        if(dashMeaningRe.test(line)){ i++; continue; }
-
-        // Look ahead for word-part bullet meanings (skip "Change number" etc.)
-        const j = nextRelevant(lines, i+1);
-        const next = (j < lines.length) ? (lines[j] || "").trim() : "";
-        const nextIsDashMeaning = dashMeaningRe.test(next);
-
-        if(nextIsDashMeaning){
-          // Etymology block: term line + one or more bullet-meaning lines (possibly with Examples:)
-          const term = line.trim();
-          let k = j;
-          const meaningLines = [];
-          while(k < lines.length){
-            const raw = (lines[k] || "").trim();
-            if(!raw) break;
-            if(isIgnorableLine(raw)){ k++; continue; }
-            if(!dashMeaningRe.test(raw)) break; // stop when bullets end
-            meaningLines.push(cleanMeaningLine(raw));
-            k++;
-          }
-          const meaning = meaningLines.join(" ").replace(/\s+/g," ").trim();
-          if(term && meaning){
-            ety.push({_id:`e${idCounter++}`, term, def: meaning});
-          }
-          i = k + 1;
-          continue;
-        }
-
-        // Inline term/def
-        const inline = splitInlineTermDef(line);
-        if(inline){
-          let term = inline.term.trim();
-          let def = inline.def.trim();
-
-          // pull continuation lines (but STOP if a bullet-meaning line appears)
-          let k = i+1;
-          const more = [];
-          while(k < lines.length){
-            const raw = (lines[k] || "").trim();
-            if(!raw) break;
-            if(isIgnorableLine(raw)){ k++; continue; }
-            if(dashMeaningRe.test(raw)) break; // prevent vocab swallowing word-part bullets
-            more.push(raw);
-            k++;
-          }
-          if(more.length) def = (def + " " + more.join(" ")).replace(/\s+/g," ").trim();
-
-          // classify ety vs vocab
-          if(looksLikeWordPart(term, def)){
-            def = stripExamples(def);
-            ety.push({_id:`e${idCounter++}`, term, def});
-          }else{
-            vocab.push({_id:`v${idCounter++}`, term, def});
-          }
-          i = k + 1;
-          continue;
-        }
-
-        // Term line followed by definition lines (vocab), again STOP if bullet meanings appear
-        const term = line.trim();
-        let k = i+1;
-        const defLines = [];
-        while(k < lines.length){
-          const raw = (lines[k] || "").trim();
-          if(!raw) break;
-          if(isIgnorableLine(raw)){ k++; continue; }
-          if(dashMeaningRe.test(raw)) break; // prevent swallowing word-part section
-          defLines.push(raw);
-          k++;
-        }
-        let def = defLines.join(" ").replace(/\s+/g," ").trim();
-
-        if(term && def){
-          // If a vocab block contains Examples:, it’s almost certainly a word-part entry
-          if(looksLikeWordPart(term, def)){
-            def = stripExamples(def);
-            ety.push({_id:`e${idCounter++}`, term, def});
-          }else{
-            vocab.push({_id:`v${idCounter++}`, term, def});
-          }
-        }
-        i = k + 1;
-      }
-
-      // Final cleanup
-      function cleanPool(arr){
-        return arr
-          .map(x => ({...x, term: String(x.term).replace(/\s+/g," ").trim(), def: String(x.def).replace(/\s+/g," ").trim()}))
-          .filter(x => x.term && x.def)
-          .filter(x => x.term.length <= 70 && x.def.length <= 420)
-          .filter(x => !bannedLineRe.test(x.term) && !bannedLineRe.test(x.def))
-          .filter(x => !ignorableLineRe.test(x.term) && !ignorableLineRe.test(x.def));
-      }
-
-      return { vocab: cleanPool(vocab), ety: cleanPool(ety) };
-    }
-
-    /* ========= Quiz engine ========= */
-    function buildQuiz({count, vocabPool, etyPool, mix=true}){
-      const n = count;
-      const key = makeAnswerKey(n);
-
-      const hasV = vocabPool.length >= 6;
-      const hasE = etyPool.length >= 6;
-
-      let types = [];
-      if(mix && hasV && hasE){
-        const vN = Math.ceil(n/2);
-        const eN = n - vN;
-        types = Array(vN).fill("vocab").concat(Array(eN).fill("ety"));
-        shuffle(types);
-      }else if(hasV){
-        types = Array(n).fill("vocab");
-      }else if(hasE){
-        types = Array(n).fill("ety");
-      }else{
-        return { error: "Not enough usable entries to generate a quiz." };
-      }
-
-      const usedV = new Set();
-      const usedE = new Set();
-      const questions = [];
-
-      for(let qi=0; qi<n; qi++){
-        const type = types[qi];
-        const correctLetter = key[qi];
-        const correctIndex = {A:0,B:1,C:2,D:3}[correctLetter];
-
-        if(type === "vocab"){
-          const picked = pickDistinct(vocabPool, 1, usedV)[0];
-          if(!picked) break;
-          usedV.add(picked._id);
-
-          const distractors = pickDistinct(vocabPool, 3, new Set([picked._id]));
-          const opts = Array(4).fill(null);
-          opts[correctIndex] = picked.def;
-
-          let di = 0;
-          for(let oi=0; oi<4; oi++){
-            if(opts[oi] !== null) continue;
-            opts[oi] = distractors[di++]?.def || vocabPool[Math.floor(Math.random()*vocabPool.length)].def;
-          }
-
-          questions.push({
-            id:`q${qi+1}`,
-            type,
-            prompt:picked.term,
-            rationale:picked.def,
-            correctIndex,
-            options:opts
-          });
-        }else{
-          const picked = pickDistinct(etyPool, 1, usedE)[0];
-          if(!picked) break;
-          usedE.add(picked._id);
-
-          const distractors = pickDistinct(etyPool, 3, new Set([picked._id]));
-          const opts = Array(4).fill(null);
-          opts[correctIndex] = picked.def;
-
-          let di = 0;
-          for(let oi=0; oi<4; oi++){
-            if(opts[oi] !== null) continue;
-            opts[oi] = distractors[di++]?.def || etyPool[Math.floor(Math.random()*etyPool.length)].def;
-          }
-
-          questions.push({
-            id:`q${qi+1}`,
-            type,
-            prompt:picked.term,
-            rationale:picked.def,
-            correctIndex,
-            options:opts
-          });
-        }
-      }
-
-      return { questions };
-    }
-
-    function createQuizController(cfg){
-      const {
-        setupRoot, countInput, startBtn, loadStatusEl, fallbackFileEl,
-        quizRoot, metaEl, stemEl, optionsEl, backBtn, nextBtn, finishBtn, changeBtn,
-        summaryRoot, summaryHintEl, scoreBigEl, pctPillEl, attemptPillEl, timePillEl,
-        retryBtn, newBtn, changeBtn2, reviewEl,
-        getPools, onNewQuizRequested, onChangeNumber
-      } = cfg;
-
-      const LETTERS = ["A","B","C","D"];
-      let pools = { vocab: [], ety: [] };
-      let state = { questions: [], answers: [], startedAt:null, finishedAt:null };
-
-      function validateCount(){
-        const v = clampInt(countInput.value, 1, 100);
-        startBtn.disabled = (v === null);
-        return v;
-      }
-
-      function showSetup(){
-        setupRoot.classList.remove("hidden");
-        quizRoot.classList.add("hidden");
-        summaryRoot.classList.add("hidden");
-      }
-      function showQuiz(){
-        setupRoot.classList.add("hidden");
-        quizRoot.classList.remove("hidden");
-        summaryRoot.classList.add("hidden");
-      }
-      function showSummary(){
-        setupRoot.classList.add("hidden");
-        quizRoot.classList.add("hidden");
-        summaryRoot.classList.remove("hidden");
-      }
-
-      function getCurrentIndex(){
-        const raw = quizRoot.getAttribute("data-qindex");
-        return raw ? Number(raw) : 0;
-      }
-      function setCurrentIndex(i){
-        quizRoot.setAttribute("data-qindex", String(i));
-      }
-
-      function renderQuestion(idx){
-        const q = state.questions[idx];
-        metaEl.textContent = `Question ${idx+1} of ${state.questions.length}`;
-        stemEl.textContent = q.prompt;
-
-        optionsEl.innerHTML = "";
-        const selected = state.answers[idx];
-
-        q.options.forEach((txt, oi) => {
-          const div = document.createElement("div");
-          div.className = "opt" + (selected === oi ? " selected" : "");
-          div.setAttribute("role","button");
-          div.setAttribute("tabindex","0");
-          div.addEventListener("click", () => { state.answers[idx]=oi; renderQuestion(idx); });
-          div.addEventListener("keydown", (e) => {
-            if(e.key === "Enter" || e.key === " "){
-              e.preventDefault();
-              state.answers[idx]=oi; renderQuestion(idx);
-            }
-          });
-
-          const l = document.createElement("div");
-          l.className = "optLetter";
-          l.textContent = LETTERS[oi];
-
-          const t = document.createElement("div");
-          t.className = "optText";
-          t.textContent = txt;
-
-          div.appendChild(l);
-          div.appendChild(t);
-          optionsEl.appendChild(div);
-        });
-
-        backBtn.disabled = (idx === 0);
-        nextBtn.textContent = (idx === state.questions.length - 1) ? "Finish" : "Next";
-      }
-
-      function computeResults(){
-        const total = state.questions.length;
-        let attempted = 0, correct = 0;
-        for(let i=0;i<total;i++){
-          const a = state.answers[i];
-          if(a !== null && a !== undefined) attempted++;
-          if(a === state.questions[i].correctIndex) correct++;
-        }
-        const pct = total ? Math.round((correct/total)*100) : 0;
-        return { total, attempted, correct, pct };
-      }
-
-      function renderSummary(){
-        const res = computeResults();
-        const end = state.finishedAt || new Date();
-        const start = state.startedAt || end;
-        const elapsedSec = Math.max(0, Math.floor((end - start)/1000));
-
-        summaryHintEl.textContent = "Results reflect accuracy and definition-level precision.";
-        scoreBigEl.textContent = `${res.correct}/${res.total}`;
-
-        pctPillEl.textContent = `${res.pct}%`;
-        pctPillEl.className = "pill " + (res.pct >= 70 ? "good" : (res.pct >= 50 ? "" : "bad"));
-
-        attemptPillEl.textContent = `Attempted: ${res.attempted}/${res.total}`;
-        timePillEl.textContent = `Time: ${secondsToMMSS(elapsedSec)}`;
-
-        reviewEl.innerHTML = "";
-        for(let i=0;i<res.total;i++){
-          const q = state.questions[i];
-          const a = state.answers[i];
-          const correct = q.correctIndex;
-
-          const isAttempted = (a !== null && a !== undefined);
-          const isCorrect = (a === correct);
-
-          const badge = isCorrect ? "pill good" : "pill bad";
-          const badgeText = isCorrect ? "Correct" : (isAttempted ? "Incorrect" : "Unanswered");
-
-          const yourChoice = isAttempted ? `${["A","B","C","D"][a]} — ${q.options[a]}` : "—";
-          const correctChoice = `${["A","B","C","D"][correct]} — ${q.options[correct]}`;
-
-          const typeTag = (q.type === "vocab") ? "Vocabulary" : "Etymology";
-
-          const block = document.createElement("div");
-          block.className = "reviewItem";
-          block.innerHTML = `
-            <div class="reviewHead">
-              <div class="reviewQ">Q${i+1}. ${escapeHTML(q.prompt)}</div>
-              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                <span class="tag">${typeTag}</span>
-                <span class="${badge}">${badgeText}</span>
-              </div>
-            </div>
-            <div class="rLine"><strong>Your answer:</strong> ${escapeHTML(yourChoice)}</div>
-            <div class="rLine"><strong>Correct answer:</strong> ${escapeHTML(correctChoice)}</div>
-            <div class="rLine"><strong>Rationale:</strong> ${escapeHTML(q.rationale)}</div>
-          `;
-          reviewEl.appendChild(block);
-        }
-      }
-
-      function startQuiz(){
-        const c = validateCount();
-        if(c === null) return;
-
-        pools = getPools();
-        const built = buildQuiz({ count:c, vocabPool:pools.vocab, etyPool:pools.ety, mix:true });
-        if(built.error){
-          loadStatusEl.textContent = built.error;
-          loadStatusEl.className = "status bad";
-          return;
-        }
-
-        state.questions = built.questions;
-        state.answers = Array(state.questions.length).fill(null);
-        state.startedAt = new Date();
-        state.finishedAt = null;
-
-        setCurrentIndex(0);
-        showQuiz();
-        renderQuestion(0);
-      }
-
-      function finishQuiz(){
-        state.finishedAt = new Date();
-        showSummary();
-        renderSummary();
-      }
-
-      countInput.addEventListener("input", validateCount);
-      countInput.addEventListener("keydown", (e) => {
-        if(e.key === "Enter"){ e.preventDefault(); if(!startBtn.disabled) startQuiz(); }
-      });
-      startBtn.addEventListener("click", startQuiz);
-
-      changeBtn.addEventListener("click", () => { onChangeNumber?.(); showSetup(); });
-      if(changeBtn2) changeBtn2.addEventListener("click", () => { onChangeNumber?.(); showSetup(); });
-
-      backBtn.addEventListener("click", () => {
-        const i = getCurrentIndex();
-        if(i>0){ setCurrentIndex(i-1); renderQuestion(i-1); }
-      });
-      nextBtn.addEventListener("click", () => {
-        const i = getCurrentIndex();
-        if(i === state.questions.length - 1){ finishQuiz(); return; }
-        setCurrentIndex(i+1);
-        renderQuestion(i+1);
-      });
-      finishBtn.addEventListener("click", finishQuiz);
-
-      retryBtn.addEventListener("click", () => {
-        state.answers = Array(state.questions.length).fill(null);
-        state.startedAt = new Date();
-        state.finishedAt = null;
-        setCurrentIndex(0);
-        showQuiz();
-        renderQuestion(0);
-      });
-
-      newBtn.addEventListener("click", () => { onNewQuizRequested?.(); showSetup(); });
-
-      if(fallbackFileEl){
-        fallbackFileEl.addEventListener("change", async () => {
-          const file = fallbackFileEl.files && fallbackFileEl.files[0];
-          if(!file) return;
-          const text = await file.text();
-          const parsed = parseCleanIndex(text);
-          cfg._overridePools(parsed);
-        });
-      }
-
-      return { showSetup, startQuiz };
-    }
-
-    /* ========= Preset load ========= */
-    let presetPools = { vocab: [], ety: [] };
-    const etyLoadStatus = document.getElementById("etyLoadStatus");
-
-    async function loadPreset(){
+  }catch{}
+
+  loadUpdates();
+
+  /* ----------------- PRESET LOADING (Spreadsheet) ----------------- */
+  let vocab = [];
+  let ety = [];
+  let vocabMeta = []; // token sets for definitions
+  let etyMeta = [];   // token sets for meanings
+
+  function setPresetMsg(okText, vocabCount, etyCount){
+    $("presetStatus").textContent = okText;
+    $("presetOk").classList.remove("hidden");
+    $("presetOk").textContent = `Preset loaded. Vocabulary: ${vocabCount}  |  Etymology: ${etyCount}`;
+    $("presetErr").classList.add("hidden");
+  }
+
+  function setPresetErr(msg){
+    $("presetStatus").textContent = "Preset not available.";
+    $("presetErr").classList.remove("hidden");
+    $("presetErr").textContent = msg;
+    $("presetOk").classList.add("hidden");
+  }
+
+  async function fetchFirstAvailable(paths){
+    for (const p of paths){
       try{
-        const res = await fetch("./ib_bio_clean_index.txt", { cache: "no-store" });
-        if(!res.ok) throw new Error("HTTP " + res.status);
-        const text = await res.text();
-        presetPools = parseCleanIndex(text);
+        const r = await fetch(p, { cache:"no-store" });
+        if (!r.ok) continue;
+        const buf = await r.arrayBuffer();
+        return { path: p, buf };
+      }catch{}
+    }
+    return null;
+  }
 
-        const ok = (presetPools.vocab.length >= 10 || presetPools.ety.length >= 10);
-        if(ok){
-          etyLoadStatus.textContent = `Preset loaded. Vocabulary: ${presetPools.vocab.length} | Etymology: ${presetPools.ety.length}`;
-          etyLoadStatus.className = "status ok";
-        }else{
-          etyLoadStatus.textContent = "Preset loaded, but not enough usable entries. Upload the file below.";
-          etyLoadStatus.className = "status bad";
+  function parseCSV(text){
+    // Robust CSV parsing (quotes, commas, newlines)
+    const rows = [];
+    let i=0, field="", row=[], inQ=false;
+    while (i < text.length){
+      const c = text[i];
+      if (inQ){
+        if (c === '"'){
+          if (text[i+1] === '"'){ field += '"'; i += 2; continue; }
+          inQ = false; i++; continue;
         }
-      }catch(_){
-        etyLoadStatus.textContent = "Preset failed to load. Upload ib_bio_clean_index.txt below.";
-        etyLoadStatus.className = "status bad";
+        field += c; i++; continue;
+      }else{
+        if (c === '"'){ inQ = true; i++; continue; }
+        if (c === ','){
+          row.push(field);
+          field = "";
+          i++;
+          continue;
+        }
+        if (c === '\n'){
+          row.push(field);
+          field = "";
+          rows.push(row);
+          row = [];
+          i++;
+          continue;
+        }
+        if (c === '\r'){ i++; continue; }
+        field += c; i++; continue;
       }
     }
-    loadPreset();
+    row.push(field);
+    rows.push(row);
+    // Trim trailing empties
+    return rows.map(r => r.map(x => (x ?? "").trim()));
+  }
 
-    /* ========= ETY+VOCAB Controller ========= */
-    const etyController = createQuizController({
-      setupRoot: document.getElementById("etySetup"),
-      countInput: document.getElementById("etyCount"),
-      startBtn: document.getElementById("etyStartBtn"),
-      loadStatusEl: document.getElementById("etyLoadStatus"),
-      fallbackFileEl: document.getElementById("etyFallbackFile"),
-
-      quizRoot: document.getElementById("etyQuiz"),
-      metaEl: document.getElementById("etyMeta"),
-      stemEl: document.getElementById("etyStem"),
-      optionsEl: document.getElementById("etyOptions"),
-      backBtn: document.getElementById("etyBackBtn"),
-      nextBtn: document.getElementById("etyNextBtn"),
-      finishBtn: document.getElementById("etyFinishBtn"),
-      changeBtn: document.getElementById("etyChangeNumberBtn"),
-
-      summaryRoot: document.getElementById("etySummary"),
-      summaryHintEl: document.getElementById("etySummaryHint"),
-      scoreBigEl: document.getElementById("etyScoreBig"),
-      pctPillEl: document.getElementById("etyPctPill"),
-      attemptPillEl: document.getElementById("etyAttemptPill"),
-      timePillEl: document.getElementById("etyTimePill"),
-      retryBtn: document.getElementById("etyRetryBtn"),
-      newBtn: document.getElementById("etyNewBtn"),
-      changeBtn2: document.getElementById("etyChangeNumberBtn2"),
-      reviewEl: document.getElementById("etyReview"),
-
-      getPools: () => presetPools,
-      onNewQuizRequested: () => {},
-      onChangeNumber: () => {},
-
-      _overridePools: (p) => {
-        presetPools = p;
-        const ok = (presetPools.vocab.length >= 10 || presetPools.ety.length >= 10);
-        etyLoadStatus.textContent = ok
-          ? `Preset loaded from upload. Vocabulary: ${presetPools.vocab.length} | Etymology: ${presetPools.ety.length}`
-          : "Upload parsed, but not enough usable entries.";
-        etyLoadStatus.className = "status " + (ok ? "ok" : "bad");
+  function mapColumns(headers){
+    const h = headers.map(x => normSpace(x).toLowerCase());
+    const idx = (names) => {
+      for (const n of names){
+        const j = h.indexOf(n);
+        if (j !== -1) return j;
       }
-    });
+      return -1;
+    };
+    return {
+      type: idx(["type","category"]),
+      term: idx(["term","word","vocabulary","vocab","key"]),
+      def:  idx(["definition","def","meaning","gloss"]),
+      part: idx(["part","word part","wordpart","prefix","suffix","root"]),
+      pm:   idx(["part meaning","part_meaning","word part meaning","meaning","gloss","definition"])
+    };
+  }
 
-    /* ========= CUSTOM CONTENT ========= */
-    let customPools = { vocab: [], ety: [] };
-    const custFile = document.getElementById("custFile");
-    const custCount = document.getElementById("custCount");
-    const custStartBtn = document.getElementById("custStartBtn");
-    const custStatus = document.getElementById("custStatus");
+  function ingestRows(rows){
+    // rows: array of arrays; row0 header
+    if (!rows || rows.length < 2) return;
+    const headers = rows[0];
+    const m = mapColumns(headers);
 
-    function validateCust(){
-      const n = clampInt(custCount.value, 1, 100);
-      const fileOk = !!(custFile.files && custFile.files[0]);
-      custStartBtn.disabled = !(n !== null && fileOk && (customPools.vocab.length >= 6 || customPools.ety.length >= 6));
+    for (let r=1; r<rows.length; r++){
+      const row = rows[r];
+      const get = (j) => (j >= 0 ? (row[j] ?? "") : "");
+      const type = normSpace(get(m.type)).toLowerCase();
+
+      // Case 1: explicit Type + Term + Definition
+      if (m.type >= 0 && m.term >= 0 && m.def >= 0){
+        const term = normSpace(get(m.term));
+        const def = normSpace(get(m.def));
+        if (!term || !def) continue;
+        if (looksLikeHeaderTerm(term)) continue;
+
+        if (type.startsWith("ety") || type.includes("word part")){
+          const part = term;
+          const meaning = stripExamples(def);
+          if (part && meaning) ety.push({ part, meaning });
+        } else {
+          vocab.push({ term, def });
+        }
+        continue;
+      }
+
+      // Case 2: separate columns for etymology parts
+      if (m.part >= 0 && m.pm >= 0){
+        const part = normSpace(get(m.part));
+        const meaning = stripExamples(normSpace(get(m.pm)));
+        if (part && meaning && !looksLikeHeaderTerm(part)) ety.push({ part, meaning });
+      }
+
+      // Case 3: vocabulary-like columns
+      if (m.term >= 0 && m.def >= 0){
+        const term = normSpace(get(m.term));
+        const def = normSpace(get(m.def));
+        if (!term || !def) continue;
+        if (looksLikeHeaderTerm(term)) continue;
+        vocab.push({ term, def });
+      }
+    }
+  }
+
+  function ingestXLSX(arrayBuffer){
+    const wb = XLSX.read(arrayBuffer, { type: "array" });
+    for (const name of wb.SheetNames){
+      const ws = wb.Sheets[name];
+      const rows = XLSX.utils.sheet_to_json(ws, { header: 1, defval: "" });
+      if (!rows || rows.length < 2) continue;
+
+      // Try to detect if sheet is a simple 2-col table without headers:
+      // If first row looks like data (not headers), we’ll synthesize headers.
+      const first = rows[0].map(x => normSpace(String(x)));
+      const headerish = first.some(x => /definition|meaning|term|word|prefix|suffix|root|type/i.test(x));
+      if (!headerish && rows[0].length >= 2){
+        const synth = ["Term","Definition"];
+        const withHeader = [synth, ...rows];
+        ingestRows(withHeader);
+      } else {
+        ingestRows(rows);
+      }
+    }
+  }
+
+  function finalizePools(){
+    // De-duplicate + clean
+    const vMap = new Map();
+    for (const it of vocab){
+      const t = normSpace(it.term);
+      const d = normSpace(it.def);
+      if (!t || !d) continue;
+      if (looksLikeHeaderTerm(t)) continue;
+      vMap.set(t.toLowerCase(), { term: t, def: d });
+    }
+    vocab = Array.from(vMap.values());
+
+    const eMap = new Map();
+    for (const it of ety){
+      const p = normSpace(it.part);
+      let m = stripExamples(normSpace(it.meaning));
+      if (!p || !m) continue;
+      if (looksLikeHeaderTerm(p)) continue;
+      const key = (p + "||" + m).toLowerCase();
+      if (!eMap.has(key)) eMap.set(key, { part: p, meaning: m });
+    }
+    ety = Array.from(eMap.values());
+
+    vocabMeta = vocab.map(x => new Set(tokenize(x.def)));
+    etyMeta   = ety.map(x => new Set(tokenize(x.meaning)));
+  }
+
+  async function loadPreset(){
+    $("presetStatus").textContent = "Loading preset…";
+    $("presetOk").classList.add("hidden");
+    $("presetErr").classList.add("hidden");
+
+    vocab = [];
+    ety = [];
+
+    const got = await fetchFirstAvailable(PRESET_CANDIDATES);
+    if (!got){
+      setPresetErr("Expected Vocab_Ee.csv or Vocab_Ee.xlsx in the same folder. (Also: opening via a proper server is required for auto-loading.)");
+      return;
     }
 
-    custCount.addEventListener("input", validateCust);
-    custCount.addEventListener("keydown", (e) => {
-      if(e.key === "Enter"){ e.preventDefault(); if(!custStartBtn.disabled) custController.startQuiz(); }
-    });
+    try{
+      const path = got.path.toLowerCase();
+      if (path.endsWith(".csv")){
+        const text = new TextDecoder("utf-8").decode(got.buf);
+        const rows = parseCSV(text);
+        ingestRows(rows);
+      }else{
+        if (typeof XLSX === "undefined") throw new Error("XLSX library not loaded.");
+        ingestXLSX(got.buf);
+      }
 
-    custFile.addEventListener("change", async () => {
-      const f = custFile.files && custFile.files[0];
-      if(!f){
-        custStatus.textContent = "Waiting for a file…";
-        custStatus.className = "status";
-        customPools = { vocab: [], ety: [] };
-        validateCust();
+      finalizePools();
+
+      if (!vocab.length && !ety.length){
+        setPresetErr("Preset loaded but no usable rows were detected. Check your column headers (Term/Definition, or Type/Term/Definition, or Part/Meaning).");
         return;
       }
-      const text = await f.text();
-      customPools = parseCleanIndex(text);
 
-      if(customPools.vocab.length >= 6 || customPools.ety.length >= 6){
-        custStatus.textContent = `Loaded. Vocabulary: ${customPools.vocab.length} | Etymology: ${customPools.ety.length}`;
-        custStatus.className = "status ok";
-      }else{
-        custStatus.textContent = "Loaded, but not enough usable entries to generate MCQs.";
-        custStatus.className = "status bad";
+      setPresetMsg("Preset ready.", vocab.length, ety.length);
+    }catch(err){
+      setPresetErr("Failed to parse preset: " + (err?.message ?? String(err)));
+    }
+  }
+
+  loadPreset();
+
+  /* ----------------- DISTRACTORS (same-type only, similarity-based) ----------------- */
+  function pickDistractors(pool, meta, correctIdx, needed){
+    const target = meta[correctIdx] || new Set();
+    const scored = [];
+    for (let i=0; i<pool.length; i++){
+      if (i === correctIdx) continue;
+      const s = jaccard(target, meta[i] || new Set());
+      if (s > 0) scored.push({ i, s });
+    }
+    scored.sort((a,b) => b.s - a.s);
+
+    // Candidate window: top 18 similar, then lightly randomize selection.
+    const window = scored.slice(0, 18).map(x => x.i);
+
+    const picks = new Set();
+    while (picks.size < needed && window.length){
+      const j = Math.floor(Math.random() * Math.min(window.length, 10));
+      picks.add(window.splice(j, 1)[0]);
+    }
+    // If still short, fill randomly from same pool
+    while (picks.size < needed){
+      const r = Math.floor(Math.random() * pool.length);
+      if (r !== correctIdx) picks.add(r);
+      if (picks.size > pool.length - 1) break;
+    }
+    return Array.from(picks).slice(0, needed);
+  }
+
+  /* ----------------- PRESET QUIZ ENGINE ----------------- */
+  let quiz = null;
+
+  function resetPresetUI(){
+    $("quizArea").classList.add("hidden");
+    $("summaryArea").classList.add("hidden");
+    $("quizArea").innerHTML = "";
+    $("summaryArea").innerHTML = "";
+    $("nqErr").classList.add("hidden");
+    $("nqErr").textContent = "";
+  }
+
+  function buildPresetQuiz(n, mode){
+    const haveV = vocab.length > 0;
+    const haveE = ety.length > 0;
+
+    if (mode === "vocab" && !haveV) return { error: "Vocabulary set is empty." };
+    if (mode === "ety" && !haveE) return { error: "Etymology set is empty." };
+    if (mode === "mixed" && (!haveV || !haveE)) {
+      // fallback: if one pool missing, silently shift to the other
+      mode = haveV ? "vocab" : "ety";
+    }
+
+    // Create key distribution
+    const keyLetters = buildKeyLetters(n);
+
+    // Build question blueprint (indices)
+    let picks = [];
+    if (mode === "vocab"){
+      const used = new Set();
+      while (picks.length < n && used.size < vocab.length){
+        const i = Math.floor(Math.random() * vocab.length);
+        if (used.has(i)) continue;
+        used.add(i);
+        picks.push({ type:"vocab", idx:i });
       }
-      validateCust();
+      // If not enough unique, allow repeats (rare)
+      while (picks.length < n) picks.push({ type:"vocab", idx: Math.floor(Math.random()*vocab.length) });
+    } else if (mode === "ety"){
+      const used = new Set();
+      while (picks.length < n && used.size < ety.length){
+        const i = Math.floor(Math.random() * ety.length);
+        if (used.has(i)) continue;
+        used.add(i);
+        picks.push({ type:"ety", idx:i });
+      }
+      while (picks.length < n) picks.push({ type:"ety", idx: Math.floor(Math.random()*ety.length) });
+    } else {
+      // mixed: roughly balanced
+      const wantE = Math.min(ety.length, Math.floor(n/2));
+      const wantV = n - wantE;
+      const usedV = new Set();
+      const usedE = new Set();
+
+      while (picks.filter(p=>p.type==="vocab").length < wantV && usedV.size < vocab.length){
+        const i = Math.floor(Math.random() * vocab.length);
+        if (usedV.has(i)) continue;
+        usedV.add(i);
+        picks.push({ type:"vocab", idx:i });
+      }
+      while (picks.filter(p=>p.type==="ety").length < wantE && usedE.size < ety.length){
+        const i = Math.floor(Math.random() * ety.length);
+        if (usedE.has(i)) continue;
+        usedE.add(i);
+        picks.push({ type:"ety", idx:i });
+      }
+      while (picks.length < n){
+        if (Math.random() < 0.5 && vocab.length) picks.push({ type:"vocab", idx: Math.floor(Math.random()*vocab.length) });
+        else if (ety.length) picks.push({ type:"ety", idx: Math.floor(Math.random()*ety.length) });
+        else picks.push({ type:"vocab", idx: Math.floor(Math.random()*vocab.length) });
+      }
+      // Shuffle picks
+      for (let i=picks.length-1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [picks[i], picks[j]] = [picks[j], picks[i]];
+      }
+    }
+
+    // Materialize questions
+    const letters = ["A","B","C","D"];
+    const qs = picks.map((p, qi) => {
+      const L = keyLetters[qi] || "A";
+      const correctLetter = L;
+      let stem = "";
+      let tag = "";
+      let correctText = "";
+      let optionTexts = { A:"", B:"", C:"", D:"" };
+      let correctExplain = "";
+
+      if (p.type === "vocab"){
+        const item = vocab[p.idx];
+        tag = "Vocabulary";
+        stem = item.term;
+        correctText = item.def;
+
+        // distractors: definitions only (vocab pool)
+        const distractIdx = pickDistractors(vocab, vocabMeta, p.idx, 3);
+        const distract = distractIdx.map(i => vocab[i].def);
+
+        // place correct at correctLetter
+        const poolTexts = [];
+        for (const d of distract) poolTexts.push(d);
+        // Ensure uniqueness
+        const uniq = [];
+        const seen = new Set();
+        for (const t of poolTexts){
+          const k = normSpace(t).toLowerCase();
+          if (!seen.has(k) && k !== normSpace(correctText).toLowerCase()){
+            seen.add(k); uniq.push(t);
+          }
+        }
+        while (uniq.length < 3){
+          const r = Math.floor(Math.random()*vocab.length);
+          const t = vocab[r].def;
+          const k = normSpace(t).toLowerCase();
+          if (!seen.has(k) && k !== normSpace(correctText).toLowerCase()){
+            seen.add(k); uniq.push(t);
+          }
+          if (seen.size > vocab.length) break;
+        }
+
+        const others = uniq.slice(0,3);
+
+        const order = letters.slice();
+        // Fill
+        optionTexts[correctLetter] = correctText;
+        let oi = 0;
+        for (const l of order){
+          if (l === correctLetter) continue;
+          optionTexts[l] = others[oi++] ?? "—";
+        }
+
+        correctExplain = buildRationaleFromText(correctText);
+      } else {
+        const item = ety[p.idx];
+        tag = "Etymology";
+        stem = item.part;
+        correctText = stripExamples(item.meaning);
+
+        const distractIdx = pickDistractors(ety, etyMeta, p.idx, 3);
+        const distract = distractIdx.map(i => stripExamples(ety[i].meaning));
+
+        const uniq = [];
+        const seen = new Set();
+        for (const t of distract){
+          const k = normSpace(t).toLowerCase();
+          if (!seen.has(k) && k !== normSpace(correctText).toLowerCase()){
+            seen.add(k); uniq.push(t);
+          }
+        }
+        while (uniq.length < 3){
+          const r = Math.floor(Math.random()*ety.length);
+          const t = stripExamples(ety[r].meaning);
+          const k = normSpace(t).toLowerCase();
+          if (!seen.has(k) && k !== normSpace(correctText).toLowerCase()){
+            seen.add(k); uniq.push(t);
+          }
+          if (seen.size > ety.length) break;
+        }
+
+        const order = letters.slice();
+        optionTexts[correctLetter] = correctText;
+        let oi = 0;
+        for (const l of order){
+          if (l === correctLetter) continue;
+          optionTexts[l] = uniq[oi++] ?? "—";
+        }
+
+        correctExplain = buildRationaleFromText(correctText);
+      }
+
+      // Final cleanup: strip stray “Examples:” or leading bullets
+      for (const l of letters){
+        optionTexts[l] = stripExamples(normSpace(optionTexts[l]));
+      }
+
+      return {
+        qnum: qi + 1,
+        type: p.type,
+        tag,
+        stem,
+        prompt: (p.type === "vocab")
+          ? "Select the best definition."
+          : "Select the best meaning.",
+        options: optionTexts,
+        correct: correctLetter,
+        explain: correctExplain,
+        user: null
+      };
     });
 
-    const custController = createQuizController({
-      setupRoot: document.getElementById("custSetup"),
-      countInput: document.getElementById("custCount"),
-      startBtn: document.getElementById("custStartBtn"),
-      loadStatusEl: document.getElementById("custStatus"),
-      fallbackFileEl: null,
+    return { mode, n, qs, idx: 0, startedAt: Date.now(), finishedAt: null };
+  }
 
-      quizRoot: document.getElementById("custQuiz"),
-      metaEl: document.getElementById("custMeta"),
-      stemEl: document.getElementById("custStem"),
-      optionsEl: document.getElementById("custOptions"),
-      backBtn: document.getElementById("custBackBtn"),
-      nextBtn: document.getElementById("custNextBtn"),
-      finishBtn: document.getElementById("custFinishBtn"),
-      changeBtn: document.getElementById("custChangeBtn"),
+  function buildRationaleFromText(correctText){
+    const toks = tokenize(correctText);
+    const freq = new Map();
+    for (const t of toks) freq.set(t, (freq.get(t)||0)+1);
+    const top = Array.from(freq.entries())
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0, 4)
+      .map(x=>x[0]);
+    if (!top.length) return "Key cues: focus on the core claim of the definition.";
+    return "Key cues: " + top.map(x => `"${x}"`).join(", ") + ".";
+  }
 
-      summaryRoot: document.getElementById("custSummary"),
-      summaryHintEl: document.getElementById("custSummaryHint"),
-      scoreBigEl: document.getElementById("custScoreBig"),
-      pctPillEl: document.getElementById("custPctPill"),
-      attemptPillEl: document.getElementById("custAttemptPill"),
-      timePillEl: document.getElementById("custTimePill"),
-      retryBtn: document.getElementById("custRetryBtn"),
-      newBtn: document.getElementById("custNewBtn"),
-      changeBtn2: null,
-      reviewEl: document.getElementById("custReview"),
+  function renderPresetQuestion(){
+    const q = quiz.qs[quiz.idx];
 
-      getPools: () => customPools,
-      onNewQuizRequested: () => {},
-      onChangeNumber: () => {},
-      _overridePools: () => {}
+    const chosen = q.user;
+
+    const quizHtml = `
+      <div class="quizTop">
+        <div>
+          <div class="qmeta">Question ${q.qnum} of ${quiz.n}</div>
+          <h2 class="qstem">${escapeHtml(q.stem)}</h2>
+          <div class="qtag">${escapeHtml(q.tag)} — ${escapeHtml(q.prompt)}</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
+          <button id="btnChange" class="btn btnGhost">Change number</button>
+          <div class="pill" title="Progress">
+            <span>${quiz.qs.filter(x=>x.user).length} answered</span>
+            <span style="opacity:.5;">•</span>
+            <span>${quiz.n - quiz.qs.filter(x=>x.user).length} remaining</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="optList" role="group" aria-label="Options">
+        ${["A","B","C","D"].map(L => `
+          <div class="opt ${chosen===L ? "sel":""}" data-pick="${L}" role="button" tabindex="0" aria-label="Option ${L}">
+            <div class="letter">${L}</div>
+            <div class="txt">${escapeHtml(q.options[L])}</div>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="quizNav">
+        <div class="row" style="gap:10px;">
+          <button id="btnBack" class="btn btnGhost" ${quiz.idx===0 ? "disabled":""}>Back</button>
+          <button id="btnFinish" class="btn btnGhost">Finish now</button>
+        </div>
+        <div class="row" style="gap:10px;">
+          <button id="btnNext" class="btn btnPrimary">${quiz.idx === quiz.n-1 ? "Finish" : "Next"}</button>
+        </div>
+      </div>
+    `;
+
+    $("quizArea").innerHTML = quizHtml;
+    $("quizArea").classList.remove("hidden");
+    $("summaryArea").classList.add("hidden");
+
+    // Option picking
+    const opts = Array.from($("quizArea").querySelectorAll(".opt"));
+    function pick(L){
+      q.user = L;
+      renderPresetQuestion();
+    }
+    opts.forEach(el => {
+      el.addEventListener("click", () => pick(el.dataset.pick));
+      el.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); pick(el.dataset.pick); }
+      });
     });
 
-    document.getElementById("custBackSetupBtn").addEventListener("click", () => {
-      document.getElementById("custSetup").classList.remove("hidden");
-      document.getElementById("custQuiz").classList.add("hidden");
-      document.getElementById("custSummary").classList.add("hidden");
+    $("btnBack").addEventListener("click", () => {
+      quiz.idx = Math.max(0, quiz.idx - 1);
+      renderPresetQuestion();
     });
 
-    validateCust();
-  </script>
+    $("btnNext").addEventListener("click", () => {
+      if (quiz.idx < quiz.n - 1){
+        quiz.idx++;
+        renderPresetQuestion();
+      } else {
+        finishPresetQuiz();
+      }
+    });
+
+    $("btnFinish").addEventListener("click", () => finishPresetQuiz(true));
+
+    $("btnChange").addEventListener("click", () => {
+      quiz = null;
+      resetPresetUI();
+    });
+  }
+
+  function finishPresetQuiz(early=false){
+    quiz.finishedAt = Date.now();
+    renderPresetSummary(early);
+  }
+
+  function renderPresetSummary(early){
+    const qs = quiz.qs;
+
+    const attempted = qs.filter(q => q.user !== null).length;
+    const correct = qs.filter(q => q.user !== null && q.user === q.correct).length;
+    const wrong = qs.filter(q => q.user !== null && q.user !== q.correct).length;
+    const skipped = qs.length - attempted;
+
+    const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+
+    const timeSec = Math.max(1, Math.round((quiz.finishedAt - quiz.startedAt)/1000));
+    const mm = Math.floor(timeSec/60);
+    const ss = timeSec % 60;
+
+    const sumHtml = `
+      <div class="row" style="align-items:flex-end;">
+        <div style="min-width:0;">
+          <div class="label">Summary</div>
+          <div class="muted">Results are shown with rationale and a full review.</div>
+        </div>
+        <div class="spacer"></div>
+        <div class="pill">${beijingNowISO()}</div>
+      </div>
+
+      <div class="scoreline">
+        <div class="badge"><span class="dot ok"></span><b>${correct}</b> correct</div>
+        <div class="badge"><span class="dot bad"></span><b>${wrong}</b> incorrect</div>
+        <div class="badge"><span class="dot warn"></span><b>${skipped}</b> unanswered</div>
+        <div class="badge"><span class="dot"></span><b>${accuracy}%</b> accuracy (attempted)</div>
+        <div class="badge"><span class="dot"></span><b>${attempted}/${qs.length}</b> attempted</div>
+        <div class="badge"><span class="dot"></span><b>${mm}:${String(ss).padStart(2,"0")}</b> time</div>
+      </div>
+
+      <div class="row" style="margin-top:14px; gap:10px;">
+        <button id="retakeSame" class="btn btnPrimary">Retake same quiz</button>
+        <button id="newQuiz" class="btn btnGhost">Generate new quiz</button>
+        <button id="changeNum" class="btn btnGhost">Change number</button>
+        ${skipped > 0 && early ? `<button id="resume" class="btn btnGhost">Resume</button>` : ""}
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="label">Review</div>
+      <div class="review">
+        ${qs.map((q, i) => {
+          const isCorrect = q.user !== null && q.user === q.correct;
+          const isWrong = q.user !== null && q.user !== q.correct;
+          const isSkip = q.user === null;
+
+          const markDot = isCorrect ? "ok" : isWrong ? "bad" : "warn";
+          const markTxt = isCorrect ? "Correct" : isWrong ? "Incorrect" : "Unanswered";
+
+          const your = q.user ? `${q.user}. ${q.options[q.user]}` : "—";
+          const corr = `${q.correct}. ${q.options[q.correct]}`;
+
+          const why = q.explain || "Key cues: focus on the core claim.";
+          const contrast = isWrong ? buildContrast(q.options[q.correct], q.options[q.user]) : "";
+
+          return `
+            <div class="revCard">
+              <div class="revHead">
+                <div>
+                  <p class="revTitle">Q${i+1}. ${escapeHtml(q.stem)}</p>
+                  <div class="muted" style="font-size:14.5px;">${escapeHtml(q.tag)} — ${escapeHtml(q.prompt)}</div>
+                </div>
+                <div class="revMark"><span class="dot ${markDot}"></span>${markTxt}</div>
+              </div>
+              <div class="revBody">
+                <div><span class="k">Your answer:</span> ${escapeHtml(your)}</div>
+                <div style="margin-top:6px;"><span class="k">Correct answer:</span> ${escapeHtml(corr)}</div>
+                <div class="small" style="margin-top:8px;">${escapeHtml(why)}</div>
+                ${contrast ? `<div class="small">${escapeHtml(contrast)}</div>` : ""}
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    `;
+
+    $("summaryArea").innerHTML = sumHtml;
+    $("summaryArea").classList.remove("hidden");
+    $("quizArea").classList.add("hidden");
+
+    $("retakeSame").addEventListener("click", () => {
+      // Keep exact questions/options; reset answers only
+      quiz.qs.forEach(q => q.user = null);
+      quiz.idx = 0;
+      quiz.startedAt = Date.now();
+      quiz.finishedAt = null;
+      renderPresetQuestion();
+    });
+
+    $("newQuiz").addEventListener("click", () => {
+      const n = quiz.n;
+      const mode = $("mode").value;
+      quiz = buildPresetQuiz(n, mode);
+      if (quiz.error){
+        $("nqErr").classList.remove("hidden");
+        $("nqErr").textContent = quiz.error;
+        resetPresetUI();
+        return;
+      }
+      renderPresetQuestion();
+    });
+
+    $("changeNum").addEventListener("click", () => {
+      quiz = null;
+      resetPresetUI();
+    });
+
+    const resumeBtn = $("resume");
+    if (resumeBtn){
+      resumeBtn.addEventListener("click", () => {
+        // go to first unanswered question
+        const idx = quiz.qs.findIndex(q => q.user === null);
+        quiz.idx = idx >= 0 ? idx : 0;
+        renderPresetQuestion();
+      });
+    }
+  }
+
+  function buildContrast(correctText, chosenText){
+    if (!chosenText) return "";
+    const c = new Set(tokenize(correctText));
+    const u = new Set(tokenize(chosenText));
+    const onlyC = [];
+    for (const t of c) if (!u.has(t)) onlyC.push(t);
+    const onlyU = [];
+    for (const t of u) if (!c.has(t)) onlyU.push(t);
+
+    const cueC = onlyC.slice(0,3);
+    const cueU = onlyU.slice(0,3);
+
+    if (!cueC.length && !cueU.length) return "";
+    let s = "Rationale: ";
+    if (cueC.length) s += `the correct option is anchored by ${cueC.map(x=>`"${x}"`).join(", ")}. `;
+    if (cueU.length) s += `your choice leans on ${cueU.map(x=>`"${x}"`).join(", ")} instead.`;
+    return s.trim();
+  }
+
+  $("startPreset").addEventListener("click", () => {
+    $("nqErr").classList.add("hidden");
+    $("nqErr").textContent = "";
+
+    // Ensure preset is loaded
+    if (!vocab.length && !ety.length){
+      $("nqErr").classList.remove("hidden");
+      $("nqErr").textContent = "Preset not loaded. Fix the preset file and reload.";
+      return;
+    }
+
+    const n = clampInt(Number($("nq").value), 1, 100);
+    if (!n){
+      $("nqErr").classList.remove("hidden");
+      $("nqErr").textContent = "Enter an integer between 1 and 100.";
+      return;
+    }
+
+    resetPresetUI();
+
+    const mode = $("mode").value;
+    quiz = buildPresetQuiz(n, mode);
+    if (quiz.error){
+      $("nqErr").classList.remove("hidden");
+      $("nqErr").textContent = quiz.error;
+      quiz = null;
+      return;
+    }
+    renderPresetQuestion();
+  });
+
+  /* ----------------- CUSTOM CONTENT TAB (JSON-Driven Quiz) ----------------- */
+  let customText = "";
+  let customQuiz = null;
+
+  function showCustomErr(msg){
+    $("customErr").classList.remove("hidden");
+    $("customErr").textContent = msg;
+    $("customOk").classList.add("hidden");
+  }
+  function showCustomOk(msg){
+    $("customOk").classList.remove("hidden");
+    $("customOk").textContent = msg;
+    $("customErr").classList.add("hidden");
+  }
+
+  $("customFile").addEventListener("change", async () => {
+    const f = $("customFile").files?.[0];
+    if (!f){ customText = ""; return; }
+    try{
+      customText = await f.text();
+      showCustomOk("File loaded.");
+    }catch{
+      customText = "";
+      showCustomErr("Could not read file.");
+    }
+  });
+
+  $("clearCustom").addEventListener("click", () => {
+    $("customFile").value = "";
+    $("customN").value = "";
+    $("jsonIn").value = "";
+    customText = "";
+    $("customQuizArea").classList.add("hidden");
+    $("customSummaryArea").classList.add("hidden");
+    $("customErr").classList.add("hidden");
+    $("customOk").classList.add("hidden");
+  });
+
+  $("makePrompt").addEventListener("click", () => {
+    const n = clampInt(Number($("customN").value), 1, 100);
+    if (!n) return showCustomErr("Enter an integer between 1 and 100.");
+    if (!customText || !customText.trim()) return showCustomErr("Upload a text file first.");
+
+    const prompt =
+`Generate ${n} MCQs strictly from the following content. Return ONLY JSON.
+
+JSON schema:
+{
+  "title": "AutoTitle",
+  "questions": [
+    {
+      "stem": "Question text",
+      "options": { "A":"...", "B":"...", "C":"...", "D":"..." },
+      "correct": "A",
+      "rationale": "Brief rationale"
+    }
+  ]
+}
+
+CONTENT START
+${customText.trim()}
+CONTENT END`;
+
+    $("jsonIn").value = "";
+    navigator.clipboard?.writeText(prompt).catch(()=>{});
+    showCustomOk("Prompt copied to clipboard (if permitted). Paste it into your MCQ JSON Machine, then paste the returned JSON here.");
+  });
+
+  $("loadJsonQuiz").addEventListener("click", () => {
+    let obj;
+    try{
+      obj = JSON.parse($("jsonIn").value.trim());
+    }catch{
+      return showCustomErr("Invalid JSON.");
+    }
+    if (!obj || !Array.isArray(obj.questions) || !obj.questions.length){
+      return showCustomErr("JSON must include a non-empty questions array.");
+    }
+
+    const qs = obj.questions.map((q, i) => {
+      const stem = normSpace(q.stem ?? "");
+      const opts = q.options ?? {};
+      const correct = String(q.correct ?? "").toUpperCase();
+      if (!stem || !opts.A || !opts.B || !opts.C || !opts.D || !"ABCD".includes(correct)){
+        throw new Error("Question " + (i+1) + " is malformed.");
+      }
+      return {
+        qnum: i+1,
+        stem,
+        options: {
+          A: normSpace(opts.A),
+          B: normSpace(opts.B),
+          C: normSpace(opts.C),
+          D: normSpace(opts.D)
+        },
+        correct,
+        explain: normSpace(q.rationale ?? ""),
+        user: null
+      };
+    });
+
+    customQuiz = { title: normSpace(obj.title ?? "Custom Quiz"), qs, idx:0, startedAt: Date.now(), finishedAt:null };
+    $("customQuizArea").classList.remove("hidden");
+    $("customSummaryArea").classList.add("hidden");
+    renderCustomQuestion();
+    showCustomOk("Quiz loaded.");
+  });
+
+  function renderCustomQuestion(){
+    const q = customQuiz.qs[customQuiz.idx];
+    const chosen = q.user;
+
+    $("customQuizArea").innerHTML = `
+      <div class="panel" style="border-radius: var(--radius);">
+        <div class="panelin">
+          <div class="quizTop">
+            <div>
+              <div class="qmeta">${escapeHtml(customQuiz.title)} — Question ${q.qnum} of ${customQuiz.qs.length}</div>
+              <h2 class="qstem" style="font-size:28px;">${escapeHtml(q.stem)}</h2>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
+              <button id="cFinish" class="btn btnGhost">Finish now</button>
+            </div>
+          </div>
+
+          <div class="optList">
+            ${["A","B","C","D"].map(L => `
+              <div class="opt ${chosen===L ? "sel":""}" data-pick="${L}" role="button" tabindex="0">
+                <div class="letter">${L}</div>
+                <div class="txt">${escapeHtml(q.options[L])}</div>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="quizNav">
+            <button id="cBack" class="btn btnGhost" ${customQuiz.idx===0 ? "disabled":""}>Back</button>
+            <button id="cNext" class="btn btnPrimary">${customQuiz.idx===customQuiz.qs.length-1 ? "Finish" : "Next"}</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const opts = Array.from($("customQuizArea").querySelectorAll(".opt"));
+    opts.forEach(el => {
+      const pick = el.dataset.pick;
+      el.addEventListener("click", () => { q.user = pick; renderCustomQuestion(); });
+      el.addEventListener("keydown", (ev) => {
+        if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); q.user = pick; renderCustomQuestion(); }
+      });
+    });
+
+    $("cBack").addEventListener("click", () => {
+      customQuiz.idx = Math.max(0, customQuiz.idx - 1);
+      renderCustomQuestion();
+    });
+
+    $("cNext").addEventListener("click", () => {
+      if (customQuiz.idx < customQuiz.qs.length - 1){
+        customQuiz.idx++;
+        renderCustomQuestion();
+      } else {
+        finishCustomQuiz(true);
+      }
+    });
+
+    $("cFinish").addEventListener("click", () => finishCustomQuiz(true));
+  }
+
+  function finishCustomQuiz(early){
+    customQuiz.finishedAt = Date.now();
+    renderCustomSummary(early);
+  }
+
+  function renderCustomSummary(early){
+    const qs = customQuiz.qs;
+    const attempted = qs.filter(q => q.user !== null).length;
+    const correct = qs.filter(q => q.user !== null && q.user === q.correct).length;
+    const wrong = qs.filter(q => q.user !== null && q.user !== q.correct).length;
+    const skipped = qs.length - attempted;
+    const accuracy = attempted ? Math.round((correct/attempted)*100) : 0;
+
+    const sum = `
+      <div class="panel" style="border-radius: var(--radius);">
+        <div class="panelin">
+          <div class="row" style="align-items:flex-end;">
+            <div style="min-width:0;">
+              <div class="label">Summary</div>
+              <div class="muted">${escapeHtml(customQuiz.title)}</div>
+            </div>
+            <div class="spacer"></div>
+            <button id="cRetake" class="btn btnPrimary">Retake</button>
+          </div>
+
+          <div class="scoreline">
+            <div class="badge"><span class="dot ok"></span><b>${correct}</b> correct</div>
+            <div class="badge"><span class="dot bad"></span><b>${wrong}</b> incorrect</div>
+            <div class="badge"><span class="dot warn"></span><b>${skipped}</b> unanswered</div>
+            <div class="badge"><span class="dot"></span><b>${accuracy}%</b> accuracy (attempted)</div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="label">Review</div>
+          <div class="review">
+            ${qs.map((q, i) => {
+              const isCorrect = q.user !== null && q.user === q.correct;
+              const isWrong = q.user !== null && q.user !== q.correct;
+              const isSkip = q.user === null;
+              const markDot = isCorrect ? "ok" : isWrong ? "bad" : "warn";
+              const markTxt = isCorrect ? "Correct" : isWrong ? "Incorrect" : "Unanswered";
+              return `
+                <div class="revCard">
+                  <div class="revHead">
+                    <div>
+                      <p class="revTitle">Q${i+1}. ${escapeHtml(q.stem)}</p>
+                    </div>
+                    <div class="revMark"><span class="dot ${markDot}"></span>${markTxt}</div>
+                  </div>
+                  <div class="revBody">
+                    <div><span class="k">Your answer:</span> ${q.user ? escapeHtml(q.user + ". " + q.options[q.user]) : "—"}</div>
+                    <div style="margin-top:6px;"><span class="k">Correct answer:</span> ${escapeHtml(q.correct + ". " + q.options[q.correct])}</div>
+                    ${q.explain ? `<div class="small" style="margin-top:8px;">${escapeHtml(q.explain)}</div>` : ""}
+                  </div>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      </div>
+    `;
+
+    $("customSummaryArea").innerHTML = sum;
+    $("customSummaryArea").classList.remove("hidden");
+    $("customQuizArea").classList.add("hidden");
+
+    $("cRetake").addEventListener("click", () => {
+      customQuiz.qs.forEach(q => q.user = null);
+      customQuiz.idx = 0;
+      customQuiz.startedAt = Date.now();
+      customQuiz.finishedAt = null;
+      $("customQuizArea").classList.remove("hidden");
+      $("customSummaryArea").classList.add("hidden");
+      renderCustomQuestion();
+    });
+  }
+
+  /* ----------------- Auto-Reload preset when entering tab (optional) ----------------- */
+  // When user visits preset tab, attempt re-load once (helps after file edits).
+  let presetTabLoadedOnce = false;
+  tabBtns.forEach(b => b.addEventListener("click", () => {
+    if (b.dataset.tab === "preset" && !presetTabLoadedOnce){
+      presetTabLoadedOnce = true;
+      loadPreset();
+    }
+  }));
+
+})();
+</script>
 </body>
 </html>
