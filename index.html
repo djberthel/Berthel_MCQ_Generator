@@ -15,8 +15,6 @@
     :root{
       --bg0:#06070a;
       --bg1:#0b0d12;
-      --panel:#0e1118cc;
-      --panel2:#0b0d12cc;
       --line:#1e2430;
       --line2:#2a3140;
       --txt:#f4f6ff;
@@ -25,10 +23,7 @@
       --good:#36d399;
       --bad:#ff4d6d;
       --warn:#ffd166;
-      --white:#ffffff;
-      --black:#000000;
       --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 18px;
       --radius2: 24px;
       --font: "Latin Modern Roman","Computer Modern Serif","Times New Roman",serif;
     }
@@ -43,7 +38,7 @@
                   linear-gradient(180deg, var(--bg0), var(--bg1));
       color:var(--txt);
       letter-spacing:.1px;
-      font-size: 18px;
+      font-size: 20px; /* larger */
     }
     body::before{
       content:"";
@@ -68,7 +63,6 @@
       border-radius: var(--radius2);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       box-shadow: var(--shadow);
-      position: relative;
     }
     .hero-left{
       display:flex;
@@ -77,8 +71,8 @@
       min-width: 0;
     }
     .avatar{
-      width: 58px;
-      height: 58px;
+      width: 60px;
+      height: 60px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.18);
       background: rgba(255,255,255,.06);
@@ -93,14 +87,14 @@
     }
     .hero-title h1{
       margin:0;
-      font-size: 34px;
+      font-size: 36px;
       line-height: 1.05;
       font-weight: 700;
     }
     .hero-title .sub{
       margin-top: 4px;
       color: var(--muted);
-      font-size: 18px;
+      font-size: 19px;
     }
     .hero-right{
       margin-left:auto;
@@ -159,7 +153,7 @@
     .hidden{ display:none !important; }
 
     .section-title{
-      font-size: 22px;
+      font-size: 24px;
       margin: 0 0 10px;
       font-weight: 700;
     }
@@ -184,11 +178,11 @@
     }
     label{
       display:block;
-      font-size: 16px;
+      font-size: 17px;
       color: var(--muted);
       margin-bottom: 6px;
     }
-    input[type="number"], input[type="password"], textarea, input[type="text"]{
+    input[type="number"], input[type="password"], textarea{
       width:100%;
       font-family: var(--font);
       color: var(--txt);
@@ -197,7 +191,7 @@
       border-radius: 14px;
       padding: 12px 12px;
       outline: none;
-      font-size: 18px;
+      font-size: 19px;
     }
     textarea{ min-height: 110px; resize: vertical; }
 
@@ -240,7 +234,7 @@
       padding: 9px 12px;
       cursor:pointer;
       user-select:none;
-      font-size: 16px;
+      font-size: 17px;
     }
     .chip.active{
       background: rgba(255,255,255,.10);
@@ -255,7 +249,7 @@
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(0,0,0,.20);
       color: var(--muted);
-      font-size: 16px;
+      font-size: 17px;
     }
     .status.good{ border-color: rgba(54,211,153,.35); color: rgba(54,211,153,.95); }
     .status.bad{ border-color: rgba(255,77,109,.35); color: rgba(255,77,109,.95); }
@@ -273,14 +267,14 @@
       font-size: 16px;
     }
     .qstem{
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 800;
       margin: 4px 0 12px;
       line-height: 1.15;
     }
     .qprompt{
       color: var(--muted);
-      font-size: 17px;
+      font-size: 18px;
       margin-bottom: 12px;
     }
 
@@ -308,8 +302,8 @@
       background: rgba(255,255,255,.08);
     }
     .letter{
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 12px;
       display:flex;
       align-items:center;
@@ -321,7 +315,7 @@
     }
     .opttext{
       line-height: 1.35;
-      font-size: 18px;
+      font-size: 19px;
     }
 
     .quiz-nav{
@@ -349,7 +343,7 @@
       padding: 12px 14px;
     }
     .kpi .big{
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 900;
       margin-bottom: 2px;
     }
@@ -365,7 +359,7 @@
       background: rgba(0,0,0,.18);
       color: var(--muted);
       line-height: 1.35;
-      font-size: 17px;
+      font-size: 18px;
     }
     .advice strong{ color: var(--txt); }
 
@@ -401,14 +395,14 @@
     .pill.warn{ border-color: rgba(255,209,102,.35); color: rgba(255,209,102,.95); }
     .review-term{
       font-weight: 800;
-      font-size: 18px;
+      font-size: 19px;
       line-height: 1.2;
     }
     .review-body{
       margin-top: 10px;
       color: var(--muted);
       line-height: 1.35;
-      font-size: 17px;
+      font-size: 18px;
     }
     .review-body .line{ margin-top: 6px; }
     .mono{ font-variant-numeric: tabular-nums; }
@@ -456,6 +450,7 @@
       width:100%;
       font-family:var(--font);
       color: var(--muted);
+      font-size: 17px;
     }
   </style>
 </head>
@@ -477,9 +472,10 @@
     </header>
 
     <nav class="tabs" aria-label="Tabs">
-      <button class="tab-btn active" data-tab="home">Home</button>
-      <button class="tab-btn" data-tab="ev">Etymology &amp; Vocabulary</button>
-      <button class="tab-btn" data-tab="custom">Custom Content</button>
+      <!-- IMPORTANT: type="button" prevents accidental form submission in wrappers (fixes “nothing clickable”). -->
+      <button type="button" class="tab-btn active" data-tab="home">Home</button>
+      <button type="button" class="tab-btn" data-tab="ev">Etymology &amp; Vocabulary</button>
+      <button type="button" class="tab-btn" data-tab="custom">Custom Content</button>
     </nav>
 
     <!-- HOME -->
@@ -492,6 +488,7 @@
 
         <div class="admin-box">
           <div class="muted"><strong>Admin</strong></div>
+
           <div id="admin-locked">
             <div class="row" style="margin-top:10px;">
               <div class="field">
@@ -499,7 +496,7 @@
                 <input id="adminPass" type="password" placeholder="Enter password" autocomplete="current-password" />
               </div>
               <div style="flex:0 0 auto;">
-                <button id="adminLogin" class="btn primary">Unlock</button>
+                <button type="button" id="adminLogin" class="btn primary">Unlock</button>
               </div>
             </div>
             <div id="adminMsg" class="status" style="display:none;"></div>
@@ -515,14 +512,14 @@
                 <textarea id="updateText" placeholder="Write the update note here…"></textarea>
               </div>
               <div style="flex:0 0 auto;">
-                <button id="addUpdate" class="btn primary">Post update</button>
+                <button type="button" id="addUpdate" class="btn primary">Post update</button>
               </div>
               <div style="flex:0 0 auto;">
-                <button id="adminLock" class="btn ghost">Lock</button>
+                <button type="button" id="adminLock" class="btn ghost">Lock</button>
               </div>
             </div>
             <div class="muted" style="margin-top:10px; font-size:15px;">
-              (Notes persist in this browser. If you host a static site and want these to be global, you’ll manually paste updates into the HTML or add a backend.)
+              (Notes persist in this browser. For global updates on a static host, paste updates into the HTML or add a backend.)
             </div>
           </div>
         </div>
@@ -550,7 +547,7 @@
           </div>
 
           <div style="flex:0 0 auto;">
-            <button id="startEV" class="btn primary">Start</button>
+            <button type="button" id="startEV" class="btn primary">Start</button>
           </div>
         </div>
 
@@ -560,24 +557,24 @@
         <div id="evStage" class="hidden">
           <div class="divider"></div>
 
-          <div id="quizView" class="">
+          <div id="quizView">
             <div class="quiz-top">
               <div id="qMeta" class="qmeta mono"></div>
-              <button id="changeNumberEV" class="btn ghost">Change number</button>
+              <button type="button" id="changeNumberEV" class="btn ghost">Change number</button>
             </div>
 
             <div id="qStem" class="qstem"></div>
-            <div id="qPrompt" class class="qprompt"></div>
+            <div id="qPrompt" class="qprompt"></div>
 
             <div id="optList" class="optlist"></div>
 
             <div class="quiz-nav">
               <div class="left">
-                <button id="backBtn" class="btn ghost">Back</button>
+                <button type="button" id="backBtn" class="btn ghost">Back</button>
               </div>
               <div class="right">
-                <button id="finishNowBtn" class="btn danger">Finish now</button>
-                <button id="nextBtn" class="btn primary">Next</button>
+                <button type="button" id="finishNowBtn" class="btn danger">Finish now</button>
+                <button type="button" id="nextBtn" class="btn primary">Next</button>
               </div>
             </div>
           </div>
@@ -603,7 +600,7 @@
             <input id="qCountCustom" type="number" min="1" max="100" step="1" inputmode="numeric" placeholder="e.g., 15" />
           </div>
           <div style="flex:0 0 auto;">
-            <button id="startCustom" class="btn primary">Start</button>
+            <button type="button" id="startCustom" class="btn primary">Start</button>
           </div>
         </div>
 
@@ -619,7 +616,7 @@
 
 <script>
 /* =========================
-   Avatar fallback (from your earlier base64)
+   Avatar fallback (base64)
    ========================= */
 window.__AVATAR_FALLBACK =
   "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQE"+
@@ -648,19 +645,17 @@ function fmtBeijing(date, withSeconds=false){
     hour12:false
   };
   if(withSeconds) opt.second = "2-digit";
-  // en-CA yields YYYY-MM-DD style reliably.
   return new Intl.DateTimeFormat("en-CA", opt).format(date).replace(",", "");
 }
 
 function setVersionFromLastModified(){
   const lm = new Date(document.lastModified);
-  // If parsing fails, use now.
   const dt = isNaN(lm.getTime()) ? new Date() : lm;
   document.getElementById("version").textContent = "v " + fmtBeijing(dt, true);
 }
 
 /* =========================
-   Tabs
+   Tabs (robust)
    ========================= */
 function setTab(tab){
   document.querySelectorAll(".tab-btn").forEach(b=>{
@@ -676,8 +671,8 @@ function setTab(tab){
    ========================= */
 const UPDATES_KEY = "bb_updates_v1";
 const ADMIN_KEY = "bb_admin_unlocked_v1";
+const ADMIN_PASSWORD = "temetnosce";
 
-// Default seeded update note (professional, next update)
 const DEFAULT_UPDATES = [
   {
     when: "—",
@@ -731,14 +726,7 @@ function setAdminUI(unlocked){
    Master list loading (XLSX)
    ========================= */
 const MASTER_FILE = "Vocab_Ety_Master_List.xlsx";
-
-let MASTER = {
-  vocab: [],
-  ety: [],
-  vocabIndex: null,
-  etyIndex: null,
-  loaded: false
-};
+let MASTER = { vocab: [], ety: [], vocabIndex: null, etyIndex: null, loaded: false };
 
 const STOP = new Set([
   "the","a","an","and","or","of","to","in","on","for","with","by","as","is","are","was","were",
@@ -751,9 +739,7 @@ function normSpace(s){ return (s||"").toString().replace(/\s+/g," ").trim(); }
 
 function stripExamples(s){
   let t = (s||"").toString();
-  // remove "Examples: ..." or "Example: ..." segments
   t = t.replace(/\bExamples?\s*:\s*.*$/i, "").trim();
-  // remove inline "e.g., ..." style tails
   t = t.replace(/\b(e\.g\.|eg)\b.*$/i, "").trim();
   return normSpace(t);
 }
@@ -765,13 +751,12 @@ function tokenize(s){
     .replace(/\s+/g," ")
     .trim();
   if(!raw) return [];
-  const toks = raw.split(" ").filter(w=>{
+  return raw.split(" ").filter(w=>{
     if(!w) return false;
     if(w.length<=2) return false;
     if(STOP.has(w)) return false;
     return true;
   });
-  return toks;
 }
 
 function wordCount(s){
@@ -815,7 +800,6 @@ function containsStem(s, stem){
 }
 
 function buildTFIDF(entries){
-  // entries: {answerText, topic}
   const N = entries.length;
   const df = new Map();
   const tfs = [];
@@ -828,9 +812,7 @@ function buildTFIDF(entries){
     uniq.forEach(w=> df.set(w, (df.get(w)||0)+1));
   }
   const idf = new Map();
-  df.forEach((v,k)=>{
-    idf.set(k, Math.log((N+1)/(v+1))+1);
-  });
+  df.forEach((v,k)=> idf.set(k, Math.log((N+1)/(v+1))+1));
 
   const vecs = [];
   const norms = [];
@@ -871,19 +853,9 @@ function buildNeighborLists(entries){
       sims.push([j, cosine(i,j,vecs,norms)]);
     }
     sims.sort((a,b)=> b[1]-a[1]);
-    neighbors[i] = sims.slice(0, 40).map(x=>x[0]); // top 40
+    neighbors[i] = sims.slice(0, 40).map(x=>x[0]);
   }
-  return {neighbors, vecs, norms};
-}
-
-function pickSubtopic(row, headerMap){
-  // Accept any of these as "topic"
-  const keys = ["topic","unit","chapter","subtopic","code","syllabus","strand"];
-  for(const k of keys){
-    const hk = headerMap.get(k);
-    if(hk && row[hk]) return normSpace(row[hk]);
-  }
-  return "";
+  return {neighbors};
 }
 
 function findHeader(headers, candidates){
@@ -893,7 +865,6 @@ function findHeader(headers, candidates){
     const hit = lower.find(h=> h.low === c);
     if(hit) return hit.raw;
   }
-  // partial
   for(const cand of candidates){
     const c = cand.toLowerCase().trim();
     const hit = lower.find(h=> h.low.includes(c));
@@ -902,46 +873,28 @@ function findHeader(headers, candidates){
   return null;
 }
 
-function buildHeaderMap(headers){
-  const map = new Map();
-  headers.forEach(h=>{
-    const k = String(h).toLowerCase().trim();
-    map.set(k, h);
-  });
-  return map;
-}
-
 function rowToEntries(rows, sheetName){
   if(!rows || rows.length===0) return {vocab:[], ety:[]};
   const headers = Object.keys(rows[0] || {});
-  const headerMap = buildHeaderMap(headers);
-
-  // detect potential columns
   const termCol = findHeader(headers, ["term","word","vocabulary","vocab","glossary term","entry"]);
   const defCol  = findHeader(headers, ["definition","meaning","desc","description"]);
   const typeCol = findHeader(headers, ["type","category","section"]);
   const wordPartCol = findHeader(headers, ["word part","wordpart","morpheme","prefix","suffix","root","part"]);
   const exCol = findHeader(headers, ["examples","example"]);
+  const topicCol = findHeader(headers, ["topic","unit","chapter","subtopic","code","syllabus","strand"]);
 
   const outV = [], outE = [];
+  const sn = (sheetName||"").toLowerCase();
 
   for(const r of rows){
-    // skip empty rows
     const rawTerm = normSpace(termCol ? r[termCol] : "");
     const rawDef  = normSpace(defCol  ? r[defCol]  : "");
     const rawType = normSpace(typeCol ? r[typeCol] : "");
     const rawWP   = normSpace(wordPartCol ? r[wordPartCol] : "");
     const rawEx   = normSpace(exCol ? r[exCol] : "");
+    const topic   = normSpace(topicCol ? r[topicCol] : "");
 
-    const topic = pickSubtopic(r, headerMap);
-
-    // ignore obvious junk rows
-    const junk = (rawTerm || rawWP).toUpperCase();
-    if(junk.includes("CLEAN INDEX")) continue;
-
-    // determine type
     let kind = "";
-    const sn = (sheetName||"").toLowerCase();
     if(rawType){
       const t = rawType.toLowerCase();
       if(t.includes("ety") || t.includes("word part") || t.includes("morpheme") || t.includes("prefix") || t.includes("suffix") || t.includes("root")) kind = "ety";
@@ -955,30 +908,15 @@ function rowToEntries(rows, sheetName){
     }
 
     if(kind === "vocab"){
-      const term = rawTerm;
-      const def = rawDef;
-      if(!term || !def) continue;
-      outV.push({
-        kind:"vocab",
-        stem: term,
-        answerText: normSpace(def),
-        topic: topic || ""
-      });
+      if(!rawTerm || !rawDef) continue;
+      outV.push({ kind:"vocab", stem: rawTerm, answerText: rawDef, topic });
     }else if(kind === "ety"){
-      const wp = rawWP || rawTerm; // allow termCol used for word part
+      const wp = rawWP || rawTerm;
       let meaning = rawDef;
-      if(rawEx){
-        // if meaning missing but examples present, still require meaning
-      }
       if(!wp || !meaning) continue;
       meaning = stripExamples(meaning);
       if(!meaning) continue;
-      outE.push({
-        kind:"ety",
-        stem: wp,
-        answerText: meaning,
-        topic: topic || ""
-      });
+      outE.push({ kind:"ety", stem: wp, answerText: meaning, topic });
     }
   }
 
@@ -994,8 +932,9 @@ async function loadMasterList(){
     const res = await fetch(MASTER_FILE, {cache:"no-store"});
     if(!res.ok) throw new Error("Fetch failed: " + res.status);
     const buf = await res.arrayBuffer();
-    const wb = XLSX.read(buf, {type:"array"});
+    if(typeof XLSX === "undefined") throw new Error("SheetJS not loaded (XLSX undefined).");
 
+    const wb = XLSX.read(buf, {type:"array"});
     let vocab = [];
     let ety = [];
 
@@ -1007,7 +946,6 @@ async function loadMasterList(){
       ety = ety.concat(part.ety);
     });
 
-    // de-dup by stem+answerText
     const dedup = (arr)=>{
       const seen = new Set();
       const out = [];
@@ -1024,29 +962,19 @@ async function loadMasterList(){
 
     MASTER.vocab = vocab;
     MASTER.ety = ety;
+    MASTER.vocabIndex = (vocab.length>=4) ? buildNeighborLists(vocab) : null;
+    MASTER.etyIndex = (ety.length>=4) ? buildNeighborLists(ety) : null;
+    MASTER.loaded = (vocab.length>=4 || ety.length>=4);
 
-    if(vocab.length < 4 && ety.length < 4){
-      throw new Error("Parsed too few usable rows.");
-    }
+    if(!MASTER.loaded) throw new Error("Parsed too few usable rows.");
 
-    // Build neighbor lists per type (semantic similarity)
-    if(vocab.length >= 4){
-      MASTER.vocabIndex = buildNeighborLists(vocab);
-    }
-    if(ety.length >= 4){
-      MASTER.etyIndex = buildNeighborLists(ety);
-    }
-
-    MASTER.loaded = true;
     status.className = "status good";
     status.textContent = `Preset loaded. Vocabulary: ${vocab.length}  |  Etymology: ${ety.length}`;
-
-    // enable stage container
     document.getElementById("evStage").classList.remove("hidden");
   }catch(err){
     MASTER.loaded = false;
     status.className = "status bad";
-    status.textContent = "Index failed to load.";
+    status.textContent = "Index failed to load. (If you opened this as a local file, host it or use a local server.)";
     console.error(err);
   }
 }
@@ -1055,14 +983,7 @@ async function loadMasterList(){
    Quiz engine (Etym/Vocab)
    ========================= */
 const LETTERS = ["A","B","C","D"];
-
-function shuffle(arr){
-  for(let i=arr.length-1;i>0;i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]] = [arr[j],arr[i]];
-  }
-  return arr;
-}
+function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
 
 function genKey(N){
   const base = Math.floor(N/4);
@@ -1072,31 +993,22 @@ function genKey(N){
   for(let i=0;i<rem;i++) counts[pick[i]]++;
 
   let key = [];
-  for(const L of LETTERS){
-    for(let i=0;i<counts[L];i++) key.push(L);
-  }
+  for(const L of LETTERS) for(let i=0;i<counts[L];i++) key.push(L);
 
-  // shuffle until constraints satisfied
   for(let tries=0; tries<2000; tries++){
     shuffle(key);
-    let ok = true;
-    // runs > 3
-    let run = 1;
+    let ok = true, run = 1;
     for(let i=1;i<key.length;i++){
-      if(key[i]===key[i-1]) run++; else run=1;
+      run = (key[i]===key[i-1]) ? run+1 : 1;
       if(run>3){ ok=false; break; }
     }
     if(!ok) continue;
-    // freq diff <= 1
-    const f = {A:0,B:0,C:0,D:0};
-    key.forEach(x=>f[x]++);
-    const vals = Object.values(f);
-    const max = Math.max(...vals), min = Math.min(...vals);
+    const f={A:0,B:0,C:0,D:0}; key.forEach(x=>f[x]++);
+    const vals=Object.values(f), max=Math.max(...vals), min=Math.min(...vals);
     if(max-min>1) ok=false;
-
     if(ok) return key.slice();
   }
-  return key; // last resort
+  return key;
 }
 
 function groupByTopic(entries){
@@ -1106,7 +1018,6 @@ function groupByTopic(entries){
     if(!map.has(t)) map.set(t, []);
     map.get(t).push(idx);
   });
-  // shuffle within
   map.forEach(v=> shuffle(v));
   return map;
 }
@@ -1114,7 +1025,6 @@ function groupByTopic(entries){
 function sampleWithCoverage(entries, count){
   const topicMap = groupByTopic(entries);
   const topics = Array.from(topicMap.keys());
-  // If no topic structure, just random sample unique
   const hasMeaningfulTopics = !(topics.length===1 && topics[0]==="");
   const used = new Set();
   const picked = [];
@@ -1126,7 +1036,6 @@ function sampleWithCoverage(entries, count){
       for(const t of topics){
         const arr = topicMap.get(t);
         if(!arr || arr.length===0) continue;
-        // pop next unused
         while(arr.length && used.has(arr[arr.length-1])) arr.pop();
         if(!arr.length) continue;
         const idx = arr.pop();
@@ -1135,19 +1044,14 @@ function sampleWithCoverage(entries, count){
         picked.push(idx);
         if(picked.length >= count) break;
       }
-      // if we're stuck, break
-      const remaining = entries.length - used.size;
-      if(remaining<=0) break;
+      if(entries.length - used.size <= 0) break;
     }
   }
 
-  // fill remainder randomly
   if(picked.length < count){
     const all = [...Array(entries.length).keys()].filter(i=>!used.has(i));
     shuffle(all);
-    while(picked.length < count && all.length){
-      picked.push(all.pop());
-    }
+    while(picked.length < count && all.length) picked.push(all.pop());
   }
 
   return picked.map(i=>entries[i]);
@@ -1156,27 +1060,21 @@ function sampleWithCoverage(entries, count){
 function overlapCount(a, b){
   const A = new Set(tokenize(a));
   const B = new Set(tokenize(b));
-  let c = 0;
-  A.forEach(w=>{ if(B.has(w)) c++; });
+  let c = 0; A.forEach(w=>{ if(B.has(w)) c++; });
   return c;
 }
 
 function antiCuePass(stem, options, correctIdx){
-  // word-count parity
   const counts = options.map(o=>wordCount(o.text));
   const sorted = counts.slice().sort((x,y)=>x-y);
   const median = sorted.length ? sorted[Math.floor(sorted.length/2)] : 1;
   const max = Math.max(...counts), min = Math.min(...counts);
 
-  // constraints
   for(const wc of counts){
-    if(median>0){
-      if(Math.abs(wc - median) > Math.ceil(0.2*median)) return false;
-    }
+    if(median>0 && Math.abs(wc - median) > Math.ceil(0.2*median)) return false;
   }
   if(max - min > (median<=8 ? 3 : 6)) return false;
 
-  // technicality parity
   const tech = options.map(o=>techScore(o.text));
   const cTech = tech[correctIdx];
   if(cTech >= 2){
@@ -1188,36 +1086,27 @@ function antiCuePass(stem, options, correctIdx){
     if(comparable < 2) return false;
   }
 
-  // hedging/absolute parity
   const hedge = options.map(o=>/\b(always|never|only|typically|primarily)\b/i.test(o.text));
-  const cH = hedge[correctIdx];
-  if(cH){
+  if(hedge[correctIdx]){
     let others = 0; for(let i=0;i<4;i++) if(i!==correctIdx && hedge[i]) others++;
     if(others===0) return false;
   }
 
-  // connector parity
   const conn = options.map(o=>hasConnector(o.text));
-  const cC = conn[correctIdx];
-  if(cC){
+  if(conn[correctIdx]){
     let others = 0; for(let i=0;i<4;i++) if(i!==correctIdx && conn[i]) others++;
     if(others===0) return false;
   }
 
-  // surface-overlap: correct option must not be unique in containing the stem token
   const hit = options.map(o=>containsStem(o.text, stem));
-  const cHit = hit[correctIdx];
-  if(cHit){
+  if(hit[correctIdx]){
     let others = 0; for(let i=0;i<4;i++) if(i!==correctIdx && hit[i]) others++;
     if(others===0) return false;
   }
-
   return true;
 }
 
 function buildOptionSet(entry, pool, indexData, desiredLetter){
-  // pool: entries array for the same kind
-  // indexData: {neighbors}
   const correctText = entry.answerText;
   const stem = entry.stem;
   const correctLead = leadClass(correctText);
@@ -1227,7 +1116,6 @@ function buildOptionSet(entry, pool, indexData, desiredLetter){
   const i = pool.indexOf(entry);
   const top = (i>=0 && neighbors[i]) ? neighbors[i].slice() : [];
 
-  // Prefer same-topic candidates first (if topic exists and enough)
   const sameTopic = [];
   if(correctTopic){
     for(let j=0;j<pool.length;j++){
@@ -1236,10 +1124,8 @@ function buildOptionSet(entry, pool, indexData, desiredLetter){
     }
   }
 
-  // candidate list: same-topic first, then semantic neighbors
   let candidates = [];
   if(sameTopic.length >= 6){
-    // rank same-topic by similarity via neighbor order if possible
     const topSet = new Set(top);
     const inTop = sameTopic.filter(x=>topSet.has(x));
     const rest = sameTopic.filter(x=>!topSet.has(x));
@@ -1247,49 +1133,34 @@ function buildOptionSet(entry, pool, indexData, desiredLetter){
   }else{
     candidates = top.slice();
   }
+  if(candidates.length < 12) candidates = candidates.concat([...Array(pool.length).keys()]);
 
-  // fallback: all indices
-  if(candidates.length < 12){
-    candidates = candidates.concat([...Array(pool.length).keys()]);
-  }
-
-  // Filter candidates to same type + usable
   candidates = candidates.filter(j=>{
     if(j===i) return false;
     const txt = pool[j].answerText;
     if(!txt) return false;
     if(txt.toLowerCase() === correctText.toLowerCase()) return false;
-    // avoid distractors with zero overlap (too obviously unrelated)
     if(overlapCount(correctText, txt) < 2) return false;
-    // reduce giveaway: avoid distractor containing the stem if correct doesn't
+
     const cHasStem = containsStem(correctText, stem);
     const dHasStem = containsStem(txt, stem);
     if(!cHasStem && dHasStem) return false;
 
-    // lead class preference (keep template-ish)
     const lc = leadClass(txt);
     if(correctLead !== "other" && lc !== correctLead) return false;
 
-    // word-count prefilter vs correct (looser than final constraints)
     const wcC = wordCount(correctText);
     const wcD = wordCount(txt);
     if(wcC>0){
-      const lo = Math.floor(wcC*0.70);
-      const hi = Math.ceil(wcC*1.30);
+      const lo = Math.floor(wcC*0.70), hi = Math.ceil(wcC*1.30);
       if(wcD < lo || wcD > hi) return false;
     }
     return true;
   });
-
-  // ensure uniqueness
   candidates = Array.from(new Set(candidates));
 
-  // Choose distractors with repeated attempts
-  const tries = 220;
   const keyIdx = LETTERS.indexOf(desiredLetter);
-
-  for(let t=0;t<tries;t++){
-    // pull from first 24 (most similar) with occasional wider pick
+  for(let t=0;t<220;t++){
     const cap = Math.min(candidates.length, (t<140 ? 24 : 60));
     const pickFrom = candidates.slice(0, cap);
     if(pickFrom.length < 3) break;
@@ -1299,7 +1170,6 @@ function buildOptionSet(entry, pool, indexData, desiredLetter){
       const j = pickFrom[Math.floor(Math.random()*pickFrom.length)];
       chosen.add(j);
       if(chosen.size<3 && t%3===0){
-        // small bias to include one mid-range
         const k = candidates[Math.min(candidates.length-1, 24 + Math.floor(Math.random()*20))];
         if(k!==undefined) chosen.add(k);
       }
@@ -1307,26 +1177,19 @@ function buildOptionSet(entry, pool, indexData, desiredLetter){
     if(chosen.size < 3) continue;
 
     let distractors = Array.from(chosen).slice(0,3).map(j=> pool[j].answerText);
-
-    // Build options with correct inserted at keyIdx
     shuffle(distractors);
+
     const opts = [];
     let d = 0;
     for(let k=0;k<4;k++){
-      if(k===keyIdx){
-        opts.push({letter: LETTERS[k], text: correctText, isCorrect:true});
-      }else{
-        opts.push({letter: LETTERS[k], text: distractors[d++], isCorrect:false});
-      }
+      if(k===keyIdx) opts.push({letter: LETTERS[k], text: correctText, isCorrect:true});
+      else opts.push({letter: LETTERS[k], text: distractors[d++], isCorrect:false});
     }
-
-    // Obviousness heuristics: correct isn't uniquely longest/shortest by >20% (handled in antiCue)
     if(!antiCuePass(stem, opts, keyIdx)) continue;
-
     return opts;
   }
 
-  // last resort: random distractors from pool that meet minimal filters
+  // hard fallback
   const all = [...Array(pool.length).keys()].filter(j=>j!==i);
   shuffle(all);
   const dist = [];
@@ -1337,10 +1200,9 @@ function buildOptionSet(entry, pool, indexData, desiredLetter){
     if(overlapCount(correctText, txt) < 1) continue;
     dist.push(txt);
   }
-  while(dist.length<3) dist.push("—"); // shouldn't happen
-
-  const keyIdx = LETTERS.indexOf(desiredLetter);
+  while(dist.length<3) dist.push("—");
   shuffle(dist);
+
   const opts = [];
   let d=0;
   for(let k=0;k<4;k++){
@@ -1354,19 +1216,13 @@ function makeQuestion(entry, keyLetter){
   const kind = entry.kind;
   const pool = (kind==="vocab") ? MASTER.vocab : MASTER.ety;
   const idx  = (kind==="vocab") ? MASTER.vocabIndex : MASTER.etyIndex;
-
   const opts = buildOptionSet(entry, pool, idx, keyLetter);
-
-  const prompt = (kind==="vocab")
-    ? "Choose the best definition."
-    : "Choose the best meaning.";
-
   return {
     kind,
     stem: entry.stem,
     answerText: entry.answerText,
     topic: entry.topic || "",
-    prompt,
+    prompt: (kind==="vocab") ? "Choose the best definition." : "Choose the best meaning.",
     keyLetter,
     options: opts
   };
@@ -1379,30 +1235,28 @@ function validateCount(n){
   return {ok:true, val:x};
 }
 
-function buildQuiz(mode, N){
+function buildQuiz(mode, count){
   const hasV = MASTER.vocab.length >= 4;
   const hasE = MASTER.ety.length >= 4;
 
   let selected = [];
   if(mode==="vocab"){
     if(!hasV) return null;
-    selected = sampleWithCoverage(MASTER.vocab, N);
+    selected = sampleWithCoverage(MASTER.vocab, count);
   }else if(mode==="ety"){
     if(!hasE) return null;
-    selected = sampleWithCoverage(MASTER.ety, N);
-  }else{ // mixed
+    selected = sampleWithCoverage(MASTER.ety, count);
+  }else{
     if(hasV && hasE){
-      const vCount = Math.ceil(N/2);
-      const eCount = N - vCount;
+      const vCount = Math.ceil(count/2);
+      const eCount = count - vCount;
       selected = sampleWithCoverage(MASTER.vocab, vCount).concat(sampleWithCoverage(MASTER.ety, eCount));
       shuffle(selected);
     }else if(hasV){
-      selected = sampleWithCoverage(MASTER.vocab, N);
+      selected = sampleWithCoverage(MASTER.vocab, count);
     }else if(hasE){
-      selected = sampleWithCoverage(MASTER.ety, N);
-    }else{
-      return null;
-    }
+      selected = sampleWithCoverage(MASTER.ety, count);
+    }else return null;
   }
 
   const key = genKey(selected.length);
@@ -1412,9 +1266,7 @@ function buildQuiz(mode, N){
     mode,
     N: questions.length,
     questions,
-    answers: Array(questions.length).fill(null), // stores letter chosen or null
-    startedAt: new Date(),
-    finishedAt: null,
+    answers: Array(questions.length).fill(null),
     finishedEarly: false
   };
 }
@@ -1424,6 +1276,7 @@ function buildQuiz(mode, N){
    ========================= */
 let EV_STATE = null;
 let EV_MODE = "mixed";
+let qIndex = 0;
 
 const qMeta = document.getElementById("qMeta");
 const qStem = document.getElementById("qStem");
@@ -1435,7 +1288,58 @@ const finishNowBtn = document.getElementById("finishNowBtn");
 const summaryView = document.getElementById("summaryView");
 const quizView = document.getElementById("quizView");
 
-let qIndex = 0;
+function computeResults(state){
+  let correct = 0, attempted = 0;
+  const details = [];
+  for(let i=0;i<state.N;i++){
+    const q = state.questions[i];
+    const ans = state.answers[i];
+    const wasAttempted = !!ans;
+    if(wasAttempted) attempted++;
+    const ok = (ans === q.keyLetter);
+    if(ok) correct++;
+
+    const optByLetter = {};
+    q.options.forEach(o=> optByLetter[o.letter]=o.text);
+
+    details.push({
+      i,
+      stem: q.stem,
+      kind: q.kind,
+      yourLetter: ans,
+      correctLetter: q.keyLetter,
+      yourText: ans ? optByLetter[ans] : "",
+      correctText: optByLetter[q.keyLetter],
+      status: !wasAttempted ? "unattempted" : (ok ? "correct" : "incorrect")
+    });
+  }
+  const total = state.N;
+  const pct = total ? Math.round((correct/total)*100) : 0;
+  const attemptedPct = attempted ? Math.round((correct/attempted)*100) : 0;
+  return {correct, total, pct, attempted, attemptedPct, details};
+}
+
+function adviceText(pct, attempted, total){
+  const unattempted = total - attempted;
+  let band;
+  if(pct >= 90) band = "high";
+  else if(pct >= 75) band = "solid";
+  else if(pct >= 60) band = "unstable";
+  else band = "low";
+
+  const lines = [];
+  lines.push(`<strong>Attempted:</strong> <span class="mono">${attempted}/${total}</span>. Unattempted questions are scored as incorrect (by design).`);
+  lines.push(`Distractors were selected from the same question type and biased toward semantic similarity for plausibility.`);
+
+  if(band==="high") lines.push(`Accuracy is strong. Repeat at this size until it stays stable, then increase the question count.`);
+  else if(band==="solid") lines.push(`Good trajectory. Retake at the same size until accuracy is stable, then increase the question count.`);
+  else if(band==="unstable") lines.push(`Not stable yet. Reduce the question count, retake, and only increase once accuracy holds.`);
+  else lines.push(`If you missed many, reduce the question count and retake until accuracy is stable — then increase the question count.`);
+
+  if(unattempted > 0) lines.push(`You ended early with <span class="mono">${unattempted}</span> unattempted. If time pressure caused that, reduce the question count.`);
+
+  return lines.map(s=>`<div class="line">${s}</div>`).join("");
+}
 
 function renderQuestion(){
   const s = EV_STATE;
@@ -1445,11 +1349,10 @@ function renderQuestion(){
   qPrompt.textContent = q.prompt;
 
   optList.innerHTML = "";
-  q.options.forEach((o, idx)=>{
+  q.options.forEach((o)=>{
     const div = document.createElement("div");
     div.className = "opt";
-    const chosen = s.answers[qIndex];
-    if(chosen === o.letter) div.classList.add("selected");
+    if(s.answers[qIndex] === o.letter) div.classList.add("selected");
 
     const letter = document.createElement("div");
     letter.className = "letter mono";
@@ -1462,7 +1365,8 @@ function renderQuestion(){
     div.appendChild(letter);
     div.appendChild(text);
 
-    div.addEventListener("click", ()=>{
+    div.addEventListener("click", (ev)=>{
+      ev.preventDefault();
       s.answers[qIndex] = o.letter;
       renderQuestion();
     });
@@ -1474,204 +1378,91 @@ function renderQuestion(){
   nextBtn.textContent = (qIndex===s.N-1) ? "Finish" : "Next";
 }
 
-function computeResults(state){
-  let correct = 0, attempted = 0;
-  const details = [];
-  for(let i=0;i<state.N;i++){
-    const q = state.questions[i];
-    const ans = state.answers[i]; // letter or null
-    const wasAttempted = !!ans;
-    if(wasAttempted) attempted++;
-    const correctLetter = q.keyLetter;
-    const ok = (ans === correctLetter);
-    if(ok) correct++;
-
-    const optByLetter = {};
-    q.options.forEach(o=> optByLetter[o.letter]=o.text);
-
-    details.push({
-      i,
-      stem: q.stem,
-      kind: q.kind,
-      prompt: q.prompt,
-      yourLetter: ans,
-      correctLetter,
-      yourText: ans ? optByLetter[ans] : "",
-      correctText: optByLetter[correctLetter],
-      topic: q.topic || "",
-      status: !wasAttempted ? "unattempted" : (ok ? "correct" : "incorrect")
-    });
-  }
-  const total = state.N;
-  const pct = total ? Math.round((correct/total)*100) : 0;
-  const attemptedPct = attempted ? Math.round((correct/attempted)*100) : 0;
-  return {correct, total, pct, attempted, attemptedPct, details};
-}
-
-function adviceText(pct, attempted, total){
-  // Constructive advice based on percentage (overall, unattempted counted wrong by design)
-  if(total===0) return "";
-  const unattempted = total - attempted;
-
-  let band;
-  if(pct >= 90) band = "high";
-  else if(pct >= 75) band = "solid";
-  else if(pct >= 60) band = "unstable";
-  else band = "low";
-
-  const lines = [];
-
-  // Required rationale lines (your wording preference)
-  lines.push(`<strong>Attempted:</strong> <span class="mono">${attempted}/${total}</span>. Unattempted questions are scored as incorrect (by design).`);
-  lines.push(`Distractors were selected from the same question type and biased toward semantic similarity for plausibility.`);
-
-  if(band==="high"){
-    lines.push(`Accuracy is strong. Keep the same question count until you can repeat this reliably, then increase the question count.`);
-  }else if(band==="solid"){
-    lines.push(`Good trajectory. Retake at the same question count until accuracy is stable, then increase the question count.`);
-  }else if(band==="unstable"){
-    lines.push(`Performance is not stable yet. Reduce the question count, retake, and only increase once accuracy holds.`);
-  }else{
-    lines.push(`If you missed many, reduce the question count and retake until accuracy is stable — then increase the question count.`);
-  }
-
-  if(unattempted > 0){
-    lines.push(`You ended early with <span class="mono">${unattempted}</span> unattempted. If time pressure caused that, reduce the question count.`);
-  }
-
-  return lines.map(s=>`<div class="line">${s}</div>`).join("");
-}
-
-function renderSummary(){
-  const s = EV_STATE;
-  s.finishedAt = new Date();
-
-  const res = computeResults(s);
-
-  quizView.classList.add("hidden");
-  summaryView.classList.remove("hidden");
-  summaryView.innerHTML = "";
-
-  const title = document.createElement("div");
-  title.innerHTML = `<div class="quiz-top">
-      <div class="qmeta mono">Results</div>
-      <button id="changeNumberEV2" class="btn ghost">Change number</button>
-    </div>
-    <div class="section-title" style="margin-top:0;">Summary</div>`;
-
-  const kpis = document.createElement("div");
-  kpis.className = "summary-kpis";
-
-  const k1 = document.createElement("div");
-  k1.className = "kpi";
-  k1.innerHTML = `<div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div>`;
-
-  const k2 = document.createElement("div");
-  k2.className = "kpi";
-  k2.innerHTML = `<div class="big mono">${res.pct}%</div><div class="small">Overall accuracy</div>`;
-
-  const k3 = document.createElement("div");
-  k3.className = "kpi";
-  k3.innerHTML = `<div class="big mono">${res.attempted}/${res.total}</div><div class="small">Attempted</div>`;
-
-  const k4 = document.createElement("div");
-  k4.className = "kpi";
-  k4.innerHTML = `<div class="big mono">${res.attempted ? res.attemptedPct : 0}%</div><div class="small">Accuracy on attempted</div>`;
-
-  kpis.appendChild(k1); kpis.appendChild(k2); kpis.appendChild(k3); kpis.appendChild(k4);
-
-  const advice = document.createElement("div");
-  advice.className = "advice";
-  advice.innerHTML = adviceText(res.pct, res.attempted, res.total);
-
-  const actions = document.createElement("div");
-  actions.className = "quiz-nav";
-  actions.innerHTML = `
-    <div class="left">
-      <button id="retakeSame" class="btn">Retake same quiz</button>
-      <button id="newQuiz" class="btn primary">New quiz</button>
-    </div>
-    <div class="right">
-      <button id="toggleReview" class="btn ghost">Show review</button>
-    </div>
-  `;
-
-  const review = document.createElement("div");
-  review.className = "review hidden";
-  review.id = "reviewBlock";
-  review.innerHTML = `<div class="section-title" style="font-size:20px;">Review (all questions)</div>`;
-
-  // Ensure ALL questions included (including unattempted)
-  res.details.forEach(d=>{
-    const item = document.createElement("div");
-    item.className = "review-item";
-    let pillClass = "pill";
-    let pillText = "";
-    if(d.status==="correct"){ pillClass += " good"; pillText = "Correct"; }
-    else if(d.status==="incorrect"){ pillClass += " bad"; pillText = "Incorrect"; }
-    else { pillClass += " warn"; pillText = "Unattempted"; }
-
-    const typeLabel = (d.kind==="vocab") ? "Vocabulary" : "Etymology";
-
-    item.innerHTML = `
-      <div class="review-head">
-        <div class="review-term">${d.stem}</div>
-        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-          <span class="pill">${typeLabel}</span>
-          <span class="${pillClass}">${pillText}</span>
-          <span class="pill mono">Q${d.i+1}</span>
-        </div>
-      </div>
-      <div class="review-body">
-        <div class="line"><span class="muted">Correct:</span> <span class="mono">${d.correctLetter}</span>. ${d.correctText}</div>
-        <div class="line"><span class="muted">Your answer:</span> ${d.yourLetter ? `<span class="mono">${d.yourLetter}</span>. ${d.yourText}` : `<span class="mono">—</span>`}</div>
-      </div>
-    `;
-    review.appendChild(item);
-  });
-
-  summaryView.appendChild(title);
-  summaryView.appendChild(kpis);
-  summaryView.appendChild(advice);
-  summaryView.appendChild(actions);
-  summaryView.appendChild(review);
-
-  // handlers
-  document.getElementById("changeNumberEV2").addEventListener("click", ()=>{
-    resetEVToSetup();
-  });
-  document.getElementById("retakeSame").addEventListener("click", ()=>{
-    EV_STATE.answers = Array(EV_STATE.N).fill(null);
-    EV_STATE.finishedAt = null;
-    EV_STATE.finishedEarly = false;
-    qIndex = 0;
-    summaryView.classList.add("hidden");
-    quizView.classList.remove("hidden");
-    renderQuestion();
-  });
-  document.getElementById("newQuiz").addEventListener("click", ()=>{
-    resetEVToSetup();
-  });
-  document.getElementById("toggleReview").addEventListener("click", (e)=>{
-    const blk = document.getElementById("reviewBlock");
-    const show = blk.classList.contains("hidden");
-    blk.classList.toggle("hidden", !show);
-    e.target.textContent = show ? "Hide review" : "Show review";
-  });
-}
-
 function resetEVToSetup(){
   EV_STATE = null;
   qIndex = 0;
   summaryView.classList.add("hidden");
   quizView.classList.remove("hidden");
   document.getElementById("qCountEV").value = "";
-  // keep mode selection
 }
 
-function finishQuiz(early=false){
-  EV_STATE.finishedEarly = !!early;
-  renderSummary();
+function renderSummary(){
+  const res = computeResults(EV_STATE);
+
+  quizView.classList.add("hidden");
+  summaryView.classList.remove("hidden");
+
+  const parts = [];
+  parts.push(`
+    <div class="quiz-top">
+      <div class="qmeta mono">Results</div>
+      <button type="button" id="changeNumberEV2" class="btn ghost">Change number</button>
+    </div>
+    <div class="section-title" style="margin-top:0;">Summary</div>
+    <div class="summary-kpis">
+      <div class="kpi"><div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div></div>
+      <div class="kpi"><div class="big mono">${res.pct}%</div><div class="small">Overall accuracy</div></div>
+      <div class="kpi"><div class="big mono">${res.attempted}/${res.total}</div><div class="small">Attempted</div></div>
+      <div class="kpi"><div class="big mono">${res.attempted ? res.attemptedPct : 0}%</div><div class="small">Accuracy on attempted</div></div>
+    </div>
+    <div class="advice">${adviceText(res.pct, res.attempted, res.total)}</div>
+
+    <div class="quiz-nav">
+      <div class="left">
+        <button type="button" id="retakeSame" class="btn">Retake same quiz</button>
+        <button type="button" id="newQuiz" class="btn primary">New quiz</button>
+      </div>
+      <div class="right">
+        <button type="button" id="toggleReview" class="btn ghost">Show review</button>
+      </div>
+    </div>
+
+    <div id="reviewBlock" class="review hidden">
+      <div class="section-title" style="font-size:20px;">Review (all questions)</div>
+      ${res.details.map(d=>{
+        const typeLabel = (d.kind==="vocab") ? "Vocabulary" : "Etymology";
+        const pill = d.status==="correct" ? "pill good" : (d.status==="incorrect" ? "pill bad" : "pill warn");
+        const label = d.status==="correct" ? "Correct" : (d.status==="incorrect" ? "Incorrect" : "Unattempted");
+        return `
+          <div class="review-item">
+            <div class="review-head">
+              <div class="review-term">${d.stem}</div>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <span class="pill">${typeLabel}</span>
+                <span class="${pill}">${label}</span>
+                <span class="pill mono">Q${d.i+1}</span>
+              </div>
+            </div>
+            <div class="review-body">
+              <div class="line"><span class="muted">Correct:</span> <span class="mono">${d.correctLetter}</span>. ${d.correctText}</div>
+              <div class="line"><span class="muted">Your answer:</span> ${d.yourLetter ? `<span class="mono">${d.yourLetter}</span>. ${d.yourText}` : `<span class="mono">—</span>`}</div>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `);
+
+  summaryView.innerHTML = parts.join("");
+
+  document.getElementById("changeNumberEV2").addEventListener("click",(ev)=>{ ev.preventDefault(); resetEVToSetup(); });
+  document.getElementById("retakeSame").addEventListener("click",(ev)=>{
+    ev.preventDefault();
+    EV_STATE.answers = Array(EV_STATE.N).fill(null);
+    EV_STATE.finishedEarly = false;
+    qIndex = 0;
+    summaryView.classList.add("hidden");
+    quizView.classList.remove("hidden");
+    renderQuestion();
+  });
+  document.getElementById("newQuiz").addEventListener("click",(ev)=>{ ev.preventDefault(); resetEVToSetup(); });
+  document.getElementById("toggleReview").addEventListener("click",(ev)=>{
+    ev.preventDefault();
+    const blk = document.getElementById("reviewBlock");
+    const show = blk.classList.contains("hidden");
+    blk.classList.toggle("hidden", !show);
+    ev.target.textContent = show ? "Hide review" : "Show review";
+  });
 }
 
 /* =========================
@@ -1685,13 +1476,12 @@ function setMode(mode){
 }
 
 /* =========================
-   Custom Content (simple parser)
+   Custom Content (simple)
    ========================= */
 function parseCustomText(text){
   const lines = (text||"").split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
   const entries = [];
   for(const line of lines){
-    // try em dash / en dash / hyphen / colon
     let parts = null;
     if(line.includes("—")) parts = line.split("—");
     else if(line.includes("–")) parts = line.split("–");
@@ -1699,37 +1489,33 @@ function parseCustomText(text){
     if(!parts || parts.length < 2) continue;
     const left = normSpace(parts.shift());
     const right = normSpace(parts.join(":"));
-    if(left && right){
-      entries.push({ kind:"vocab", stem:left, answerText:right, topic:"" });
-    }
+    if(left && right) entries.push({ kind:"vocab", stem:left, answerText:right, topic:"" });
   }
-  // dedup
-  const seen = new Set();
-  const out = [];
+  const seen = new Set(); const out = [];
   for(const e of entries){
     const k = (e.stem+"||"+e.answerText).toLowerCase();
     if(seen.has(k)) continue;
-    seen.add(k);
-    out.push(e);
+    seen.add(k); out.push(e);
   }
   return out;
 }
 
 function renderCustomQuiz(state, mount){
-  // Reuse the same quiz renderer but isolated
-  const container = mount;
-  container.innerHTML = "";
+  mount.innerHTML = "";
 
-  const quiz = document.createElement("div");
   const qMetaC = document.createElement("div");
-  const stemC = document.createElement("div");
-  const promptC = document.createElement("div");
-  const optsC = document.createElement("div");
-  const navC = document.createElement("div");
-  optsC.className = "optlist";
-  promptC.className = "qprompt";
-  stemC.className = "qstem";
   qMetaC.className = "qmeta mono";
+
+  const stemC = document.createElement("div");
+  stemC.className = "qstem";
+
+  const promptC = document.createElement("div");
+  promptC.className = "qprompt";
+
+  const optsC = document.createElement("div");
+  optsC.className = "optlist";
+
+  const navC = document.createElement("div");
   navC.className = "quiz-nav";
 
   let idx = 0;
@@ -1749,38 +1535,36 @@ function renderCustomQuiz(state, mount){
       const L = document.createElement("div");
       L.className = "letter mono";
       L.textContent = o.letter;
+
       const T = document.createElement("div");
       T.className = "opttext";
       T.textContent = o.text;
 
       div.appendChild(L); div.appendChild(T);
-      div.addEventListener("click", ()=>{
-        state.answers[idx]=o.letter;
-        render();
-      });
+      div.addEventListener("click",(ev)=>{ ev.preventDefault(); state.answers[idx]=o.letter; render(); });
       optsC.appendChild(div);
     });
 
     navC.innerHTML = `
       <div class="left">
-        <button class="btn ghost" id="cBack">Back</button>
+        <button type="button" class="btn ghost" id="cBack">Back</button>
       </div>
       <div class="right">
-        <button class="btn danger" id="cFinishNow">Finish now</button>
-        <button class="btn primary" id="cNext">${idx===state.N-1 ? "Finish" : "Next"}</button>
+        <button type="button" class="btn danger" id="cFinishNow">Finish now</button>
+        <button type="button" class="btn primary" id="cNext">${idx===state.N-1 ? "Finish" : "Next"}</button>
       </div>
     `;
 
-    navC.querySelector("#cBack").disabled = (idx===0);
-    navC.querySelector("#cBack").addEventListener("click", ()=>{
-      if(idx>0){ idx--; render(); }
-    });
-    navC.querySelector("#cNext").addEventListener("click", ()=>{
+    const back = navC.querySelector("#cBack");
+    back.disabled = (idx===0);
+    back.addEventListener("click",(ev)=>{ ev.preventDefault(); if(idx>0){ idx--; render(); } });
+
+    navC.querySelector("#cNext").addEventListener("click",(ev)=>{
+      ev.preventDefault();
       if(idx<state.N-1){ idx++; render(); }
       else{
-        // summary
         const res = computeResults(state);
-        container.innerHTML = `
+        mount.innerHTML = `
           <div class="section-title">Summary</div>
           <div class="summary-kpis">
             <div class="kpi"><div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div></div>
@@ -1792,10 +1576,11 @@ function renderCustomQuiz(state, mount){
         `;
       }
     });
-    navC.querySelector("#cFinishNow").addEventListener("click", ()=>{
-      // summary
+
+    navC.querySelector("#cFinishNow").addEventListener("click",(ev)=>{
+      ev.preventDefault();
       const res = computeResults(state);
-      container.innerHTML = `
+      mount.innerHTML = `
         <div class="section-title">Summary</div>
         <div class="summary-kpis">
           <div class="kpi"><div class="big mono">${res.correct}/${res.total}</div><div class="small">Score (unattempted count as incorrect)</div></div>
@@ -1808,60 +1593,62 @@ function renderCustomQuiz(state, mount){
     });
   }
 
-  quiz.appendChild(qMetaC);
-  quiz.appendChild(stemC);
-  quiz.appendChild(promptC);
-  quiz.appendChild(optsC);
-  quiz.appendChild(navC);
-  container.appendChild(quiz);
-
+  mount.appendChild(qMetaC);
+  mount.appendChild(stemC);
+  mount.appendChild(promptC);
+  mount.appendChild(optsC);
+  mount.appendChild(navC);
   render();
 }
 
 /* =========================
-   Init + Event wiring
+   Wire everything
    ========================= */
-document.addEventListener("DOMContentLoaded", async ()=>{
+function init(){
   setVersionFromLastModified();
 
-  // Tabs
+  // Tabs (event listeners + preventDefault)
   document.querySelectorAll(".tab-btn").forEach(btn=>{
-    btn.addEventListener("click", ()=> setTab(btn.dataset.tab));
+    btn.addEventListener("click", (ev)=>{
+      ev.preventDefault();
+      setTab(btn.dataset.tab);
+    });
   });
 
   // Updates
   renderUpdates();
   setAdminUI(localStorage.getItem(ADMIN_KEY)==="1");
 
-  document.getElementById("adminLogin").addEventListener("click", ()=>{
-    const pass = document.getElementById("adminPass").value || "";
-    const msg = document.getElementById("adminMsg");
-    msg.style.display = "block";
-    if(pass === "temetnosce"){
-      msg.className = "status good";
-      msg.textContent = "Unlocked.";
+  const adminPass = document.getElementById("adminPass");
+  const adminMsg = document.getElementById("adminMsg");
+
+  function tryLogin(){
+    const pass = (adminPass.value || "").trim();
+    adminMsg.style.display = "block";
+    if(pass === ADMIN_PASSWORD){
+      adminMsg.className = "status good";
+      adminMsg.textContent = "Unlocked.";
       setAdminUI(true);
-      document.getElementById("adminPass").value = "";
-      setTimeout(()=>{ msg.style.display="none"; }, 900);
+      adminPass.value = "";
+      setTimeout(()=>{ adminMsg.style.display="none"; }, 900);
     }else{
-      msg.className = "status bad";
-      msg.textContent = "Incorrect password.";
+      adminMsg.className = "status bad";
+      adminMsg.textContent = "Incorrect password.";
     }
-  });
+  }
 
-  document.getElementById("adminLock").addEventListener("click", ()=>{
-    setAdminUI(false);
-  });
+  document.getElementById("adminLogin").addEventListener("click",(ev)=>{ ev.preventDefault(); tryLogin(); });
+  adminPass.addEventListener("keydown",(ev)=>{ if(ev.key==="Enter"){ ev.preventDefault(); tryLogin(); } });
 
-  document.getElementById("addUpdate").addEventListener("click", ()=>{
+  document.getElementById("adminLock").addEventListener("click",(ev)=>{ ev.preventDefault(); setAdminUI(false); });
+
+  document.getElementById("addUpdate").addEventListener("click",(ev)=>{
+    ev.preventDefault();
     const ta = document.getElementById("updateText");
     const text = normSpace(ta.value);
     if(!text) return;
     const arr = loadUpdates();
-    arr.unshift({
-      when: fmtBeijing(new Date(), true),
-      text
-    });
+    arr.unshift({ when: fmtBeijing(new Date(), true), text });
     saveUpdates(arr);
     ta.value = "";
     renderUpdates();
@@ -1869,26 +1656,22 @@ document.addEventListener("DOMContentLoaded", async ()=>{
 
   // Mode chips
   document.querySelectorAll("#modeChips .chip").forEach(ch=>{
-    ch.addEventListener("click", ()=> setMode(ch.dataset.mode));
+    ch.addEventListener("click",(ev)=>{ ev.preventDefault(); setMode(ch.dataset.mode); });
   });
 
-  // Load master list
-  await loadMasterList();
-
   // Start EV
-  document.getElementById("startEV").addEventListener("click", ()=>{
+  document.getElementById("startEV").addEventListener("click",(ev)=>{
+    ev.preventDefault();
     if(!MASTER.loaded) return;
     const v = validateCount(document.getElementById("qCountEV").value);
+    const st = document.getElementById("loadStatus");
     if(!v.ok){
-      const st = document.getElementById("loadStatus");
       st.className = "status bad";
       st.textContent = v.msg;
       return;
     }
-    // build quiz
     const quiz = buildQuiz(EV_MODE, v.val);
     if(!quiz){
-      const st = document.getElementById("loadStatus");
       st.className = "status bad";
       st.textContent = "Insufficient data for this mode.";
       return;
@@ -1900,34 +1683,31 @@ document.addEventListener("DOMContentLoaded", async ()=>{
     renderQuestion();
   });
 
-  // Change number
-  document.getElementById("changeNumberEV").addEventListener("click", ()=>{
-    resetEVToSetup();
-  });
+  document.getElementById("changeNumberEV").addEventListener("click",(ev)=>{ ev.preventDefault(); resetEVToSetup(); });
 
-  // Quiz nav
-  backBtn.addEventListener("click", ()=>{
+  document.getElementById("backBtn").addEventListener("click",(ev)=>{
+    ev.preventDefault();
     if(!EV_STATE) return;
     if(qIndex>0){ qIndex--; renderQuestion(); }
   });
 
-  nextBtn.addEventListener("click", ()=>{
+  document.getElementById("nextBtn").addEventListener("click",(ev)=>{
+    ev.preventDefault();
     if(!EV_STATE) return;
-    if(qIndex < EV_STATE.N - 1){
-      qIndex++;
-      renderQuestion();
-    }else{
-      finishQuiz(false);
-    }
+    if(qIndex < EV_STATE.N - 1){ qIndex++; renderQuestion(); }
+    else renderSummary();
   });
 
-  finishNowBtn.addEventListener("click", ()=>{
+  document.getElementById("finishNowBtn").addEventListener("click",(ev)=>{
+    ev.preventDefault();
     if(!EV_STATE) return;
-    finishQuiz(true);
+    EV_STATE.finishedEarly = true;
+    renderSummary();
   });
 
-  // Custom content
-  document.getElementById("startCustom").addEventListener("click", async ()=>{
+  // Custom
+  document.getElementById("startCustom").addEventListener("click", async (ev)=>{
+    ev.preventDefault();
     const status = document.getElementById("customStatus");
     const file = document.getElementById("customFile").files[0];
     if(!file){
@@ -1948,31 +1728,34 @@ document.addEventListener("DOMContentLoaded", async ()=>{
       status.textContent = "Could not parse enough term–definition pairs.";
       return;
     }
-    // Build a quiz using the same engine (treat as vocab)
-    const key = genKey(Math.min(v.val, entries.length));
-    const picked = sampleWithCoverage(entries, Math.min(v.val, entries.length));
-    // Build neighbors for custom
+
+    const count = Math.min(v.val, entries.length);
+    const key = genKey(count);
+    const picked = sampleWithCoverage(entries, count);
     const idxData = buildNeighborLists(picked);
     const questions = picked.map((e,i)=>{
-      // local buildOptionSet using picked pool and idxData
       const opts = buildOptionSet(e, picked, idxData, key[i]);
-      return { ...makeQuestion(e, key[i]), options: opts };
+      return { kind:"vocab", stem:e.stem, answerText:e.answerText, prompt:"Choose the best definition.", keyLetter:key[i], options:opts, topic:"" };
     });
 
-    const state = {
-      mode:"custom",
-      N: questions.length,
-      questions,
-      answers: Array(questions.length).fill(null)
-    };
+    const state = { mode:"custom", N: questions.length, questions, answers: Array(questions.length).fill(null) };
 
     status.className = "status good";
     status.textContent = `Loaded ${entries.length} pairs. Starting quiz…`;
     document.getElementById("customStage").classList.remove("hidden");
-    const mount = document.getElementById("customQuizView");
-    renderCustomQuiz(state, mount);
+    renderCustomQuiz(state, document.getElementById("customQuizView"));
   });
-});
+
+  // Kick off XLSX load without blocking UI
+  loadMasterList();
+}
+
+// Ensure init always runs (even in odd wrappers)
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded", init, {once:true});
+}else{
+  init();
+}
 </script>
 </body>
 </html>
